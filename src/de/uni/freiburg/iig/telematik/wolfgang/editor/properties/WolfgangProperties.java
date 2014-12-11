@@ -28,8 +28,8 @@ public class WolfgangProperties extends AbstractProperties{
 	public static final String DEFAULT_LABEL_LINE_COLOR = "none";
 	public static final String DEFAULT_NODE_COLOR = "#B6CAE4";
 	public static final String DEFAULT_LINE_COLOR = "#000000";
-	public static final String DEFAULT_GRADIENT_COLOR = null;
-	public static final String DEFAULT_GRADIENT_DIRECTION = null;
+	public static final String DEFAULT_GRADIENT_COLOR = "";
+	public static final String DEFAULT_GRADIENT_DIRECTION = "";
 	public static final String DEFAULT_FONT_FAMILY = "Dialog";
 	public static final int DEFAULT_FONT_SIZE = 11;
 	public static final double DEFAULT_ZOOM_STEP = 0.2;
@@ -306,6 +306,8 @@ public class WolfgangProperties extends AbstractProperties{
 	public String getDefaultGradientColor(){
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR);
 		Validate.notNull(propertyValue);
+		if(propertyValue.isEmpty())
+			return null;
 		return propertyValue;
 	}
 	
@@ -320,7 +322,7 @@ public class WolfgangProperties extends AbstractProperties{
 	public GradientRotation getDefaultGradientDirection() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION);
 		if (propertyValue == null || propertyValue.equals("")) {
-			throw new PropertyException(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION, propertyValue);
+			return null;
 		}
 		try {
 			GradientRotation result = GradientRotation.valueOf(propertyValue);

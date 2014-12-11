@@ -206,7 +206,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		try {
 			toolbar = createNetSpecificToolbar();
 		} catch (EditorToolbarException e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		add(getGraphComponent(), BorderLayout.CENTER);
