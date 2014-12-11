@@ -30,12 +30,13 @@ public class Wolfgang extends JFrame {
 	private PNEditorComponent editorComponent = null;
 	private WGMenuBar menuBar = null;
 	private JPanel content = null;
-	private JPanel editorComponentPanel = null;
+	private JPanel editorToolbarPanel = null;
+	private JScrollPane editorComponentPanel = null;
 	private JPanel editorPropertiesPanel = null;
 	
 	public Wolfgang() throws PropertyException, IOException{
 		super();
-		this.editorComponent = new PTNetEditorComponent();
+//		this.editorComponent = new PTNetEditorComponent();
 		setLookAndFeel();
 		setUpGUI();
 	}
@@ -76,27 +77,34 @@ public class Wolfgang extends JFrame {
 	private JComponent getContent(){
 		if(content == null){
 			content = new JPanel(new BorderLayout());
-			if(editorComponent != null){
-				
-			}
-			content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+
+			editorToolbarPanel = new JPanel(new BorderLayout());
+			content.add(editorToolbarPanel, BorderLayout.NORTH);
 	
 			JSplitPane centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+			editorComponentPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			editorComponentPanel.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
+			centerPanel.add(editorComponentPanel);
 			
-			JScrollPane scrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			scrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
-			centerPanel.add(scrollPane);
-			
-			centerPanel.add(editorComponent.getPropertiesView());
+			editorPropertiesPanel = new JPanel(new BorderLayout());
+			editorPropertiesPanel.setPreferredSize(PREFERRED_SIZE_PROPERTIES_PANEL);
+			centerPanel.add(editorPropertiesPanel);
 			centerPanel.setDividerLocation(0.8);
 			
 			content.add(centerPanel, BorderLayout.CENTER);
+			setEditorPanels();
 		}
 		return content;
 	}
 	
-	private setEditorPanels(){
-		
+	private void setEditorPanels(){
+		if(editorComponent != null){
+			editorToolbarPanel.removeAll();
+			editorToolbarPanel.add(editorComponent.getEditorToolbar(), BorderLayout.CENTER);
+			editorComponentPanel.setViewportView(editorComponent);
+			editorPropertiesPanel.removeAll();
+			editorPropertiesPanel.add(editorComponent.getPropertiesView(), BorderLayout.CENTER);
+		}
 	}
 	
 	public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
