@@ -26,7 +26,7 @@ public class CPNToolBar extends AbstractToolBar {
 		EDIT, PLAY
 	}
 	private TokenToolBar tokenToolbar;
-	private TokenlabelToolBar tokenlabelToolbar;
+//	private TokenlabelToolBar tokenlabelToolbar;
 	private PopUpToolBarAction tokenAction;
 	private PopUpToolBarAction editTokenlabelAction;
 	private CheckValidityAction checkValidityAction;
@@ -59,8 +59,8 @@ public class CPNToolBar extends AbstractToolBar {
 
 				tokenAction = new PopUpToolBarAction(pnEditor, "Token", "marking", tokenToolbar);
 
-			tokenlabelToolbar = new TokenlabelToolBar(pnEditor, JToolBar.HORIZONTAL);
-			editTokenlabelAction = new PopUpToolBarAction(pnEditor, "Tokenlabel", "tokenlabel", tokenlabelToolbar);
+//			tokenlabelToolbar = new TokenlabelToolBar(pnEditor, JToolBar.HORIZONTAL);
+//			editTokenlabelAction = new PopUpToolBarAction(pnEditor, "Tokenlabel", "tokenlabel", tokenlabelToolbar);
 			if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN) {
 				checkValidityAction = new CheckValidityAction(pnEditor);
 				checkSoundnessAction = new ChecKSoundnessAction(pnEditor);

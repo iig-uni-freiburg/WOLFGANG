@@ -170,11 +170,11 @@ public abstract class AbstractToolBar extends JToolBar {
 		zoomAction.setButton(zoomButton);
 
 		
-		if (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty()) {
-			addSeparator();
-			add(getComboTimeContextModel());
-			addSeparator();
-		}
+//		if (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty()) {
+//			addSeparator();
+//			add(getComboTimeContextModel());
+//			addSeparator();
+//		}
 
 		addNetSpecificToolbarButtons();
 		doLayout();
@@ -222,43 +222,43 @@ public abstract class AbstractToolBar extends JToolBar {
 	
 
 
-	private JComboBox getComboTimeContextModel() {
-		if (comboTimeContextModel == null) {
-			comboTimeContextModel = new JComboBox();
-			comboTimeContextModel.setMinimumSize(new Dimension(200, 24));
-			comboTimeContextModel.setPreferredSize(new Dimension(200, 24));
-			comboTimeContextModel.setMaximumSize(new Dimension(200, 24));
+//	private JComboBox getComboTimeContextModel() {
+//		if (comboTimeContextModel == null) {
+//			comboTimeContextModel = new JComboBox();
+//			comboTimeContextModel.setMinimumSize(new Dimension(200, 24));
+//			comboTimeContextModel.setPreferredSize(new Dimension(200, 24));
+//			comboTimeContextModel.setMaximumSize(new Dimension(200, 24));
+//
+//			comboTimeContextModel.addItemListener(new ItemListener() {
+//
+//				@Override
+//				public void itemStateChanged(ItemEvent arg0) {
+//					if (arg0.getItem() instanceof TimeContext)
+//						SwatState.getInstance().setActiveContext(pnEditor.getNetContainer().getPetriNet().getName(),
+//								((TimeContext) arg0.getItem()).getName());
+//				}
+//			});
+//
+//		}
+//
+//		updateTimeContextModelComboBox();
+//
+//
+//		return comboTimeContextModel;
+//	}
 
-			comboTimeContextModel.addItemListener(new ItemListener() {
-
-				@Override
-				public void itemStateChanged(ItemEvent arg0) {
-					if (arg0.getItem() instanceof TimeContext)
-						SwatState.getInstance().setActiveContext(pnEditor.getNetContainer().getPetriNet().getName(),
-								((TimeContext) arg0.getItem()).getName());
-				}
-			});
-
-		}
-
-		updateTimeContextModelComboBox();
-
-
-		return comboTimeContextModel;
-	}
-
-	private void updateTimeContextModelComboBox() {
-		DefaultComboBoxModel theModel = (DefaultComboBoxModel) comboTimeContextModel.getModel();
-		theModel.removeAllElements();
-		List<TimeContext> timeContexts = SwatComponents.getInstance().getTimeContexts(pnEditor.getNetContainer().getPetriNet().getName());
-		theModel.addElement(NO_SELECTION_TIME);
-		if (timeContexts != null && !timeContexts.isEmpty()) {
-			for (TimeContext context : timeContexts) {
-				theModel.addElement(context);
-			}
-		}
-		comboTimeContextModel.repaint();
-	}
+//	private void updateTimeContextModelComboBox() {
+//		DefaultComboBoxModel theModel = (DefaultComboBoxModel) comboTimeContextModel.getModel();
+//		theModel.removeAllElements();
+//		List<TimeContext> timeContexts = SwatComponents.getInstance().getTimeContexts(pnEditor.getNetContainer().getPetriNet().getName());
+//		theModel.addElement(NO_SELECTION_TIME);
+//		if (timeContexts != null && !timeContexts.isEmpty()) {
+//			for (TimeContext context : timeContexts) {
+//				theModel.addElement(context);
+//			}
+//		}
+//		comboTimeContextModel.repaint();
+//	}
 
 	private void zoomButtonSettings() {
 		final mxGraphView view = pnEditor.getGraphComponent().getGraph().getView();

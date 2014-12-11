@@ -306,7 +306,7 @@ public abstract class MXConstants {
 
 	}
 
-	private static String getSizeFromCSS(String size) {
+	private static String getSizeFromCSS(String size) throws PropertyException, IOException {
 		if (size.equals("medium"))
 			return WolfgangProperties.getInstance().getDefaultFontSize().toString();
 		// if(size.equals("small"))

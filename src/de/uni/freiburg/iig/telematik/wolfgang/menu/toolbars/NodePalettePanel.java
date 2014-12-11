@@ -11,6 +11,7 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -21,6 +22,7 @@ import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxRectangle;
 
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
@@ -72,14 +74,14 @@ public class NodePalettePanel extends JPanel {
 
 	protected JPanel selectedEntry = null;
 
-	public NodePalettePanel() throws ParameterException {
+	public NodePalettePanel() throws PropertyException, IOException  {
 		BoxLayout layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
 		setLayout(layout);
 		addPlaceTemplate();
 		addTransitionTemplate();
 	}
 
-	public void addPlaceTemplate() {
+	public void addPlaceTemplate() throws PropertyException, IOException {
 		int size = WolfgangProperties.getInstance().getDefaultPlaceSize();
 		String style = MXConstants.getNodeStyle(PNComponent.PLACE, null, null);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, size, size), style, PNComponent.PLACE);
@@ -87,7 +89,7 @@ public class NodePalettePanel extends JPanel {
 		addTemplate("Place", placePanel, cell);
 	}
 
-	public void addTransitionTemplate() {
+	public void addTransitionTemplate() throws PropertyException, IOException {
 		int width = WolfgangProperties.getInstance().getDefaultTransitionWidth();
 		int height = WolfgangProperties.getInstance().getDefaultTransitionHeight();
 		String style = MXConstants.getNodeStyle(PNComponent.TRANSITION, null, null);

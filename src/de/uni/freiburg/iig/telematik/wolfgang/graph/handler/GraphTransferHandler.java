@@ -10,11 +10,13 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.swing.handler.mxGraphTransferHandler;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 
+import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
@@ -108,7 +110,9 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 			dy += offset.y;
 		}
 
-		importCells(graphComponent, gt, dx, dy);
+
+			importCells(graphComponent, gt, dx, dy);
+
 		location = null;
 		offset = null;
 		result = true;
@@ -125,6 +129,8 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 	 * target and the return values of mxGraph.isSplitEnabled and
 	 * mxGraph.isSplitTarget. Selects and returns the cells that have been
 	 * imported.
+	 * @throws IOException 
+	 * @throws PropertyException 
 	 */
 	protected Object[] importCells(PNGraphComponent graphComponent, mxGraphTransferable gt, double dx, double dy) {
 		Object target = getDropTarget(graphComponent, gt);
@@ -159,7 +165,9 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 							NodeGraphics nodeGraphics = new NodeGraphics();
 							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-							Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
+
+							Utils.createNodeGraphicsFromStyle(cell.getStyle(), (NodeGraphics)nodeGraphics, annotationGraphics);
+				
 							graph.addGraphicalInfoToPNPlace(new mxPoint(cell.getGeometry().getCenterX() + dx, cell.getGeometry().getCenterY() + dy), place, nodeGraphics, annotationGraphics);
 							annotationGraphics.setOffset(new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY()));
 							newCell = graph.insertPNPlace(place, nodeGraphics, annotationGraphics);
@@ -183,7 +191,7 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 							NodeGraphics nodeGraphics = new NodeGraphics();
 							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-							Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
+							Utils.createNodeGraphicsFromStyle(cell.getStyle(), (NodeGraphics)nodeGraphics, annotationGraphics);
 							graph.addGraphicalInfoToPNTransition(new mxPoint(cell.getGeometry().getCenterX() + dx, cell.getGeometry().getCenterY() + dy), transition, nodeGraphics, annotationGraphics);
 							annotationGraphics.setOffset(new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY()));
 							newCell = graph.insertPNTransition(transition, nodeGraphics, annotationGraphics);
@@ -207,8 +215,7 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 						ArcGraphics arcGraphics = new ArcGraphics();
 						AnnotationGraphics annotationGraphics = new AnnotationGraphics();
 						graph.addGraphicalInfoToPNArc(relation, arcGraphics, annotationGraphics);
-						Utils.createArcGraphicsFromStyle(cell.getStyle(), arcGraphics, annotationGraphics);
-
+						Utils.createArcGraphicsFromStyle(cell.getStyle(), arcGraphics, annotationGraphics);						
 						List<mxPoint> points = cell.getGeometry().getPoints();
 						if (arcGraphics != null) {
 							Vector<Position> vector = new Vector<Position>();
@@ -245,5 +252,6 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 		return cells;
 	}
+
 
 }

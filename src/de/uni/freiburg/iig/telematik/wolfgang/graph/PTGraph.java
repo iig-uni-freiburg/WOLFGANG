@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.IOException;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.util.mxConstants;
@@ -12,6 +13,7 @@ import com.mxgraph.view.mxCellState;
 
 import de.invation.code.toval.graphic.misc.CircularPointGroup;
 import de.invation.code.toval.graphic.misc.PColor;
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
@@ -188,7 +190,7 @@ public class PTGraph extends PNGraph {
 		lineColor  = Utils.parseColor(hexColor);
 		PTFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cellId);
 		
-		int pointDiameter = (int) (WolfgangProperties.getInstance().getDefaultTokenSize() * getView().getScale());
+		int pointDiameter = (int) (getDefaultTokenSize() * getView().getScale());
 		 int posX = (int) state.getCenterX();
 			int posY = (int) state.getCenterY();
 	
@@ -225,6 +227,8 @@ public class PTGraph extends PNGraph {
 		 
 		
 	}
+
+
 
 
 

@@ -321,11 +321,11 @@ public class TokenToolBar extends JToolBar {
 
 					}
 					
-					for (AbstractIFNetTransition<IFNetFlowRelation> transition : ifnet.getTransitions()) {
-						((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, transition.getName(), tokenLabel, new HashSet<AccessMode>()));
-						if (transition instanceof AbstractRegularIFNetTransition)
-							((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenLabel);
-						}
+//					for (AbstractIFNetTransition<IFNetFlowRelation> transition : ifnet.getTransitions()) {
+////						((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, transition.getName(), tokenLabel, new HashSet<AccessMode>()));
+//						if (transition instanceof AbstractRegularIFNetTransition)
+//							((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenLabel);
+//						}
 					}
 					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
 					

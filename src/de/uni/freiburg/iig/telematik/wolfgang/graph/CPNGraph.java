@@ -27,7 +27,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractCPNTokenConfigurer;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.CPNProperties;
@@ -263,7 +262,7 @@ default:
 		if(hexColor != null)
 		lineColor  = Utils.parseColor(hexColor);
 		AbstractCPNFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cellId);
-		int pointDiameter = (int) (WolfgangProperties.getInstance().getDefaultTokenSize() * getView().getScale());
+		int pointDiameter = (int) (getDefaultTokenSize() * getView().getScale());
 		 int posX = (int) state.getCenterX();
 			int posY = (int) state.getCenterY();
 		if (flowRelation.hasConstraints()) {
@@ -302,6 +301,8 @@ default:
 		 }
 		
 	}
+
+
 
 
 }

@@ -96,20 +96,20 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		updateView();
 	}
 
-	public AbstractCPNTokenConfigurer(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
-		super(window, transition.getName());
-		isPlace = false;
-		isTransition = true;
-		panel = new JPanel();
-		panel.setLayout(new SpringLayout());
-		add(panel);
-		paName = transition.getName();
-		graph = cpnGraph;
-
-		// for
-
-		updateView();
-	}
+//	public AbstractCPNTokenConfigurer(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
+//		super(window, transition.getName());
+//		isPlace = false;
+//		isTransition = true;
+//		panel = new JPanel();
+//		panel.setLayout(new SpringLayout());
+//		add(panel);
+//		paName = transition.getName();
+//		graph = cpnGraph;
+//
+//		// for
+//
+//		updateView();
+//	}
 
 	private void addRow(String tokenLabel) {
 
@@ -197,7 +197,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 					((mxGraphModel) graph.getModel()).endUpdate();
 				} else {
-					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, new HashSet<AccessMode>()));
+//					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, new HashSet<AccessMode>()));
 					Object transition = graph.getNetContainer().getPetriNet().getTransition(paName);
 					if (transition instanceof AbstractRegularIFNetTransition)
 						((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenName);
@@ -290,7 +290,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 					} else {
 						amChange.remove(accessModi);
 					}
-					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, amChange));
+//					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, amChange));
 				}
 				else {
 					cb.setSelected(false);
@@ -378,7 +378,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 										Set amChange = new HashSet<AccessMode>();
 										// amChange.add(AccessMode.READ);
 
-										((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, color, amChange));
+//										((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, color, amChange));
 
 										if (!isTransition && accessMode.keySet().contains(colors.keySet())) {
 											addButton.setEnabled(false);

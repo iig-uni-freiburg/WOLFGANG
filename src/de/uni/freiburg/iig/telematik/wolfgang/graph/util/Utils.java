@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JOptionPane;
+
 import com.mxgraph.io.graphml.mxGraphMlUtils;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxPoint;
@@ -754,13 +756,16 @@ public class Utils extends mxUtils {
 		}
 	}
 
-	public static void createNodeGraphicsFromStyle(String style, NodeGraphics nodeGraphicsWithPousePosition, AnnotationGraphics annotationGraphics) throws IOException, PropertyException {
+	public static void createNodeGraphicsFromStyle(String style, NodeGraphics nodeGraphicsWithPousePosition, AnnotationGraphics annotationGraphics)  {
+		try {
 		nodeGraphicsWithPousePosition.setFill(new Fill("#000000", null, null, null));
 		nodeGraphicsWithPousePosition.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
 		annotationGraphics.setFill(new Fill("#000000", null, null, null));
 		annotationGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-		annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
-				"normal"));
+	
+			annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
+					"normal"));
+
 		HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 		for (Entry<String, Object> s : styleMap.entrySet()) {
 			String key = s.getKey();
@@ -769,15 +774,23 @@ public class Utils extends mxUtils {
 			else
 				updateNodeGraphics(nodeGraphicsWithPousePosition, s.getKey(), s.getValue());
 		}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,"Cannot write Graphicsstyle to FileSystem " + e.getMessage(),"IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"Property Exception", JOptionPane.ERROR_MESSAGE);
 
+		}
 	}
 
-	public static void createArcGraphicsFromStyle(String style, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws IOException, PropertyException {
+	public static void createArcGraphicsFromStyle(String style, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) {
+		try {
 		arcGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
 		annotationGraphics.setFill(new Fill("#000000", null, null, null));
 		annotationGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-		annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
-				"normal"));
+
+			annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
+					"normal"));
+
 		HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 		for (Entry<String, Object> s : styleMap.entrySet()) {
 			String key = s.getKey();
@@ -786,7 +799,15 @@ public class Utils extends mxUtils {
 			else
 				updateArcGraphics(arcGraphics, s.getKey(), s.getValue());
 		}
+	} catch (IOException e) {
+		JOptionPane.showMessageDialog(null,"Cannot write Graphicsstyle to FileSystem " + e.getMessage(),"IO Exception", JOptionPane.ERROR_MESSAGE);
+	} catch (PropertyException e) {
+		JOptionPane.showMessageDialog(null, e.getMessage(),"Property Exception", JOptionPane.ERROR_MESSAGE);
 
 	}
+
+	}
+	
+
 
 }

@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.canvas.mxICanvas;
@@ -58,6 +59,7 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractObjectGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
@@ -97,7 +99,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	private Set<String> nameSetFromTransitions;
 	private boolean containedGraphics = false;
 
-	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) throws ParameterException {
+	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
 		super();
 		setGridSize(5);
 
@@ -122,7 +124,13 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		setExtendParents(false); // disables extending parents after adding
 		setVertexLabelsMovable(true);
 
-		initialize();
+		try {
+			initialize();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	// @Override
@@ -132,12 +140,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	// }
 
 	@SuppressWarnings("rawtypes")
-	private void initialize() throws ParameterException {
+	private void initialize() throws PropertyException, IOException {
 		// Check if net container is empty.
 		// If not, add all PN components to the graph.
 
 		// Check if net contains Graphical Info and keep that information
-		if (netContainer.getPetriNetGraphics().getPlaceGraphics().size() > 0 || netContainer.getPetriNet().isEmpty())  {
+		if (netContainer.getPetriNetGraphics().getPlaceGraphics().size() > 0 || netContainer.getPetriNet().isEmpty()) {
 			containedGraphics = true;
 		}
 		if (!netContainer.getPetriNet().isEmpty()) {
@@ -288,7 +296,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return properties;
 	}
 
-	public Object addNewPlace(mxPoint mxPoint) throws ParameterException {
+	public Object addNewPlace(mxPoint mxPoint) {
 		mxPoint point = mxPoint;
 		String prefix = MXConstants.PLACE_NAME_PREFIX;
 		PNGraphCell newCell = null;
@@ -303,6 +311,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			AnnotationGraphics annotationGraphics = new AnnotationGraphics();
 			addGraphicalInfoToPNPlace(point, place, nodeGraphics, annotationGraphics);
 			newCell = insertPNPlace(place, nodeGraphics, annotationGraphics);
+
 		}
 		return newCell;
 	}
@@ -312,24 +321,38 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * @param place
 	 * @param nodeGraphics
 	 * @param annotationGraphics
+	 * @throws IOException
+	 * @throws PropertyException
 	 * @throws ParameterException
 	 */
-	public void addGraphicalInfoToPNPlace(mxPoint point, AbstractPlace place, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) throws ParameterException {
-		nodeGraphics.setPosition(new Position(point.getX(), point.getY()));
-		nodeGraphics.setDimension(new Dimension(WolfgangProperties.getInstance().getDefaultPlaceSize(), WolfgangProperties.getInstance().getDefaultPlaceSize()));
-		annotationGraphics.setOffset(new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset()));
-		getNetContainer().getPetriNetGraphics().getPlaceGraphics().put(place.getName(), nodeGraphics);
-		getNetContainer().getPetriNetGraphics().getPlaceLabelAnnotationGraphics().put(place.getName(), annotationGraphics);
+	public void addGraphicalInfoToPNPlace(mxPoint point, AbstractPlace place, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) {
+		try {
+			nodeGraphics.setPosition(new Position(point.getX(), point.getY()));
+			nodeGraphics.setDimension(new Dimension(WolfgangProperties.getInstance().getDefaultPlaceSize(), WolfgangProperties.getInstance().getDefaultPlaceSize()));
+			annotationGraphics.setOffset(new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset()));
+			getNetContainer().getPetriNetGraphics().getPlaceGraphics().put(place.getName(), nodeGraphics);
+			getNetContainer().getPetriNetGraphics().getPlaceLabelAnnotationGraphics().put(place.getName(), annotationGraphics);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	public PNGraphCell insertPNPlace(AbstractPlace place, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) throws ParameterException {
-		double x = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getX();
-		double y = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getY();
-		double dimX = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getX();
-		double dimY = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getY();
-		PNGraphCell newCell = createPlaceCell(place.getName(), place.getLabel(), x, y, dimX, dimY, MXConstants.getNodeStyle(PNComponent.PLACE, nodeGraphics, annotationGraphics));
-
+	public PNGraphCell insertPNPlace(AbstractPlace place, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) {
+		PNGraphCell newCell = null;
+		try {
+			double x = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getX();
+			double y = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getY();
+			double dimX = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getX();
+			double dimY = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getY();
+			newCell = createPlaceCell(place.getName(), place.getLabel(), x, y, dimX, dimY, getCellStyleFromMXConstants(PNComponent.PLACE, nodeGraphics, annotationGraphics));
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
 		// if(annotationGraphics == null){
 		// annotationGraphics = new AnnotationGraphics();
 		// mxPoint point = new mxPoint(0, 0);
@@ -348,6 +371,30 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		addNodeReference(place, newCell);
 		notifyPlaceAdded(place);
 		return newCell;
+	}
+
+	private String getCellStyleFromMXConstants(PNComponent type, AbstractObjectGraphics cellGraphics, AnnotationGraphics annotationGraphics) {
+		String style = null;
+		try {
+			switch (type) {
+			case PLACE:
+				style = MXConstants.getNodeStyle(PNComponent.PLACE, (NodeGraphics) cellGraphics, annotationGraphics);
+				break;
+			case TRANSITION:
+				style = MXConstants.getNodeStyle(PNComponent.TRANSITION, (NodeGraphics) cellGraphics, annotationGraphics);
+				break;
+			case ARC:
+				style = MXConstants.getArcStyle((ArcGraphics) cellGraphics, annotationGraphics);
+				break;
+			}
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return style;
 	}
 
 	/**
@@ -383,7 +430,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public Object addNewFlowRelation(PNGraphCell sourceCell, PNGraphCell targetCell) {
 		AbstractFlowRelation relation = null;
 
-		if ((sourceCell != null) && (targetCell != null)  && sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
+		if ((sourceCell != null) && (targetCell != null) && sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
 			relation = getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(), targetCell.getId());
 		} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
 			relation = getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
@@ -405,7 +452,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * @param annotationGraphics
 	 * @throws ParameterException
 	 */
-	public void addGraphicalInfoToPNArc(AbstractFlowRelation relation, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws ParameterException {
+	public void addGraphicalInfoToPNArc(AbstractFlowRelation relation, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) {
 		annotationGraphics.setOffset(new Offset(0, 0));
 		String name = relation.getName();
 		getNetContainer().getPetriNetGraphics().getArcGraphics().put(name, arcGraphics);
@@ -413,9 +460,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	@SuppressWarnings("rawtypes")
-	public PNGraphCell insertPNRelation(AbstractFlowRelation relation, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws ParameterException {
+	public PNGraphCell insertPNRelation(AbstractFlowRelation relation, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) {
 
-		PNGraphCell newCell = createArcCell(relation.getName(), getArcConstraint(relation), MXConstants.getArcStyle(arcGraphics, annotationGraphics));
+		PNGraphCell newCell = createArcCell(relation.getName(), getArcConstraint(relation), getCellStyleFromMXConstants(PNComponent.ARC, arcGraphics, annotationGraphics));
 		addEdge(newCell, getDefaultParent(), getCell(relation.getSource()), getCell(relation.getTarget()), null);
 
 		double offx = annotationGraphics.getOffset().getX();
@@ -435,7 +482,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return newCell;
 	}
 
-	public Object addNewTransition(mxPoint mxPoint) throws ParameterException {
+	public Object addNewTransition(mxPoint mxPoint) {
 		mxPoint point = mxPoint;
 		String prefix = MXConstants.TRANSITION_NAME_PREFIX;
 		PNGraphCell newCell = null;
@@ -444,7 +491,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			index++;
 		}
 		String nodeName = prefix + index;
-		try {
+
 			if (getNetContainer().getPetriNet().addTransition(nodeName)) {
 				AbstractTransition transition = getNetContainer().getPetriNet().getTransition(nodeName);
 				NodeGraphics nodeGraphicsWithMousePosition = new NodeGraphics();
@@ -452,9 +499,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 				addGraphicalInfoToPNTransition(point, transition, nodeGraphicsWithMousePosition, annotationGraphics);
 				newCell = insertPNTransition(transition, nodeGraphicsWithMousePosition, annotationGraphics);
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Internal Exception", JOptionPane.ERROR_MESSAGE);
-}
 
 		return newCell;
 
@@ -465,20 +509,28 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * @param transition
 	 * @param nodeGraphicsWithMousePosition
 	 * @param annotationGraphics
-	 * @throws ParameterException
+	 * @throws IOException
+	 * @throws PropertyException
+	 *             @
 	 */
-	public void addGraphicalInfoToPNTransition(mxPoint point, AbstractTransition transition, NodeGraphics nodeGraphicsWithMousePosition, AnnotationGraphics annotationGraphics)
-			throws ParameterException {
-		nodeGraphicsWithMousePosition.setPosition(new Position(point.getX(), point.getY()));
-		nodeGraphicsWithMousePosition.setDimension(new Dimension(WolfgangProperties.getInstance().getDefaultTransitionWidth(), WolfgangProperties.getInstance().getDefaultTransitionHeight()));
-		annotationGraphics.setOffset(new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset()));
-		getNetContainer().getPetriNetGraphics().getTransitionGraphics().put(transition.getName(), nodeGraphicsWithMousePosition);
-		getNetContainer().getPetriNetGraphics().getTransitionLabelAnnotationGraphics().put(transition.getName(), annotationGraphics);
+	public void addGraphicalInfoToPNTransition(mxPoint point, AbstractTransition transition, NodeGraphics nodeGraphicsWithMousePosition, AnnotationGraphics annotationGraphics) {
+		try {
+			nodeGraphicsWithMousePosition.setPosition(new Position(point.getX(), point.getY()));
+			nodeGraphicsWithMousePosition.setDimension(new Dimension(WolfgangProperties.getInstance().getDefaultTransitionWidth(), WolfgangProperties.getInstance().getDefaultTransitionHeight()));
+			annotationGraphics.setOffset(new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset()));
+			getNetContainer().getPetriNetGraphics().getTransitionGraphics().put(transition.getName(), nodeGraphicsWithMousePosition);
+			getNetContainer().getPetriNetGraphics().getTransitionLabelAnnotationGraphics().put(transition.getName(), annotationGraphics);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	public PNGraphCell insertPNTransition(AbstractTransition transition, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) throws ParameterException {
+	public PNGraphCell insertPNTransition(AbstractTransition transition, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) {
 		// transition.setSilent(true);
+		PNGraphCell newCell = null;
 		if (transition.isSilent()) {
 			Fill fill = new Fill("#0000", null, null, null);
 			annotationGraphics.setVisibility(false);
@@ -487,9 +539,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 		double x = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getX();
 		double y = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getY();
+		try {
 		double dimX = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultTransitionWidth() : nodeGraphics.getDimension().getX();
 		double dimY = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultTransitionHeight() : nodeGraphics.getDimension().getY();
-		PNGraphCell newCell = createTransitionCell(transition.getName(), transition.getLabel(), x, y, dimX, dimY, MXConstants.getNodeStyle(PNComponent.TRANSITION, nodeGraphics, annotationGraphics));
+
+		newCell = createTransitionCell(transition.getName(), transition.getLabel(), x, y, dimX, dimY, getCellStyleFromMXConstants(PNComponent.TRANSITION, nodeGraphics, annotationGraphics));
+		
 		double offx = annotationGraphics.getOffset().getX();
 		double offy = annotationGraphics.getOffset().getY();
 		mxPoint offset = new mxPoint(offx, offy);
@@ -502,7 +557,11 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		addCell(newCell, getDefaultParent());
 		addNodeReference(transition, newCell);
 		notifyTransitionAdded(transition);
-
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+		} catch (PropertyException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
 		return newCell;
 
 	}
@@ -554,7 +613,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return vertex;
 	}
 
-	public abstract void updatePlaceState(String name, Multiset<String> input) throws ParameterException;
+	public abstract void updatePlaceState(String name, Multiset<String> input);
 
 	@Override
 	public boolean isCellLocked(Object cell) {
@@ -613,7 +672,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected abstract String getArcToolTip(PNGraphCell cell);
 
-	protected abstract String getArcConstraint(AbstractFlowRelation relation) throws ParameterException;
+	protected abstract String getArcConstraint(AbstractFlowRelation relation);
 
 	public abstract Color getTokenColorForName(String name);
 
@@ -644,11 +703,10 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * 
 	 * @param cell
 	 * @param wheelRotation
-	 * @return
-	 * @throws ParameterException
+	 * @return @
 	 */
 
-	public abstract AbstractMarking inOrDecrementPlaceState(PNGraphCell cell, int wheelRotation) throws ParameterException;
+	public abstract AbstractMarking inOrDecrementPlaceState(PNGraphCell cell, int wheelRotation);
 
 	/**
 	 * Selects all vertices and/or edges depending on the given boolean
@@ -689,11 +747,18 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		if (cell != null && cell != view.getCurrentRoot() && cell != model.getRoot() && (model.isVertex(cell) || model.isEdge(cell))) {
 
 			PNGraphCell customcell;
-			Object obj;
+			Object obj = null;
 			if (canvas instanceof mxImageCanvas)
 				obj = canvas.drawCell(state);
 			else
-				obj = drawCell((mxGraphics2DCanvas) canvas, state);
+				try {
+					obj = drawCell((mxGraphics2DCanvas) canvas, state);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
+				} catch (PropertyException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+
+				}
 
 			Object lab = null;
 
@@ -758,7 +823,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 	}
 
-	public Object drawCell(mxGraphics2DCanvas canvas, mxCellState state) {
+	public Object drawCell(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {
 		Map<String, Object> style = state.getStyle();
 		mxIShape shape = canvas.getShape(style);
 		Graphics2D g;
@@ -807,9 +872,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected abstract void drawAdditionalArcGrahpics(mxGraphics2DCanvas canvas, mxCellState state);
 
-	protected abstract void drawAdditionalTransitionGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws ParameterException, PropertyException, IOException;
+	protected abstract void drawAdditionalTransitionGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException;
 
-	protected void drawAdditionalPlaceGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws ParameterException {
+	protected void drawAdditionalPlaceGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {
 		Rectangle temp = state.getRectangle();
 		PNGraphCell cell = (PNGraphCell) state.getCell();
 
@@ -880,7 +945,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			g.drawString(line, x, y += g.getFontMetrics().getHeight());
 	}
 
-	protected void drawPoints(mxGraphics2DCanvas canvas, Rectangle temp, CircularPointGroup circularPointGroup, Point center) throws ParameterException {
+	protected void drawPoints(mxGraphics2DCanvas canvas, Rectangle temp, CircularPointGroup circularPointGroup, Point center) {
 		Graphics g = canvas.getGraphics();
 		Iterator<PColor> iter = circularPointGroup.getColors().iterator();
 		PColor actColor;
@@ -911,7 +976,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	}
 
-	private void setPositionProperties(PNGraphCell cell) throws ParameterException {
+	private void setPositionProperties(PNGraphCell cell) {
 		switch (cell.getType()) {
 		case ARC:
 			break;
@@ -1082,7 +1147,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		for (Object object : cells) {
 			if (object instanceof PNGraphCell) {
 				PNGraphCell cell = (PNGraphCell) object;
-					setPositionProperties(cell);
+				setPositionProperties(cell);
 
 			}
 		}
@@ -1201,7 +1266,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	}
 
-	private void removeFlowRelation(String name) throws ParameterException {
+	private void removeFlowRelation(String name) {
 		AbstractFlowRelation relation = netContainer.getPetriNet().getFlowRelation(name);
 		if (relation != null) {
 			netContainer.getPetriNet().removeFlowRelation(name);
@@ -1211,7 +1276,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 	}
 
-	private void removeTransition(String name) throws ParameterException {
+	private void removeTransition(String name) {
 		AbstractTransition transition = netContainer.getPetriNet().getTransition(name);
 		if (transition != null) {
 			Set<AbstractFlowRelation> relations = new HashSet<AbstractFlowRelation>();
@@ -1229,7 +1294,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 	}
 
-	private void removePlace(String name) throws ParameterException {
+	private void removePlace(String name) {
 		AbstractPlace place = netContainer.getPetriNet().getPlace(name);
 		if (place != null) {
 			Set<AbstractFlowRelation> relations = new HashSet<AbstractFlowRelation>();
@@ -1327,7 +1392,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 											AbstractPlace place = getNetContainer().getPetriNet().getPlace(cell.getId());
 											NodeGraphics nodeGraphics = new NodeGraphics();
 											AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+
 											addGraphicalInfoToPNPlace(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), place, nodeGraphics, annotationGraphics);
+
 											Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
 											addNodeReference(place, cell);
 											notifyPlaceAdded(place);
@@ -1343,7 +1410,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 											AbstractTransition transition = getNetContainer().getPetriNet().getTransition(cell.getId());
 											NodeGraphics nodeGraphics = new NodeGraphics();
 											AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+
 											addGraphicalInfoToPNTransition(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), transition, nodeGraphics, annotationGraphics);
+
 											Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
 											addNodeReference(transition, cell);
 											notifyTransitionAdded(transition);
@@ -1446,7 +1515,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected abstract void setArcLabel(PNGraph pnGraph, String id, String string);
 
-	public void setFontOfSelectedCellLabel(String font) throws ParameterException {
+	public void setFontOfSelectedCellLabel(String font) {
 		Validate.notNull(font);
 
 		if (font != null && !font.equals("-")) {
@@ -1722,6 +1791,20 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	public boolean containedGraphics() {
 		return containedGraphics;
+	}
+
+	protected double getDefaultTokenSize() {
+		// TODO Auto-generated method stub
+		try {
+			return WolfgangProperties.getInstance().getDefaultTokenSize();
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (Double) null;
 	}
 
 }
