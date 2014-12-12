@@ -79,6 +79,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener {
+	
+	public static final boolean DEFAULT_ASK_FOR_LAYOUT = false;
 
 	private static final long serialVersionUID = 1023415244830760771L;
 	private static final String scaleMessageFormat = "Scale: %s %%";
@@ -106,7 +108,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	protected PNProperties properties = null;
 	protected PropertiesView propertiesView = null;
-	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer = null;
+	public AbstractGraphicalPN netContainer = null;
 
 	private PNEditorListenerSupport editorListenerSupport = new PNEditorListenerSupport();
 	
@@ -121,16 +123,29 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		setUpGUI();
 	}
 
-	public PNEditorComponent(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer) {
+	public PNEditorComponent(AbstractGraphicalPN netContainer) {
+		this(netContainer, DEFAULT_ASK_FOR_LAYOUT);
+	}
+	
+	public PNEditorComponent(AbstractGraphicalPN netContainer, boolean askForLayout) {
 		super();
 		Validate.notNull(netContainer);
 		initialize(netContainer);
 		setUpGUI();
 		propertiesView.setUpGUI();
 
-		if (!graphComponent.getGraph().containedGraphics()) {
-			showLayoutDialog();
+		if (!graphComponent.getGraph().containedGraphics() && askForLayout) {
+			String selectedLayout = showLayoutDialog();
+			if(selectedLayout != null){
+				setLayout(selectedLayout);
+			}
 		}
+	}
+	
+	public PNEditorComponent(AbstractGraphicalPN netContainer, LayoutOption layoutOption) {
+		this(netContainer, false);
+		if(layoutOption != null)
+			setLayout(layoutOption.getLayoutCode());
 	}
 
 	public Wolfgang getWolfgang() {
@@ -141,38 +156,40 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		this.wolfgang = wolfgang;
 	}
 
-	private void showLayoutDialog() {
+	private String showLayoutDialog() {
 		String[] layouts = { "verticalHierarchical", "horizontalHierarchical", "organicLayout", "circleLayout" };
 		String selectedLayout = (String) JOptionPane.showInputDialog(getGraphComponent(), "Selected Layout:", "Do you wish to layout your net?", JOptionPane.QUESTION_MESSAGE, null, layouts,
 				layouts[0]);
-		if (selectedLayout != null) {
-			mxIGraphLayout layout = createLayout(selectedLayout, true);
-			mxGraph graph = graphComponent.getGraph();
-			Object cell = graph.getSelectionCell();
+		return selectedLayout;
+	}
+	
+	private void setLayout(String selectedLayout){
+		mxIGraphLayout layout = createLayout(selectedLayout, true);
+		mxGraph graph = graphComponent.getGraph();
+		Object cell = graph.getSelectionCell();
 
-			if (cell == null || graph.getModel().getChildCount(cell) == 0) {
-				cell = graph.getDefaultParent();
-			}
+		if (cell == null || graph.getModel().getChildCount(cell) == 0) {
+			cell = graph.getDefaultParent();
+		}
 
-			graph.getModel().beginUpdate();
-			try {
-				long t0 = System.currentTimeMillis();
-				layout.execute(cell);
-				status("Layout: " + (System.currentTimeMillis() - t0) + " ms");
-			} finally {
-				mxMorphing morph = new mxMorphing(graphComponent, 20, 1.2, 20);
+		graph.getModel().beginUpdate();
+		try {
+			long t0 = System.currentTimeMillis();
+			layout.execute(cell);
+			status("Layout: " + (System.currentTimeMillis() - t0) + " ms");
+		} finally {
+			mxMorphing morph = new mxMorphing(graphComponent, 20, 1.2, 20);
 
-				morph.addListener(mxEvent.DONE, new mxIEventListener() {
+			morph.addListener(mxEvent.DONE, new mxIEventListener() {
 
-					public void invoke(Object sender, mxEventObject evt) {
-						getGraph().getModel().endUpdate();
-						// getGraph().updatePositionPropertiesFromCells();
-					}
+				public void invoke(Object sender, mxEventObject evt) {
+					getGraph().getModel().endUpdate();
+					// getGraph().updatePositionPropertiesFromCells();
+				}
 
-				});
+			});
 
-				morph.startAnimation();
-			}
+			morph.startAnimation();
 		}
 	}
 
@@ -594,12 +611,28 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		}
 	}
 
-	/**
-	 * 
-	 * @param msg
-	 */
 	public void status(String msg) {
 		// statusBar.setText(msg);
+	}
+	
+	public enum LayoutOption {
+		
+		VERTICAL_HIERARCHICAL("verticalHierarchical"),
+		HORIZONTAL_HIERARCHICAL("horizontalHierarchical"),
+		ORGANIC("organicLayout"),
+		CIRCLE("circleLayout");
+		
+		private String layoutCode = null;
+		
+		private LayoutOption(String layoutCode){
+			this.layoutCode = layoutCode;
+		}
+		
+		public String getLayoutCode(){
+			return layoutCode;
+		}
+		
+		
 	}
 
 }

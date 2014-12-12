@@ -38,9 +38,9 @@ public class PTGraphComponent extends PNGraphComponent {
 			try {
 				getGraph().fireTransition(cell);
 			} catch (ParameterException e1) {
-				JOptionPane.showMessageDialog(null, "Parameter Exception \nReason: " + e1.getMessage(), "Parameter Exception", JOptionPane.ERROR);
+				JOptionPane.showMessageDialog(null, "Parameter Exception \nReason: " + e1.getMessage(), "Parameter Exception", JOptionPane.ERROR_MESSAGE);
 			} catch (PNException e1) {
-				JOptionPane.showMessageDialog(null, "Petri Net Exception \nReason: " + e1.getMessage(), "Petri Net Exception", JOptionPane.ERROR);
+				JOptionPane.showMessageDialog(null, "Petri Net Exception \nReason: " + e1.getMessage(), "Petri Net Exception", JOptionPane.ERROR_MESSAGE);
 			}
 			highlightEnabledTransitions();
 

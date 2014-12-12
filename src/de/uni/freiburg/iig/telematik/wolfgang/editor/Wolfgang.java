@@ -14,7 +14,17 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.component.CPNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PTNetEditorComponent;
 
 public class Wolfgang extends JFrame {
@@ -30,15 +40,43 @@ public class Wolfgang extends JFrame {
 	private PNEditorComponent editorComponent = null;
 	private WGMenuBar menuBar = null;
 	private JPanel content = null;
-	private JPanel editorToolbarPanel = null;
-	private JScrollPane editorComponentPanel = null;
-	private JPanel editorPropertiesPanel = null;
+	private JSplitPane centerPanel = null;
 	
 	public Wolfgang() throws PropertyException, IOException{
-		super();
-//		this.editorComponent = new PTNetEditorComponent();
+		this(new GraphicalPTNet());
+	}
+	
+	public Wolfgang(AbstractGraphicalPN net) throws PropertyException, IOException{
 		setLookAndFeel();
+		setNet(net, null);
 		setUpGUI();
+	}
+	
+	public Wolfgang(AbstractGraphicalPN net, LayoutOption layoutOption) throws PropertyException, IOException{
+		setLookAndFeel();
+		setNet(net, layoutOption);
+		setUpGUI();
+	}
+	
+	public void setNet(AbstractGraphicalPN net, LayoutOption layoutOption){
+		Validate.notNull(net);
+		switch(net.getPetriNet().getNetType()){
+		case CPN:
+			if(editorComponent != null){
+				centerPanel.remove(editorComponent);
+				centerPanel.remove(editorComponent.getPropertiesView());
+			}
+			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
+			break;
+		case PTNet:
+			if(editorComponent != null){
+				centerPanel.remove(editorComponent);
+				centerPanel.remove(editorComponent.getPropertiesView());
+			}
+			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
+			break;
+		default: throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + net.getPetriNet().getNetType());
+		}
 	}
 	
 	public PNEditorComponent getEditorComponent() {
@@ -77,34 +115,20 @@ public class Wolfgang extends JFrame {
 	private JComponent getContent(){
 		if(content == null){
 			content = new JPanel(new BorderLayout());
-
-			editorToolbarPanel = new JPanel(new BorderLayout());
-			content.add(editorToolbarPanel, BorderLayout.NORTH);
-	
-			JSplitPane centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-			editorComponentPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			editorComponentPanel.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
-			centerPanel.add(editorComponentPanel);
-			
-			editorPropertiesPanel = new JPanel(new BorderLayout());
-			editorPropertiesPanel.setPreferredSize(PREFERRED_SIZE_PROPERTIES_PANEL);
-			centerPanel.add(editorPropertiesPanel);
-			centerPanel.setDividerLocation(0.8);
-			
+			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
 			content.add(centerPanel, BorderLayout.CENTER);
+			centerPanel.setDividerLocation(0.8);
 			setEditorPanels();
 		}
 		return content;
 	}
 	
 	private void setEditorPanels(){
-		if(editorComponent != null){
-			editorToolbarPanel.removeAll();
-			editorToolbarPanel.add(editorComponent.getEditorToolbar(), BorderLayout.CENTER);
-			editorComponentPanel.setViewportView(editorComponent);
-			editorPropertiesPanel.removeAll();
-			editorPropertiesPanel.add(editorComponent.getPropertiesView(), BorderLayout.CENTER);
-		}
+		content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+		JScrollPane scrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
+		centerPanel.add(scrollPane);
+		centerPanel.add(editorComponent.getPropertiesView());
 	}
 	
 	public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
@@ -115,7 +139,7 @@ public class Wolfgang extends JFrame {
 	}
 	
 	public static void main(String[] args) throws PropertyException, IOException {
-		new Wolfgang();
+		new Wolfgang(new GraphicalPTNet());
 	}
 
 }

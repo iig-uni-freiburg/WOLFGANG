@@ -32,6 +32,14 @@ public class PTNetEditorComponent extends PNEditorComponent {
 		super();
 	}
 
+	public PTNetEditorComponent(GraphicalPTNet netContainer, boolean askForLayout) {
+		super(netContainer, askForLayout);
+	}
+
+	public PTNetEditorComponent(GraphicalPTNet netContainer, LayoutOption layoutOption) {
+		super(netContainer, layoutOption);
+	}
+
 	public PTNetEditorComponent(GraphicalPTNet netContainer) {
 		super(netContainer);
 	}

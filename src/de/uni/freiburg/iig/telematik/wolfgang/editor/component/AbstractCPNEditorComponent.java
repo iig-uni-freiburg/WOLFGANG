@@ -17,7 +17,16 @@ public abstract class AbstractCPNEditorComponent extends PNEditorComponent {
 	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer) {
 		super(netContainer);
 	}
+	
+	
 
+	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer, boolean askForLayout) {
+		super(netContainer, askForLayout);
+	}
+
+	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer, LayoutOption layoutOption) {
+		super(netContainer, layoutOption);
+	}
 	@Override
 	protected PNProperties createPNProperties() {
 		//TODO:		return new CPNProperties(getNetContainer());

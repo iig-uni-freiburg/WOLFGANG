@@ -33,6 +33,14 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 		super(netContainer);
 	}
 
+	public CPNEditorComponent(GraphicalCPN netContainer, boolean askForLayout) {
+		super(netContainer, askForLayout);
+	}
+
+	public CPNEditorComponent(GraphicalCPN netContainer, LayoutOption layoutOption) {
+		super(netContainer, layoutOption);
+	}
+
 	@Override
 	public GraphicalCPN getNetContainer() {
 		return (GraphicalCPN) super.getNetContainer();

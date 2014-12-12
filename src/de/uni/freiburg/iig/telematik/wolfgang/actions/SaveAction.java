@@ -32,6 +32,8 @@ public class SaveAction extends AbstractWolfgangAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
+		if(wolfgang.getEditorComponent() == null)
+			return;
 		success = true;
 		PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, wolfgang.getFileReference().getAbsolutePath());
 		wolfgang.getEditorComponent().setModified(false);
