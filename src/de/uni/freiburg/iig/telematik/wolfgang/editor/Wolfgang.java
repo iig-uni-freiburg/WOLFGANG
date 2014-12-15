@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -20,8 +22,8 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.mg.MGSequenceGenerator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.CPNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
@@ -37,45 +39,54 @@ public class Wolfgang extends JFrame {
 	
 	private File fileReference = null;
 	
-	private PNEditorComponent editorComponent = null;
+	protected PNEditorComponent editorComponent = null;
 	private WGMenuBar menuBar = null;
-	private JPanel content = null;
-	private JSplitPane centerPanel = null;
+	protected JPanel content = null;
+	protected JSplitPane centerPanel = null;
 	
-	public Wolfgang() throws PropertyException, IOException{
+	public Wolfgang() throws Exception{
 		this(new GraphicalPTNet());
 	}
 	
-	public Wolfgang(AbstractGraphicalPN net) throws PropertyException, IOException{
-		setLookAndFeel();
-		setNet(net, null);
-		setUpGUI();
+	public Wolfgang(AbstractGraphicalPN net) throws Exception{
+		this(net, null);
 	}
 	
-	public Wolfgang(AbstractGraphicalPN net, LayoutOption layoutOption) throws PropertyException, IOException{
-		setLookAndFeel();
+	public Wolfgang(AbstractGraphicalPN net, LayoutOption layoutOption) throws Exception{
 		setNet(net, layoutOption);
-		setUpGUI();
+	}
+	
+	public Wolfgang(AbstractGraphicalPN net, boolean askForLayout) throws Exception{
+		setNet(net, askForLayout);
 	}
 	
 	public void setNet(AbstractGraphicalPN net, LayoutOption layoutOption){
-		Validate.notNull(net);
-		switch(net.getPetriNet().getNetType()){
-		case CPN:
-			if(editorComponent != null){
-				centerPanel.remove(editorComponent);
-				centerPanel.remove(editorComponent.getPropertiesView());
-			}
-			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
-			break;
-		case PTNet:
-			if(editorComponent != null){
-				centerPanel.remove(editorComponent);
-				centerPanel.remove(editorComponent.getPropertiesView());
-			}
+		prepareNetInsertion(net);
+		if(net.getPetriNet().getNetType().equals(NetType.PTNet)){
 			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
-			break;
-		default: throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + net.getPetriNet().getNetType());
+		} else {
+			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
+		}
+	}
+	
+	public void setNet(AbstractGraphicalPN net, boolean askForLayout){
+		prepareNetInsertion(net);
+		if(net.getPetriNet().getNetType().equals(NetType.PTNet)){
+			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, askForLayout);
+		} else {
+			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, askForLayout);
+		}
+	}
+	
+	private void prepareNetInsertion(AbstractGraphicalPN net){
+		Validate.notNull(net);
+		NetType netType = net.getPetriNet().getNetType();
+		if(!netType.equals(NetType.PTNet) && !netType.equals(NetType.CPN))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + net.getPetriNet().getNetType());
+		
+		if(editorComponent != null){
+			centerPanel.remove(editorComponent);
+			centerPanel.remove(editorComponent.getPropertiesView());
 		}
 	}
 	
@@ -87,8 +98,8 @@ public class Wolfgang extends JFrame {
 		return fileReference;
 	}
 	
-	private void setUpGUI() throws PropertyException, IOException{
-		setTitle("WOLFGANG");
+	public void setUpGUI() throws PropertyException, IOException, Exception{
+		setLookAndFeel();
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(PREFERRED_SIZE_WORKBENCH);
 		setResizable(true);
@@ -96,6 +107,11 @@ public class Wolfgang extends JFrame {
 		setJMenuBar(getWGMenuBar());
 		pack();
 		setVisible(true);
+	}
+	
+	@Override
+	public String getTitle(){
+		return "WOLFGANG";
 	}
 	
 	/** Changes Look and Feel if running on Linux **/
@@ -112,23 +128,40 @@ public class Wolfgang extends JFrame {
 		}
 	}
 	
-	private JComponent getContent(){
+	private JComponent getContent() throws Exception{
 		if(content == null){
 			content = new JPanel(new BorderLayout());
-			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-			content.add(centerPanel, BorderLayout.CENTER);
-			centerPanel.setDividerLocation(0.8);
+			content.add(getCenterComponent(), BorderLayout.CENTER);
 			setEditorPanels();
+			JComponent bottomComponent = getBottomComponent();
+			if(bottomComponent != null)
+				content.add(bottomComponent, BorderLayout.PAGE_END);
 		}
 		return content;
 	}
 	
-	private void setEditorPanels(){
+	protected JComponent getCenterComponent() throws Exception {
+		if(centerPanel == null){
+			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+			centerPanel.setDividerLocation(0.8);
+		}
+		return centerPanel;
+	}
+	
+	protected JComponent getBottomComponent() throws Exception {
+		return null;
+	}
+
+	protected void setEditorPanels() throws Exception {
 		content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+		centerPanel.add(getEditorPanel());
+		centerPanel.add(editorComponent.getPropertiesView());
+	}
+	
+	protected JComponent getEditorPanel(){
 		JScrollPane scrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
-		centerPanel.add(scrollPane);
-		centerPanel.add(editorComponent.getPropertiesView());
+		return scrollPane;
 	}
 	
 	public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
@@ -137,9 +170,11 @@ public class Wolfgang extends JFrame {
 		}
 		return menuBar;
 	}
+
 	
-	public static void main(String[] args) throws PropertyException, IOException {
-		new Wolfgang(new GraphicalPTNet());
+	public static void main(String[] args) throws Exception {
+		Wolfgang wolfgang = new Wolfgang(new GraphicalPTNet());
+		wolfgang.setUpGUI();
 	}
 
 }
