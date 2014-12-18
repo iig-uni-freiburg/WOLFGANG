@@ -22,6 +22,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
@@ -177,14 +178,29 @@ public class PNTreeNodeRenderer extends DefaultTreeCellRenderer {
 //			}
 	}
 
-	private Component getTextPanel(PNTreeNode node) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		JLabel label = new JLabel(node.toString() + ": ");
-		label.setSize(new Dimension(200, 30));
-		panel.add(label, BorderLayout.LINE_START);
-		panel.add(node.getTextfield(), BorderLayout.LINE_END);
-		return panel;
-	}
+//	private Component getTextPanel(PNTreeNode node) {
+//		JPanel panel = new JPanel();
+//		panel.setLayout(new BorderLayout());
+//		JLabel label = new JLabel(node.toString() + ": ");
+//		label.setSize(new Dimension(200, 30));
+//		panel.add(label, BorderLayout.LINE_START);
+//		panel.add(node.getTextfield(), BorderLayout.LINE_END);
+//		return panel;
+//	}
+	
+	 @Override
+	    public Color getBackgroundNonSelectionColor() {
+	        return (null);
+	    }
+
+	    @Override
+	    public Color getBackgroundSelectionColor() {
+	        return MXConstants.LABEL_HANDLE_FILLCOLOR;
+	    }
+
+	    @Override
+	    public Color getBackground() {
+	        return (null);
+	    }
 
 }

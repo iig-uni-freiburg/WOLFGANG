@@ -101,5 +101,7 @@ public class PNCellEditor extends DefaultCellEditor {
 	private Point max(Point p1, Point p2) {
 		return new Point(Math.max(p1.x, p2.x), Math.max(p1.y, p2.y));
 	}
+	
+	
 
 }

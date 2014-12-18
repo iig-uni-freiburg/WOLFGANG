@@ -165,7 +165,8 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		// Order of Properties corresponds to Order of PropertiesClass
 
 		final JTable table = new JTable(tableModel);
-
+        Color bgcolor = UIManager.getColor ( "Panel.background" );
+        table.setBackground(bgcolor);
 		TableColumnModel colModel = table.getColumnModel();
 		TableColumn col1 = colModel.getColumn(1);
 		col1.setCellRenderer(new JTableRenderer());
@@ -268,6 +269,8 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			this.type = type;
 			this.property = property;
 			this.name = name;
+	        Color bgcolor = UIManager.getColor ( "Panel.background" );
+			this.setBackground(bgcolor);
 			this.addKeyListener(new KeyAdapter() {
 
 				@Override

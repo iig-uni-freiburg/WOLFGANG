@@ -73,6 +73,8 @@ public class EditorForPropertiesFieldColumn implements TableCellEditor {
 	public boolean stopCellEditing() {
 		return true;
 	}
+	
+	
 
 }
 
