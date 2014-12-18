@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.graph.handler;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -37,6 +38,25 @@ public class PNEdgeHandler extends mxEdgeHandler {
 	protected boolean isHandleVisible(int index) {
 		// TODO Auto-generated method stub
 		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
+	}
+	@Override
+	protected Color getHandleFillColor(int index)
+	{
+		if (isLabel(index))
+		{
+			return MXConstants.LABEL_HANDLE_FILLCOLOR;
+		}
+
+		return MXConstants.HANDLE_FILLCOLOR;
+	}
+
+	@Override
+	/**
+	 * 
+	 */
+	public Color getSelectionColor()
+	{
+		return MXConstants.LABEL_HANDLE_FILLCOLOR;
 	}
 
 }

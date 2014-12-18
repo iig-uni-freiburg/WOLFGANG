@@ -44,6 +44,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNCellHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNEdgeHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNElbowEdgeHandler;
