@@ -55,7 +55,6 @@ public class LoadAction extends AbstractWolfgangAction {
 			if (!filename.toLowerCase().endsWith(".pnml"))
 				filename += ".pnml";
 			AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
-
 			wolfgang = new Wolfgang(net);
 			wolfgang.setNetName(net.getPetriNet().getName());
 			wolfgang.setUpGUI();

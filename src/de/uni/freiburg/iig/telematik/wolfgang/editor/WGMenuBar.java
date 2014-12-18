@@ -30,23 +30,25 @@ public class WGMenuBar extends JMenuBar {
 
 	private JMenu getFileMenu() throws PropertyException, IOException {
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem createPT = new JMenuItem("New PT-Net");
-		//load.setRolloverEnabled(true);
-		createPT.addActionListener(new NewPTAction(wolfgang));
-		fileMenu.add(createPT);
 		
-		JMenuItem createCPN = new JMenuItem("New CP-Net");
-		//load.setRolloverEnabled(true);
+		JMenuItem newSubMenu = new JMenu("New");
+	
+		JMenuItem createPT = new JMenuItem("PT-Net");
+		createPT.addActionListener(new NewPTAction(wolfgang));
+		newSubMenu.add(createPT);
+		
+		
+		JMenuItem createCPN = new JMenuItem("CP-Net");
 		createCPN.addActionListener(new NewCPNAction(wolfgang));
-		fileMenu.add(createCPN);
+		newSubMenu.add(createCPN);
+		fileMenu.add(newSubMenu);
 		
 		
 		JMenuItem load = new JMenuItem("Open .pnml in new Window");
-		//load.setRolloverEnabled(true);
 		load.addActionListener(new LoadAction(wolfgang));
 		fileMenu.add(load);
 		JMenuItem save = new JMenuItem("Save");
-		//save.setRolloverEnabled(true);
+		
 		save.addActionListener(new SaveAction(wolfgang));
 		fileMenu.add(save);
 //		if(wolfgang.getFileReference() == null)
