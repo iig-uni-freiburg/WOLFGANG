@@ -520,7 +520,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 						getGraph().setLabelSelected(false);
 					}
 					getGraph().invoke(PNGraphComponent.this, new mxEventObject(mxEvent.CHANGE));
-					System.out.println("HEY PN GraphComponent");
 					getSelectionCellsHandler().refresh();
 				}
 			} else if (e.getClickCount() == 2 && !(e.getModifiers() == 4) && !getGraph().isExecution()) {

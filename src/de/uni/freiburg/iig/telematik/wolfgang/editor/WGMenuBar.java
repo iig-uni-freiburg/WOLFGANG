@@ -9,7 +9,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.LoadAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.NewPTAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAsAction;
 
 public class WGMenuBar extends JMenuBar {
 
@@ -21,16 +25,43 @@ public class WGMenuBar extends JMenuBar {
 		super();
 		this.wolfgang = wolfgang;
 		add(getFileMenu());
-		add(getSettingsMenu());
+//		add(getSettingsMenu());
 	}
 
 	private JMenu getFileMenu() throws PropertyException, IOException {
 		JMenu fileMenu = new JMenu("File");
+		JMenuItem createPT = new JMenuItem("New PT-Net");
+		//load.setRolloverEnabled(true);
+		createPT.addActionListener(new NewPTAction(wolfgang));
+		fileMenu.add(createPT);
 		
+		JMenuItem createCPN = new JMenuItem("New CP-Net");
+		//load.setRolloverEnabled(true);
+		createCPN.addActionListener(new NewCPNAction(wolfgang));
+		fileMenu.add(createCPN);
+		
+		
+		JMenuItem load = new JMenuItem("Open .pnml in new Window");
+		//load.setRolloverEnabled(true);
+		load.addActionListener(new LoadAction(wolfgang));
+		fileMenu.add(load);
 		JMenuItem save = new JMenuItem("Save");
 		//save.setRolloverEnabled(true);
 		save.addActionListener(new SaveAction(wolfgang));
 		fileMenu.add(save);
+//		if(wolfgang.getFileReference() == null)
+//			save.setEnabled(false);
+//		else
+//			save.setEnabled(true);
+		
+		JMenuItem saveAS = new JMenuItem("Save as...");
+		//save.setRolloverEnabled(true);
+		saveAS.addActionListener(new SaveAsAction(wolfgang));
+		fileMenu.add(saveAS);
+		
+	
+		
+
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {

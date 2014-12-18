@@ -5,10 +5,8 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -22,7 +20,6 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
-import de.uni.freiburg.iig.telematik.sepia.mg.MGSequenceGenerator;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.CPNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -43,6 +40,8 @@ public class Wolfgang extends JFrame {
 	private WGMenuBar menuBar = null;
 	protected JPanel content = null;
 	protected JSplitPane centerPanel = null;
+
+	private String netName;
 	
 	public Wolfgang() throws Exception{
 		this(new GraphicalPTNet());
@@ -98,6 +97,10 @@ public class Wolfgang extends JFrame {
 		return fileReference;
 	}
 	
+	public void setFileReference(File fileReference) {
+		this.fileReference = fileReference;
+	}
+
 	public void setUpGUI() throws PropertyException, IOException, Exception{
 		setLookAndFeel();
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -111,9 +114,20 @@ public class Wolfgang extends JFrame {
 	
 	@Override
 	public String getTitle(){
-		return "WOLFGANG";
+		return "WOLFGANG" +" - " +  this.getEditorComponent().getNetContainer().getPetriNet().getNetType()+ getNetName();
 	}
 	
+	private String getNetName() {
+if(netName == null)
+	return "";
+else
+return " - "+netName+".pnml";
+	}
+
+	public void setNetName(String netName) {
+		this.netName = netName;
+	}
+
 	/** Changes Look and Feel if running on Linux **/
 	private void setLookAndFeel() {
 		if (System.getProperty("os.name").toLowerCase().contains("nux")) {
@@ -175,6 +189,8 @@ public class Wolfgang extends JFrame {
 	public static void main(String[] args) throws Exception {
 		Wolfgang wolfgang = new Wolfgang(new GraphicalPTNet());
 		wolfgang.setUpGUI();
+//		Wolfgang wolfgang = new Wolfgang(new GraphicalCPN());
+//		wolfgang.setUpGUI();
 	}
 
 }

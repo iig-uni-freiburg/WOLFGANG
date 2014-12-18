@@ -409,4 +409,14 @@ public class WolfgangProperties extends AbstractProperties{
 			throw new IOException("Cannot create/store wolfgang properties file on disk.");
 		}
 	}
+
+	public boolean getRequestNetType() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean getPNValidation() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -39,7 +39,7 @@ public class ExportToolBar extends JToolBar {
 		Validate.notNull(pnEditor);
 
 		pdfAction = new ExportPDFAction(pnEditor);
-		pngAction = new ExportPNGAction(pnEditor);
+//		pngAction = new ExportPNGAction(pnEditor);
 
 		setFloatable(false);
 
@@ -47,9 +47,9 @@ public class ExportToolBar extends JToolBar {
 		setButtonSettings(pdfButton);
 		pdfButton.setToolTipText(pdfButtonTooltip);
 
-		pngButton = add(pngAction);
-		setButtonSettings(pngButton);
-		pngButton.setToolTipText(pngButtonTooltip);
+//		pngButton = add(pngAction);
+//		setButtonSettings(pngButton);
+//		pngButton.setToolTipText(pngButtonTooltip);
 
 	}
 

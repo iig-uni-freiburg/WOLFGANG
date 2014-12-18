@@ -13,7 +13,7 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationForm
 import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
-public class SaveAction extends AbstractWolfgangAction {
+public class SaveAsAction extends AbstractWolfgangAction {
 
 	private static final long serialVersionUID = 7716993627349722001L;
 
@@ -21,7 +21,7 @@ public class SaveAction extends AbstractWolfgangAction {
 	protected String errorMessage = null;
 
 	
-	public SaveAction(Wolfgang wolfgang) throws PropertyException, IOException {
+	public SaveAsAction(Wolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Save", IconFactory.getIcon("save"));
 	}
 
@@ -40,7 +40,6 @@ public class SaveAction extends AbstractWolfgangAction {
 			return;
 		success = true;
 		JFileChooser fc;
-		if(wolfgang.getFileReference() == null){
 			fc = new JFileChooser(System.getProperty("user.home"));
 		
 		fc.addChoosableFileFilter(new FileFilter() {
@@ -67,15 +66,9 @@ public class SaveAction extends AbstractWolfgangAction {
 		if(netName != null)
 			wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
 			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
-			wolfgang.setFileReference(fc.getSelectedFile());
-			wolfgang.setNetName(netName);
-			wolfgang.setTitle(wolfgang.getTitle());
 			wolfgang.getEditorComponent().setModified(false);
 		}
 		}
-		else {
-			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, wolfgang.getFileReference().getAbsolutePath());
-		}
 
-	}
+	
 }

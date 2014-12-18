@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -96,20 +97,22 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		updateView();
 	}
 
-//	public AbstractCPNTokenConfigurer(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
-//		super(window, transition.getName());
-//		isPlace = false;
-//		isTransition = true;
-//		panel = new JPanel();
-//		panel.setLayout(new SpringLayout());
-//		add(panel);
-//		paName = transition.getName();
-//		graph = cpnGraph;
-//
-//		// for
-//
-//		updateView();
-//	}
+	// public AbstractCPNTokenConfigurer(Window window,
+	// AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph
+	// cpnGraph) {
+	// super(window, transition.getName());
+	// isPlace = false;
+	// isTransition = true;
+	// panel = new JPanel();
+	// panel.setLayout(new SpringLayout());
+	// add(panel);
+	// paName = transition.getName();
+	// graph = cpnGraph;
+	//
+	// // for
+	//
+	// updateView();
+	// }
 
 	private void addRow(String tokenLabel) {
 
@@ -118,7 +121,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		try {
 			circle = new CirclePanel(tokenColor);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Circle-Panel could not be generated. \nReason: "+e.getMessage(), ""+e.getClass(), JOptionPane.ERROR);
+			JOptionPane.showMessageDialog(this, "Circle-Panel could not be generated. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
 		panel.add(circle);
 
@@ -132,7 +135,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 			int step = 1;
 			SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
 			Spinner spinner = new Spinner(model, tokenName, cap);
-			RestrictedTextField textfield = new RestrictedTextField(Restriction.ZERO_OR_POSITIVE_INTEGER, ""+size+"");
+			RestrictedTextField textfield = new RestrictedTextField(Restriction.ZERO_OR_POSITIVE_INTEGER, "" + size + "");
 			textfield.addListener(spinner);
 			textfield.setValidateOnTyping(true);
 			spinner.setEditor(textfield);
@@ -143,7 +146,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 					JSpinner spinner = (Spinner) e.getSource();
 					Integer currentValue = (Integer) spinner.getValue();
 					RestrictedTextField tf = (RestrictedTextField) spinner.getEditor();
-					tf.setText(""+currentValue+""); 
+					tf.setText("" + currentValue + "");
 
 					Multiset<String> newMarking = getMultiSet();
 					if (newMarking == null)
@@ -175,7 +178,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		try {
 			remove = new JButton(IconFactory.getIcon("minimize"));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: "+e.getMessage(), ""+e.getClass(), JOptionPane.ERROR);
+			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
 		remove.addActionListener(new ActionListener() {
 
@@ -197,7 +200,9 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 					((mxGraphModel) graph.getModel()).endUpdate();
 				} else {
-//					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, new HashSet<AccessMode>()));
+					// ((mxGraphModel) graph.getModel()).execute(new
+					// AccessModeChange(graph, paName, tokenName, new
+					// HashSet<AccessMode>()));
 					Object transition = graph.getNetContainer().getPetriNet().getTransition(paName);
 					if (transition instanceof AbstractRegularIFNetTransition)
 						((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenName);
@@ -242,13 +247,13 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		panel.add(remove);
 
 	}
-	
+
 	private class Spinner extends JSpinner implements RestrictedTextFieldListener {
 
 		private String tokenName;
 		private int capacity;
 
-		public Spinner(SpinnerModel model,String tokenName, int cap) {
+		public Spinner(SpinnerModel model, String tokenName, int cap) {
 			super(model);
 			this.tokenName = tokenName;
 			this.capacity = cap;
@@ -256,22 +261,22 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 		@Override
 		public void valueChanged(String oldValue, String newValue) {
-			
+
 			Integer currentValue = new Integer(newValue);
-			if(currentValue <= capacity){
-			this.setValue(currentValue);
-			Multiset<String> newMarking = getMultiSet();
-			if (newMarking == null)
-				newMarking = new Multiset<String>();
-			newMarking.setMultiplicity(tokenName, currentValue);
-			if (isPlace)
-				((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, paName, newMarking));
-			else
-				((mxGraphModel) graph.getModel()).execute(new ConstraintChange((PNGraph) graph, paName, newMarking));
-			}
-			else ((RestrictedTextField)getEditor()).setText(""+capacity);
+			if (currentValue <= capacity) {
+				this.setValue(currentValue);
+				Multiset<String> newMarking = getMultiSet();
+				if (newMarking == null)
+					newMarking = new Multiset<String>();
+				newMarking.setMultiplicity(tokenName, currentValue);
+				if (isPlace)
+					((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, paName, newMarking));
+				else
+					((mxGraphModel) graph.getModel()).execute(new ConstraintChange((PNGraph) graph, paName, newMarking));
+			} else
+				((RestrictedTextField) getEditor()).setText("" + capacity);
 		}
-		
+
 	}
 
 	private JCheckBox createAccessModeCheckBox(final String tokenName, final AccessMode accessModi, String accessModeName) {
@@ -290,11 +295,11 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 					} else {
 						amChange.remove(accessModi);
 					}
-//					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, amChange));
-				}
-				else {
+					// ((mxGraphModel) graph.getModel()).execute(new
+					// AccessModeChange(graph, paName, tokenName, amChange));
+				} else {
 					cb.setSelected(false);
-					JOptionPane.showMessageDialog(null,"First deselect Create/Delete to select this access mode" ,"Create/Delete exclude each other", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "First deselect Create/Delete to select this access mode", "Create/Delete exclude each other", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 
@@ -312,8 +317,6 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 	protected void setNewMarking(Multiset<String> newPlaceMarking) {
 	}
-
-
 
 	public void updateView() {
 		panel.removeAll();
@@ -378,7 +381,10 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 										Set amChange = new HashSet<AccessMode>();
 										// amChange.add(AccessMode.READ);
 
-//										((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, color, amChange));
+										// ((mxGraphModel)
+										// graph.getModel()).execute(new
+										// AccessModeChange(graph, paName,
+										// color, amChange));
 
 										if (!isTransition && accessMode.keySet().contains(colors.keySet())) {
 											addButton.setEnabled(false);
@@ -451,9 +457,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 			}
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: "+e.getMessage(), ""+e.getClass(), JOptionPane.ERROR);
-
-
+			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
 
 		panel.add(addButton);
@@ -522,10 +526,9 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		// C capPanel = new JPanel();
 		panel.add(Box.createGlue());
 		panel.add(Box.createGlue());
-//		JPanel boundOrInfinite = new JPanel(new SpringLayout()); --> Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: No such child: 0
-		JPanel boundOrInfinite = new JPanel();
 
 		if (isPlace) {
+			JPanel boundOrInfinite = new JPanel(new SpringLayout());
 			boundOrInfinite.add(infiniteButton);
 			boundOrInfinite.add(boundButton);
 			if (place.isBounded()) {
@@ -536,13 +539,15 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 				boundButton.setEnabled(true);
 				infiniteButton.setEnabled(false);
 			}
+			SpringUtilities.makeCompactGrid(boundOrInfinite, 1, 2, 1, 1, 1, 1);
+			panel.add(boundOrInfinite);
+
 		} else {
+			Component glue = Box.createGlue();
+			panel.add(Box.createGlue());
 			panel.add(Box.createGlue());
 			panel.add(Box.createGlue());
 		}
-
-			SpringUtilities.makeCompactGrid(boundOrInfinite, 1, 2, 1, 1, 1, 1);
-		panel.add(boundOrInfinite);
 
 		panel.add(Box.createGlue());
 

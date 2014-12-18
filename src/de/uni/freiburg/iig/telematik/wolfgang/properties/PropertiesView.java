@@ -141,6 +141,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		Collections.sort(list);
 		DefaultTableModel tableModel = new DefaultTableModel();
 		tableModel.setColumnCount(2);
+		if(!(properties instanceof CPNProperties)){
 		for (PNProperty property : list) {
 			PropertiesField field = null;
 
@@ -160,6 +161,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			default:
 				break;
 			}
+		}
 		}
 
 		// Order of Properties corresponds to Order of PropertiesClass
