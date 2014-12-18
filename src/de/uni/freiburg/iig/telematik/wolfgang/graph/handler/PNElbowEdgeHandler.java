@@ -1,8 +1,10 @@
-package de.uni.freiburg.iig.telematik.wolfgang.graph;
+package de.uni.freiburg.iig.telematik.wolfgang.graph.handler;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.handler.mxElbowEdgeHandler;
 import com.mxgraph.view.mxCellState;
+
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 
 public class PNElbowEdgeHandler extends mxElbowEdgeHandler {
 
@@ -12,9 +14,8 @@ public class PNElbowEdgeHandler extends mxElbowEdgeHandler {
 	}
 	@Override
 	protected boolean isHandleVisible(int index) {
-		System.out.println(index + "handles");
-		if(((PNGraph)graphComponent.getGraph()).isLabelSelected() && isLabel(index))
-			return false;
-		return super.isHandleVisible(index);
+		// TODO Auto-generated method stub
+		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
 	}
+		
 }

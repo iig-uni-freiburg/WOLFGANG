@@ -1317,17 +1317,22 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	@Override
 	public void invoke(Object sender, mxEventObject evt) {
-System.out.println("hey------------------");
-System.out.println(sender + "\n" + evt.getName() + "\n" + evt.getClass());
+//System.out.println("hey------------------" + evt.getProperties());
+//System.out.println(sender + "\n" + evt.getName() + "\n" + evt.getClass());
 		if (evt.getName().equals(mxEvent.UNDO)) {
 			mxUndoableEdit edit = (mxUndoableEdit) evt.getProperty("edit");
 
 		}
 		if (evt.getName().equals(mxEvent.CHANGE)) {
-			System.out.println("IsEmpty: " + evt.getProperties().isEmpty()); //refresh bei Handler auslšsen
+//			System.out.println("IsEmpty: " + evt.getProperties().isEmpty()); //refresh bei Handler auslšsen
+			if(evt.getProperties().isEmpty()){
+				getSelectionCell();
+//				getView().getState(getSelectionCell()).g;
+//				getSelectionCell()
+			}
 			ArrayList<mxAtomicGraphModelChange> changes = (ArrayList<mxAtomicGraphModelChange>) evt.getProperty("changes");
 			if (changes != null) {
-				System.out.println("Props: " + evt.getProperties());
+//				System.out.println("Props: " + evt.getProperties());
 				for (mxAtomicGraphModelChange change : changes) {
 
 					if (change instanceof mxValueChange) {

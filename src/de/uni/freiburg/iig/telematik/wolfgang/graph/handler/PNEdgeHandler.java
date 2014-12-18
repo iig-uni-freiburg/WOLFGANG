@@ -8,6 +8,7 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.handler.mxEdgeHandler;
 import com.mxgraph.view.mxCellState;
 
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 
 public class PNEdgeHandler extends mxEdgeHandler {
@@ -30,6 +31,12 @@ public class PNEdgeHandler extends mxEdgeHandler {
 	protected Rectangle createHandle(Point center)
 	{
 		return createHandle(center, MXConstants.EDGE_HANDLE_SIZE);
+	}
+	
+	@Override
+	protected boolean isHandleVisible(int index) {
+		// TODO Auto-generated method stub
+		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
 	}
 
 }

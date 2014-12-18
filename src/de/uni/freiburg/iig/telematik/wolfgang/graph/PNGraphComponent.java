@@ -46,6 +46,8 @@ import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNEdgeHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNElbowEdgeHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNVertexHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.ConnectorShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.DefaultTextShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.EllipseShape;
@@ -464,6 +466,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+
 			Object object = getCellAt(e.getX(), e.getY());
 			PNGraphCell cell = null;
 			if (object != null) {
@@ -516,6 +519,8 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 						getGraph().setLabelSelected(false);
 					}
 					getGraph().invoke(PNGraphComponent.this, new mxEventObject(mxEvent.CHANGE));
+					System.out.println("HEY PN GraphComponent");
+					getSelectionCellsHandler().refresh();
 				}
 			} else if (e.getClickCount() == 2 && !(e.getModifiers() == 4) && !getGraph().isExecution()) {
 				// Double click on graph component.
