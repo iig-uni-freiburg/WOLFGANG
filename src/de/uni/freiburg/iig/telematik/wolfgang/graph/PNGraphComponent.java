@@ -44,7 +44,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.EdgeHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNEdgeHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.ConnectorShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.DefaultTextShape;
@@ -184,6 +184,8 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 		}
 	}
+	
+
 
 	private mxCellMarker getCellMarker(PNGraphCell cell) {
 		if (!markerReference.containsKey(cell.getId()))
@@ -250,18 +252,18 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	 */
 	public mxCellHandler createHandler(mxCellState state) {
 		if (graph.getModel().isVertex(state.getCell())) {
-			return new mxVertexHandler(this, state);
+			return new PNVertexHandler(this, state);
 		} else if (graph.getModel().isEdge(state.getCell())) {
 			mxEdgeStyleFunction style = graph.getView().getEdgeStyle(state, null, null, null);
 
 			if (graph.isLoop(state) || style == mxEdgeStyle.ElbowConnector || style == mxEdgeStyle.SideToSide || style == mxEdgeStyle.TopToBottom) {
-				return new mxElbowEdgeHandler(this, state);
+				return new PNElbowEdgeHandler(this, state);
 			}
 
-			return new EdgeHandler(this, state);
+			return new PNEdgeHandler(this, state);
 		}
 
-		return new mxCellHandler(this, state);
+		return new PNCellHandler(this, state);
 	}
 
 	public void setPopupMenu(EditorPopupMenu popupMenu) {
@@ -303,7 +305,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		else {
 			Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), this);
 			mxCellHandler handler = getSelectionCellsHandler().getHandler(cell);
-			if (handler instanceof EdgeHandler) {
+			if (handler instanceof PNEdgeHandler) {
 				int index = handler.getIndex();
 				int indexbymouse = handler.getIndexAt(pt.x, pt.y);
 				if (indexbymouse > 0) {

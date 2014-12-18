@@ -10,7 +10,7 @@ import com.mxgraph.view.mxCellState;
 
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 
-public class EdgeHandler extends mxEdgeHandler {
+public class PNEdgeHandler extends mxEdgeHandler {
 
 	@Override
 	public String getToolTipText(MouseEvent e) {
@@ -18,7 +18,7 @@ public class EdgeHandler extends mxEdgeHandler {
 		return "<html>double-click to add waypoint <br>right-click on waypoint delete it</html>";
 	}
 
-	public EdgeHandler(mxGraphComponent graphComponent, mxCellState state) {
+	public PNEdgeHandler(mxGraphComponent graphComponent, mxCellState state) {
 		super(graphComponent, state);
 		// TODO Auto-generated constructor stub
 	}

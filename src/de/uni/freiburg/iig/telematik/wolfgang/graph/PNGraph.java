@@ -35,6 +35,7 @@ import com.mxgraph.model.mxGraphModel.mxTerminalChange;
 import com.mxgraph.model.mxGraphModel.mxValueChange;
 import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import com.mxgraph.shape.mxIShape;
+import com.mxgraph.swing.handler.mxCellMarker;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
@@ -98,7 +99,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	protected boolean hideContraintsAsTokens = true;
 	private Set<String> nameSetFromTransitions;
 	private boolean containedGraphics = false;
+	private Map<String, mxCellMarker> markerReference = new HashMap<String, mxCellMarker>();
 
+	
 	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
 		super();
 		setGridSize(5);
@@ -1314,14 +1317,17 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	@Override
 	public void invoke(Object sender, mxEventObject evt) {
-
+System.out.println("hey------------------");
+System.out.println(sender + "\n" + evt.getName() + "\n" + evt.getClass());
 		if (evt.getName().equals(mxEvent.UNDO)) {
 			mxUndoableEdit edit = (mxUndoableEdit) evt.getProperty("edit");
 
 		}
 		if (evt.getName().equals(mxEvent.CHANGE)) {
+			System.out.println("IsEmpty: " + evt.getProperties().isEmpty()); //refresh bei Handler auslšsen
 			ArrayList<mxAtomicGraphModelChange> changes = (ArrayList<mxAtomicGraphModelChange>) evt.getProperty("changes");
 			if (changes != null) {
+				System.out.println("Props: " + evt.getProperties());
 				for (mxAtomicGraphModelChange change : changes) {
 
 					if (change instanceof mxValueChange) {
@@ -1806,5 +1812,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 		return (Double) null;
 	}
+
 
 }

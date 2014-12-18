@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -35,7 +36,7 @@ public class NodePalettePanel extends JPanel {
 	private static final long serialVersionUID = -1156941541375286369L;
 	
 	private final int PREFERRED_ICON_SIZE = 30;
-	private final Dimension PREFERRED_PALETTE_COMPONENT_SIZE = new Dimension(80,60);
+	private final Dimension PREFERRED_PALETTE_COMPONENT_SIZE = new Dimension(70,60);
 	private String nodeColor = "#333333";
 	
 	private JPanel transitionPanel = new JPanel(){
@@ -74,12 +75,22 @@ public class NodePalettePanel extends JPanel {
 
 	protected JPanel selectedEntry = null;
 
+	private JPanel panel;
+
 	public NodePalettePanel() throws PropertyException, IOException  {
-		BoxLayout layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
-		setLayout(layout);
+		setLayout(new BorderLayout());
+		panel = new JPanel();
+		BoxLayout layout = new BoxLayout(panel, BoxLayout.LINE_AXIS);
+		panel.setLayout(layout);
+		addHowToDescription();
 		addPlaceTemplate();
 		addTransitionTemplate();
+		
+		add(panel, BorderLayout.PAGE_START);
+		
 	}
+
+
 
 	public void addPlaceTemplate() throws PropertyException, IOException {
 		int size = WolfgangProperties.getInstance().getDefaultPlaceSize();
@@ -98,6 +109,17 @@ public class NodePalettePanel extends JPanel {
 		addTemplate("Transition", transitionPanel, cell);
 	}
 
+	private void addHowToDescription() {
+		JLabel howtoLabel = new JLabel("Drag 'n Drop Nodes to Editor  ");
+		JLabel howtoLabelArc = new JLabel("OR Arcs from Node Centers.");
+
+		Font fontStyle = new Font(Font.DIALOG, Font.ITALIC, 10);
+		howtoLabel.setFont(fontStyle );
+		howtoLabelArc.setFont(fontStyle);
+		add(howtoLabel, BorderLayout.CENTER);
+		add(howtoLabelArc, BorderLayout.PAGE_END);
+
+	}
 	public void addTemplate(final String name, JPanel nodepanel, mxCell cell) {
 		mxRectangle bounds = (mxGeometry) cell.getGeometry().clone();
 		final mxGraphTransferable t = new mxGraphTransferable(new Object[] { cell }, bounds);
@@ -114,9 +136,9 @@ public class NodePalettePanel extends JPanel {
 		nodepanel.setBackground(iconPanel.getBackground());
 
 		
+		paletteComponent.add(new JLabel(name, JLabel.CENTER), BorderLayout.PAGE_START);
 		paletteComponent.add(nodepanel, BorderLayout.CENTER);
-		paletteComponent.add(new JLabel(name, JLabel.CENTER), BorderLayout.PAGE_END);
-		
+
 
 		DragGestureListener dragGestureListener = new DragGestureListener() {
 			public void dragGestureRecognized(DragGestureEvent e) {
@@ -130,7 +152,7 @@ public class NodePalettePanel extends JPanel {
 		DragSource dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(nodepanel, DnDConstants.ACTION_COPY, dragGestureListener);
 		
-		add(paletteComponent);
+		panel.add(paletteComponent);
 	}
 
 }

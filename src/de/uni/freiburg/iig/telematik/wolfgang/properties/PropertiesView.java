@@ -145,6 +145,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			PropertiesField field = null;
 
 				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property);
+				field.addListener(field);
 
 			tableModel.addRow(new Object[] { property, field });
 			switch (property) {
