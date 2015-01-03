@@ -24,9 +24,11 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.CPNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.component.IFNetEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PTNetEditorComponent;
@@ -67,26 +69,57 @@ public class Wolfgang extends JFrame {
 
 	public void setNet(AbstractGraphicalPN net, LayoutOption layoutOption) {
 		prepareNetInsertion(net);
-		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
-		} else {
+		switch (net.getPetriNet().getNetType()) {
+		case CPN:
 			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
+			break;
+		case IFNet:
+			this.editorComponent = new IFNetEditorComponent((GraphicalIFNet) net, layoutOption);
+			break;
+		case PTNet:
+			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
+			break;
+		case Unknown:
+			break;
+		default:
+			break;
 		}
+//		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
+//			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
+//		} else {
+//			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
+//		}
 	}
 
 	public void setNet(AbstractGraphicalPN net, boolean askForLayout) {
 		prepareNetInsertion(net);
-		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, askForLayout);
-		} else {
+		switch (net.getPetriNet().getNetType()) {
+		case CPN:
 			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, askForLayout);
+			break;
+		case IFNet:
+			this.editorComponent = new IFNetEditorComponent((GraphicalIFNet) net, askForLayout);
+			break;
+		case PTNet:
+			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, askForLayout);
+			break;
+		case Unknown:
+			break;
+		default:
+			break;
+	
 		}
+//		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
+//			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, askForLayout);
+//		} else {
+//			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, askForLayout);
+//		}
 	}
 
 	private void prepareNetInsertion(AbstractGraphicalPN net) {
 		Validate.notNull(net);
 		NetType netType = net.getPetriNet().getNetType();
-		if (!netType.equals(NetType.PTNet) && !netType.equals(NetType.CPN))
+		if (!netType.equals(NetType.PTNet) && !netType.equals(NetType.CPN) && !netType.equals(NetType.IFNet))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + net.getPetriNet().getNetType());
 
 		if (editorComponent != null) {
@@ -271,7 +304,11 @@ public class Wolfgang extends JFrame {
 		// wolfgang.setUpGUI();
 		// Wolfgang wolfgang = new Wolfgang(new GraphicalCPN());
 		// wolfgang.setUpGUI();
-		Wolfgang wolfgang = new Wolfgang();
+		// Wolfgang wolfgang = new Wolfgang(); //starts new empty Wolfgang allowing to choose between PT and CPN
+
+		Wolfgang wolfgang = new Wolfgang(new GraphicalIFNet());
+		wolfgang.setUpGUI();
+
 	}
 
 }

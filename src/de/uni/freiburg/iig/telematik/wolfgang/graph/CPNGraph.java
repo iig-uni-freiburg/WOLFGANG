@@ -28,7 +28,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractCPNTokenConfigurer;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurer;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.CPNProperties;
 
 /**
@@ -37,8 +37,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.CPNProperties;
  */
 public class CPNGraph extends PNGraph {
 
-	private HashMap<String, AbstractCPNTokenConfigurer> tokenConfigurerWindows = new HashMap<String, AbstractCPNTokenConfigurer>();
-	private AbstractCPNTokenConfigurer lastTC;
+	private HashMap<String, AbstractTokenConfigurer> tokenConfigurerWindows = new HashMap<String, AbstractTokenConfigurer>();
+	private AbstractTokenConfigurer lastTC;
 	public CPNGraph(GraphicalCPN graphicalCPN, CPNProperties cpnProperties) throws ParameterException {
 		super(graphicalCPN, cpnProperties);
 	}
@@ -162,7 +162,7 @@ switch(cell.getType()){
 case ARC:
 	CPNFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cell.getId());
 	if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-		AbstractCPNTokenConfigurer tc = new AbstractCPNTokenConfigurer(window, flowRelation, this);
+		AbstractTokenConfigurer tc = new AbstractTokenConfigurer(window, flowRelation, this);
 		spacing = (int) (window.getBounds().getY() + 120);
 		if (lastTC != null) {
 			height = lastTC.getBounds().getHeight();
@@ -185,7 +185,7 @@ case ARC:
 		case PLACE:
 			CPNPlace place = getNetContainer().getPetriNet().getPlace(cell.getId());
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				AbstractCPNTokenConfigurer tc = new AbstractCPNTokenConfigurer(window, place, this);
+				AbstractTokenConfigurer tc = new AbstractTokenConfigurer(window, place, this);
 				spacing = (int) (window.getBounds().getY() + 120);
 				if (lastTC != null) {
 					height = lastTC.getBounds().getHeight();
@@ -232,7 +232,7 @@ default:
 
 	@Override
 	public void updateViews() {
-		for(AbstractCPNTokenConfigurer w:tokenConfigurerWindows.values())
+		for(AbstractTokenConfigurer w:tokenConfigurerWindows.values())
 			w.updateView();
 	}
 

@@ -36,6 +36,8 @@ import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
@@ -54,6 +56,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillColorSelectio
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.TokenColorSelectionAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.change.AccessModeChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.ConstraintChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenChange;
@@ -94,18 +97,18 @@ public class TokenToolBar extends JToolBar {
 			AbstractCPN cpn = (AbstractCPN) net;
 			AbstractCPNGraphics graphics = (AbstractCPNGraphics) pnEditor.getNetContainer().getPetriNetGraphics();
 			colors = cpn.getTokenColors();
-			
+
 			colorMap = graphics.getColors();
 			colorMap.put("black", Color.BLACK);
 		}
-//		if (net instanceof IFNet) {
-//			IFNet IFNet = (IFNet) net;
-//			IFNetGraphics graphics = (AbstractIFNetGraphics) pnEditor.getNetContainer().getPetriNetGraphics();
-//			colors = IFNet.getTokenColors();
-//			
-//			colorMap = graphics.getColors();
-//			colorMap.put("black", Color.BLACK);
-//		}
+		if (net instanceof IFNet) {
+			IFNet IFNet = (IFNet) net;
+			IFNetGraphics graphics = (IFNetGraphics) pnEditor.getNetContainer().getPetriNetGraphics();
+			colors = IFNet.getTokenColors();
+
+			colorMap = graphics.getColors();
+			colorMap.put("black", Color.BLACK);
+		}
 		setFloatable(false);
 
 		loadTokenPanel(net, colorMap.keySet());
@@ -134,24 +137,15 @@ public class TokenToolBar extends JToolBar {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				AbstractCPN cpn = (AbstractCPN) editor.getGraphComponent().getGraph().getNetContainer().getPetriNet();
-//				Object[] cells = editor.getGraphComponent().getGraph().getSelectionCells();
 
-//				if (!editor.getGraphComponent().getGraph().isSelectionEmpty())
-//					for (Object cell : cells) {
-//						if (cell instanceof PNGraphCell) {
-							addNewTokenColor();
-//						}
-//					}
-//				else {
-//					for (Object p : cpn.getSourcePlaces())
-//						addNewTokenColor(((AbstractPlace) p).getName(), cpn, (AbstractCPNGraphics) editor.getGraphComponent().getGraph().getNetContainer().getPetriNetGraphics());
-//				}
+				addNewTokenColor();
+
 				Set<String> colorsTemp = cpn.getTokenColors();
 				tokenPanel.removeAll();
 				for (String colorName : colorMap.keySet()) {
 					addRow(cpn.getInitialMarking(), colorName);
 				}
-				editor.getGraphComponent().repaint(); 
+				editor.getGraphComponent().repaint();
 
 			}
 		});
@@ -189,17 +183,11 @@ public class TokenToolBar extends JToolBar {
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name is empty", "Problem", JOptionPane.ERROR_MESSAGE);
 		else {
 			colorMap.put(newTokenColor, tokenColorAction.getTokenColor());
-			
-			//UpdateBlock
-//			PNGraph graph = editor.getGraphComponent().getGraph();
-//			mxGraphModel model = ((mxGraphModel) graph.getModel());
-//			model.beginUpdate();
+
+			// UpdateBlock
+
 			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getTokenColor()));
-//			if(graph.getNetContainer().getPetriNet().getPlace(name).isBounded())
-//			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new CapacityChange(graph, name, newTokenColor, 1));
-//			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenChange((PNGraph) editor.getGraphComponent().getGraph(), name, placeMarking));
-//			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getTokenColor()));
-//			model.endUpdate();
+
 			updateView();
 
 		}
@@ -209,43 +197,41 @@ public class TokenToolBar extends JToolBar {
 	private void addRow(final AbstractMarking wholeMarking, final String tokenLabel) {
 		final String name = tokenLabel;
 		Color tokenColor = colorMap.get(tokenLabel);
-		
-				final JPanel row = new JPanel();
-				row.setLayout(new BorderLayout());
-				Dimension dim = new Dimension();
-				double width = TOKEN_ROW_WIDTH;
-				double height = TOKEN_ROW_HEIGHT;
-				dim.setSize(width, height);
-				row.setPreferredSize(dim);
-				row.setMinimumSize(dim);
-				row.setMaximumSize(dim);
-				row.setSize(dim);	
-				row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		
+		final JPanel row = new JPanel();
+		row.setLayout(new BorderLayout());
+		Dimension dim = new Dimension();
+		double width = TOKEN_ROW_WIDTH;
+		double height = TOKEN_ROW_HEIGHT;
+		dim.setSize(width, height);
+		row.setPreferredSize(dim);
+		row.setMinimumSize(dim);
+		row.setMaximumSize(dim);
+		row.setSize(dim);
+		row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-					JPanel firstElement = new JPanel();
-						try {
-						TokenColorSelectionAction tokenColorAction = new TokenColorSelectionAction(editor, tokenLabel);
-						if (tokenColor != null)
-							tokenColorAction.setTokenColor(tokenColor);
-						else
-						tokenColorAction.setTokenColor(Color.BLACK);
-						JComponent tokenColorButton = nestedAdd(tokenColorAction);
-					firstElement.add(tokenColorButton);
+		JPanel firstElement = new JPanel();
+		try {
+			TokenColorSelectionAction tokenColorAction = new TokenColorSelectionAction(editor, tokenLabel);
+			if (tokenColor != null)
+				tokenColorAction.setTokenColor(tokenColor);
+			else
+				tokenColorAction.setTokenColor(Color.BLACK);
+			JComponent tokenColorButton = nestedAdd(tokenColorAction);
+			firstElement.add(tokenColorButton);
 
-						RestrictedTextField textField = new RestrictedTextField(Restriction.NOT_EMPTY, name);
-			
-						addTokenRenamingListener(tokenLabel, textField);
-			
-					firstElement.add(textField);
-					
-				row.add(firstElement, BorderLayout.LINE_START);
-			
-					JButton remove = new JButton(IconFactory.getIcon("minimize"));
-					addColorRemovalListener(tokenLabel, remove);
-			
-				row.add(remove, BorderLayout.LINE_END);
+			RestrictedTextField textField = new RestrictedTextField(Restriction.NOT_EMPTY, name);
+
+			addTokenRenamingListener(tokenLabel, textField);
+
+			firstElement.add(textField);
+
+			row.add(firstElement, BorderLayout.LINE_START);
+
+			JButton remove = new JButton(IconFactory.getIcon("minimize"));
+			addColorRemovalListener(tokenLabel, remove);
+
+			row.add(remove, BorderLayout.LINE_END);
 			tokenPanel.add(row);
 
 		} catch (ParameterException e1) {
@@ -264,16 +250,16 @@ public class TokenToolBar extends JToolBar {
 				PNGraph graph = editor.getGraphComponent().getGraph();
 				mxGraphModel model = ((mxGraphModel) graph.getModel());
 				CPN cpn = null;
-				if(editor.getNetContainer().getPetriNet() instanceof CPN)
-				cpn = (CPN) editor.getNetContainer().getPetriNet();
+				if (editor.getNetContainer().getPetriNet() instanceof CPN)
+					cpn = (CPN) editor.getNetContainer().getPetriNet();
 				IFNet ifnet = null;
-				if(editor.getNetContainer().getPetriNet() instanceof IFNet)
-				ifnet = (IFNet) editor.getNetContainer().getPetriNet();
+				if (editor.getNetContainer().getPetriNet() instanceof IFNet)
+					ifnet = (IFNet) editor.getNetContainer().getPetriNet();
 				AbstractCPNMarking im = (AbstractCPNMarking) editor.getNetContainer().getPetriNet().getInitialMarking();
 
-				//UpdateBlock
-				model.beginUpdate();			
-					if(editor.getNetContainer().getPetriNet() instanceof CPN){
+				// UpdateBlock
+				model.beginUpdate();
+				if (editor.getNetContainer().getPetriNet() instanceof CPN) {
 					for (CPNFlowRelation flowrelation : cpn.getFlowRelations()) {
 
 						Multiset<String> constraint = flowrelation.getConstraint();
@@ -295,10 +281,10 @@ public class TokenToolBar extends JToolBar {
 						}
 						((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, place.getName(), tokenLabel, 0));
 
-					}}
-					
-					
-					if(editor.getNetContainer().getPetriNet() instanceof IFNet){
+					}
+				}
+
+				if (editor.getNetContainer().getPetriNet() instanceof IFNet) {
 					for (IFNetFlowRelation flowrelation : ifnet.getFlowRelations()) {
 
 						Multiset<String> constraint = flowrelation.getConstraint();
@@ -314,23 +300,23 @@ public class TokenToolBar extends JToolBar {
 						if (multiSet != null) {
 							if (multiSet.contains(tokenLabel)) {
 								multiSet.setMultiplicity(tokenLabel, 0);
-									((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+								((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
 							}
 						}
 						((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, place.getName(), tokenLabel, 0));
 
 					}
-					
-//					for (AbstractIFNetTransition<IFNetFlowRelation> transition : ifnet.getTransitions()) {
-////						((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, transition.getName(), tokenLabel, new HashSet<AccessMode>()));
-//						if (transition instanceof AbstractRegularIFNetTransition)
-//							((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenLabel);
-//						}
+
+					for (AbstractIFNetTransition<IFNetFlowRelation> transition : ifnet.getTransitions()) {
+						((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, transition.getName(), tokenLabel, new HashSet<AccessMode>()));
+						if (transition instanceof AbstractRegularIFNetTransition)
+							((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenLabel);
 					}
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
-					
+				}
+				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
+
 				model.endUpdate();
-				
+
 				updateView();
 
 			}
@@ -348,11 +334,11 @@ public class TokenToolBar extends JToolBar {
 				PNGraph graph = editor.getGraphComponent().getGraph();
 				mxGraphModel model = ((mxGraphModel) graph.getModel());
 				CPN pn = null;
-				if(editor.getNetContainer().getPetriNet() instanceof CPN)
-				pn = (CPN) graph.getNetContainer().getPetriNet();
+				if (editor.getNetContainer().getPetriNet() instanceof CPN)
+					pn = (CPN) graph.getNetContainer().getPetriNet();
 				IFNet ifnet = null;
-				if(editor.getNetContainer().getPetriNet() instanceof IFNet)
-				ifnet = (IFNet) graph.getNetContainer().getPetriNet();
+				if (editor.getNetContainer().getPetriNet() instanceof IFNet)
+					ifnet = (IFNet) graph.getNetContainer().getPetriNet();
 				AbstractCPNGraphics pnGraphics = (AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics();
 				CPNMarking am = pn.getInitialMarking();
 				Map<String, Color> colorsMap = pnGraphics.getColors();
@@ -360,8 +346,8 @@ public class TokenToolBar extends JToolBar {
 
 				// UpdateBlock
 				model.beginUpdate();
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, color));
-					if(editor.getNetContainer().getPetriNet() instanceof CPN){
+				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, color));
+				if (editor.getNetContainer().getPetriNet() instanceof CPN) {
 					for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
 						Multiset<String> constraint = flowrelation.getConstraint();
 						if (constraint != null) {
@@ -386,8 +372,8 @@ public class TokenToolBar extends JToolBar {
 						}
 
 					}
-					}
-					if(editor.getNetContainer().getPetriNet() instanceof IFNet){
+				}
+				if (editor.getNetContainer().getPetriNet() instanceof IFNet) {
 					for (IFNetFlowRelation flowrelation : ifnet.getFlowRelations()) {
 						Multiset<String> constraint = flowrelation.getConstraint();
 						if (constraint != null) {
@@ -412,9 +398,9 @@ public class TokenToolBar extends JToolBar {
 						}
 
 					}
-					}
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
+				}
+				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
+				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
 				model.endUpdate();
 				updateView();
 

@@ -49,21 +49,21 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractRegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.change.AccessModeChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.ConstraintChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenChange;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
-public class AbstractCPNTokenConfigurer extends JDialog {
+public class AbstractTokenConfigurer extends JDialog {
 	private static final double TOKEN_ROW_WIDTH = 250;
 	private static final double TOKEN_ROW_HEIGHT = 40;
-	// private static JDialog dialog;
-	// JPanel tokenPanel = new JPanel();
+
 	private JButton addButton;
 	private PNGraph graph;
 	private AbstractCPNPlace place;
-	// private JPanel topPanel;
 	private JToggleButton boundButton;
 	private JToggleButton infiniteButton;
 	private Multiset<String> multisetPA;
@@ -74,7 +74,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 	private boolean isTransition = false;
 	private Map<String, Set<AccessMode>> accessMode;
 
-	public AbstractCPNTokenConfigurer(Window window, AbstractCPNPlace place2, PNGraph cpnGraph) {
+	public AbstractTokenConfigurer(Window window, AbstractCPNPlace place2, PNGraph cpnGraph) {
 		super(window, place2.getName());
 		isPlace = true;
 		panel = new JPanel();
@@ -86,7 +86,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 	}
 
-	public AbstractCPNTokenConfigurer(Window window, AbstractCPNFlowRelation flowRelation, PNGraph cpnGraph) {
+	public AbstractTokenConfigurer(Window window, AbstractCPNFlowRelation flowRelation, PNGraph cpnGraph) {
 		super(window, flowRelation.getName());
 		isPlace = false;
 		panel = new JPanel();
@@ -97,22 +97,20 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 		updateView();
 	}
 
-	// public AbstractCPNTokenConfigurer(Window window,
-	// AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph
-	// cpnGraph) {
-	// super(window, transition.getName());
-	// isPlace = false;
-	// isTransition = true;
-	// panel = new JPanel();
-	// panel.setLayout(new SpringLayout());
-	// add(panel);
-	// paName = transition.getName();
-	// graph = cpnGraph;
-	//
-	// // for
-	//
-	// updateView();
-	// }
+	public AbstractTokenConfigurer(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
+		super(window, transition.getName());
+		isPlace = false;
+		isTransition = true;
+		panel = new JPanel();
+		panel.setLayout(new SpringLayout());
+		add(panel);
+		paName = transition.getName();
+		graph = cpnGraph;
+
+		// for
+
+		updateView();
+	}
 
 	private void addRow(String tokenLabel) {
 
@@ -200,9 +198,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 					((mxGraphModel) graph.getModel()).endUpdate();
 				} else {
-					// ((mxGraphModel) graph.getModel()).execute(new
-					// AccessModeChange(graph, paName, tokenName, new
-					// HashSet<AccessMode>()));
+					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, new HashSet<AccessMode>()));
 					Object transition = graph.getNetContainer().getPetriNet().getTransition(paName);
 					if (transition instanceof AbstractRegularIFNetTransition)
 						((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenName);
@@ -295,8 +291,7 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 					} else {
 						amChange.remove(accessModi);
 					}
-					// ((mxGraphModel) graph.getModel()).execute(new
-					// AccessModeChange(graph, paName, tokenName, amChange));
+					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, amChange));
 				} else {
 					cb.setSelected(false);
 					JOptionPane.showMessageDialog(null, "First deselect Create/Delete to select this access mode", "Create/Delete exclude each other", JOptionPane.ERROR_MESSAGE);
@@ -373,18 +368,9 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 									((mxGraphModel) graph.getModel()).beginUpdate();
 									if (isTransition) {
 
-										// accessMode.put(color, new
-										// HashSet<AccessMode>());
-										// Set am = accessMode.get(color);
-										// Set amChange = ((Set) ((HashSet)
-										// am).clone());
 										Set amChange = new HashSet<AccessMode>();
-										// amChange.add(AccessMode.READ);
 
-										// ((mxGraphModel)
-										// graph.getModel()).execute(new
-										// AccessModeChange(graph, paName,
-										// color, amChange));
+										((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, color, amChange));
 
 										if (!isTransition && accessMode.keySet().contains(colors.keySet())) {
 											addButton.setEnabled(false);
@@ -514,8 +500,6 @@ public class AbstractCPNTokenConfigurer extends JDialog {
 
 		}
 
-		// final JPanel lastRow = new JPanel();
-		// lastRow.setLayout(new BorderLayout());
 		Dimension dim = new Dimension();
 		double width = TOKEN_ROW_WIDTH;
 		double height = TOKEN_ROW_HEIGHT;
