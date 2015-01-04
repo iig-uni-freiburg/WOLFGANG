@@ -29,11 +29,11 @@ public class CPNToolBar extends AbstractToolBar {
 //	private TokenlabelToolBar tokenlabelToolbar;
 	private PopUpToolBarAction tokenAction;
 	private PopUpToolBarAction editTokenlabelAction;
-	private CheckValidityAction checkValidityAction;
-	private ChecKSoundnessAction checkSoundnessAction;
+//	private CheckValidityAction checkValidityAction;
+//	private ChecKSoundnessAction checkSoundnessAction;
 	private JToggleButton tokenButton;
-	private JToggleButton checkValidityButton;
-	private JToggleButton checkSoundnessButton;
+//	private JToggleButton checkValidityButton;
+//	private JToggleButton checkSoundnessButton;
 
 	public CPNToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
 		super(pnEditor, orientation);
@@ -45,8 +45,8 @@ public class CPNToolBar extends AbstractToolBar {
 
 		tokenAction.setButton(tokenButton);
 
-		checkValidityButton = (JToggleButton) add(checkValidityAction, true);
-		checkSoundnessButton = (JToggleButton) add(checkSoundnessAction, true);
+//		checkValidityButton = (JToggleButton) add(checkValidityAction, true);
+//		checkSoundnessButton = (JToggleButton) add(checkSoundnessAction, true);
 		
 	}
 
@@ -61,10 +61,10 @@ public class CPNToolBar extends AbstractToolBar {
 
 //			tokenlabelToolbar = new TokenlabelToolBar(pnEditor, JToolBar.HORIZONTAL);
 //			editTokenlabelAction = new PopUpToolBarAction(pnEditor, "Tokenlabel", "tokenlabel", tokenlabelToolbar);
-			if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN) {
-				checkValidityAction = new CheckValidityAction(pnEditor);
-				checkSoundnessAction = new ChecKSoundnessAction(pnEditor);
-			}
+//			if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN) {
+//				checkValidityAction = new CheckValidityAction(pnEditor);
+//				checkSoundnessAction = new ChecKSoundnessAction(pnEditor);
+//			}
 		}
 		} catch (ParameterException e) {
 			// TODO Auto-generated catch block
