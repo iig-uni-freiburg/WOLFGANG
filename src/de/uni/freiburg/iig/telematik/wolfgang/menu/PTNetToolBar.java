@@ -22,4 +22,11 @@ public class PTNetToolBar extends AbstractToolBar {
 	}
 
 
+	@Override
+	protected void setNetSpecificButtonsVisible(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -384,7 +385,10 @@ public abstract class AbstractToolBar extends JToolBar {
 			fontAction.getDialog().setVisible(b);
 		if (graphicsAction.getDialog() != null && graphicsButton.isSelected())
 			graphicsAction.getDialog().setVisible(b);
+		setNetSpecificButtonsVisible(b);
 	}
+
+	protected abstract void setNetSpecificButtonsVisible(boolean b);
 
 	private void setExecutionButtonsVisible(boolean b) {
 		enterExecutionButton.setVisible(b);

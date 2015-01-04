@@ -83,4 +83,11 @@ public class CPNToolBar extends AbstractToolBar {
 		tokenToolbar.updateView();
 	}
 
+	@Override
+	protected void setNetSpecificButtonsVisible(boolean b) {
+		tokenButton.setVisible(b);
+		if (tokenAction.getDialog() != null && tokenButton.isSelected())
+			tokenAction.getDialog().setVisible(b);
+	}
+
 }
