@@ -16,7 +16,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -29,6 +31,7 @@ import com.mxgraph.view.mxGraphView;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
@@ -45,6 +48,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodeToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 
 public abstract class AbstractToolBar extends JToolBar {
 
@@ -65,7 +69,15 @@ public abstract class AbstractToolBar extends JToolBar {
 	private boolean ignoreZoomChange = false;
 	private Mode mode = Mode.EDIT;
 
-	private enum Mode {
+	public Mode getMode() {
+		return mode;
+	}
+
+	public void setMode(Mode mode) {
+		this.mode = mode;
+	}
+
+	public enum Mode {
 		EDIT, PLAY
 	}
 
@@ -88,9 +100,9 @@ public abstract class AbstractToolBar extends JToolBar {
 	private JToggleButton redoButton;
 	private JToggleButton fontButton = null;
 	private JToggleButton graphicsButton = null;
-	private JButton enterExecutionButton;
+//	private JButton enterExecutionButton;
 	private JButton reloadExecutionButton;
-	private JButton enterEditingButton;
+//	private JButton enterEditingButton;
 	private JToggleButton zoomButton;
 	private JToggleButton nodeButton;
 	private JToggleButton exportButton;
@@ -104,14 +116,26 @@ public abstract class AbstractToolBar extends JToolBar {
 	private NodeToolBar nodeToolbar;
 
 	// Tooltips
-	private String executionButtonTooltip = "execution mode";
-	private String editingButtonTooltip = " editing mode";
+//	private String executionButtonTooltip = "execution mode";
+//	private String editingButtonTooltip = " editing mode";
 	private String fontTooltip = "font";
 	private String saveButtonTooltip = "save";
 	private String exportButtonTooltip = "export to pdf";
 	private String undoTooltip = "undo";
 	private String redoTooltip = "redo";
 
+	public JTextField executionTraceTextField;
+
+	private JLabel executionTraceLabel;
+
+
+	public JTextField getExecutionTrace() {
+		return executionTraceTextField;
+	}
+
+	public void setExecutionTrace(JTextField executionTrace) {
+		this.executionTraceTextField = executionTrace;
+	}
 
 	public AbstractToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
 		super(orientation);
@@ -141,16 +165,20 @@ public abstract class AbstractToolBar extends JToolBar {
 		toggleModeButton.setBorderPainted(false);
 		toggleModeButton.setIconTextGap(0);
 		toggleModeButton.setText("EDIT");
-		enterExecutionButton = add(enterExecutionAction);
-		setButtonSettings(enterExecutionButton);
+//		enterExecutionButton = add(enterExecutionAction);
+//		setButtonSettings(enterExecutionButton);
 
-		enterEditingButton = add(enterEditingAction);
-		setButtonSettings(enterEditingButton);
+//		enterEditingButton = add(enterEditingAction);
+//		setButtonSettings(enterEditingButton);
 
 		add(new Filler(new Dimension(0, 0), new Dimension(20, 0), new Dimension(30, 0)));
 		reloadExecutionButton = add(reloadExecutionAction);
 		setButtonSettings(reloadExecutionButton);
+		executionTraceTextField = new JTextField();
+		executionTraceLabel = new JLabel("    Execution Trace: ");
+
 		setExecutionButtonsVisible(false);
+
 
 		undoButton = (JToggleButton) add(undoAction, true);
 		redoButton = (JToggleButton) add(redoAction, true);
@@ -167,6 +195,9 @@ public abstract class AbstractToolBar extends JToolBar {
 
 		zoomButton = (JToggleButton) add(zoomAction, true);
 		zoomButtonSettings();
+		
+		add(executionTraceLabel);
+		add(executionTraceTextField);
 
 		zoomAction.setButton(zoomButton);
 
@@ -181,8 +212,8 @@ public abstract class AbstractToolBar extends JToolBar {
 		doLayout();
 
 		exportButton.setToolTipText(exportButtonTooltip);
-		enterExecutionButton.setToolTipText(executionButtonTooltip);
-		enterEditingButton.setToolTipText(editingButtonTooltip);
+//		enterExecutionButton.setToolTipText(executionButtonTooltip);
+//		enterEditingButton.setToolTipText(editingButtonTooltip);
 
 		undoButton.setToolTipText(undoTooltip);
 		redoButton.setToolTipText(redoTooltip);
@@ -369,11 +400,12 @@ public abstract class AbstractToolBar extends JToolBar {
 		toggleModeButton.setText("PLAY");
 		setExecutionButtonsVisible(true);
 		setEditButtonsVisible(false);
+		getExecutionTrace().setText("");
 
 	}
 
 	private void setEditButtonsVisible(boolean b) {
-		enterEditingButton.setVisible(b);
+//		enterEditingButton.setVisible(b);
 		undoButton.setVisible(b);
 		redoButton.setVisible(b);
 		nodeButton.setVisible(b);
@@ -391,8 +423,17 @@ public abstract class AbstractToolBar extends JToolBar {
 	protected abstract void setNetSpecificButtonsVisible(boolean b);
 
 	private void setExecutionButtonsVisible(boolean b) {
-		enterExecutionButton.setVisible(b);
+//		enterExecutionButton.setVisible(b);
 		reloadExecutionButton.setVisible(b);
+		setExecutionTraceVisible(b);
+	}
+
+	private void setExecutionTraceVisible(boolean b) {
+		executionTraceLabel.setVisible(b);
+		executionTraceTextField.setVisible(b);
+		
+		
+		
 	}
 
 	public void setEditingMode() {
@@ -404,14 +445,25 @@ public abstract class AbstractToolBar extends JToolBar {
 		setExecutionButtonsVisible(false);
 	}
 
-	public JButton getExecutionButton() {
-		return enterExecutionButton;
-
-	}
+//	public JButton getExecutionButton() {
+//		return enterExecutionButton;
+//
+//	}
 
 	public GraphicsToolBar getGraphicsToolbar() {
 		// TODO Auto-generated method stub
 		return graphicsToolbar;
+	}
+
+	public void addTransitionToTrace(PNGraphCell cell) {
+		String lastFiredTransistion = pnEditor.getNetContainer().getPetriNet().getLastFiredTransition().getName();
+		if(cell.getType().equals(PNComponent.TRANSITION) && cell.getId().equals(lastFiredTransistion)){
+			String label = pnEditor.getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
+			if(getExecutionTrace().getText().length()>0)
+			getExecutionTrace().setText(getExecutionTrace().getText() + " -> "+ label );
+			else
+				getExecutionTrace().setText(label);
+		}
 	}
 
 

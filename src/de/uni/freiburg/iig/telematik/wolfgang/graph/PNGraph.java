@@ -243,6 +243,14 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			listener.componentsSelected(selectedCells);
 		}
 	}
+	
+	protected void notifyTransitionFired(PNGraphCell cell) {
+		Set<PNGraphCell> selectedCells = new HashSet<PNGraphCell>();
+		selectedCells.add(cell);
+		for (PNGraphListener listener : listeners) {
+			listener.componentsSelected(selectedCells);
+		}
+	}
 
 	private void ensureValidPlaceSize() {
 		for (PNGraphCell selectedCell : getSelectedGraphCells()) {
@@ -1771,7 +1779,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public void fireTransition(PNGraphCell cell) throws PNException {
 		getNetContainer().getPetriNet().fire(cell.getId());
 		refresh();
-
 	}
 
 	public void updateTransitionSilent(String id, boolean setSilent) {
@@ -1817,6 +1824,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 		return (Double) null;
 	}
+
 
 
 }

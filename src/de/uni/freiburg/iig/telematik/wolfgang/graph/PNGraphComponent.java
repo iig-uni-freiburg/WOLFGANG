@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -167,6 +168,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 						}
 					marker.setVisible(false);
 					highlightEnabledTransitions();
+					getGraph().notifyTransitionFired(cell);
 
 				}
 			});
@@ -177,7 +179,8 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 
 	}
-    private BufferedImage drawLabelonPlayIcon(BufferedImage old, String string) {
+
+	private BufferedImage drawLabelonPlayIcon(BufferedImage old, String string) {
         int w = old.getWidth();
         int h = old.getHeight();
         BufferedImage img = new BufferedImage(
@@ -192,7 +195,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
           	int size = g2d.getFont().getSize();
        	 g2d.setFont(new Font("TimesRoman", Font.BOLD, size -1));
 		}
-        System.out.println(fm.stringWidth(s));
         int y = fm.getHeight() + 5;
         g2d.setColor(Color.RED);
         g2d.fillRect(0, y-10, fm.stringWidth(s), 12);
@@ -254,10 +256,8 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	public void highlightPath() {
 		Set<?> nodes = getGraph().getNetContainer().getPetriNet().getNodes();
-		System.out.println(nodes);
 		for (Object n : nodes) {
 			String s = n.toString();
-			System.out.println(s);
 		}
 
 	}

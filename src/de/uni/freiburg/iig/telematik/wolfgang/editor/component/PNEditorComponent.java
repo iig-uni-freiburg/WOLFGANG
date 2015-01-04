@@ -70,6 +70,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar.Mode;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
@@ -596,18 +597,22 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	@Override
 	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
-		if (selectedComponents == null || selectedComponents.isEmpty() || selectedComponents.size() > 1) {
-			propertiesView.deselect();
+		if (getEditorToolbar().getMode().equals(Mode.PLAY) && selectedComponents != null && !selectedComponents.isEmpty()) {
+			getEditorToolbar().addTransitionToTrace(selectedComponents.iterator().next());
 		} else {
-			PNGraphCell selectedCell = selectedComponents.iterator().next();
-			propertiesView.selectNode(selectedCell.getId());
-		}
-		try {
-			toolbar.updateView(selectedComponents);
-		} catch (EditorToolbarException e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Cannot update selected Toolbar components.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
-					JOptionPane.ERROR_MESSAGE);
+			if (selectedComponents == null || selectedComponents.isEmpty() || selectedComponents.size() > 1) {
+				propertiesView.deselect();
+			} else {
+				PNGraphCell selectedCell = selectedComponents.iterator().next();
+				propertiesView.selectNode(selectedCell.getId());
+			}
+			try {
+				toolbar.updateView(selectedComponents);
+			} catch (EditorToolbarException e) {
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Cannot update selected Toolbar components.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
+						JOptionPane.ERROR_MESSAGE);
 
+			}
 		}
 	}
 
