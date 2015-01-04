@@ -147,13 +147,11 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 
-					try {
-						getGraph().fireTransition(cell);
-					} catch (ParameterException e) {
-						JOptionPane.showMessageDialog(null, "Parameter Exception \nReason: " + e.getMessage(), "Parameter Exception", JOptionPane.ERROR);
-					} catch (PNException e) {
-						JOptionPane.showMessageDialog(null, "Petri Net Exception \nReason: " + e.getMessage(), "Petri Net Exception", JOptionPane.ERROR);
-					}
+						try {
+							getGraph().fireTransition(cell);
+						} catch (PNException e) {
+							JOptionPane.showMessageDialog(getGraphComponent(), "Petri Net Exception \nReason: " + e.getMessage(), "Petri Net Exception", JOptionPane.ERROR_MESSAGE);
+						}
 					marker.setVisible(false);
 					highlightEnabledTransitions();
 

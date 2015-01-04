@@ -1768,7 +1768,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	}
 
-	public void fireTransition(PNGraphCell cell) throws ParameterException, PNException {
+	public void fireTransition(PNGraphCell cell) throws PNException {
 		getNetContainer().getPetriNet().fire(cell.getId());
 		refresh();
 
