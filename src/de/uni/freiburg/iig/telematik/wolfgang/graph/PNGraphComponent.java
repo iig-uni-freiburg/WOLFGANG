@@ -1,6 +1,10 @@
 package de.uni.freiburg.iig.telematik.wolfgang.graph;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -10,12 +14,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -109,7 +116,14 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 			mxCellOverlay overlay = null;
 
 			try {
-				overlay = new mxCellOverlay(IconFactory.getIcon("playred"), null);
+				ImageIcon playIconImage = IconFactory.getIcon("playred");
+				Image image = playIconImage.getImage();
+				BufferedImage bi = toBufferedImage(image);
+//				image.ge
+				String label = getGraph().getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
+				BufferedImage img = drawLabelonPlayIcon((BufferedImage)bi, label);
+				
+				overlay = new mxCellOverlay(new ImageIcon(img), null);
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, "playred-Icon could not be assinged as cell-overlay. \nReason: " + e1.getMessage(), "" + e1.getClass(), JOptionPane.ERROR);
 			}
@@ -157,12 +171,59 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 				}
 			});
-
+			overlay.add(new JLabel(cell.getId()));
+//			overlay.
 			addCellOverlay(cell, overlay);
 
 		}
+		
+
 
 	}
+    private BufferedImage drawLabelonPlayIcon(BufferedImage old, String string) {
+        int w = old.getWidth();
+        int h = old.getHeight();
+        BufferedImage img = new BufferedImage(
+                w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+        g2d.drawImage(old, 0, 0, null);
+        g2d.setPaint(Color.BLACK);
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 12));   
+        String s = string;  
+        FontMetrics fm = g2d.getFontMetrics();
+        while (old.getWidth()+2 <g2d.getFontMetrics().stringWidth(s)) {
+          	int size = g2d.getFont().getSize();
+       	 g2d.setFont(new Font("TimesRoman", Font.BOLD, size -1));
+		}
+        System.out.println(fm.stringWidth(s));
+        int y = fm.getHeight() + 5;
+        g2d.setColor(Color.RED);
+        g2d.fillRect(0, y-10, fm.stringWidth(s), 12);
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(s, 1, y);
+        g2d.dispose();
+        
+        return img;
+    }
+    
+    public static BufferedImage toBufferedImage(Image img)
+    {
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
+    }
 
 	protected void unhighlightArcs() {
 		Collection<AbstractFlowRelation> flowrelations = (Collection<AbstractFlowRelation>) getGraph().getNetContainer().getPetriNet().getFlowRelations();
