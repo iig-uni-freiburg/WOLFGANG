@@ -112,7 +112,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		for (final String n : nameSet) {
 			final PNGraphCell cell = getGraph().nodeReferences.get(n);
 			Rectangle geo = cell.getGeometry().getRectangle();
-			// enabledTransitionsPanel =
 			mxCellOverlay overlay = null;
 
 			try {
@@ -171,8 +170,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 				}
 			});
-			overlay.add(new JLabel(cell.getId()));
-//			overlay.
 			addCellOverlay(cell, overlay);
 
 		}
