@@ -141,16 +141,17 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		Collections.sort(list);
 		DefaultTableModel tableModel = new DefaultTableModel();
 		tableModel.setColumnCount(2);
-		if(!(properties instanceof CPNProperties)){
 		for (PNProperty property : list) {
 			PropertiesField field = null;
 
 				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property);
 				field.addListener(field);
 
-			tableModel.addRow(new Object[] { property, field });
+				boolean showArcWeight = true;
 			switch (property) {
 			case ARC_WEIGHT:
+				if(properties instanceof CPNProperties || properties instanceof IFNetProperties)
+					showArcWeight = false;
 				break;
 			case PLACE_LABEL:
 				node.setTextField(field);
@@ -161,7 +162,9 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			default:
 				break;
 			}
-		}
+
+			if(showArcWeight)
+			tableModel.addRow(new Object[] { property, field });
 		}
 
 		// Order of Properties corresponds to Order of PropertiesClass
