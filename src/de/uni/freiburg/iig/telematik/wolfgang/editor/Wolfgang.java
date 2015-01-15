@@ -233,15 +233,17 @@ public class Wolfgang extends JFrame {
 		JPanel chooseNetPanel = new JPanel();
 		JPanel wgchNetPanel = new JPanel(new BorderLayout());
 		JPanel wolfgangPositioning = new JPanel();
-
+		JPanel positioning = new JPanel();
 		chooseNetPanel.add(ptButton);
 		chooseNetPanel.add(cpnButton);
 		wolfgangPositioning.add(Box.createHorizontalStrut(130));
 		wolfgangPositioning.add(wolfgangLabel);
 		wgchNetPanel.add(wolfgangPositioning, BorderLayout.PAGE_START);
 		wgchNetPanel.add(chooseNetPanel, BorderLayout.CENTER);
-
-		add(wgchNetPanel);
+		positioning.add(wgchNetPanel);
+		positioning.add(Box.createHorizontalStrut(70));
+		
+		add(positioning);
 
 	}
 
