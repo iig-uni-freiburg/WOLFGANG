@@ -2,16 +2,19 @@ package de.uni.freiburg.iig.telematik.wolfgang.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -84,11 +87,13 @@ public class Wolfgang extends JFrame {
 		default:
 			break;
 		}
-//		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-//			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, layoutOption);
-//		} else {
-//			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, layoutOption);
-//		}
+		// if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
+		// this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net,
+		// layoutOption);
+		// } else {
+		// this.editorComponent = new CPNEditorComponent((GraphicalCPN) net,
+		// layoutOption);
+		// }
 	}
 
 	public void setNet(AbstractGraphicalPN net, boolean askForLayout) {
@@ -107,13 +112,15 @@ public class Wolfgang extends JFrame {
 			break;
 		default:
 			break;
-	
+
 		}
-//		if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-//			this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net, askForLayout);
-//		} else {
-//			this.editorComponent = new CPNEditorComponent((GraphicalCPN) net, askForLayout);
-//		}
+		// if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
+		// this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net,
+		// askForLayout);
+		// } else {
+		// this.editorComponent = new CPNEditorComponent((GraphicalCPN) net,
+		// askForLayout);
+		// }
 	}
 
 	private void prepareNetInsertion(AbstractGraphicalPN net) {
@@ -203,6 +210,8 @@ public class Wolfgang extends JFrame {
 	private void setChooseNetPanel() {
 		final JButton ptButton = getPTButton();
 		final JButton cpnButton = getCPNButton();
+		final JLabel wolfgangLabel = getWolfgangPanel();
+
 		ptButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -222,9 +231,17 @@ public class Wolfgang extends JFrame {
 
 		});
 		JPanel chooseNetPanel = new JPanel();
+		JPanel wgchNetPanel = new JPanel(new BorderLayout());
+		JPanel wolfgangPositioning = new JPanel();
+
 		chooseNetPanel.add(ptButton);
 		chooseNetPanel.add(cpnButton);
-		add(chooseNetPanel);
+		wolfgangPositioning.add(Box.createHorizontalStrut(130));
+		wolfgangPositioning.add(wolfgangLabel);
+		wgchNetPanel.add(wolfgangPositioning, BorderLayout.PAGE_START);
+		wgchNetPanel.add(chooseNetPanel, BorderLayout.CENTER);
+
+		add(wgchNetPanel);
 
 	}
 
@@ -244,6 +261,14 @@ public class Wolfgang extends JFrame {
 		JButton buttonCPN = new JButton(icon);
 		buttonCPN.setFocusPainted(false);
 		return buttonCPN;
+	}
+
+	private static JLabel getWolfgangPanel() {
+		String path = "wolfgang.png";
+		URL imageURL = IconFactory.class.getResource(path);
+		ImageIcon icon = new ImageIcon(imageURL);
+		JLabel wgLabel = new JLabel(icon);
+		return wgLabel;
 	}
 
 	protected void packWolfgang() {
@@ -304,10 +329,12 @@ public class Wolfgang extends JFrame {
 		// wolfgang.setUpGUI();
 		// Wolfgang wolfgang = new Wolfgang(new GraphicalCPN());
 		// wolfgang.setUpGUI();
-		// Wolfgang wolfgang = new Wolfgang(); //starts new empty Wolfgang allowing to choose between PT and CPN
+		Wolfgang wolfgang = new Wolfgang(); // starts new empty Wolfgang
+											// allowing to choose between PT and
+											// CPN
 
-		Wolfgang wolfgang = new Wolfgang(new GraphicalIFNet());
-		wolfgang.setUpGUI();
+		// Wolfgang wolfgang = new Wolfgang(new GraphicalIFNet());
+		// wolfgang.setUpGUI();
 
 	}
 
