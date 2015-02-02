@@ -54,9 +54,7 @@ public class Wolfgang extends JFrame {
 
 	private String netName;
 
-	public Wolfgang() throws Exception {
-		setUpGUI();
-	}
+	public Wolfgang() throws Exception {}
 
 	public Wolfgang(AbstractGraphicalPN net) throws Exception {
 		this(net, null);
@@ -87,13 +85,6 @@ public class Wolfgang extends JFrame {
 		default:
 			break;
 		}
-		// if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-		// this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net,
-		// layoutOption);
-		// } else {
-		// this.editorComponent = new CPNEditorComponent((GraphicalCPN) net,
-		// layoutOption);
-		// }
 	}
 
 	public void setNet(AbstractGraphicalPN net, boolean askForLayout) {
@@ -114,13 +105,6 @@ public class Wolfgang extends JFrame {
 			break;
 
 		}
-		// if (net.getPetriNet().getNetType().equals(NetType.PTNet)) {
-		// this.editorComponent = new PTNetEditorComponent((GraphicalPTNet) net,
-		// askForLayout);
-		// } else {
-		// this.editorComponent = new CPNEditorComponent((GraphicalCPN) net,
-		// askForLayout);
-		// }
 	}
 
 	private void prepareNetInsertion(AbstractGraphicalPN net) {
@@ -334,6 +318,7 @@ public class Wolfgang extends JFrame {
 		Wolfgang wolfgang = new Wolfgang(); // starts new empty Wolfgang
 											// allowing to choose between PT and
 											// CPN
+		wolfgang.setUpGUI();
 
 		// Wolfgang wolfgang = new Wolfgang(new GraphicalIFNet());
 		// wolfgang.setUpGUI();
