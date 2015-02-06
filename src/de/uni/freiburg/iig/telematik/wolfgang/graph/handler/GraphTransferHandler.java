@@ -10,7 +10,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.swing.handler.mxGraphTransferHandler;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxPoint;
@@ -148,10 +147,11 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 				switch (cell.getType()) {
 				case PLACE:
-					if (cell.getId() == null) // DnD generated
+					if (cell.getId() == null){
+						// Place is generated per Drag and Drop
 						newCell = (PNGraphCell) graph.addNewPlace(new mxPoint(dx, dy));
-					else {
-
+					} else {
+						// 
 						String nodeName = graph.getNewPlaceName();
 
 						if (graph.getNetContainer().getPetriNet().addPlace(nodeName)) {

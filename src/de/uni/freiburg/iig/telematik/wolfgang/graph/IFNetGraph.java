@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
@@ -322,6 +322,10 @@ public class IFNetGraph extends PNGraph {
 					if (am.contains(AccessMode.DELETE))
 						imageString = imageString + "d";
 					Color color = getNetContainer().getPetriNetGraphics().getColors().get(c);
+					if(color == null){
+						Random rand = new Random();
+						color = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+					}
 					ImageIcon imageIcon = null;
 
 					imageIcon = IconFactory.getIcon(imageString);

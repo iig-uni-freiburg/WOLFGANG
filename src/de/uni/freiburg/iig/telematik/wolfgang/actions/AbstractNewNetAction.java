@@ -39,7 +39,7 @@ public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extend
 	protected abstract N createNewGraphicalPN();
 
 	private String requestFileName(String message, String title) {
-		return new FileNameDialog(wolfgang, message, title, false).requestInput();
+		return FileNameDialog.showDialog(wolfgang, message, title, false);
 	}
 	
 }

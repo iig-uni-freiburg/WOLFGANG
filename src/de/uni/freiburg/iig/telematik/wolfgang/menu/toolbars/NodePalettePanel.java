@@ -24,7 +24,6 @@ import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxRectangle;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
@@ -91,19 +90,28 @@ public class NodePalettePanel extends JPanel {
 	}
 
 
-
+	/**
+	 * Drag new place to editor canvas.
+	 * @throws PropertyException
+	 * @throws IOException
+	 */
 	public void addPlaceTemplate() throws PropertyException, IOException {
 		int size = WolfgangProperties.getInstance().getDefaultPlaceSize();
-		String style = MXConstants.getNodeStyle(PNComponent.PLACE, null, null);
+		String style = MXConstants.getDefaultNodeStyle(PNComponent.PLACE);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, size, size), style, PNComponent.PLACE);
 		cell.setVertex(true);
 		addTemplate("Place", placePanel, cell);
 	}
 
+	/**
+	 * Drag new transition to editor canvas.
+	 * @throws PropertyException
+	 * @throws IOException
+	 */
 	public void addTransitionTemplate() throws PropertyException, IOException {
 		int width = WolfgangProperties.getInstance().getDefaultTransitionWidth();
 		int height = WolfgangProperties.getInstance().getDefaultTransitionHeight();
-		String style = MXConstants.getNodeStyle(PNComponent.TRANSITION, null, null);
+		String style = MXConstants.getDefaultNodeStyle(PNComponent.TRANSITION);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, width, height), style, PNComponent.TRANSITION);
 		cell.setVertex(true);
 		addTemplate("Transition", transitionPanel, cell);
@@ -120,6 +128,8 @@ public class NodePalettePanel extends JPanel {
 		add(howtoLabelArc, BorderLayout.PAGE_END);
 
 	}
+	
+	
 	public void addTemplate(final String name, JPanel nodepanel, mxCell cell) {
 		mxRectangle bounds = (mxGeometry) cell.getGeometry().clone();
 		final mxGraphTransferable t = new mxGraphTransferable(new Object[] { cell }, bounds);

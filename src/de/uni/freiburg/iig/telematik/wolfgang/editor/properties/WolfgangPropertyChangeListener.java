@@ -5,5 +5,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 public interface WolfgangPropertyChangeListener {
 
 	public void iconSizeChanged(IconSize size);
+	
+	public void
 
 }

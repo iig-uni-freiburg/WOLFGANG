@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.properties;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
@@ -17,18 +18,19 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	public static final IconSize ICON_SIZE = IconSize.MEDIUM;
 
-	public static final int DEFAULT_PLACE_SIZE = 30;
-	public static final int DEFAULT_TRANSITION_WIDTH = 30;
-	public static final int DEFAULT_TRANSITION_HEIGHT = 30;
+	public static final int DEFAULT_PLACE_SIZE = 45;
+	public static final int DEFAULT_TRANSITION_WIDTH = 45;
+	public static final int DEFAULT_TRANSITION_HEIGHT = 45;
 	public static final int DEFAULT_TOKEN_SIZE = 8;
 	public static final int DEFAULT_TOKEN_DISTANCE = 1;
 	public static final int DEFAULT_VERTICAL_LABEL_OFFSET = 30;
 	public static final int DEFAULT_HORIZONTAL_LABEL_OFFSET = 1;
-	public static final String DEFAULT_LABEL_BG_COLOR = "none" ;
-	public static final String DEFAULT_LABEL_LINE_COLOR = "none";
-	public static final String DEFAULT_NODE_COLOR = "#B6CAE4";
-	public static final String DEFAULT_LINE_COLOR = "#000000";
-	public static final String DEFAULT_GRADIENT_COLOR = "";
+	public static final Color DEFAULT_LABEL_BG_COLOR = null;
+	public static final Color DEFAULT_LABEL_LINE_COLOR = null;
+	public static final Color DEFAULT_PLACE_COLOR = Color.decode("0xB6CAE4");
+	public static final Color DEFAULT_TRANSITION_COLOR = Color.decode("0xB6CAE4");
+	public static final Color DEFAULT_LINE_COLOR = Color.decode("0x000000");
+	public static final Color DEFAULT_GRADIENT_COLOR = null;
 	public static final String DEFAULT_GRADIENT_DIRECTION = "";
 	public static final String DEFAULT_FONT_FAMILY = "Dialog";
 	public static final int DEFAULT_FONT_SIZE = 11;
@@ -67,9 +69,9 @@ public class WolfgangProperties extends AbstractProperties{
 		return props.getProperty(property.toString());
 	}
 	
-	private void removeProperty(WolfgangProperty property){
-		props.remove(property.toString());
-	}
+//	private void removeProperty(WolfgangProperty property){
+//		props.remove(property.toString());
+//	}
 	
 	// ------- Icon Size --------------------------------------------------------------------
 
@@ -268,47 +270,102 @@ public class WolfgangProperties extends AbstractProperties{
 	}
 	
 	
-	// ------- Default Node Color -----------------------------------------------------------
+	// ------- Default Place Color -----------------------------------------------------------
 	
-	public void setDefaultNodeColor(String nodeColor) {
-		Validate.notNull(nodeColor);
-		setProperty(WolfgangProperty.DEFAULT_NODE_COLOR, nodeColor);
+	public void setDefaultPlaceColor(Color nodeColor) {
+		if(nodeColor == null){
+			setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, nodeColor.getRGB());
+		}
 	}
 	
-	public String getDefaultNodeColor(){
-		String propertyValue = getProperty(WolfgangProperty.DEFAULT_NODE_COLOR);
+	public Color getDefaultPlaceColor() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.DEFAULT_PLACE_COLOR);
 		Validate.notNull(propertyValue);
-		return propertyValue;
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_PLACE_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
+	}
+	
+	// ------- Default Transition Color -----------------------------------------------------------
+	
+	public void setDefaultTransitionColor(Color nodeColor) {
+		if(nodeColor == null){
+			setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, nodeColor.getRGB());
+		}
+	}
+	
+	public Color getDefaultTransitionColor() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR);
+		Validate.notNull(propertyValue);
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_TRANSITION_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
 	}
 	
 	
 	// ------- Default Label Background Color -----------------------------------------------
 	
-	public void setDefaultLabelBackgroundColor(String nodeColor) {
-		Validate.notNull(nodeColor);
-		setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, nodeColor);
+	public void setDefaultLabelBackgroundColor(Color nodeColor) {
+		if(nodeColor == null){
+			setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, nodeColor.getRGB());
+		}
 	}
 	
-	public String getDefaultLabelBackgroundColor(){
+	public Color getDefaultLabelBackgroundColor() throws PropertyException {
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR);
 		Validate.notNull(propertyValue);
-		return propertyValue;
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
 	}
 	
 	
 	// ------- Default Gradient Color -------------------------------------------------------
 	
-	public void setDefaultGradientColor(String gradientColor) {
-		Validate.notNull(gradientColor);
-		setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, gradientColor);
+	public void setDefaultGradientColor(Color gradientColor) {
+		if(gradientColor == null){
+			setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, gradientColor.getRGB());
+		}
 	}
 	
-	public String getDefaultGradientColor(){
+	public Color getDefaultGradientColor() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR);
 		Validate.notNull(propertyValue);
 		if(propertyValue.isEmpty())
 			return null;
-		return propertyValue;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_GRADIENT_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
 	}
 	
 	
@@ -335,15 +392,26 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Line Color -----------------------------------------------------------
 	
-	public void setDefaultLineColor(String lineColor) {
-		Validate.notNull(lineColor);
-		setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, lineColor);
+	public void setDefaultLineColor(Color lineColor) {
+		if(lineColor == null){
+			setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, lineColor.getRGB());
+		}
 	}
 	
-	public String getDefaultLineColor(){
+	public Color getDefaultLineColor() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_LINE_COLOR);
 		Validate.notNull(propertyValue);
-		return propertyValue;
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_LINE_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
 	}
 	
 	
@@ -363,16 +431,61 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Label Line Color -----------------------------------------------------
 	
-	public void setDefaultLabelLineColor(String labelLineColor) {
-		Validate.notNull(labelLineColor);
-		setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, labelLineColor);
+	public void setDefaultLabelLineColor(Color labelLineColor) {
+		if(labelLineColor == null){
+			setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, labelLineColor.getRGB());
+		}
 	}
 	
-	public String getDefaultLabelLineColor(){
+	public Color getDefaultLabelLineColor() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR);
 		Validate.notNull(propertyValue);
-		return propertyValue;
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
 	}
+	
+	
+	// ------- Background Color -------------------------------------------------------------
+	
+	public void setBackgroundColor(Color labelLineColor) {
+		if(labelLineColor == null){
+			setProperty(WolfgangProperty.BACKGROUD_COLOR, "");
+		} else {
+			setProperty(WolfgangProperty.BACKGROUD_COLOR, labelLineColor.getRGB());
+		}
+	}
+	
+	public Color getBackgroundColor() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.BACKGROUD_COLOR);
+		Validate.notNull(propertyValue);
+		if(propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.BACKGROUD_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
+	}
+	
+	// ------- Grid Size --------------------------------------------------------------------
+	
+	// ------- Grid Color -------------------------------------------------------------------
+	
+	// ------- Grid Visibility --------------------------------------------------------------
+	
+	// ------- Snap to Grid -----------------------------------------------------------------
+	
 	
 	
 	// ------- Default Properties -----------------------------------------------------------
@@ -388,11 +501,14 @@ public class WolfgangProperties extends AbstractProperties{
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_TOKEN_DISTANCE.toString(), String.valueOf(DEFAULT_TOKEN_DISTANCE));
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_VERTICAL_LABEL_OFFSET.toString(), String.valueOf(DEFAULT_VERTICAL_LABEL_OFFSET));
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_HORIZONTAL_LABEL_OFFSET.toString(), String.valueOf(DEFAULT_HORIZONTAL_LABEL_OFFSET));
-		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR.toString(), DEFAULT_LABEL_BG_COLOR);
-		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR.toString(), DEFAULT_LABEL_LINE_COLOR);
-		defaultProperties.setProperty(WolfgangProperty.DEFAULT_NODE_COLOR.toString(), DEFAULT_NODE_COLOR);
-		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LINE_COLOR.toString(), DEFAULT_LINE_COLOR);
-		defaultProperties.setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR.toString(), DEFAULT_GRADIENT_COLOR);
+		
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR.toString(), DEFAULT_LABEL_BG_COLOR == null ? "" : String.valueOf(DEFAULT_LABEL_BG_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR.toString(), DEFAULT_LABEL_LINE_COLOR == null ? "" : String.valueOf(DEFAULT_LABEL_LINE_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR.toString(), DEFAULT_PLACE_COLOR == null ? "" : String.valueOf(DEFAULT_PLACE_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR.toString(), DEFAULT_TRANSITION_COLOR == null ? "" : String.valueOf(DEFAULT_TRANSITION_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_LINE_COLOR.toString(), DEFAULT_LINE_COLOR == null ? "" : String.valueOf(DEFAULT_LINE_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR.toString(), DEFAULT_GRADIENT_COLOR == null ? "" : String.valueOf(DEFAULT_GRADIENT_COLOR.getRGB()));
+		
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION.toString(), DEFAULT_GRADIENT_DIRECTION);
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_FONT_FAMILY.toString(), DEFAULT_FONT_FAMILY);
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_FONT_SIZE.toString(), String.valueOf(DEFAULT_FONT_SIZE));
@@ -419,4 +535,5 @@ public class WolfgangProperties extends AbstractProperties{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 }

@@ -11,9 +11,12 @@ import java.util.Hashtable;
 
 import javax.swing.JOptionPane;
 
+import com.itextpdf.text.Font.FontFamily;
 import com.mxgraph.util.mxConstants;
+import com.mxgraph.util.mxUtils;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
@@ -71,6 +74,13 @@ public abstract class MXConstants {
 	public static final Color CONNECT_HANDLE_FILLCOLOR = MXConstants.bluelow;
 	public static final Color EDGE_SELECTION_COLOR = MXConstants.bluelow;
 	public static final Color VERTEX_SELECTION_COLOR = MXConstants.bluelow;
+	
+	public static final Shape DEFAULT_LINE_SHAPE = Shape.LINE;
+	public static final Style DEFAULT_LINE_STYLE = Style.SOLID;
+	public static final double DEFAULT_LINE_WIDTH = 1.0;
+	public static final Align DEFAULT_LABEL_FONT_ALIGN = Align.CENTER;
+	public static final String DEFAULT_LABEL_FONT_WEIGHT = "normal";
+	public static final String DEFAULT_LABEL_FONT_STYLE = "normal";
 
 	public static int EDGE_HANDLE_SIZE = 10;
 
@@ -109,10 +119,91 @@ public abstract class MXConstants {
 	public static final String FONT_DECORATION = "labelFontDecoration";
 	public static final String FONT_STYLE = "labelFontStyle";
 	public static final String FONT_WEIGHT = "labelFontWeight";
+	
+	public static String getDefaultNodeStyle(PNComponent type) throws PropertyException, IOException {
+		Hashtable<String, Object> style = new Hashtable<String, Object>();
+		
+		// Set node shape and fill color
+		Color fillColorPNDefault = null;
+		switch (type) {
+		case PLACE:
+			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultPlaceColor();
+			break;
+		case TRANSITION:
+			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
+			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultPlaceColor();
+			break;
+		}
+		style.put(mxConstants.STYLE_FILLCOLOR, getMXColor(fillColorPNDefault));
+		
+		// Set fill gradient rotation
+		GradientRotation gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
+		if (gradientRotation != null)
+			style.put(MXConstants.GRADIENT_ROTATION, gradientRotation);
 
-	public static String getNodeStyle(PNComponent type, NodeGraphics initialNodeGraphics, AnnotationGraphics annotationGraphics) throws PropertyException, IOException {
+		// Set fill gradient color
+		Color gradientColorPNDefault = WolfgangProperties.getInstance().getDefaultGradientColor();
+		style.put(mxConstants.STYLE_GRADIENTCOLOR, getMXColor(gradientColorPNDefault));
+
+		
+		// Set line color
+		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLineColor();
+		style.put(mxConstants.STYLE_STROKECOLOR, getMXColor(lineColorPNDefault));
+		
+		// Set line style
+		style.put(MXConstants.LINE_STYLE, DEFAULT_LINE_STYLE);
+		
+		// Set line shape
+		Shape lineShape = DEFAULT_LINE_SHAPE;
+		switch (lineShape) {
+		case CURVE:
+			style.put(mxConstants.STYLE_ROUNDED, "true");
+			style.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION);
+			break;
+		case LINE:
+			style.put(mxConstants.STYLE_ROUNDED, "false");
+			style.put(mxConstants.STYLE_EDGE, "direct");
+			break;
+
+		}
+		
+		// Set line width
+		style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(DEFAULT_LINE_WIDTH));
+		
+		addDefaultAnnotationStyle(style);
+
+		String convertedStyle = style.toString().replaceAll(", ", ";");
+		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
+		return shortendStyle;
+	}
+	
+	private static String getMXColor(Color color){
+		if (color == null) {
+			return "none";
+		} else {
+			return mxUtils.hexString(color);
+		}
+	}
+
+	/**
+	 * Defines the style of newly introduced (possibly copied!!!) PN nodes.<br>
+	 * In case of copied nodes, the annotation- and node-graphics might be non-empty.<br>
+	 * In case of new nodes without copy, all content must be obtained from WolfgangProperties.
+	 * @param type
+	 * @param nodeGraphics
+	 * @param annotationGraphics
+	 * @return
+	 * @throws PropertyException
+	 * @throws IOException
+	 */
+	public static String extractNodeStyleFromGraphics(PNComponent type, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics, int i) throws PropertyException, IOException {
+		Validate.notNull(nodeGraphics);
+		Validate.notNull(annotationGraphics);
+		
 		Hashtable<String, Object> style = new Hashtable<String, Object>();
 
+		// Set node shape
 		switch (type) {
 		case PLACE:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
@@ -121,53 +212,50 @@ public abstract class MXConstants {
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
 			break;
 		}
-
-		NodeGraphics nodeGraphics = (initialNodeGraphics != null) ? initialNodeGraphics : new NodeGraphics();
-
-		Fill fill = (nodeGraphics.getFill() != null) ? nodeGraphics.getFill() : new Fill();
-		fill = nodeGraphics.getFill();
-
-		String fillColorPN = (fill.getColor() != null) ? fill.getColor() : WolfgangProperties.getInstance().getDefaultNodeColor();
-		String fillColorMX = ((fillColorPN).equals("transparent")) ? "none" : fillColorPN;
-		style.put(mxConstants.STYLE_FILLCOLOR, fillColorMX);
-
-		GradientRotation gradientRotation = (fill.getGradientRotation() != null) ? fill.getGradientRotation() : WolfgangProperties.getInstance().getDefaultGradientDirection();
-		if (gradientRotation != null)
-			style.put(MXConstants.GRADIENT_ROTATION, gradientRotation);
-
-		String gradientColorPN = (fill.getGradientColor() != null) ? fill.getGradientColor() : WolfgangProperties.getInstance().getDefaultGradientColor();
-		if (gradientColorPN != null) {
-			String gradientColorMX = ((gradientColorPN).equals("transparent")) ? "none" : gradientColorPN;
-			style.put(mxConstants.STYLE_GRADIENTCOLOR, gradientColorMX);
+		
+		// Set fill color
+		if(nodeGraphics.getFill().getColor().equals("transparent")){
+			style.put(mxConstants.STYLE_FILLCOLOR, "none");
+		} else {
+			style.put(mxConstants.STYLE_FILLCOLOR, nodeGraphics.getFill().getColor());
 		}
 
-		URI image = fill.getImage();
+		// Set fill gradient rotation
+		style.put(MXConstants.GRADIENT_ROTATION, nodeGraphics.getFill().getGradientRotation());
+
+		// Set fill gradient color
+		if(nodeGraphics.getFill().getGradientColor().equals("transparent")){
+			style.put(mxConstants.STYLE_GRADIENTCOLOR, "none");
+		} else {
+			style.put(mxConstants.STYLE_GRADIENTCOLOR, nodeGraphics.getFill().getGradientColor());
+		}
+
+		// Set fill image
+		URI image = nodeGraphics.getFill().getImage();
 		if (image != null) {
 			String path = decodePath(image);
-
 			try {
 				path = URLDecoder.decode(path, "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				JOptionPane.showMessageDialog(null, "utf-8 encryption is not supported", "unsupported Encoding Exception", JOptionPane.ERROR);
 			}
-
 			path = new File(path).getPath();
-
 			if (image != null)
 				style.put(mxConstants.STYLE_IMAGE, "file:" + path);
 		}
-		nodeGraphics.setFill(new Fill(fillColorPN, gradientColorPN, gradientRotation, image));
+		
+		// Set line color
+		if (nodeGraphics.getLine().getColor().equals("transparent")) {
+			style.put(mxConstants.STYLE_STROKECOLOR, "none");
+		} else {
+			style.put(mxConstants.STYLE_STROKECOLOR, nodeGraphics.getLine().getColor());
+		}
+		
+		// Set line style
+		style.put(MXConstants.LINE_STYLE, nodeGraphics.getLine().getStyle());
 
-		Line line = (nodeGraphics.getLine() != null) ? nodeGraphics.getLine() : new Line();
-
-		String lineColorPN = (line.getColor() != null) ? line.getColor() : WolfgangProperties.getInstance().getDefaultLineColor();
-		String lineColorMX = ((lineColorPN).equals("transparent")) ? "none" : lineColorPN;
-		style.put(mxConstants.STYLE_STROKECOLOR, lineColorMX);
-
-		Style lineStyle = (line.getStyle() != null) ? line.getStyle() : Line.Style.SOLID;
-		style.put(MXConstants.LINE_STYLE, lineStyle);
-
-		Shape lineShape = (line.getShape() != null) ? line.getShape() : Shape.LINE;
+		// Set line shape
+		Shape lineShape = nodeGraphics.getLine().getShape();
 		switch (lineShape) {
 		case CURVE:
 			style.put(mxConstants.STYLE_ROUNDED, "true");
@@ -180,11 +268,10 @@ public abstract class MXConstants {
 
 		}
 
-		style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(line.getWidth()));
+		// Set line width
+		style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(nodeGraphics.getLine().getWidth()));
 
-		nodeGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
-
-		getAnnotationGraphics(annotationGraphics, style);
+		extractAnnotationStyleFromGraphics(annotationGraphics, style);
 
 		String convertedStyle = style.toString().replaceAll(", ", ";");
 		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
@@ -195,115 +282,204 @@ public abstract class MXConstants {
 		return uriFile.getPath();
 	}
 
-	public static String getArcStyle(ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws IOException, PropertyException {
+	public static String getDefaultArcStyle(ArcGraphics arcGraphics) throws IOException, PropertyException {
+		
+	}
+	
+	public static String extractArcStyleFromGraphics(ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws IOException, PropertyException {
+		Validate.notNull(annotationGraphics);
+		
 		Hashtable<String, Object> style = new Hashtable<String, Object>();
 
-		Line line = (arcGraphics.getLine() != null) ? arcGraphics.getLine() : new Line();
-
-		String lineColorPN = (line.getColor() != null) ? line.getColor() : WolfgangProperties.getInstance().getDefaultLineColor();
-		String lineColorMX = ((lineColorPN).equals("transparent")) ? "none" : lineColorPN;
-		style.put(mxConstants.STYLE_STROKECOLOR, lineColorMX);
-
-		Style lineStyle = (line.getStyle() != null) ? line.getStyle() : Line.Style.SOLID;
-		style.put(MXConstants.LINE_STYLE, lineStyle);
-
-		Shape lineShape = (line.getShape() != null) ? line.getShape() : Shape.LINE;
-		switch (lineShape) {
-		case CURVE:
-			style.put(mxConstants.STYLE_ROUNDED, "true");
-			style.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION);
-			break;
-		case LINE:
-			style.put(mxConstants.STYLE_ROUNDED, "false");
-			style.put(mxConstants.STYLE_EDGE, "direct");
-			break;
-
+		String lineColor = arcGraphics.getLine().getColor();
+		if(lineColor != null){
+			if(lineColor.equals("transparent")){
+				style.put(mxConstants.STYLE_STROKECOLOR, "none");
+			} else {
+				style.put(mxConstants.STYLE_STROKECOLOR, lineColor);
+			}
+		}
+		
+		Style lineStyle = annotationGraphics.getLine().getStyle();
+		if(lineStyle != null)
+			style.put(MXConstants.LINE_STYLE, lineStyle);
+		
+		Shape lineShape = annotationGraphics.getLine().getShape();
+		if(lineShape != null){
+			switch (lineShape) {
+			case CURVE:
+				style.put(mxConstants.STYLE_ROUNDED, "true");
+				style.put(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION);
+				break;
+			case LINE:
+				style.put(mxConstants.STYLE_ROUNDED, "false");
+				style.put(mxConstants.STYLE_EDGE, "direct");
+				break;
+			}
 		}
 
-		style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(line.getWidth()));
+		Double lineWidth = annotationGraphics.getLine().getWidth();
+		if(lineWidth != null)
+			style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(lineWidth));
 
-		arcGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
+//		arcGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
 
-		getAnnotationGraphics(annotationGraphics, style);
+		extractAnnotationStyleFromGraphics(annotationGraphics, style);
 		String convertedStyle = style.toString().replaceAll(", ", ";");
 		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
 
 		return shortendStyle;
 	}
-
-	protected static void getAnnotationGraphics(AnnotationGraphics initialAnnotationGraphics, Hashtable<String, Object> style) throws IOException, PropertyException {
-		AnnotationGraphics annotationGraphics = (initialAnnotationGraphics != null) ? initialAnnotationGraphics : new AnnotationGraphics();
-
-		if (annotationGraphics.isVisible()) {
-			style.put(mxConstants.STYLE_NOLABEL, "0");
-			annotationGraphics.setVisibility(true);
-		} else {
-			style.put(mxConstants.STYLE_NOLABEL, "1");
-			annotationGraphics.setVisibility(false);
-		}
-		Fill fill = (annotationGraphics.getFill() != null) ? annotationGraphics.getFill() : new Fill();
-
-		String fillColorPN = (fill.getColor() != null) ? fill.getColor() : WolfgangProperties.getInstance().getDefaultLabelBackgroundColor();
-		String fillColorMX = ((fillColorPN).equals("transparent")) ? "none" : fillColorPN;
-		style.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, fillColorMX);
-		GradientRotation gradientRotation = (fill.getGradientRotation() != null) ? fill.getGradientRotation() : WolfgangProperties.getInstance().getDefaultGradientDirection();
+	
+	private static void addDefaultAnnotationStyle(Hashtable<String, Object> style) throws IOException, PropertyException {
+		// Set visibility
+		style.put(mxConstants.STYLE_NOLABEL, "0");
+		
+		// Set label background color
+		Color fillColorPNDefault = WolfgangProperties.getInstance().getDefaultLabelBackgroundColor();
+		style.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, getMXColor(fillColorPNDefault));
+		
+		// Set label gradient rotation
+		GradientRotation gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
 		if (gradientRotation != null)
 			style.put(MXConstants.LABEL_GRADIENT_ROTATION, gradientRotation);
 
-		String gradientColor = (fill.getGradientColor() != null) ? fill.getGradientColor() : WolfgangProperties.getInstance().getDefaultGradientColor();
-		if (gradientColor != null) {
-			gradientColor = ((gradientColor).equals("transparent")) ? "none" : gradientColor;
-			style.put(MXConstants.LABEL_GRADIENTCOLOR, gradientColor);
-		}
+		// Set label gradient color
+		Color gradientColorPNDefault = WolfgangProperties.getInstance().getDefaultGradientColor();
+		style.put(MXConstants.LABEL_GRADIENTCOLOR, getMXColor(gradientColorPNDefault));
 
-		URI image = fill.getImage();
+		// Set label font align
+		style.put(mxConstants.STYLE_ALIGN, DEFAULT_LABEL_FONT_ALIGN);
+
+		// Set label font family
+		style.put(mxConstants.STYLE_FONTFAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
+		
+		// Set label font size
+		style.put(mxConstants.STYLE_FONTSIZE, WolfgangProperties.getInstance().getDefaultFontSize().toString());
+
+		// Set label font weight
+		style.put(MXConstants.FONT_WEIGHT, DEFAULT_LABEL_FONT_WEIGHT);
+
+		// Set label font style
+		style.put(MXConstants.FONT_STYLE, DEFAULT_LABEL_FONT_STYLE);
+
+		// Set label line color
+		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLineColor();
+		style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, getMXColor(lineColorPNDefault));
+		
+		// Set label line style
+		style.put(MXConstants.LABEL_LINE_STYLE, DEFAULT_LINE_STYLE);
+
+		// Set label line shape
+		style.put(MXConstants.LABEL_LINE_SHAPE, DEFAULT_LINE_SHAPE);
+
+		// Set label line width
+		style.put(MXConstants.LABEL_LINE_WIDTH, Double.toString(DEFAULT_LINE_WIDTH));
+	}
+
+	private static void extractAnnotationStyleFromGraphics(AnnotationGraphics annotationGraphics, Hashtable<String, Object> style) throws IOException, PropertyException {
+		Validate.notNull(annotationGraphics);
+		
+		// Set visibility
+		if (annotationGraphics.isVisible()) {
+			style.put(mxConstants.STYLE_NOLABEL, "0");
+		} else {
+			style.put(mxConstants.STYLE_NOLABEL, "1");
+		}
+		
+		// Set label background color
+		String labelBGColor = annotationGraphics.getFill().getColor();
+		if (labelBGColor != null) {
+			if (labelBGColor.equals("transparent")) {
+				style.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, "none");
+			} else {
+				style.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, labelBGColor);
+			}
+		}
+		
+		// Set label gradient rotation
+		GradientRotation gradientRotation = annotationGraphics.getFill().getGradientRotation();
+		if (gradientRotation != null)
+			style.put(MXConstants.LABEL_GRADIENT_ROTATION, gradientRotation);
+
+		// Set label gradient color
+		String labelGradientColor = annotationGraphics.getFill().getGradientColor();
+		if(labelGradientColor.equals("transparent")){
+			style.put(MXConstants.LABEL_GRADIENTCOLOR, "none");
+		} else {
+			style.put(MXConstants.LABEL_GRADIENTCOLOR, labelGradientColor);
+		}
+		
+		// Set label image
+		URI image = annotationGraphics.getFill().getImage();
 		if (image != null)
 			style.put(MXConstants.LABEL_IMAGE, image);
-
-		annotationGraphics.setFill(new Fill(fillColorPN, gradientColor, gradientRotation, image));
-
-		Font font = (annotationGraphics.getFont() != null) ? annotationGraphics.getFont() : new Font();
-
-		Align fontAlign = (font.getAlign() != null) ? font.getAlign() : Align.CENTER;
-		style.put(mxConstants.STYLE_ALIGN, fontAlign);
-
-		String fontFamily = (font.getFamily() != null) ? font.getFamily() : WolfgangProperties.getInstance().getDefaultFontFamily();
-		style.put(mxConstants.STYLE_FONTFAMILY, fontFamily);
-
-		String fontSize = (String) ((font.getSize() != null) ? getSizeFromCSS(font.getSize()) : WolfgangProperties.getInstance().getDefaultFontSize().toString());
-		style.put(mxConstants.STYLE_FONTSIZE, fontSize);
-
-		String fontWeight = (font.getWeight() != null) ? font.getWeight() : "normal";
-		style.put(MXConstants.FONT_WEIGHT, fontWeight);
-
-		String fontStyle = (font.getStyle() != null) ? font.getStyle() : "normal";
-		style.put(MXConstants.FONT_STYLE, fontStyle);
-
-		Decoration fontDecoration = (font.getDecoration() != null) ? font.getDecoration() : null;
+		
+		// Set label font align
+		Align fontAlign = annotationGraphics.getFont().getAlign();
+		if(fontAlign != null)
+			style.put(mxConstants.STYLE_ALIGN, fontAlign);
+		
+		// Set label font family
+		String fontFamily = annotationGraphics.getFont().getFamily();
+		if(fontFamily != null)
+			style.put(mxConstants.STYLE_FONTFAMILY, fontFamily);
+		
+		// Set label font size
+		String fontSize = annotationGraphics.getFont().getSize();
+		if(fontSize != null)
+			style.put(mxConstants.STYLE_FONTSIZE, fontSize);
+		
+		// Set label font weight
+		String fontWeight = annotationGraphics.getFont().getWeight();
+		if(fontWeight != null)
+			style.put(MXConstants.FONT_WEIGHT, fontWeight);
+		
+		// Set label font style
+		String fontStyle = annotationGraphics.getFont().getStyle();
+		if(fontStyle != null){
+			style.put(MXConstants.FONT_STYLE, fontStyle);
+		}
+		
+		// Set label font decoration
+		Decoration fontDecoration = annotationGraphics.getFont().getDecoration();
 		if (fontDecoration != null)
 			style.put(MXConstants.FONT_DECORATION, fontDecoration);
+		
+		// Set label font rotation
+		Double fontRotation = annotationGraphics.getFont().getRotation();
+		if(fontRotation != null)
+			style.put(MXConstants.FONT_ROTATION_DEGREE, fontRotation);
+		
+//		annotationGraphics.setFont(new Font(fontAlign, fontDecoration, fontFamily, font.getRotation(), fontSize, fontStyle, fontWeight));
+		
+		
+		// Set label line color
+		String lineColor = annotationGraphics.getLine().getColor();
+		if(lineColor != null){
+			if(lineColor.equals("transparent")){
+				style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, "none");
+			} else {
+				style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, lineColor);
+			}
+		}
 
-		style.put(MXConstants.FONT_ROTATION_DEGREE, font.getRotation());
+		// Set label line style
+		Style lineStyle = annotationGraphics.getLine().getStyle();
+		if(lineStyle != null)
+			style.put(MXConstants.LABEL_LINE_STYLE, lineStyle);
+		
+		// Set label line shape
+		Shape lineShape = annotationGraphics.getLine().getShape();
+		if(lineShape != null)
+			style.put(MXConstants.LABEL_LINE_SHAPE, lineShape);
 
-		annotationGraphics.setFont(new Font(fontAlign, fontDecoration, fontFamily, font.getRotation(), fontSize, fontStyle, fontWeight));
-
-		Line line = (annotationGraphics.getLine() != null) ? annotationGraphics.getLine() : new Line();
-
-		String lineColorPN = (line.getColor() != null) ? line.getColor() : WolfgangProperties.getInstance().getDefaultLabelLineColor();
-		String lineColorMX = ((lineColorPN).equals("transparent")) ? "none" : lineColorPN;
-		style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, lineColorMX);
-
-		Style lineStyle = (line.getStyle() != null) ? line.getStyle() : Line.Style.SOLID;
-		style.put(MXConstants.LABEL_LINE_STYLE, lineStyle);
-
-		Shape lineShape = (line.getShape() != null) ? line.getShape() : Shape.LINE;
-		style.put(MXConstants.LABEL_LINE_SHAPE, lineShape);
-		// Round not implemented for Labels, maybe implement when implementing
-		// gradient functionality in label background
-
-		style.put(MXConstants.LABEL_LINE_WIDTH, Double.toString(line.getWidth()));
-		annotationGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
-
+		// Set label line width
+		Double lineWidth = annotationGraphics.getLine().getWidth();
+		if(lineWidth != null)
+			style.put(MXConstants.LABEL_LINE_WIDTH, Double.toString(lineWidth));
+		
+//		annotationGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
 	}
 
 	private static String getSizeFromCSS(String size) throws PropertyException, IOException {

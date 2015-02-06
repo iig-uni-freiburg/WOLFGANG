@@ -322,7 +322,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			AnnotationGraphics annotationGraphics = new AnnotationGraphics();
 			addGraphicalInfoToPNPlace(point, place, nodeGraphics, annotationGraphics);
 			newCell = insertPNPlace(place, nodeGraphics, annotationGraphics);
-
 		}
 		return newCell;
 	}
@@ -350,6 +349,13 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 	}
 
+	/**
+	 * Inserts a new place with existing graphic information into the graphical Petri net.
+	 * @param place
+	 * @param nodeGraphics
+	 * @param annotationGraphics
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell insertPNPlace(AbstractPlace place, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) {
 		PNGraphCell newCell = null;
@@ -358,7 +364,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			double y = (nodeGraphics == null) ? 0 : nodeGraphics.getPosition().getY();
 			double dimX = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getX();
 			double dimY = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultPlaceSize() : nodeGraphics.getDimension().getY();
-			newCell = createPlaceCell(place.getName(), place.getLabel(), x, y, dimX, dimY, getCellStyleFromMXConstants(PNComponent.PLACE, nodeGraphics, annotationGraphics));
+			newCell = createPlaceCell(place.getName(), place.getLabel(), x, y, dimX, dimY, getDefaultCellStyles(PNComponent.PLACE, nodeGraphics, annotationGraphics));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		} catch (PropertyException e) {
@@ -384,7 +390,14 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return newCell;
 	}
 
-	private String getCellStyleFromMXConstants(PNComponent type, AbstractObjectGraphics cellGraphics, AnnotationGraphics annotationGraphics) {
+	/**
+	 * Returns the default cell styles for the given PN component type.
+	 * @param type
+	 * @param cellGraphics
+	 * @param annotationGraphics
+	 * @return
+	 */
+	private String getDefaultCellStyles(PNComponent type, AbstractObjectGraphics cellGraphics, AnnotationGraphics annotationGraphics) {
 		String style = null;
 		try {
 			switch (type) {
@@ -473,7 +486,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell insertPNRelation(AbstractFlowRelation relation, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) {
 
-		PNGraphCell newCell = createArcCell(relation.getName(), getArcConstraint(relation), getCellStyleFromMXConstants(PNComponent.ARC, arcGraphics, annotationGraphics));
+		PNGraphCell newCell = createArcCell(relation.getName(), getArcConstraint(relation), getDefaultCellStyles(PNComponent.ARC, arcGraphics, annotationGraphics));
 		addEdge(newCell, getDefaultParent(), getCell(relation.getSource()), getCell(relation.getTarget()), null);
 
 		double offx = annotationGraphics.getOffset().getX();
@@ -538,6 +551,13 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		}
 	}
 
+	/**
+	 * 
+	 * @param transition
+	 * @param nodeGraphics
+	 * @param annotationGraphics
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell insertPNTransition(AbstractTransition transition, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) {
 		// transition.setSilent(true);
@@ -554,7 +574,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		double dimX = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultTransitionWidth() : nodeGraphics.getDimension().getX();
 		double dimY = (nodeGraphics == null) ? WolfgangProperties.getInstance().getDefaultTransitionHeight() : nodeGraphics.getDimension().getY();
 
-		newCell = createTransitionCell(transition.getName(), transition.getLabel(), x, y, dimX, dimY, getCellStyleFromMXConstants(PNComponent.TRANSITION, nodeGraphics, annotationGraphics));
+		newCell = createTransitionCell(transition.getName(), transition.getLabel(), x, y, dimX, dimY, getDefaultCellStyles(PNComponent.TRANSITION, nodeGraphics, annotationGraphics));
 		
 		double offx = annotationGraphics.getOffset().getX();
 		double offy = annotationGraphics.getOffset().getY();

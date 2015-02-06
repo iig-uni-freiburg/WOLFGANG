@@ -16,6 +16,7 @@ import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxRectangle;
+import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
 import de.invation.code.toval.validate.ParameterException;
@@ -133,7 +134,7 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 			graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1");
 			}
 			else{
-				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, WolfgangProperties.getInstance().getDefaultNodeColor());
+				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
 			}
 			((mxGraphModel) graph.getModel()).endUpdate();

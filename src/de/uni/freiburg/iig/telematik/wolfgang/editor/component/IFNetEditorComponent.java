@@ -110,7 +110,6 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 	@Override
 	protected PNProperties createPNProperties() {
 		return new IFNetProperties(getNetContainer());
-
 	}
 	
 	@Override
