@@ -37,6 +37,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
@@ -94,11 +95,7 @@ public class Utils extends mxUtils {
 	}
 
 	/**
-	 * Returns the bounds for a label for the given location and size, taking
-	 * into account the alignment and spacing in the specified style, as well as
-	 * the width and height of the rectangle that contains the label. (For edge
-	 * labels this width and height is 0.) The scale is used to scale the given
-	 * size and the spacings in the specified style.
+	 * Returns the bounds for a label for the given location and size, taking into account the alignment and spacing in the specified style, as well as the width and height of the rectangle that contains the label. (For edge labels this width and height is 0.) The scale is used to scale the given size and the spacings in the specified style.
 	 */
 	public static mxRectangle getScaledLabelBounds(double x, double y, mxRectangle size, double outerWidth, double outerHeight, Map<String, Object> style, double scale) {
 		double inset = mxConstants.LABEL_INSET * scale;
@@ -756,57 +753,55 @@ public class Utils extends mxUtils {
 		}
 	}
 
-	public static void createNodeGraphicsFromStyle(String style, NodeGraphics nodeGraphicsWithPousePosition, AnnotationGraphics annotationGraphics)  {
-		try {
-		nodeGraphicsWithPousePosition.setFill(new Fill("#000000", null, null, null));
-		nodeGraphicsWithPousePosition.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-		annotationGraphics.setFill(new Fill("#000000", null, null, null));
-		annotationGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-	
-			annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
-					"normal"));
+	public static NodeGraphics createNodeGraphicsFromStyle(String style) {
+		NodeGraphics graphics = new NodeGraphics();
+		graphics.setFill(new Fill("#000000", null, null, null));
+		graphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
 
 		HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 		for (Entry<String, Object> s : styleMap.entrySet()) {
 			String key = s.getKey();
-			if (key.contains("label") || key.equals(mxConstants.STYLE_FONTSIZE) || key.equals(mxConstants.STYLE_FONTFAMILY) || key.equals(mxConstants.STYLE_ALIGN))
-				updateAnnotationGraphics((AnnotationGraphics) annotationGraphics, s.getKey(), s.getValue());
-			else
-				updateNodeGraphics(nodeGraphicsWithPousePosition, s.getKey(), s.getValue());
+			if (key.contains("label") || key.equals(mxConstants.STYLE_FONTSIZE) || key.equals(mxConstants.STYLE_FONTFAMILY) || key.equals(mxConstants.STYLE_ALIGN)) {
+			} else {
+				updateNodeGraphics(graphics, s.getKey(), s.getValue());
+			}
 		}
+		return graphics;
+	}
+
+	public static AnnotationGraphics createAnnotationGraphicsFromStyle(String style) {
+		AnnotationGraphics graphics = new AnnotationGraphics();
+		try {
+			graphics.setFill(new Fill("#000000", null, null, null));
+			graphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
+			graphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal", "normal"));
+
+			HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
+			for (Entry<String, Object> s : styleMap.entrySet()) {
+				String key = s.getKey();
+				if (key.contains("label") || key.equals(mxConstants.STYLE_FONTSIZE) || key.equals(mxConstants.STYLE_FONTFAMILY) || key.equals(mxConstants.STYLE_ALIGN))
+					updateAnnotationGraphics(graphics, s.getKey(), s.getValue());
+			}
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null,"Cannot write Graphicsstyle to FileSystem " + e.getMessage(),"IO Exception", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		} catch (PropertyException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(),"Property Exception", JOptionPane.ERROR_MESSAGE);
-
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
 		}
+		return graphics;
 	}
 
-	public static void createArcGraphicsFromStyle(String style, ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) {
-		try {
-		arcGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-		annotationGraphics.setFill(new Fill("#000000", null, null, null));
-		annotationGraphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-
-			annotationGraphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal",
-					"normal"));
-
+	public static ArcGraphics createArcGraphicsFromStyle(String style) {
+		ArcGraphics graphics = new ArcGraphics();
+		graphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
 		HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 		for (Entry<String, Object> s : styleMap.entrySet()) {
 			String key = s.getKey();
-			if (key.contains("label") || key.equals(mxConstants.STYLE_FONTSIZE) || key.equals(mxConstants.STYLE_FONTFAMILY) || key.equals(mxConstants.STYLE_ALIGN))
-				updateAnnotationGraphics((AnnotationGraphics) annotationGraphics, s.getKey(), s.getValue());
-			else
-				updateArcGraphics(arcGraphics, s.getKey(), s.getValue());
+			if (key.contains("label") || key.equals(mxConstants.STYLE_FONTSIZE) || key.equals(mxConstants.STYLE_FONTFAMILY) || key.equals(mxConstants.STYLE_ALIGN)) {
+			} else {
+				updateArcGraphics(graphics, s.getKey(), s.getValue());
+			}
 		}
-	} catch (IOException e) {
-		JOptionPane.showMessageDialog(null,"Cannot write Graphicsstyle to FileSystem " + e.getMessage(),"IO Exception", JOptionPane.ERROR_MESSAGE);
-	} catch (PropertyException e) {
-		JOptionPane.showMessageDialog(null, e.getMessage(),"Property Exception", JOptionPane.ERROR_MESSAGE);
-
+		return graphics;
 	}
-
-	}
-
-
+	
 }

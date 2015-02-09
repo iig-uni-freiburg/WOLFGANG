@@ -1,8 +1,10 @@
 package de.uni.freiburg.iig.telematik.wolfgang.graph.handler;
 
+
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -10,15 +12,18 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.handler.mxGraphTransferHandler;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -121,65 +126,60 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 		return result;
 	}
-
+	
 	/**
-	 * Gets a drop target using getDropTarget and imports the cells using
-	 * mxGraph.splitEdge or PNGraphComponent.importCells depending on the drop
-	 * target and the return values of mxGraph.isSplitEnabled and
-	 * mxGraph.isSplitTarget. Selects and returns the cells that have been
-	 * imported.
+	 * Gets a drop target using getDropTarget and imports the cells.<br>
+	 * <ul>
+	 * <li>Case 1: Drag 'n' Drop from toolbar</li>
+	 * <li>Case 2: Drag from existing node in editor</li>
+	 * <li>Case 3: Keyboard shortcut (Strg + arrow)</li>
+	 * <li>Case 4: Copy Paste</li>
+	 * <ul>
+	 * These cases are handles with two different strategies:
+	 * <ul>
+	 * <li>Strategy A (Case 1-3) {@see #}</li>
+	 * <li>Strategy B (Case 4)</li>
+	 * <ul>
 	 * @throws IOException 
 	 * @throws PropertyException 
 	 */
-	protected Object[] importCells(PNGraphComponent graphComponent, mxGraphTransferable gt, double dx, double dy) {
+	@Override
+	protected Object[] importCells(mxGraphComponent graphComponent, mxGraphTransferable gt, double dx, double dy) {
+		Validate.type(graphComponent, PNGraphComponent.class);
 		Object target = getDropTarget(graphComponent, gt);
-		PNGraph graph = graphComponent.getGraph();
+		PNGraph graph = ((PNGraphComponent) graphComponent).getGraph();
 		Object[] cells = gt.getCells();
-		HashMap<String, PNGraphCell> temporaryMapping = new HashMap<String, PNGraphCell>();
+		HashMap<String, PNGraphCell> insertedCells = new HashMap<String, PNGraphCell>();
+		
+		List<PNGraphCell> remainingArcCells = new ArrayList<PNGraphCell>();
 
 		graph.getModel().beginUpdate();
 		for (Object object : cells) {
-			PNGraphCell cell;
 			if (object instanceof PNGraphCell) {
-				cell = (PNGraphCell) object;
+				PNGraphCell cell = (PNGraphCell) object;
 
 				PNGraphCell newCell = null;
-
 				switch (cell.getType()) {
 				case PLACE:
 					if (cell.getId() == null){
-						// Place is generated per Drag and Drop
+						// Strategy A (Case 1-3)
 						newCell = (PNGraphCell) graph.addNewPlace(new mxPoint(dx, dy));
 					} else {
-						// 
-						String nodeName = graph.getNewPlaceName();
-
-						if (graph.getNetContainer().getPetriNet().addPlace(nodeName)) {
-							AbstractPlace place = graph.getNetContainer().getPetriNet().getPlace(nodeName);
-
-							if (graph.getNetContainer().getPetriNet().containsPlace(cell.getId())) {
-								if (!graph.getNetContainer().getPetriNet().getPlace(cell.getId()).getLabel().equals(cell.getId()))
-									place.setLabel(graph.getNetContainer().getPetriNet().getPlace(cell.getId()).getLabel());
-							} else
-								place.setLabel((String) cell.getValue());
-
-							NodeGraphics nodeGraphics = new NodeGraphics();
-							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-
-							Utils.createNodeGraphicsFromStyle(cell.getStyle(), (NodeGraphics)nodeGraphics, annotationGraphics);
-				
-							graph.addGraphicalInfoToPNPlace(new mxPoint(cell.getGeometry().getCenterX() + dx, cell.getGeometry().getCenterY() + dy), place, nodeGraphics, annotationGraphics);
-							annotationGraphics.setOffset(new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY()));
-							newCell = graph.insertPNPlace(place, nodeGraphics, annotationGraphics);
+						// Strategy B (Case 4)
+						Offset offset = new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY());
+						Dimension dimension = new Dimension(cell.getGeometry().getWidth(), cell.getGeometry().getHeight());
+						newCell = (PNGraphCell) graph.addNewPlace(new mxPoint(cell.getGeometry().getCenterX() + dx, cell.getGeometry().getCenterY() + dy), cell.getStyle(), offset, dimension);
+						
+						if(!cell.getId().equals(cell.getValue())){
+							graph.getNetContainer().getPetriNet().getPlace(cell.getId()).setLabel(cell.getValue().toString());
 						}
-
 					}
-
 					break;
 				case TRANSITION:
-					if (cell.getId() == null) // DnD generated
+					if (cell.getId() == null){
+						// Strategy A (Case 1-3)
 						newCell = (PNGraphCell) graph.addNewTransition(new mxPoint(dx, dy));
-					else {
+					} else {
 						String nodeName = graph.getNewTransitionName();
 						if (graph.getNetContainer().getPetriNet().addTransition(nodeName)) {
 							AbstractTransition transition = graph.getNetContainer().getPetriNet().getTransition(nodeName);
@@ -200,58 +200,70 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 					break;
 
 				case ARC:
+					
+//					if (cell.getId() == null){
+//						// Strategy A (Case 1-3)
+//						
+//					} else {
 
-					AbstractFlowRelation relation = null;
-					PNGraphCell sourceCell = (PNGraphCell) cell.getSource();
-					sourceCell = temporaryMapping.get(sourceCell.getId());
-					PNGraphCell targetCell = (PNGraphCell) cell.getTarget();
-					targetCell = temporaryMapping.get(targetCell.getId());
-					if (sourceCell != null && targetCell != null) {
-						if (sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
-							relation = graph.getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(), targetCell.getId());
-						} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
-							relation = graph.getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
+						PNGraphCell sourceCell = insertedCells.get(cell.getSource().getId());
+						PNGraphCell targetCell = insertedCells.get(cell.getTarget().getId());
+						if(sourceCell == null || targetCell == null){
+							remainingArcCells.add(cell);
+							continue;
 						}
-						ArcGraphics arcGraphics = new ArcGraphics();
-						AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-						graph.addGraphicalInfoToPNArc(relation, arcGraphics, annotationGraphics);
-						Utils.createArcGraphicsFromStyle(cell.getStyle(), arcGraphics, annotationGraphics);						
-						List<mxPoint> points = cell.getGeometry().getPoints();
-						if (arcGraphics != null) {
-							Vector<Position> vector = new Vector<Position>();
-							if (points != null) {
-								if (points.size() >= 0) {
-									for (mxPoint p : points) {
-										vector.add(new Position(p.getX() + dx, p.getY() + dy));
+						
+						AbstractFlowRelation relation = null;
+						if (sourceCell != null && targetCell != null) {
+							if (sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
+								relation = graph.getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(), targetCell.getId());
+							} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
+								relation = graph.getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
+							}
+							ArcGraphics arcGraphics = new ArcGraphics();
+							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+							graph.addGraphicalInfoToPNArc(relation, arcGraphics, annotationGraphics);
+							Utils.createArcGraphicsFromStyle(cell.getStyle(), arcGraphics, annotationGraphics);
+							List<mxPoint> points = cell.getGeometry().getPoints();
+							if (arcGraphics != null) {
+								Vector<Position> vector = new Vector<Position>();
+								if (points != null) {
+									if (points.size() >= 0) {
+										for (mxPoint p : points) {
+											vector.add(new Position(p.getX() + dx, p.getY() + dy));
+										}
+
+										arcGraphics.setPositions(vector);
+
 									}
-
-									arcGraphics.setPositions(vector);
-
 								}
 							}
+							newCell = graph.insertPNRelation(relation, arcGraphics, annotationGraphics);
 						}
-
-						newCell = graph.insertPNRelation(relation, arcGraphics, annotationGraphics);
-
-					}
+					
+//					}
 
 					break;
 				}
 
-				temporaryMapping.put(cell.getId(), newCell);
+				insertedCells.put(cell.getId(), newCell);
 			}
 		}
+		
+		for (PNGraphCell remainingArcCell: remainingArcCells) {
+			
+		}
+		
 		graph.getModel().endUpdate();
 		if (graph.isSplitEnabled() && graph.isSplitTarget(target, cells)) {
 			graph.splitEdge(target, cells, dx, dy);
 		} else {
 			graph.setSelectionCells(cells);
 		}
-		if (!temporaryMapping.isEmpty())
-			graph.setSelectionCells(temporaryMapping.values().toArray());
+		if (!insertedCells.isEmpty())
+			graph.setSelectionCells(insertedCells.values().toArray());
 
 		return cells;
 	}
-
 
 }
