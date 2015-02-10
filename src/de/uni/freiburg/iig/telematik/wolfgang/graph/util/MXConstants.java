@@ -11,7 +11,6 @@ import java.util.Hashtable;
 
 import javax.swing.JOptionPane;
 
-import com.itextpdf.text.Font.FontFamily;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxUtils;
 
@@ -20,12 +19,9 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
@@ -145,15 +141,22 @@ public abstract class MXConstants {
 		// Set fill gradient color
 		Color gradientColorPNDefault = WolfgangProperties.getInstance().getDefaultGradientColor();
 		style.put(mxConstants.STYLE_GRADIENTCOLOR, getMXColor(gradientColorPNDefault));
-
 		
+		addDefaultLineStyle(style);
+		
+		addDefaultAnnotationStyle(style);
+
+		return getShortenedStyle(style);
+	}
+	
+	private static void addDefaultLineStyle(Hashtable<String, Object> style) throws PropertyException, IOException{
 		// Set line color
 		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLineColor();
 		style.put(mxConstants.STYLE_STROKECOLOR, getMXColor(lineColorPNDefault));
-		
+
 		// Set line style
 		style.put(MXConstants.LINE_STYLE, DEFAULT_LINE_STYLE);
-		
+
 		// Set line shape
 		Shape lineShape = DEFAULT_LINE_SHAPE;
 		switch (lineShape) {
@@ -165,17 +168,15 @@ public abstract class MXConstants {
 			style.put(mxConstants.STYLE_ROUNDED, "false");
 			style.put(mxConstants.STYLE_EDGE, "direct");
 			break;
-
 		}
-		
+
 		// Set line width
 		style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(DEFAULT_LINE_WIDTH));
-		
-		addDefaultAnnotationStyle(style);
-
-		String convertedStyle = style.toString().replaceAll(", ", ";");
-		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
-		return shortendStyle;
+	}
+	
+	private static String getShortenedStyle(Hashtable<String, Object> styleMap){
+		String convertedStyle = styleMap.toString().replaceAll(", ", ";");
+		return convertedStyle.substring(1, convertedStyle.length() - 1);
 	}
 	
 	private static String getMXColor(Color color){
@@ -197,7 +198,7 @@ public abstract class MXConstants {
 	 * @throws PropertyException
 	 * @throws IOException
 	 */
-	public static String extractNodeStyleFromGraphics(PNComponent type, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics, int i) throws PropertyException, IOException {
+	public static String extractNodeStyleFromGraphics(PNComponent type, NodeGraphics nodeGraphics, AnnotationGraphics annotationGraphics) throws PropertyException, IOException {
 		Validate.notNull(nodeGraphics);
 		Validate.notNull(annotationGraphics);
 		
@@ -273,17 +274,17 @@ public abstract class MXConstants {
 
 		extractAnnotationStyleFromGraphics(annotationGraphics, style);
 
-		String convertedStyle = style.toString().replaceAll(", ", ";");
-		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
-		return shortendStyle;
+		return getShortenedStyle(style);
 	}
 
 	public static String decodePath(URI uriFile) {
 		return uriFile.getPath();
 	}
 
-	public static String getDefaultArcStyle(ArcGraphics arcGraphics) throws IOException, PropertyException {
-		
+	public static String getDefaultArcStyle() throws IOException, PropertyException {
+		Hashtable<String, Object> style = new Hashtable<String, Object>();
+		addDefaultLineStyle(style);
+		return getShortenedStyle(style);
 	}
 	
 	public static String extractArcStyleFromGraphics(ArcGraphics arcGraphics, AnnotationGraphics annotationGraphics) throws IOException, PropertyException {
@@ -322,13 +323,9 @@ public abstract class MXConstants {
 		if(lineWidth != null)
 			style.put(mxConstants.STYLE_STROKEWIDTH, Double.toString(lineWidth));
 
-//		arcGraphics.setLine(new Line(lineColorPN, lineShape, lineStyle, line.getWidth()));
-
 		extractAnnotationStyleFromGraphics(annotationGraphics, style);
-		String convertedStyle = style.toString().replaceAll(", ", ";");
-		String shortendStyle = convertedStyle.substring(1, convertedStyle.length() - 1);
-
-		return shortendStyle;
+		
+		return getShortenedStyle(style);
 	}
 	
 	private static void addDefaultAnnotationStyle(Hashtable<String, Object> style) throws IOException, PropertyException {

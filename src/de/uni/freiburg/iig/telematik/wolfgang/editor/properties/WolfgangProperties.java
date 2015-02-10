@@ -35,6 +35,7 @@ public class WolfgangProperties extends AbstractProperties{
 	public static final String DEFAULT_FONT_FAMILY = "Dialog";
 	public static final int DEFAULT_FONT_SIZE = 11;
 	public static final double DEFAULT_ZOOM_STEP = 0.2;
+	public static final boolean DEFAULT_SNAP_TO_GRID = true;
 	
 	protected static final String propertyFileName = "WolfgangProperties";
 	
@@ -486,7 +487,24 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Snap to Grid -----------------------------------------------------------------
 	
+	public void setSnapToGrid(Boolean snapToGrid) {
+		Validate.notNull(snapToGrid);
+		setProperty(WolfgangProperty.SNAP_TO_GRID, snapToGrid);
+	}
 	
+	public boolean getSnapToGrid() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.SNAP_TO_GRID);
+		if(propertyValue == null)
+			throw new PropertyException(WolfgangProperty.SNAP_TO_GRID, propertyValue, "Invalid property value");
+
+		Boolean snapToGrid = null;
+		try {
+			snapToGrid = Boolean.parseBoolean(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.BACKGROUD_COLOR, propertyValue, "Cannot boolean object from property value");
+		}
+		return snapToGrid;
+	}
 	
 	// ------- Default Properties -----------------------------------------------------------
 	
@@ -513,6 +531,9 @@ public class WolfgangProperties extends AbstractProperties{
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_FONT_FAMILY.toString(), DEFAULT_FONT_FAMILY);
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_FONT_SIZE.toString(), String.valueOf(DEFAULT_FONT_SIZE));
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_ZOOM_STEP.toString(), String.valueOf(DEFAULT_ZOOM_STEP));
+		
+		defaultProperties.setProperty(WolfgangProperty.SNAP_TO_GRID.toString(), String.valueOf(DEFAULT_SNAP_TO_GRID));
+		
 		return defaultProperties;
 	}
 	

@@ -9,6 +9,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.handler.mxConnectPreview;
 import com.mxgraph.swing.handler.mxConnectionHandler;
@@ -68,9 +71,11 @@ public class ConnectionHandler extends mxConnectionHandler {
 					}
 
 					if (commit) {
-
-						result = ((PNGraph) graphComponent.getGraph()).addNewFlowRelation((PNGraphCell) src, (PNGraphCell) trg);
-
+						try {
+							result = ((PNGraph) graphComponent.getGraph()).addNewFlowRelation((PNGraphCell) src, (PNGraphCell) trg);
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert flow relation.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 					fireEvent(new mxEventObject(mxEvent.STOP, "event", e, "commit", commit, "cell", (commit) ? result : null));
 
@@ -120,10 +125,18 @@ public class ConnectionHandler extends mxConnectionHandler {
 
 							switch (getSource().getType()) {
 							case PLACE:
-								targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewTransition(graphComponent.getPointForEvent(e));
+								try {
+									targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewTransition(graphComponent.getPointForEvent(e));
+								} catch (Exception ex) {
+									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert transition.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+								}
 								break;
 							case TRANSITION:
-								targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewPlace(graphComponent.getPointForEvent(e));
+								try {
+									targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewPlace(graphComponent.getPointForEvent(e));
+								} catch (Exception ex) {
+									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert place.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+								}
 								break;
 							}
 

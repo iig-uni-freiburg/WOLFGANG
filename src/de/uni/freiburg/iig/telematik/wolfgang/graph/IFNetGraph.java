@@ -116,7 +116,7 @@ public class IFNetGraph extends PNGraph {
 	}
 
 	@Override
-	protected void setArcLabel(PNGraph pnGraph, String id, String value) {
+	protected void setArcLabel(String id, String value) {
 		// TODO Auto-generated method stub
 
 	}

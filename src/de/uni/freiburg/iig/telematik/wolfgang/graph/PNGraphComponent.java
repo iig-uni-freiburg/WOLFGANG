@@ -22,9 +22,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -36,8 +34,6 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.mxGraphOutline;
 import com.mxgraph.swing.handler.mxCellHandler;
 import com.mxgraph.swing.handler.mxCellMarker;
-import com.mxgraph.swing.handler.mxElbowEdgeHandler;
-import com.mxgraph.swing.handler.mxVertexHandler;
 import com.mxgraph.swing.util.mxCellOverlay;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxEvent;
@@ -47,14 +43,13 @@ import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxEdgeStyle;
 import com.mxgraph.view.mxEdgeStyle.mxEdgeStyleFunction;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNCellHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNEdgeHandler;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNElbowEdgeHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNVertexHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.ConnectorShape;
@@ -100,7 +95,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_DEFAULT, new DefaultTextShape());
 		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_HTML, new HtmlTextShape());
 		getCanvas().putShape(mxConstants.SHAPE_CONNECTOR, new ConnectorShape());
-
 	}
 
 	public void highlightEnabledTransitions() {
@@ -168,7 +162,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 						}
 					marker.setVisible(false);
 					highlightEnabledTransitions();
-					getGraph().notifyTransitionFired(cell);
 
 				}
 			});

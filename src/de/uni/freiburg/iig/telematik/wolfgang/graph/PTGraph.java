@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.io.IOException;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.util.mxConstants;
@@ -13,7 +12,6 @@ import com.mxgraph.view.mxCellState;
 
 import de.invation.code.toval.graphic.misc.CircularPointGroup;
 import de.invation.code.toval.graphic.misc.PColor;
-import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
@@ -22,7 +20,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PTProperties;
 
@@ -121,8 +118,8 @@ public class PTGraph extends PNGraph {
 
 
 	@Override
-	protected void setArcLabel(PNGraph sender, String arcName, String weight) {
-			getPNProperties().setArcWeight(sender, arcName, weight);
+	protected void setArcLabel(String arcName, String weight) {
+		getPNProperties().setArcWeight(this, arcName, weight);
 	}
 
 	@Override

@@ -86,7 +86,7 @@ public class CPNGraph extends PNGraph {
 	 * @return
 	 */ Multiset<String> getPlaceStateForCell(String id, CircularPointGroup circularPointGroup) {
 		CPNPlace place = (CPNPlace) getNetContainer().getPetriNet().getPlace(id);
-		return place.getState( );
+		return place.getState();
 	}
 
 
@@ -108,7 +108,7 @@ public class CPNGraph extends PNGraph {
 	}
 
 	@Override
-	protected void setArcLabel(PNGraph pnGraph, String id, String value) {
+	protected void setArcLabel(String id, String value) {
 		// TODO Auto-generated method stub
 		
 	}
