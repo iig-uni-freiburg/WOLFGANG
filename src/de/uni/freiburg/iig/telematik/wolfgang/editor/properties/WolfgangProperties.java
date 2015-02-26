@@ -496,7 +496,7 @@ public class WolfgangProperties extends AbstractProperties{
 			return null;
 		}
 		try {
-			GradientRotation result = GradientRotation.valueOf(propertyValue);
+			GradientRotation result = GradientRotation.getGradientRotation(propertyValue);
 			return result;
 		} catch (Exception e) {
 			throw new PropertyException(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION, propertyValue);
