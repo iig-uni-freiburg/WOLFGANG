@@ -222,28 +222,35 @@ public abstract class MXConstants {
 		}
 
 		// Set fill gradient rotation
-		style.put(MXConstants.GRADIENT_ROTATION, nodeGraphics.getFill().getGradientRotation());
+		GradientRotation nodeGradientRotation = nodeGraphics.getFill().getGradientRotation();
+		if(nodeGradientRotation != null){
+		style.put(MXConstants.GRADIENT_ROTATION, nodeGradientRotation);
+		}
 
 		// Set fill gradient color
-		if(nodeGraphics.getFill().getGradientColor().equals("transparent")){
+		String nodeGradientColor = nodeGraphics.getFill().getGradientColor();
+		if(nodeGradientColor != null){
+		if(nodeGradientColor.equals("transparent")){
 			style.put(mxConstants.STYLE_GRADIENTCOLOR, "none");
 		} else {
-			style.put(mxConstants.STYLE_GRADIENTCOLOR, nodeGraphics.getFill().getGradientColor());
+			style.put(mxConstants.STYLE_GRADIENTCOLOR, nodeGradientColor);
+		}
 		}
 
 		// Set fill image
-		URI image = nodeGraphics.getFill().getImage();
-		if (image != null) {
-			String path = decodePath(image);
+		URI nodeImage = nodeGraphics.getFill().getImage();
+		if (nodeImage != null) {
+			String path = decodePath(nodeImage);
 			try {
 				path = URLDecoder.decode(path, "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				JOptionPane.showMessageDialog(null, "utf-8 encryption is not supported", "unsupported Encoding Exception", JOptionPane.ERROR);
 			}
 			path = new File(path).getPath();
-			if (image != null)
+			if (nodeImage != null)
 				style.put(mxConstants.STYLE_IMAGE, "file:" + path);
 		}
+		
 		
 		// Set line color
 		if (nodeGraphics.getLine().getColor().equals("transparent")) {
@@ -401,10 +408,12 @@ public abstract class MXConstants {
 
 		// Set label gradient color
 		String labelGradientColor = annotationGraphics.getFill().getGradientColor();
+		if (labelGradientColor != null){
 		if(labelGradientColor.equals("transparent")){
 			style.put(MXConstants.LABEL_GRADIENTCOLOR, "none");
 		} else {
 			style.put(MXConstants.LABEL_GRADIENTCOLOR, labelGradientColor);
+		}
 		}
 		
 		// Set label image
