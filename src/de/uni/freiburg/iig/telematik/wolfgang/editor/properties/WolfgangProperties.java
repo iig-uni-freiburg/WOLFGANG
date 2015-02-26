@@ -11,6 +11,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
 
@@ -35,13 +36,19 @@ public class WolfgangProperties extends AbstractProperties{
 	public static final String DEFAULT_FONT_FAMILY = "Dialog";
 	public static final int DEFAULT_FONT_SIZE = 11;
 	public static final double DEFAULT_ZOOM_STEP = 0.2;
+	
+	public static final Color DEFAULT_BACKGROUND_COLOR = MXConstants.blueBG;
+	public static final int DEFAULT_GRID_SIZE = 5;
+	public static final Color DEFAULT_GRID_COLOR = MXConstants.bluehigh;
+	public static final boolean DEFAULT_GRID_VISIBILITY = true;
+	
 	public static final boolean DEFAULT_SNAP_TO_GRID = true;
 	
 	protected static final String propertyFileName = "WolfgangProperties";
 	
 	private static WolfgangProperties instance = null;
 	
-	private Set<WolfgangPropertyChangeListener> listeners = new HashSet<WolfgangPropertyChangeListener>();
+	private Set<WolfgangPropertyListener> listeners = new HashSet<WolfgangPropertyListener>();
 
 	public WolfgangProperties() throws IOException {
 		try {
@@ -74,8 +81,29 @@ public class WolfgangProperties extends AbstractProperties{
 //		props.remove(property.toString());
 //	}
 	
+	
+	// ------- Listeners --------------------------------------------------------------------
+	
+	public boolean addListener(WolfgangPropertyListener listener){
+		return listeners.add(listener);
+	}
+	
+	public boolean removeListener(WolfgangPropertyListener listener){
+		return listeners.remove(listener);
+	}
+	
 	// ------- Icon Size --------------------------------------------------------------------
 
+	public void setIconSize(IconSize size) throws PropertyException, ParameterException {
+		Validate.notNull(size);
+		if(!size.equals(getIconSize())){
+			setProperty(WolfgangProperty.ICON_SIZE, size.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.iconSizeChanged(size);
+			}
+		}
+	}
+	
 	public IconSize getIconSize() throws PropertyException {
 		String propertyValue = getProperty(WolfgangProperty.ICON_SIZE);
 		if (propertyValue == null || propertyValue.equals(""))
@@ -88,17 +116,17 @@ public class WolfgangProperties extends AbstractProperties{
 		}
 	}
 	
-	public void setIconSize(IconSize size) throws PropertyException, ParameterException {
-		Validate.notNull(size);
-		setProperty(WolfgangProperty.ICON_SIZE, size.toString());
-	}
-	
 	
 	// ------- Default Place size -----------------------------------------------------------
 	
-	public void setDefaultPlaceSize(Integer fontSize){
-		Validate.positive(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_PLACE_SIZE, fontSize.toString());
+	public void setDefaultPlaceSize(Integer placeSize) throws PropertyException{
+		Validate.positive(placeSize);
+		if(!placeSize.equals(getDefaultPlaceSize())){
+			setProperty(WolfgangProperty.DEFAULT_PLACE_SIZE, placeSize.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultPlaceSizeChanged(placeSize);
+			}
+		}
 	}
 	
 	public Integer getDefaultPlaceSize() throws PropertyException{
@@ -116,9 +144,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Transition Width -----------------------------------------------------
 	
-	public void setDefaultTransitionWidth(Integer fontSize){
-		Validate.positive(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_TRANSITION_WIDTH, fontSize.toString());
+	public void setDefaultTransitionWidth(Integer transitionWidth) throws PropertyException{
+		Validate.positive(transitionWidth);
+		if(!transitionWidth.equals(getDefaultTransitionWidth())){
+			setProperty(WolfgangProperty.DEFAULT_TRANSITION_WIDTH, transitionWidth.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultTransitionWidthChanged(transitionWidth);
+			}
+		}
 	}
 	
 	public Integer getDefaultTransitionWidth() throws PropertyException{
@@ -136,9 +169,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Transition Height ----------------------------------------------------
 	
-	public void setDefaultTransitionHeight(Integer fontSize){
-		Validate.positive(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_TRANSITION_HEIGHT, fontSize.toString());
+	public void setDefaultTransitionHeight(Integer transitionHeight) throws PropertyException{
+		Validate.positive(transitionHeight);
+		if(!transitionHeight.equals(getDefaultTransitionHeight())){
+			setProperty(WolfgangProperty.DEFAULT_TRANSITION_HEIGHT, transitionHeight.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultTransitionHeightChanged(transitionHeight);
+			}
+		}
 	}
 	
 	public Integer getDefaultTransitionHeight() throws PropertyException{
@@ -155,9 +193,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Vertical Label Offset ------------------------------------------------
 	
-	public void setDefaultVerticalLabelOffset(Integer fontSize){
-		Validate.notNull(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_VERTICAL_LABEL_OFFSET, fontSize.toString());
+	public void setDefaultVerticalLabelOffset(Integer labelOffset) throws PropertyException{
+		Validate.notNull(labelOffset);
+		if(!labelOffset.equals(getDefaultVerticalLabelOffset())){
+			setProperty(WolfgangProperty.DEFAULT_VERTICAL_LABEL_OFFSET, labelOffset.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultVerticalLabelOffsetChanged(labelOffset);
+			}
+		}
 	}
 	
 	public Integer getDefaultVerticalLabelOffset() throws PropertyException{
@@ -174,9 +217,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Horizontal Label Offset ----------------------------------------------
 	
-	public void setDefaultHorizontalLabelOffset(Integer fontSize){
-		Validate.notNull(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_HORIZONTAL_LABEL_OFFSET, fontSize.toString());
+	public void setDefaultHorizontalLabelOffset(Integer labelOffset) throws PropertyException{
+		Validate.notNull(labelOffset);
+		if(!labelOffset.equals(getDefaultHorizontalLabelOffset())){
+			setProperty(WolfgangProperty.DEFAULT_HORIZONTAL_LABEL_OFFSET, labelOffset.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultHorizuntalLabelOffsetChanged(labelOffset);
+			}
+		}
 	}
 	
 	public Integer getDefaultHorizontalLabelOffset() throws PropertyException{
@@ -193,9 +241,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Token Size -----------------------------------------------------------
 	
-	public void setDefaultTokenSize(Integer fontSize){
-		Validate.positive(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_TOKEN_SIZE, fontSize.toString());
+	public void setDefaultTokenSize(Integer tokenSize) throws PropertyException{
+		Validate.positive(tokenSize);
+		if(!tokenSize.equals(getDefaultTokenSize())){
+			setProperty(WolfgangProperty.DEFAULT_TOKEN_SIZE, tokenSize.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultTokenSizeChanged(tokenSize);
+			}
+		}
 	}
 	
 	public Integer getDefaultTokenSize() throws PropertyException{
@@ -213,9 +266,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Token Distance -------------------------------------------------------
 	
-	public void setDefaultTokenDistance(Integer tokenDistance){
+	public void setDefaultTokenDistance(Integer tokenDistance) throws PropertyException{
 		Validate.positive(tokenDistance);
-		setProperty(WolfgangProperty.DEFAULT_TOKEN_DISTANCE, tokenDistance.toString());
+		if(!tokenDistance.equals(getDefaultTokenDistance())){
+			setProperty(WolfgangProperty.DEFAULT_TOKEN_DISTANCE, tokenDistance.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultTokenDistanceChanged(tokenDistance);
+			}
+		}
 	}
 	
 	public Integer getDefaultTokenDistance() throws PropertyException{
@@ -233,9 +291,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Font Size ------------------------------------------------------------
 	
-	public void setDefaultFontSize(Integer fontSize){
+	public void setDefaultFontSize(Integer fontSize) throws PropertyException{
 		Validate.positive(fontSize);
-		setProperty(WolfgangProperty.DEFAULT_FONT_SIZE, fontSize.toString());
+		if(!fontSize.equals(getDefaultFontSize())){
+			setProperty(WolfgangProperty.DEFAULT_FONT_SIZE, fontSize.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultFontSizeChanged(fontSize);
+			}
+		}
 	}
 	
 	public Integer getDefaultFontSize() throws PropertyException{
@@ -253,9 +316,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Zoom Step ------------------------------------------------------------
 	
-	public void setDefaultZoomStep(Double zoomStep){
+	public void setDefaultZoomStep(Double zoomStep) throws PropertyException{
 		Validate.probability(zoomStep);
-		setProperty(WolfgangProperty.DEFAULT_ZOOM_STEP, zoomStep.toString());
+		if(!zoomStep.equals(getDefaultZoomStep())){
+			setProperty(WolfgangProperty.DEFAULT_ZOOM_STEP, zoomStep.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultZoomStepChanged(zoomStep);
+			}
+		}
 	}
 	
 	public Double getDefaultZoomStep() throws PropertyException{
@@ -273,11 +341,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Place Color -----------------------------------------------------------
 	
-	public void setDefaultPlaceColor(Color nodeColor) {
+	public void setDefaultPlaceColor(Color nodeColor) throws PropertyException {
 		if(nodeColor == null){
-			setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, "");
+			if(getDefaultPlaceColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultPlaceColorChanged(nodeColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, nodeColor.getRGB());
+			if(!nodeColor.equals(getDefaultPlaceColor())){
+				setProperty(WolfgangProperty.DEFAULT_PLACE_COLOR, nodeColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultPlaceColorChanged(nodeColor);
+				}
+			}
 		}
 	}
 	
@@ -297,11 +375,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Transition Color -----------------------------------------------------------
 	
-	public void setDefaultTransitionColor(Color nodeColor) {
+	public void setDefaultTransitionColor(Color nodeColor) throws PropertyException {
 		if(nodeColor == null){
-			setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, "");
+			if(getDefaultTransitionColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultTransitionColorChanged(nodeColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, nodeColor.getRGB());
+			if(!nodeColor.equals(getDefaultTransitionColor())){
+				setProperty(WolfgangProperty.DEFAULT_TRANSITION_COLOR, nodeColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultTransitionColorChanged(nodeColor);
+				}
+			}
 		}
 	}
 	
@@ -322,11 +410,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Label Background Color -----------------------------------------------
 	
-	public void setDefaultLabelBackgroundColor(Color nodeColor) {
-		if(nodeColor == null){
-			setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, "");
+	public void setDefaultLabelBackgroundColor(Color labelBGColor) throws PropertyException {
+		if(labelBGColor == null){
+			if(getDefaultLabelBackgroundColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLabelBGColorChanged(labelBGColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, nodeColor.getRGB());
+			if(!labelBGColor.equals(getDefaultLabelBackgroundColor())){
+				setProperty(WolfgangProperty.DEFAULT_LABEL_BG_COLOR, labelBGColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLabelBGColorChanged(labelBGColor);
+				}
+			}
 		}
 	}
 	
@@ -347,11 +445,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Gradient Color -------------------------------------------------------
 	
-	public void setDefaultGradientColor(Color gradientColor) {
+	public void setDefaultGradientColor(Color gradientColor) throws PropertyException {
 		if(gradientColor == null){
-			setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, "");
+			if(getDefaultGradientColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultGradientColorChanged(gradientColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, gradientColor.getRGB());
+			if(!gradientColor.equals(getDefaultGradientColor())){
+				setProperty(WolfgangProperty.DEFAULT_GRADIENT_COLOR, gradientColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultGradientColorChanged(gradientColor);
+				}
+			}
 		}
 	}
 	
@@ -372,9 +480,14 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Gradient Direction ---------------------------------------------------
 	
-	public void setDefaultGradientDirection(GradientRotation gradientDirection) {
+	public void setDefaultGradientDirection(GradientRotation gradientDirection) throws PropertyException {
 		Validate.notNull(gradientDirection);
-		setProperty(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION, gradientDirection.toString());
+		if(!gradientDirection.equals(getDefaultGradientDirection())){
+			setProperty(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION, gradientDirection.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultGradientDirectionChanged(gradientDirection);
+			}
+		}
 	}
 	
 	public GradientRotation getDefaultGradientDirection() throws PropertyException{
@@ -393,11 +506,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Line Color -----------------------------------------------------------
 	
-	public void setDefaultLineColor(Color lineColor) {
+	public void setDefaultLineColor(Color lineColor) throws PropertyException {
 		if(lineColor == null){
-			setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, "");
+			if(getDefaultLineColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLineColorChanged(lineColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, lineColor.getRGB());
+			if(!lineColor.equals(getDefaultLineColor())){
+				setProperty(WolfgangProperty.DEFAULT_LINE_COLOR, lineColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLineColorChanged(lineColor);
+				}
+			}
 		}
 	}
 	
@@ -420,7 +543,12 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	public void setDefaultFontFamily(String fontFamily) {
 		Validate.notNull(fontFamily);
-		setProperty(WolfgangProperty.DEFAULT_FONT_FAMILY, fontFamily);
+		if(!fontFamily.equals(getDefaultFontFamily())){
+			setProperty(WolfgangProperty.DEFAULT_FONT_FAMILY, fontFamily);
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.defaultFontFamilyChanged(fontFamily);
+			}
+		}
 	}
 	
 	public String getDefaultFontFamily(){
@@ -432,11 +560,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Default Label Line Color -----------------------------------------------------
 	
-	public void setDefaultLabelLineColor(Color labelLineColor) {
+	public void setDefaultLabelLineColor(Color labelLineColor) throws PropertyException {
 		if(labelLineColor == null){
-			setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, "");
+			if(getDefaultLabelLineColor() != null){
+				setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLabelLineColorChanged(labelLineColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, labelLineColor.getRGB());
+			if(!labelLineColor.equals(getDefaultLabelLineColor())){
+				setProperty(WolfgangProperty.DEFAULT_LABEL_LINE_COLOR, labelLineColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.defaultLabelLineColorChanged(labelLineColor);
+				}
+			}
 		}
 	}
 	
@@ -457,11 +595,21 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Background Color -------------------------------------------------------------
 	
-	public void setBackgroundColor(Color labelLineColor) {
-		if(labelLineColor == null){
-			setProperty(WolfgangProperty.BACKGROUD_COLOR, "");
+	public void setBackgroundColor(Color backgroundColor) throws PropertyException {
+		if(backgroundColor == null){
+			if(getBackgroundColor() != null){
+				setProperty(WolfgangProperty.BACKGROUD_COLOR, "");
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.backgroundColorChanged(backgroundColor);
+				}
+			}
 		} else {
-			setProperty(WolfgangProperty.BACKGROUD_COLOR, labelLineColor.getRGB());
+			if(!backgroundColor.equals(getBackgroundColor())){
+				setProperty(WolfgangProperty.BACKGROUD_COLOR, backgroundColor.getRGB());
+				for (WolfgangPropertyListener listener : listeners) {
+					listener.backgroundColorChanged(backgroundColor);
+				}
+			}
 		}
 	}
 	
@@ -481,15 +629,98 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	// ------- Grid Size --------------------------------------------------------------------
 	
+	public void setGridSize(Integer gridSize) throws PropertyException {
+		Validate.positive(gridSize);
+		if (!gridSize.equals(getGridSize())) {
+			setProperty(WolfgangProperty.GRID_SIZE, gridSize.toString());
+			for (WolfgangPropertyListener listener : listeners) {
+				listener.gridSizeChanged(gridSize);
+			}
+		}
+	}
+
+	public Integer getGridSize() throws PropertyException {
+		String propertyValue = getProperty(WolfgangProperty.GRID_SIZE);
+		Integer result = null;
+		try {
+			result = Integer.valueOf(propertyValue);
+		} catch (Exception e) {
+			throw new PropertyException(WolfgangProperty.GRID_SIZE, propertyValue);
+		}
+		Validate.positive(result);
+		return result;
+	}
+	
 	// ------- Grid Color -------------------------------------------------------------------
 	
+	public void setGridColor(Color gridColor) throws PropertyException {
+		if (gridColor == null) {
+			if(getGridColor() != null){
+				setProperty(WolfgangProperty.GRID_COLOR, "");
+				for(WolfgangPropertyListener listener: listeners){
+					listener.gridColorChanged(gridColor);
+				}
+			}
+		} else {
+			if(!gridColor.equals(getGridColor())){
+				setProperty(WolfgangProperty.GRID_COLOR, gridColor.getRGB());
+				for(WolfgangPropertyListener listener: listeners){
+					listener.gridColorChanged(gridColor);
+				}
+			}
+		}
+	}
+
+	public Color getGridColor() throws PropertyException {
+		String propertyValue = getProperty(WolfgangProperty.GRID_COLOR);
+		Validate.notNull(propertyValue);
+		if (propertyValue.isEmpty())
+			return null;
+		Color color = null;
+		try {
+			color = Color.decode(propertyValue);
+		} catch (Exception e) {
+			throw new PropertyException(WolfgangProperty.GRID_COLOR, propertyValue, "Cannot create Color object from property value");
+		}
+		return color;
+	}
+		
 	// ------- Grid Visibility --------------------------------------------------------------
+	
+	public void setGridVisibility(Boolean gridVisibility) throws PropertyException {
+		Validate.notNull(gridVisibility);
+		if(gridVisibility != getGridVisibility()){
+			setProperty(WolfgangProperty.GRID_VISIBILITY, gridVisibility);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.gridVisibilityChanged(gridVisibility);
+			}
+		}
+	}
+	
+	public boolean getGridVisibility() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.GRID_VISIBILITY);
+		if(propertyValue == null)
+			throw new PropertyException(WolfgangProperty.GRID_VISIBILITY, propertyValue, "Invalid property value");
+
+		Boolean snapToGrid = null;
+		try {
+			snapToGrid = Boolean.parseBoolean(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.GRID_VISIBILITY, propertyValue, "Cannot boolean object from property value");
+		}
+		return snapToGrid;
+	}
 	
 	// ------- Snap to Grid -----------------------------------------------------------------
 	
-	public void setSnapToGrid(Boolean snapToGrid) {
+	public void setSnapToGrid(Boolean snapToGrid) throws PropertyException {
 		Validate.notNull(snapToGrid);
-		setProperty(WolfgangProperty.SNAP_TO_GRID, snapToGrid);
+		if(snapToGrid != getSnapToGrid()){
+			setProperty(WolfgangProperty.SNAP_TO_GRID, snapToGrid);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.snapToGridChanged(snapToGrid);
+			}
+		}
 	}
 	
 	public boolean getSnapToGrid() throws PropertyException{
@@ -532,6 +763,11 @@ public class WolfgangProperties extends AbstractProperties{
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_FONT_SIZE.toString(), String.valueOf(DEFAULT_FONT_SIZE));
 		defaultProperties.setProperty(WolfgangProperty.DEFAULT_ZOOM_STEP.toString(), String.valueOf(DEFAULT_ZOOM_STEP));
 		
+		defaultProperties.setProperty(WolfgangProperty.BACKGROUD_COLOR.toString(), DEFAULT_BACKGROUND_COLOR == null ? "" : String.valueOf(DEFAULT_BACKGROUND_COLOR.getRGB()));
+		
+		defaultProperties.setProperty(WolfgangProperty.GRID_SIZE.toString(), String.valueOf(DEFAULT_GRID_SIZE));
+		defaultProperties.setProperty(WolfgangProperty.GRID_COLOR.toString(), DEFAULT_GRID_COLOR == null ? "" : String.valueOf(DEFAULT_GRID_COLOR.getRGB()));
+		defaultProperties.setProperty(WolfgangProperty.GRID_VISIBILITY.toString(), String.valueOf(DEFAULT_GRID_VISIBILITY));
 		defaultProperties.setProperty(WolfgangProperty.SNAP_TO_GRID.toString(), String.valueOf(DEFAULT_SNAP_TO_GRID));
 		
 		return defaultProperties;

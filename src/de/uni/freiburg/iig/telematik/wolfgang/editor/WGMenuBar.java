@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.LoadAction;
@@ -14,6 +16,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.NewPTAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAsAction;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.PropertySettingDialog;
 
 public class WGMenuBar extends JMenuBar {
 
@@ -25,7 +28,7 @@ public class WGMenuBar extends JMenuBar {
 		super();
 		this.wolfgang = wolfgang;
 		add(getFileMenu());
-//		add(getSettingsMenu());
+		add(getSettingsMenu());
 	}
 
 	private JMenu getFileMenu() throws PropertyException, IOException {
@@ -81,7 +84,18 @@ public class WGMenuBar extends JMenuBar {
 
 	private JMenu getSettingsMenu() {
 		JMenu settings = new JMenu("Settings");
-		//TODO:
+		JMenuItem settingsItem = new JMenuItem("Edit Wolfgang properties...");
+		settingsItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PropertySettingDialog.showDialog(SwingUtilities.getWindowAncestor(WGMenuBar.this));
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(WGMenuBar.this), "Cannot open settings dialog.\nReason: " + e1.getMessage(), "Internal Exception", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		settings.add(settingsItem);
 		return settings;
 	}
 

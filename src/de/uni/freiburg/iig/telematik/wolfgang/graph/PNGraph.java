@@ -282,7 +282,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			getNetContainer().getPetriNetGraphics().getPlaceGraphics().put(nodeName, nodeGraphics);
 			getNetContainer().getPetriNetGraphics().getPlaceLabelAnnotationGraphics().put(nodeName, annotationGraphics);
 			
-			return addPlaceCell(nodeName, style);
+			PNGraphCell newPlaceCell = addPlaceCell(nodeName, style);
+			graphListenerSupport.notifyPlaceAdded(getNetContainer().getPetriNet().getPlace(nodeName));
+			return newPlaceCell;
 		}
 		return null;
 	}
@@ -317,7 +319,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 //		}
 		addCell(newCell, getDefaultParent());
 		addNodeReference(place, newCell);
-		graphListenerSupport.notifyPlaceAdded(place);
 		return newCell;
 	}
 
@@ -360,7 +361,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			getNetContainer().getPetriNetGraphics().getArcGraphics().put(relation.getName(), arcGraphics);
 			getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().put(relation.getName(), annotationGraphics);
 			
-			return addArcCell(relation.getName(), style);
+			PNGraphCell newRelationCell = addArcCell(relation.getName(), style);
+			graphListenerSupport.notifyRelationAdded(relation);
+			return newRelationCell;
 		}
 		return null;
 	}
@@ -386,7 +389,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		newCell.getGeometry().setPoints(points);
 
 		addArcReference(relation.getName(), newCell);
-		graphListenerSupport.notifyRelationAdded(relation);
 		return newCell;
 	}
 	
@@ -414,7 +416,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			getNetContainer().getPetriNetGraphics().getTransitionGraphics().put(nodeName, nodeGraphics);
 			getNetContainer().getPetriNetGraphics().getTransitionLabelAnnotationGraphics().put(nodeName, annotationGraphics);
 			
-			return addTransitionCell(nodeName, style);
+			PNGraphCell newTransitionCell = addTransitionCell(nodeName, style);
+			graphListenerSupport.notifyTransitionAdded(getNetContainer().getPetriNet().getTransition(nodeName));
+			return newTransitionCell;
 		}
 		return null;
 	}
@@ -450,7 +454,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 //		}
 		addCell(newCell, getDefaultParent());
 		addNodeReference(transition, newCell);
-		graphListenerSupport.notifyTransitionAdded(transition);
 		return newCell;
 	}
 
@@ -1450,30 +1453,39 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return value;
 	}
 
+	/**
+	 * Listeners are not notified when the underlying Petri reports structure changes (new elements).<br>
+	 * This is done in the methods {@link #addNewPlace(mxPoint, String, Offset, Dimension)},
+	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}.
+	 */
 	@Override
-	public void placeAdded(PlaceChangeEvent event) {
-		graphListenerSupport.notifyPlaceAdded(event.place);
-	}
+	public void placeAdded(PlaceChangeEvent event) {}
 
 	@Override
 	public void placeRemoved(PlaceChangeEvent event) {
 		graphListenerSupport.notifyPlaceRemoved(event.place);
 	}
 
+	/**
+	 * Listeners are not notified when the underlying Petri reports structure changes (new elements).<br>
+	 * This is done in the methods {@link #addNewPlace(mxPoint, String, Offset, Dimension)},
+	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}.
+	 */
 	@Override
-	public void transitionAdded(TransitionChangeEvent event) {
-		graphListenerSupport.notifyTransitionAdded(event.transition);
-	}
+	public void transitionAdded(TransitionChangeEvent event) {}
 
 	@Override
 	public void transitionRemoved(TransitionChangeEvent event) {
 		graphListenerSupport.notifyTransitionRemoved(event.transition);
 	}
 
+	/**
+	 * Listeners are not notified when the underlying Petri reports structure changes (new elements).<br>
+	 * This is done in the methods {@link #addNewPlace(mxPoint, String, Offset, Dimension)},
+	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}.
+	 */
 	@Override
-	public void relationAdded(RelationChangeEvent event) {
-		graphListenerSupport.notifyRelationAdded(event.relation);
-	}
+	public void relationAdded(RelationChangeEvent event) {}
 
 	@Override
 	public void relationRemoved(RelationChangeEvent event) {

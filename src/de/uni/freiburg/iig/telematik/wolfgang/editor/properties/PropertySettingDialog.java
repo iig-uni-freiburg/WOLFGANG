@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.io.IOException;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ public class PropertySettingDialog extends AbstractDialog {
 	private RestrictedTextField txtDefTokenDistance;
 	private RestrictedTextField txtDefVertLabelOffset;
 	private RestrictedTextField txtDefHorizLabelOffset;
+	private RestrictedTextField txtGridSize;
 	
 	private ColorChooserPanel colDefLabelBGColor;
 	private ColorChooserPanel colDefLabelLineColor;
@@ -41,6 +43,11 @@ public class PropertySettingDialog extends AbstractDialog {
 	private ColorChooserPanel colDefTransitionColor;
 	private ColorChooserPanel colDefLineColor;
 	private ColorChooserPanel colDefGradientColor;
+	private ColorChooserPanel colBGColor;
+	private ColorChooserPanel colGridColor;
+	
+	private JCheckBox chckGridVisibility;
+	private JCheckBox chckSnapToGrid;
 	
 	private EnumComboBox<GradientRotation> comboGradientRotation;
 	private FontComboBox comboFontFamily;
@@ -48,7 +55,8 @@ public class PropertySettingDialog extends AbstractDialog {
 	private RestrictedTextField txtDefZoomStep;
 
 	public PropertySettingDialog(Window parent) throws PropertyException, IOException {
-		super(parent);
+		super(parent, ButtonPanelLayout.CENTERED);
+		setIncludeCancelButton(false);
 		initialize();
 	}
 
@@ -61,19 +69,27 @@ public class PropertySettingDialog extends AbstractDialog {
 		txtDefTokenDistance = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTokenDistance().toString());
 		txtDefVertLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultVerticalLabelOffset().toString());
 		txtDefHorizLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset().toString());
-
+		txtGridSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getGridSize().toString());
+		
 		colDefLabelBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelBackgroundColor());
 		colDefLabelLineColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelLineColor());
 		colDefPlaceColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultPlaceColor());
 		colDefTransitionColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultTransitionColor());
 		colDefLineColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLineColor());
 		colDefGradientColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultGradientColor());
+		colBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getBackgroundColor());
+		colGridColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getGridColor());
 		
 		comboGradientRotation = new EnumComboBox<GradientRotation>(GradientRotation.class);
 		
 		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
 		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultFontSize().toString());
 		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, WolfgangProperties.getInstance().getDefaultZoomStep().toString());
+		
+		chckGridVisibility = new JCheckBox();
+		chckGridVisibility.setSelected(WolfgangProperties.getInstance().getGridVisibility());
+		chckSnapToGrid = new JCheckBox();
+		chckSnapToGrid.setSelected(WolfgangProperties.getInstance().getSnapToGrid());
 	}
 	
 	@Override
@@ -109,6 +125,11 @@ public class PropertySettingDialog extends AbstractDialog {
 			WolfgangProperties.getInstance().setDefaultFontFamily(comboFontFamily.getSelectedItem().toString());
 			WolfgangProperties.getInstance().setDefaultFontSize(Integer.valueOf(txtDefFontSize.getText()));
 			WolfgangProperties.getInstance().setDefaultZoomStep(Double.valueOf(txtDefZoomStep.getText()));
+			WolfgangProperties.getInstance().setBackgroundColor(colBGColor.getChosenColor());
+			WolfgangProperties.getInstance().setGridColor(colGridColor.getChosenColor());
+			WolfgangProperties.getInstance().setGridSize(Integer.valueOf(txtGridSize.getText()));
+			WolfgangProperties.getInstance().setGridVisibility(chckGridVisibility.isSelected());
+			WolfgangProperties.getInstance().setSnapToGrid(chckSnapToGrid.isSelected());
 			WolfgangProperties.getInstance().store();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(PropertySettingDialog.this, "Cannot store all properties:\nReason: " + e.getMessage(), "Exception during property change", JOptionPane.ERROR_MESSAGE);
@@ -165,8 +186,20 @@ public class PropertySettingDialog extends AbstractDialog {
 			add(txtDefFontSize);
 			add(new JLabel("Default Zoom Step:", JLabel.RIGHT));
 			add(txtDefZoomStep);
+			
+			add(new JLabel("Background Color:", JLabel.RIGHT));
+			add(colBGColor);
+			
+			add(new JLabel("Grid Size:", JLabel.RIGHT));
+			add(txtGridSize);
+			add(new JLabel("Grid Color:", JLabel.RIGHT));
+			add(colGridColor);
+			add(new JLabel("Grid Visibility:", JLabel.RIGHT));
+			add(chckGridVisibility);
+			add(new JLabel("Snap To Grid:", JLabel.RIGHT));
+			add(chckSnapToGrid);
 
-			SpringUtilities.makeCompactGrid(this, 17, 2, 5, 5, 5, 5);
+			SpringUtilities.makeCompactGrid(this, 22, 2, 5, 5, 5, 5);
 		}
 
 	}
