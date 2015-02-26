@@ -62,6 +62,7 @@ public class PropertySettingDialog extends AbstractDialog {
 
 	private void initialize() throws PropertyException, IOException {
 		comboIconSize = new EnumComboBox<IconSize>(IconSize.class);
+		comboIconSize.setSelectedItem(WolfgangProperties.getInstance().getIconSize());
 		txtDefPlaceSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultPlaceSize().toString());
 		txtDefTransitionWidth = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTransitionWidth().toString());
 		txtDefTransitionHeight = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTransitionHeight().toString());
@@ -81,8 +82,10 @@ public class PropertySettingDialog extends AbstractDialog {
 		colGridColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getGridColor());
 		
 		comboGradientRotation = new EnumComboBox<GradientRotation>(GradientRotation.class);
+		comboGradientRotation.setSelectedItem(WolfgangProperties.getInstance().getDefaultGradientDirection());
 		
 		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
+		comboFontFamily.setSelectedItem(WolfgangProperties.getInstance().getDefaultFontFamily());
 		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultFontSize().toString());
 		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, WolfgangProperties.getInstance().getDefaultZoomStep().toString());
 		
