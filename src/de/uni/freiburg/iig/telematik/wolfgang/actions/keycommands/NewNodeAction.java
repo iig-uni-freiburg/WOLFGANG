@@ -1,10 +1,12 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import com.mxgraph.util.mxPoint;
 
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -33,10 +35,11 @@ public class NewNodeAction extends AbstractPNEditorAction {
 	 * @param centerX
 	 * @param centerY
 	 * @return
-	 * @throws UnsupportedEncodingException 
 	 * @throws ParameterException 
+	 * @throws IOException 
+	 * @throws PropertyException 
 	 */
-	protected PNGraphCell createNewNodeWithEdge(PNGraphCell source, PNGraph pnGraph, double centerX, double centerY) throws ParameterException, UnsupportedEncodingException {
+	protected PNGraphCell createNewNodeWithEdge(PNGraphCell source, PNGraph pnGraph, double centerX, double centerY) throws ParameterException, PropertyException, IOException {
 		PNGraphCell target = null;
 		switch (source.getType()) {
 		case PLACE:

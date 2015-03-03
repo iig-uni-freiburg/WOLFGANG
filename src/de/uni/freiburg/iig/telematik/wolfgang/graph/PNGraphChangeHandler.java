@@ -51,20 +51,7 @@ public class PNGraphChangeHandler {
 			if (childChange.getPrevious() == null) {
 				switch (cell.getType()) {
 				case PLACE:
-					if (!graph.getNetContainer().getPetriNet().containsPlace(cell.getId())) {
-
-//						if (graph.getNetContainer().getPetriNet().addPlace(cell.getId())) {
-//							AbstractPlace place = getNetContainer().getPetriNet().getPlace(cell.getId());
-//							NodeGraphics nodeGraphics = new NodeGraphics();
-//							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-//
-//							addGraphicalInfoToPNPlace(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), place, nodeGraphics, annotationGraphics);
-//
-//							Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
-//							addNodeReference(place, cell);
-//							graphListenerSupport.notifyPlaceAdded(place);
-//						}
-						
+					if (!graph.getNetContainer().getPetriNet().containsPlace(cell.getId()) ) {
 						// Same code as case 4 in class GraphTransferHandler
 						Offset offset = new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY());
 						Dimension dimension = new Dimension(cell.getGeometry().getWidth(), cell.getGeometry().getHeight());
@@ -79,18 +66,6 @@ public class PNGraphChangeHandler {
 				case TRANSITION:
 					if (!graph.getNetContainer().getPetriNet().containsTransition(cell.getId())) {
 
-//						if (graph.getNetContainer().getPetriNet().addTransition(cell.getId())) {
-//							AbstractTransition transition = getNetContainer().getPetriNet().getTransition(cell.getId());
-//							NodeGraphics nodeGraphics = new NodeGraphics();
-//							AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-//
-//							addGraphicalInfoToPNTransition(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), transition, nodeGraphics, annotationGraphics);
-//
-//							Utils.createNodeGraphicsFromStyle(cell.getStyle(), nodeGraphics, annotationGraphics);
-//							addNodeReference(transition, cell);
-//							graphListenerSupport.notifyTransitionAdded(transition);
-//						}
-						
 						// Same code as case 4 in class GraphTransferHandler
 						Offset offset = new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY());
 						Dimension dimension = new Dimension(cell.getGeometry().getWidth(), cell.getGeometry().getHeight());
@@ -103,25 +78,10 @@ public class PNGraphChangeHandler {
 					}
 					break;
 				case ARC:
-					if (!graph.getNetContainer().getPetriNet().containsFlowRelation(cell.getId())) {
-
-//						AbstractFlowRelation relation = null;
-//						PNGraphCell sourceCell = (PNGraphCell) cell.getSource();
-//						PNGraphCell targetCell = (PNGraphCell) cell.getTarget();
-//						if (sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
-//							relation = getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(), targetCell.getId());
-//						} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
-//							relation = getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
-//						}
-//						ArcGraphics arcGraphics = new ArcGraphics();
-//						AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-//						addGraphicalInfoToPNArc(relation, arcGraphics, annotationGraphics);
-//						Utils.createArcGraphicsFromStyle(cell.getStyle(), arcGraphics, annotationGraphics);
-//						addArcReference(relation.getName(), cell);
-//						graphListenerSupport.notifyRelationAdded(relation);
+					if (!graph.getNetContainer().getPetriNet().containsFlowRelation(cell.getId()) ) {
 						
-						// Same code as in GraphTransferHandler
-						// Check if source and target nodes already have been added
+//						 Same code as in GraphTransferHandler
+//						 Check if source and target nodes already have been added
 						PNGraphCell sourceCell = (PNGraphCell) cell.getSource();
 						PNGraphCell targetCell = (PNGraphCell) cell.getTarget();
 						if (sourceCell != null || targetCell != null) {
@@ -131,7 +91,8 @@ public class PNGraphChangeHandler {
 					}
 					break;
 				}
-			} else if (childChange.getPrevious() != null && childChange.getParent() == null) {
+			} 
+			if (childChange.getPrevious() != null && childChange.getParent() == null) {
 
 				switch (cell.getType()) {
 				case ARC:

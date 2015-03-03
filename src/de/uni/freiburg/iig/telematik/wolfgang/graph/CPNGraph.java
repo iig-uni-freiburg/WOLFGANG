@@ -145,7 +145,7 @@ public class CPNGraph extends PNGraph {
 				flowrelation.setConstraint(new Multiset<String>());
 		}
 //		flowrelation.setConstraint(value);		
-		PNGraphCell cell = arcReferences.get(name);
+		PNGraphCell cell = getNodeCell(name);
 		cell.setValue(getArcConstraint(flowrelation));
 		refresh();
 		

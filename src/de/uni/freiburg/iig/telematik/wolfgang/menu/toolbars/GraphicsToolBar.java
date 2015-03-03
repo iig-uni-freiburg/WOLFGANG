@@ -843,7 +843,7 @@ public class GraphicsToolBar extends JToolBar {
 				colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
 
 			} else {
-				colorSelectionAction.setFillColor(currentFillColor, FillGradientColorAction.DEFAULT_GRADIENT_COLOR, GradientRotation.VERTICAL);
+				colorSelectionAction.setFillColor(fillColor, FillGradientColorAction.DEFAULT_GRADIENT_COLOR, GradientRotation.VERTICAL);
 			}
 
 			gradientColorButton.setSelected(true);

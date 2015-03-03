@@ -45,7 +45,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurer;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.IFNetProperties;
 
-//import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 
 public class IFNetGraph extends PNGraph {
 
@@ -153,8 +152,7 @@ public class IFNetGraph extends PNGraph {
 		else {
 			flowrelation.setConstraint(new Multiset<String>());
 		}
-		// flowrelation.setConstraint(value);
-		PNGraphCell cell = arcReferences.get(name);
+		PNGraphCell cell = getNodeCell(name);
 		cell.setValue(getArcConstraint(flowrelation));
 		refresh();
 

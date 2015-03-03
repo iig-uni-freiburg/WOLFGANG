@@ -45,6 +45,7 @@ import com.mxgraph.view.mxEdgeStyle.mxEdgeStyleFunction;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
@@ -58,6 +59,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.EllipseShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.HtmlTextShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.RectangleShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
@@ -105,7 +107,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		removeCellOverlays();
 		getGraph().setCellsSelectable(false);
 		for (final String n : nameSet) {
-			final PNGraphCell cell = getGraph().nodeReferences.get(n);
+			final PNGraphCell cell = getGraph().getNodeCell(n);
 			Rectangle geo = cell.getGeometry().getRectangle();
 			mxCellOverlay overlay = null;
 
@@ -220,7 +222,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	protected void unhighlightArcs() {
 		Collection<AbstractFlowRelation> flowrelations = (Collection<AbstractFlowRelation>) getGraph().getNetContainer().getPetriNet().getFlowRelations();
 		for (AbstractFlowRelation fr : flowrelations) {
-			PNGraphCell cell = getGraph().arcReferences.get(fr.getName());
+			PNGraphCell cell = getGraph().getNodeCell(fr.getName());
 			mxCellMarker marker = getCellMarker(cell);
 			marker.highlight(graph.getView().getState(cell), Color.ORANGE);
 		}
@@ -231,7 +233,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 		Collection<AbstractFlowRelation> flowrelations = (Collection<AbstractFlowRelation>) getGraph().getNetContainer().getPetriNet().getFlowRelations();
 		for (AbstractFlowRelation fr : flowrelations) {
-			PNGraphCell cell = getGraph().arcReferences.get(fr.getName());
+			PNGraphCell cell = getGraph().getNodeCell(fr.getName());
 			mxCellMarker marker = getCellMarker(cell);
 			marker.highlight(graph.getView().getState(cell), Color.MAGENTA);
 			marker.setVisible(true);
@@ -600,8 +602,10 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	}
 
 	public void removeCellOverlays() {
-		for (Entry<String, PNGraphCell> cell : getGraph().nodeReferences.entrySet())
+		for (AbstractPNNode<?> node : getGraph().getNetContainer().getPetriNet().getNodes()){
+			PNGraphCell cell = getGraph().getNodeCell(node.getName());
 			removeCellOverlays(cell.getValue());
+		}
 
 	}
 
