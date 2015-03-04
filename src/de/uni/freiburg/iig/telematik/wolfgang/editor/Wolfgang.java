@@ -35,7 +35,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.IFNetEditorCompon
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PTNetEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
+import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
 public class Wolfgang extends JFrame {
 
@@ -51,7 +55,8 @@ public class Wolfgang extends JFrame {
 	private WGMenuBar menuBar = null;
 	protected JPanel content = null;
 	protected JSplitPane centerPanel = null;
-
+	
+	
 	private String netName;
 
 	public Wolfgang() throws Exception {}
@@ -183,6 +188,17 @@ public class Wolfgang extends JFrame {
 		if (content == null) {
 			content = new JPanel(new BorderLayout());
 			content.add(getCenterComponent(), BorderLayout.CENTER);
+			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter(){
+
+				@Override
+				public void iconSizeChanged(IconSize size) {
+					content.remove(editorComponent.getEditorToolbar());
+					editorComponent.loadEditorToolbar();
+					content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+					pack();
+				}
+				
+			});
 			setEditorPanels();
 			JComponent bottomComponent = getBottomComponent();
 			if (bottomComponent != null)

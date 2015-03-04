@@ -66,6 +66,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
@@ -73,9 +74,12 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.StyleChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertiesListener;
@@ -99,7 +103,17 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
 		super();
-		setGridSize(5);
+		addWGPropertiesListener();
+		
+		try {
+			setGridSize(WolfgangProperties.getInstance().getGridSize());
+		} catch (PropertyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		Validate.notNull(netContainer);
 		Validate.notNull(properties);
@@ -130,6 +144,41 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			JOptionPane.showMessageDialog(null, "Cannot write Graphicsstyle to FileSystem " + e.getMessage(), "IO Exception", JOptionPane.ERROR_MESSAGE);
 		} catch (PropertyException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void addWGPropertiesListener() {
+		try {
+			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter(){
+
+				@Override
+				public void gridSizeChanged(int gridSize) {
+					try {
+						setGridSize(WolfgangProperties.getInstance().getGridSize());
+					} catch (PropertyException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					refresh();
+				}
+
+				@Override
+				public void defaultTokenSizeChanged(int defaultTokenSize) {
+					refresh();
+				}
+
+				@Override
+				public void defaultTokenDistanceChanged(int defaultTokenDistance) {
+					refresh();
+				}
+				
+			});
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
 	}
 

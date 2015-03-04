@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,10 +44,13 @@ import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxEdgeStyle;
 import com.mxgraph.view.mxEdgeStyle.mxEdgeStyleFunction;
 
+import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNCellHandler;
@@ -115,10 +119,10 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 				ImageIcon playIconImage = IconFactory.getIcon("playred");
 				Image image = playIconImage.getImage();
 				BufferedImage bi = toBufferedImage(image);
-//				image.ge
+				// image.ge
 				String label = getGraph().getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
-				BufferedImage img = drawLabelonPlayIcon((BufferedImage)bi, label);
-				
+				BufferedImage img = drawLabelonPlayIcon((BufferedImage) bi, label);
+
 				overlay = new mxCellOverlay(new ImageIcon(img), null);
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, "playred-Icon could not be assinged as cell-overlay. \nReason: " + e1.getMessage(), "" + e1.getClass(), JOptionPane.ERROR);
@@ -157,11 +161,11 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 
-						try {
-							getGraph().fireTransition(cell);
-						} catch (PNException e) {
-							JOptionPane.showMessageDialog(getGraphComponent(), "Petri Net Exception \nReason: " + e.getMessage(), "Petri Net Exception", JOptionPane.ERROR_MESSAGE);
-						}
+					try {
+						getGraph().fireTransition(cell);
+					} catch (PNException e) {
+						JOptionPane.showMessageDialog(getGraphComponent(), "Petri Net Exception \nReason: " + e.getMessage(), "Petri Net Exception", JOptionPane.ERROR_MESSAGE);
+					}
 					marker.setVisible(false);
 					highlightEnabledTransitions();
 
@@ -170,54 +174,49 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 			addCellOverlay(cell, overlay);
 
 		}
-		
-
 
 	}
 
 	private BufferedImage drawLabelonPlayIcon(BufferedImage old, String string) {
-        int w = old.getWidth();
-        int h = old.getHeight();
-        BufferedImage img = new BufferedImage(
-                w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = img.createGraphics();
-        g2d.drawImage(old, 0, 0, null);
-        g2d.setPaint(Color.BLACK);
-        g2d.setFont(new Font("TimesRoman", Font.BOLD, 12));   
-        String s = string;  
-        FontMetrics fm = g2d.getFontMetrics();
-        while (old.getWidth()+2 <g2d.getFontMetrics().stringWidth(s)) {
-          	int size = g2d.getFont().getSize();
-       	 g2d.setFont(new Font("TimesRoman", Font.BOLD, size -1));
+		int w = old.getWidth();
+		int h = old.getHeight();
+		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = img.createGraphics();
+		g2d.drawImage(old, 0, 0, null);
+		g2d.setPaint(Color.BLACK);
+		g2d.setFont(new Font("TimesRoman", Font.BOLD, 12));
+		String s = string;
+		FontMetrics fm = g2d.getFontMetrics();
+		while (old.getWidth() + 2 < g2d.getFontMetrics().stringWidth(s)) {
+			int size = g2d.getFont().getSize();
+			g2d.setFont(new Font("TimesRoman", Font.BOLD, size - 1));
 		}
-        int y = fm.getHeight() + 5;
-        g2d.setColor(Color.RED);
-        g2d.fillRect(0, y-10, fm.stringWidth(s), 12);
-        g2d.setColor(Color.BLACK);
-        g2d.drawString(s, 1, y);
-        g2d.dispose();
-        
-        return img;
-    }
-    
-    public static BufferedImage toBufferedImage(Image img)
-    {
-        if (img instanceof BufferedImage)
-        {
-            return (BufferedImage) img;
-        }
+		int y = fm.getHeight() + 5;
+		g2d.setColor(Color.RED);
+		g2d.fillRect(0, y - 10, fm.stringWidth(s), 12);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(s, 1, y);
+		g2d.dispose();
 
-        // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		return img;
+	}
 
-        // Draw the image on to the buffered image
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
+	public static BufferedImage toBufferedImage(Image img) {
+		if (img instanceof BufferedImage) {
+			return (BufferedImage) img;
+		}
 
-        // Return the buffered image
-        return bimage;
-    }
+		// Create a buffered image with transparency
+		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+		// Draw the image on to the buffered image
+		Graphics2D bGr = bimage.createGraphics();
+		bGr.drawImage(img, 0, 0, null);
+		bGr.dispose();
+
+		// Return the buffered image
+		return bimage;
+	}
 
 	protected void unhighlightArcs() {
 		Collection<AbstractFlowRelation> flowrelations = (Collection<AbstractFlowRelation>) getGraph().getNetContainer().getPetriNet().getFlowRelations();
@@ -240,8 +239,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 		}
 	}
-	
-
 
 	private mxCellMarker getCellMarker(PNGraphCell cell) {
 		if (!markerReference.containsKey(cell.getId()))
@@ -277,11 +274,11 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private void initialize() {
 		getViewport().setOpaque(true);
-		getViewport().setBackground(MXConstants.blueBG);
 		setGridStyle(mxGraphComponent.GRID_STYLE_LINE);
-		setGridColor(MXConstants.bluehigh);
-		// setGridVisible(true);
-		setGridVisible(true);
+		setBackgroundColor();
+		setGridColor();
+		setGridVisibility();
+		addWGPropertiesListener();
 		setToolTips(true);
 		getGraphControl().addMouseListener(new GCMouseAdapter());
 		addMouseWheelListener(new GCMouseWheelListener());
@@ -290,6 +287,71 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		mxCodec codec = new mxCodec();
 		Document doc = mxUtils.loadDocument(GraphResource.class.getResource("default-style.xml").toString());
 		codec.decode(doc.getDocumentElement(), graph.getStylesheet());
+	}
+
+	private void addWGPropertiesListener() {
+		try {
+			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
+
+				@Override
+				public void backgroundColorChanged(Color backgroundColor) {
+					setBackgroundColor();
+					refresh();
+				}
+
+				@Override
+				public void gridColorChanged(Color gridColor) {
+					setGridColor();
+					refresh();
+				}
+
+				@Override
+				public void gridVisibilityChanged(boolean gridVisibility) {
+					setGridVisibility();
+					refresh();
+				}
+
+			});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void setBackgroundColor() {
+		try {
+			getViewport().setBackground(WolfgangProperties.getInstance().getBackgroundColor());
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void setGridColor() {
+		try {
+			setGridColor(WolfgangProperties.getInstance().getGridColor());
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void setGridVisibility() {
+		try {
+			setGridVisible(WolfgangProperties.getInstance().getGridVisibility());
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -602,7 +664,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	}
 
 	public void removeCellOverlays() {
-		for (AbstractPNNode<?> node : getGraph().getNetContainer().getPetriNet().getNodes()){
+		for (AbstractPNNode<?> node : getGraph().getNetContainer().getPetriNet().getNodes()) {
 			PNGraphCell cell = getGraph().getNodeCell(node.getName());
 			removeCellOverlays(cell.getValue());
 		}

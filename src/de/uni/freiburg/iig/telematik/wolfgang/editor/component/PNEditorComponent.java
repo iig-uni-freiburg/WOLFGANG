@@ -1,11 +1,13 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,6 +51,7 @@ import com.mxgraph.view.mxGraph;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -61,6 +64,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListenerSupport;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
@@ -69,6 +74,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar.Mode;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
@@ -79,8 +85,10 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponen
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 
-public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener {
+public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener{
 	
+
+
 	public static final boolean DEFAULT_ASK_FOR_LAYOUT = false;
 
 	private static final long serialVersionUID = 1023415244830760771L;
@@ -200,13 +208,18 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		} else {
 			this.netContainer = netContainer;
 		}
-		properties = createPNProperties();
+		
 		// UIManager.put("Tree.rendererFillBackground", false);
+		properties = createPNProperties();
 		propertiesView = new PropertiesView(properties);
 		propertiesView.addTreeSelectionListener(this);
 		properties.addPNPropertiesListener(propertiesView);
 		properties.setPropertiesView(propertiesView);
+
+		
 	}
+
+
 
 	protected abstract AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> createNetContainer();
 
@@ -221,12 +234,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	private void setUpGUI() {
 		setLayout(new BorderLayout());
-		try {
-			toolbar = createNetSpecificToolbar();
-		} catch (EditorToolbarException e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
-					JOptionPane.ERROR_MESSAGE);
-		}
+		loadEditorToolbar();
 		add(getGraphComponent(), BorderLayout.CENTER);
 		// add(getStatusPanel(), BorderLayout.SOUTH);
 
@@ -639,5 +647,16 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		
 		
 	}
+
+	public void loadEditorToolbar() {
+		try {
+			toolbar = createNetSpecificToolbar();
+		} catch (EditorToolbarException e) {
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+
 
 }
