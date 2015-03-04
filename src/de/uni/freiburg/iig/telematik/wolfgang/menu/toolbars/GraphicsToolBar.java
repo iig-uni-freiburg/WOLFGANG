@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -25,6 +26,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import com.mxgraph.swing.util.mxGraphTransferable;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.util.mxUtils;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -61,6 +64,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 
@@ -450,11 +454,7 @@ public class GraphicsToolBar extends JToolBar {
 						if (selectedCell != null) {
 							String strokeWeight = strokeWeightBox.getSelectedItem().toString().replace("px", "");
 							PNGraph graph = GraphicsToolBar.this.pnEditor.getGraphComponent().getGraph();
-							try {
-								graph.setStrokeWeightOfSelectedCell(strokeWeight);
-							} catch (Exception e1) {
-								JOptionPane.showMessageDialog(GraphicsToolBar.this.pnEditor, "Cannot set cell-font size: " + e1.getMessage(), "Graph Exception", JOptionPane.ERROR_MESSAGE);
-							}
+							graph.setStrokeWeightOfSelectedCell(strokeWeight);
 						}
 					}
 				}
