@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;

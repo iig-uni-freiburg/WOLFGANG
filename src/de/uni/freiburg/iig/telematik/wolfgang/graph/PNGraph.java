@@ -1553,7 +1553,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	@Override
 	public void structureChanged() {}
 	
-	protected PNGraphCell getNodeCell(String name) {
+	public PNGraphCell getNodeCell(String name) {
 		mxICell superParent = (mxICell) model.getRoot();
 		for (int i = 0; i < superParent.getChildCount(); i++) {
 			mxICell parent = superParent.getChildAt(i);

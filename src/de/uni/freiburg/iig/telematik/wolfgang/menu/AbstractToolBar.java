@@ -65,7 +65,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 
 	// further variables
-	PNEditorComponent pnEditor = null;
+	protected PNEditorComponent pnEditor = null;
 	private boolean ignoreZoomChange = false;
 	private Mode mode = Mode.EDIT;
 

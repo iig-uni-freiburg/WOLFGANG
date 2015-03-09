@@ -85,7 +85,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponen
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 
-public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener{
+public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent{
 	
 
 

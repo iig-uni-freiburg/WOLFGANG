@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JToolBar;
