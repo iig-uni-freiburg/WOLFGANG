@@ -783,12 +783,12 @@ public class WolfgangProperties extends AbstractProperties{
 		}
 	}
 
-	public boolean getRequestNetType() {
+	public boolean getRequestNetType() throws PropertyException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean getPNValidation() {
+	public boolean getPNValidation() throws PropertyException {
 		// TODO Auto-generated method stub
 		return false;
 	}

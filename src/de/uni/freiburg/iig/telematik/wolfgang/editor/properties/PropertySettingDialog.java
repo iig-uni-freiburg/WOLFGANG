@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.properties;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Window;
 import java.io.IOException;
 
@@ -98,7 +99,11 @@ public class PropertySettingDialog extends AbstractDialog {
 	@Override
 	protected void addComponents() throws Exception {
 		mainPanel().setLayout(new BorderLayout());
-		mainPanel().add(new PropertySettingPanel(), BorderLayout.CENTER);
+		mainPanel().add(createNewWGPropertySettingPanel(), BorderLayout.CENTER);
+	}
+
+	protected Component createNewWGPropertySettingPanel() throws PropertyException, IOException {
+		return new WGPropertySettingPanel();
 	}
 
 	@Override
@@ -146,11 +151,11 @@ public class PropertySettingDialog extends AbstractDialog {
 		dialog.setUpGUI();
 	}
 
-	private class PropertySettingPanel extends JPanel {
+	private class WGPropertySettingPanel extends JPanel {
 
 		private static final long serialVersionUID = 1066469038019795225L;
 
-		public PropertySettingPanel() throws PropertyException, IOException {
+		public WGPropertySettingPanel() throws PropertyException, IOException {
 			super(new SpringLayout());
 			initialize();
 			add(new JLabel("Icon Size:", JLabel.RIGHT));
