@@ -61,7 +61,6 @@ public class SaveAsAction extends AbstractWolfgangAction {
 			String filename = fc.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".pnml"))
 				filename += ".pnml";
-		System.out.println(	);
 		String netName = fc.getName(fc.getSelectedFile());
 		if(netName != null)
 			wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
