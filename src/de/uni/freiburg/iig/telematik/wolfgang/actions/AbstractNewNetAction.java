@@ -11,13 +11,12 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
 public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extends AbstractWolfgangAction {
 
 	private static final long serialVersionUID = 2651449758330094274L;
-	
+
 	N net = null;
 
 	protected AbstractNewNetAction(Wolfgang wolfgang) {
 		super(wolfgang);
 	}
-
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
@@ -31,15 +30,15 @@ public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extend
 			}
 		}
 	}
-	
-	public N getNet(){
+
+	public N getNet() {
 		return net;
 	}
-			
+
 	protected abstract N createNewGraphicalPN();
 
 	private String requestFileName(String message, String title) {
 		return FileNameDialog.showDialog(wolfgang, message, title, false);
 	}
-	
+
 }

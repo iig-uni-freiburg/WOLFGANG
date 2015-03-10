@@ -10,25 +10,23 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class FontUnderlineStyleAction extends AbstractPNEditorAction {
-	
+
 	private static final long serialVersionUID = 7450908146578160638L;
 	protected boolean underline = false;
-	
-	public FontUnderlineStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
-		super(editor, "Underline", IconFactory.getIcon("underline"));		
-	}
 
+	public FontUnderlineStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
+		super(editor, "Underline", IconFactory.getIcon("underline"));
+	}
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if(!underline){
-		getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, "underline");
-		underline = true;
+		if (!underline) {
+			getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, "underline");
+			underline = true;
+		} else {
+			getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, null);
+			underline = false;
 		}
-		else {
-		getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, null);
-		underline = false;
-		}		
 	}
 
 }

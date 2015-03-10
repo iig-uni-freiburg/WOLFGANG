@@ -14,16 +14,13 @@ public class LineDotAction extends AbstractPNEditorGraphicsAction {
 
 	public LineDotAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_diagonal", IconFactory.getIcon("dot"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size / 2, size / 3, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(2,3);
+		setIconImage(getIcon().getImage());
 	}
-
 
 	@Override
 	protected void performLabelAction() {
-		getGraph().setCellStyles(MXConstants.LABEL_LINE_STYLE, "dot");	
+		getGraph().setCellStyles(MXConstants.LABEL_LINE_STYLE, "dot");
 	}
 
 	@Override
@@ -32,9 +29,6 @@ public class LineDotAction extends AbstractPNEditorGraphicsAction {
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 }

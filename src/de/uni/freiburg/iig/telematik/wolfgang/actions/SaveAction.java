@@ -20,11 +20,9 @@ public class SaveAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	
 	public SaveAction(Wolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Save", IconFactory.getIcon("save"));
 	}
-
 
 	public boolean isSuccess() {
 		return success;
@@ -36,43 +34,43 @@ public class SaveAction extends AbstractWolfgangAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if(wolfgang.getEditorComponent() == null)
+		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
 		JFileChooser fc;
-		if(wolfgang.getFileReference() == null){
+		if (wolfgang.getFileReference() == null) {
 			fc = new JFileChooser(System.getProperty("user.home"));
-		
-		fc.addChoosableFileFilter(new FileFilter() {
-			public String getDescription() {
-				return "PNML Documents (*.pnml)";
-			}
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-					return true;
-				} else {
-					return f.getName().toLowerCase().endsWith(".pnml");
+
+			fc.addChoosableFileFilter(new FileFilter() {
+				public String getDescription() {
+					return "PNML Documents (*.pnml)";
 				}
+
+				public boolean accept(File f) {
+					if (f.isDirectory()) {
+						return true;
+					} else {
+						return f.getName().toLowerCase().endsWith(".pnml");
+					}
+				}
+			});
+			fc.setDialogTitle("Save PNML");
+			int returnVal = fc.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String filename = fc.getSelectedFile().getAbsolutePath();
+				if (!filename.toLowerCase().endsWith(".pnml"))
+					filename += ".pnml";
+				String netName = fc.getName(fc.getSelectedFile());
+				if (netName != null)
+					wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
+				PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
+				wolfgang.setFileReference(fc.getSelectedFile());
+				wolfgang.setNetName(netName);
+				wolfgang.setTitle(wolfgang.getTitle());
+				wolfgang.getEditorComponent().setModified(false);
 			}
-		});
-		fc.setDialogTitle("Save PNML");
-		int returnVal = fc.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
-		
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fc.getSelectedFile().getAbsolutePath();
-			if (!filename.toLowerCase().endsWith(".pnml"))
-				filename += ".pnml";
-		String netName = fc.getName(fc.getSelectedFile());
-		if(netName != null)
-			wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
-			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
-			wolfgang.setFileReference(fc.getSelectedFile());
-			wolfgang.setNetName(netName);
-			wolfgang.setTitle(wolfgang.getTitle());
-			wolfgang.getEditorComponent().setModified(false);
-		}
-		}
-		else {
+		} else {
 			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, wolfgang.getFileReference().getAbsolutePath());
 		}
 

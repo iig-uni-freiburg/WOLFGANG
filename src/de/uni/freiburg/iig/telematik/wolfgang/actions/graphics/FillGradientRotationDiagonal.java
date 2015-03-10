@@ -15,29 +15,24 @@ public class FillGradientRotationDiagonal extends AbstractPNEditorGraphicsAction
 
 	public FillGradientRotationDiagonal(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_diagonal", IconFactory.getIcon("gradient-diagonal"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size /3, size /3, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(3, 3);		
+		setIconImage(getIcon().getImage());
+
 	}
 
 	@Override
 	protected void performLabelAction() {
 		getGraph().setCellStyles(MXConstants.LABEL_GRADIENT_ROTATION, GradientRotation.DIAGONAL.toString());
-		
+
 	}
 
 	@Override
 	protected void performNoLabelAction() {
 		getGraph().setCellStyles(MXConstants.GRADIENT_ROTATION, GradientRotation.DIAGONAL.toString());
-		
+
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 }

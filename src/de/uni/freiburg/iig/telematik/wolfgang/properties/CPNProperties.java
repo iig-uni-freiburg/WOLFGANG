@@ -103,32 +103,7 @@ public class CPNProperties extends PNProperties {
 	 * @ If the given arc name is <code>null</code> or the net does not contain an arc with the given name.
 	 * @see #setArcWeight(Object, String, Integer)
 	 */
-//	public void setArcWeight(Object sender, String arcName, String weight) {
-//		Validate.positiveInteger(weight);
-//		setArcWeight(sender, arcName, Integer.parseInt(weight));
-//	}
-	
-//	/**
-//	 * Sets the weight of an arc.<br>
-//	 * This method notifies all listeners about the arc weight change.<br>
-//	 * Note: The sender of the change request is not notified!
-//	 * @param sender The object which is requesting an arc weight change.
-//	 * @param arcName The name of the arc whose weight is changed.
-//	 * @param wight The new weight for the arc.
-//	 * @ If the given arc name is <code>null</code> or the net does not contain an arc with the given name.
-//	 */
-//	public void setArcWeight(Object sender, String arcName, Integer weight) {
-//		Validate.notNull(arcName);
-//		Validate.notNull(weight);
-//		Validate.bigger(weight, 0);
-//		if(!getNetContainer().getPetriNet().containsFlowRelation(arcName))
-//			throw new ParameterException("Unknown Arc");
-//		
-//		Integer oldWeight = getArcWeight(arcName);
-//		getNetContainer().getPetriNet().getFlowRelation(arcName).setWeight(weight);
-//		PNPropertyChangeEvent event = new PNPropertyChangeEvent(sender, PNComponent.ARC, arcName, PNProperty.ARC_WEIGHT, oldWeight , weight);
-//		changeSupport.fireChangeEvent(this, event);
-//	}
+
 
 	@Override
 	public Set<PNProperty> getPlaceProperties() {

@@ -29,66 +29,65 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 		super();
 		setEditor(editor);
 	}
-	
-	
+
 	public AbstractPNEditorAction(PNEditorComponent editor, String name) throws ParameterException {
 		super(name);
 		setEditor(editor);
 	}
-	
+
 	public AbstractPNEditorAction(PNEditorComponent editor, String name, Icon icon) throws ParameterException {
 		super(name, icon);
 		setEditor(editor);
 		setIcon(icon);
 	}
-	
+
 	protected void setIcon(Icon icon) throws ParameterException {
 		Validate.notNull(icon);
 		this.icon = (ImageIcon) icon;
 	}
+
 	protected ImageIcon getIcon() {
 		return icon;
 	}
 
-	private void setEditor(PNEditorComponent editor) throws ParameterException{
+	private void setEditor(PNEditorComponent editor) throws ParameterException {
 		Validate.notNull(editor);
 		this.editor = editor;
 	}
 
-
 	protected PNEditorComponent getEditor() {
 		return editor;
 	}
-	
+
 	protected PNGraph getGraph() {
-	return getEditor().getGraphComponent().getGraph();
-	}	
-	
+		return getEditor().getGraphComponent().getGraph();
+	}
+
 	protected PNGraphCell getGraphSelectionCell() {
-	return (PNGraphCell) getGraph().getSelectionCell();
+		return (PNGraphCell) getGraph().getSelectionCell();
 	}
-	
+
 	protected boolean isCellSelected() {
-	return getGraphSelectionCell() != null;
+		return getGraphSelectionCell() != null;
 	}
-	
+
 	protected void updateViewWithSelectedCell() throws EditorToolbarException {
-		if(isCellSelected()){
-		Set<PNGraphCell> setWithOneCell = new HashSet<PNGraphCell>();
-		setWithOneCell.add(getGraphSelectionCell());
-		getEditor().getEditorToolbar().updateView(setWithOneCell);
-		}		
+		if (isCellSelected()) {
+			Set<PNGraphCell> setWithOneCell = new HashSet<PNGraphCell>();
+			setWithOneCell.add(getGraphSelectionCell());
+			getEditor().getEditorToolbar().updateView(setWithOneCell);
+		}
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
 			doFancyStuff(e);
-		} catch(Exception ex){
+		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor), ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	protected abstract void doFancyStuff(ActionEvent e) throws Exception;
-	
 
 }

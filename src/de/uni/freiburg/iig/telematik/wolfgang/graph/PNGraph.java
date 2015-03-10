@@ -12,12 +12,10 @@ import java.awt.geom.Line2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 
@@ -29,7 +27,6 @@ import com.mxgraph.canvas.mxImageCanvas;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.model.mxICell;
-import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.shape.mxIShape;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxEvent;
@@ -38,7 +35,6 @@ import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 import com.mxgraph.util.mxStyleUtils;
-import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxGraph;
@@ -66,20 +62,15 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.StyleChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
-import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertiesListener;
@@ -1202,9 +1193,11 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		for (Object cell : getSelectionCells()) {
 			if (cell instanceof PNGraphCell) {
 				String styleKey = (isLabelSelected()) ? MXConstants.LABEL_LINE_WIDTH : mxConstants.STYLE_STROKEWIDTH;
+				if(getView().getState(cell).getStyle().containsKey(styleKey)){
 				String currentStrokeWidth = mxUtils.getString(getView().getState(cell).getStyle(), styleKey).replace(".0", "");
 				if (!currentStrokeWidth.equals(strokeWeight)) {
 					setCellStyles(styleKey, strokeWeight, new Object[] { cell });
+				}
 				}
 			}
 		}

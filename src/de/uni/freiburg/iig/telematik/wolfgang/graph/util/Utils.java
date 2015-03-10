@@ -37,10 +37,10 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
 public class Utils extends mxUtils {
 	/**
@@ -802,6 +802,10 @@ public class Utils extends mxUtils {
 			}
 		}
 		return graphics;
+	}
+
+	public static  Image createIconImage(Color fillColor, IconSize iconSize) {
+		return createIconImage(fillColor, fillColor, GradientRotation.VERTICAL, iconSize.getSize()/3);
 	}
 	
 }

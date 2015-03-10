@@ -55,7 +55,7 @@ public class TokenColorChange extends mxAtomicGraphModelChange {
 	public void execute() {
 		value = previous;
 		previous = valueForCellChanged(name, previous);
-		((CPNToolBar)editor.getEditorToolbar()).updateGlobalTokenConfigurer();
+		((CPNToolBar) editor.getEditorToolbar()).updateGlobalTokenConfigurer();
 		editor.getGraphComponent().getGraph().updateViews();
 	}
 

@@ -52,7 +52,6 @@ public class FontToolBar extends JToolBar {
 
 	private static final long serialVersionUID = -6491749112943066366L;
 
-
 	// Actions
 	private ShowHideLabelsAction showHideLabelsAction;
 	private ShowHideTokensOnArcsAction showHideTokensOnArcsAction;
@@ -83,7 +82,6 @@ public class FontToolBar extends JToolBar {
 	private JComboBox fontComboBox;
 	private JComboBox fontSizeComboBox;
 
-
 	// Tooltips
 	private String showHideTokensOnArcsTooltip = "show/ hide constraints as tokens on arcs";
 	private String showHideLabelsTooltip = "show/ hide labels";
@@ -93,11 +91,10 @@ public class FontToolBar extends JToolBar {
 	private String alignRightTooltip = "right";
 	private String alingCenterTooltip = "center";
 	private String alignLeftTooltip = "left";
-	private String textRotationTooltip = "rotate text 90¡";
-	
+	private String textRotationTooltip = "rotate text 90ï¿½";
+
 	private String fontTooltip = "choose fontfamily";
 	private String fontSizeTooltip = "fontsize";
-	
 
 	// further variables
 	private PNEditorComponent pnEditor = null;
@@ -110,23 +107,21 @@ public class FontToolBar extends JToolBar {
 	public FontToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
 		super(orientation);
 		Validate.notNull(pnEditor);
-//		setLayout(new WrapLayout(FlowLayout.LEFT));
+		// setLayout(new WrapLayout(FlowLayout.LEFT));
 		this.pnEditor = pnEditor;
 
-
-			showHideTokensOnArcsAction = new ShowHideTokensOnArcsAction(pnEditor);
-			showHideTokensOnArcsAction.setFontToolbar(this);
-			showHideLabelsAction = new ShowHideLabelsAction(pnEditor);
-			showHideLabelsAction.setFontToolbar(this);
-			boldFontAction = new FontBoldStyleAction(pnEditor);
-			italicFontAction = new FontItalicStyleAction(pnEditor);
-			underlineFontAction = new FontUnderlineStyleAction(pnEditor);
-			lineThroughFontaction = new FontLineThroughStyleAction(pnEditor);
-			alignLeftAction = new FontAlignLeftAction(pnEditor);
-			alignCenterAction = new FontAlignCenterAction(pnEditor);
-			alignRightAction = new FontAlignRightAction(pnEditor);
-			textRotationAction = new FontRotationAction(pnEditor);	
-			
+		showHideTokensOnArcsAction = new ShowHideTokensOnArcsAction(pnEditor);
+		showHideTokensOnArcsAction.setFontToolbar(this);
+		showHideLabelsAction = new ShowHideLabelsAction(pnEditor);
+		showHideLabelsAction.setFontToolbar(this);
+		boldFontAction = new FontBoldStyleAction(pnEditor);
+		italicFontAction = new FontItalicStyleAction(pnEditor);
+		underlineFontAction = new FontUnderlineStyleAction(pnEditor);
+		lineThroughFontaction = new FontLineThroughStyleAction(pnEditor);
+		alignLeftAction = new FontAlignLeftAction(pnEditor);
+		alignCenterAction = new FontAlignCenterAction(pnEditor);
+		alignRightAction = new FontAlignRightAction(pnEditor);
+		textRotationAction = new FontRotationAction(pnEditor);
 
 		setFloatable(false);
 		showHideTokensOnArcsButton = (JButton) add(showHideTokensOnArcsAction, false);
@@ -163,7 +158,7 @@ public class FontToolBar extends JToolBar {
 		textRotationButton = add(textRotationAction);
 
 		addSeparator();
-		
+
 		showHideLabelsButton.setToolTipText(showHideLabelsTooltip);
 		fontComboBox.setToolTipText(fontTooltip);
 		fontSizeComboBox.setToolTipText(fontSizeTooltip);
@@ -176,6 +171,7 @@ public class FontToolBar extends JToolBar {
 		textRotationButton.setToolTipText(textRotationTooltip);
 
 	}
+
 	private JComponent add(Action action, boolean asToggleButton) {
 		if (!asToggleButton)
 			return super.add(action);
@@ -184,6 +180,7 @@ public class FontToolBar extends JToolBar {
 		add(b);
 		return b;
 	}
+
 	protected JToggleButton createToggleActionComponent(Action a) {
 		JToggleButton b = new JToggleButton() {
 			private static final long serialVersionUID = -3143341784881719155L;
@@ -201,8 +198,6 @@ public class FontToolBar extends JToolBar {
 		return b;
 	}
 
-
-	
 	private JComboBox getFontBox() {
 		if (fontBox == null) {
 			// Gets the list of available fonts from the local graphics
@@ -259,9 +254,8 @@ public class FontToolBar extends JToolBar {
 		return fontSizeBox;
 	}
 
-
 	public void setFontEnabled(boolean b) {
-		
+
 		fontLabel.setEnabled(b);
 		getFontBox().setEnabled(b);
 		getFontSizeBox().setEnabled(b);
@@ -273,15 +267,13 @@ public class FontToolBar extends JToolBar {
 		alignCenterAction.setEnabled(b);
 		alignRightAction.setEnabled(b);
 		textRotationAction.setEnabled(b);
-		
-		if(b)
+
+		if (b)
 			showHideLabelsAction.setShowIconImage();
 		else
 			showHideLabelsAction.setHideIconImage();
 	}
 
-
-	
 	public void updateView(Set<PNGraphCell> selectedComponents) {
 		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
 			if (selectedComponents == null || selectedComponents.isEmpty()) {
@@ -290,9 +282,7 @@ public class FontToolBar extends JToolBar {
 				return;
 			}
 			if (!selectedComponents.isEmpty()) {
-			
-			
-				
+
 				// addImageAction.setEnabled(true);
 
 				if (selectedComponents.size() >= 1) {
@@ -302,8 +292,8 @@ public class FontToolBar extends JToolBar {
 					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
 					boolean isTransitionSilent = false;
 					if (isTransitionCell) {
-						if(pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId()))
-						 isTransitionSilent = pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getTransition(selectedCell.getId()).isSilent();
+						if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId()))
+							isTransitionSilent = pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getTransition(selectedCell.getId()).isSilent();
 					}
 					boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
 					boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
@@ -333,7 +323,7 @@ public class FontToolBar extends JToolBar {
 							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().get(selectedCell.getId());
 							break;
 						}
-	
+
 						if (annotationGraphics != null && labelSelected) {
 							Font font = annotationGraphics.getFont();
 							fontFamily = font.getFamily();
@@ -358,10 +348,9 @@ public class FontToolBar extends JToolBar {
 							getFontBox().setSelectedItem(fontFamily);
 							getFontSizeBox().setSelectedItem(fontSize + "pt");
 
-							if (annotationGraphics.isVisible()){
+							if (annotationGraphics.isVisible()) {
 								showHideLabelsAction.setShowIconImage();
-							}
-							else{
+							} else {
 								showHideLabelsAction.setHideIconImage();
 							}
 							showHideLabelsButton.repaint();
@@ -388,9 +377,6 @@ public class FontToolBar extends JToolBar {
 		}
 	}
 
-
-
-
 	private void setButtonSettings(final JButton button) {
 		button.setBorderPainted(false);
 		button.addMouseListener(new MouseAdapter() {
@@ -409,24 +395,14 @@ public class FontToolBar extends JToolBar {
 
 		});
 	}
+
 	public void setTokenOnArcEnabled(boolean b) {
-//		fontLabel.setEnabled(b);
-//		getFontBox().setEnabled(b);
-//		getFontSizeBox().setEnabled(b);
-//		boldFontAction.setEnabled(b);
-//		italicFontAction.setEnabled(b);
-//		underlineFontAction.setEnabled(b);
-//		lineThroughFontaction.setEnabled(b);
-//		alignLeftAction.setEnabled(b);
-//		alignCenterAction.setEnabled(b);
-//		alignRightAction.setEnabled(b);
-//		textRotationAction.setEnabled(b);
-		
-		if(b)
+
+		if (b)
 			showHideTokensOnArcsAction.setShowIconImage();
 		else
 			showHideTokensOnArcsAction.setHideIconImage();
-		
+
 	}
 
 }

@@ -12,9 +12,9 @@ public class AccessModeChange extends mxAtomicGraphModelChange {
 	/**
 	 *
 	 */
-	protected String name;
-	Set value;
-	protected Set previous;
+	private String name;
+	private Set value;
+	private Set previous;
 	private IFNetGraph graph;
 	private String color;
 
@@ -25,17 +25,6 @@ public class AccessModeChange extends mxAtomicGraphModelChange {
 	 * @param graph2
 	 * 
 	 */
-
-	/**
-	 * 
-	 */
-	// public TokenChange(PNGraph pnGraph, PNGraphCell cell, Multiset value)
-	// {
-	// this.graph = pnGraph;
-	// this.cell = cell;
-	// this.value = value;
-	// this.previous = this.value;
-	// }
 
 	public AccessModeChange(PNGraph graph, String name, String color, Set am) {
 		this.graph = (IFNetGraph) graph;
@@ -103,4 +92,3 @@ public class AccessModeChange extends mxAtomicGraphModelChange {
 	}
 
 }
-

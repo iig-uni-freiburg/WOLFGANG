@@ -35,7 +35,7 @@ public class ShowHideTokensOnArcsAction extends AbstractPNEditorAction {
 
 	public void setFontToolbar(FontToolBar fontToolBar) {
 		fontTB = fontToolBar;
-		
+
 	}
 
 	@Override
@@ -45,13 +45,12 @@ public class ShowHideTokensOnArcsAction extends AbstractPNEditorAction {
 		if (getIcon().getImage() == visible) {
 			graph.setTokenOnArcVisibility(false);
 			fontTB.setTokenOnArcEnabled(false);
-			
-		}
-		else if (getIcon().getImage() == invisible) {
+
+		} else if (getIcon().getImage() == invisible) {
 			graph.setTokenOnArcVisibility(true);
 			fontTB.setTokenOnArcEnabled(true);
 
-		}		
+		}
 	}
 
 }

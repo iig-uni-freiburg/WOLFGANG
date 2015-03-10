@@ -11,29 +11,19 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class MakeSilentAction extends AbstractPNEditorAction {
-
-	private static final long serialVersionUID = 7716993627349722001L;
-
-	protected boolean success = false;
-	protected String errorMessage = null;
-
 	private Image play;
-
 	private Image reset;
 
-
-	
 	public MakeSilentAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "Exeuctin", IconFactory.getIcon("play"));
 		play = getIcon().getImage();
 		reset = IconFactory.getIcon("restart").getImage();
-		
-	}
 
+	}
 
 	public void setExecutionImage() {
 		getIcon().setImage(play);
-		
+
 	}
 
 	@Override
@@ -44,11 +34,10 @@ public class MakeSilentAction extends AbstractPNEditorAction {
 		if (getIcon().getImage() == play) {
 			getEditor().getGraphComponent().highlightEnabledTransitions();
 			getIcon().setImage(reset);
-		}
-		else if (getIcon().getImage() == reset) {
+		} else if (getIcon().getImage() == reset) {
 			getEditor().getGraphComponent().getGraph().getNetContainer().getPetriNet().reset();
 			getEditor().getGraphComponent().getGraph().refresh();
 			getEditor().getGraphComponent().highlightEnabledTransitions();
-		}		
+		}
 	}
 }

@@ -15,10 +15,8 @@ public class FillGradientRotationVertical extends AbstractPNEditorGraphicsAction
 
 	public FillGradientRotationVertical(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_vertical", IconFactory.getIcon("gradient_vertical"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size /3, size /3, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(3, 3);
+		setIconImage(getIcon().getImage());
 	}
 
 	@Override

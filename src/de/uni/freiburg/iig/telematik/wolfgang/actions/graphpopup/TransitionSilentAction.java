@@ -28,9 +28,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TransitionSilentChange;
 
 public class TransitionSilentAction extends AbstractPNEditorAction {
-
-	private int deltaX;
-	private int deltaY;
 	private boolean silent;
 
 	public TransitionSilentAction(PNEditorComponent editor, String layoutName, boolean setSilent) throws ParameterException {
@@ -49,7 +46,7 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 	 *            example.
 	 * @return an action that executes the specified layout
 	 */
-	
+
 	/**
 	 * Creates a layout instance for the given identifier.
 	 */
@@ -125,22 +122,20 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		PNGraph graph = getEditor().getGraphComponent().getGraph();
-		PNGraphCell selectedCell =  (PNGraphCell) graph.getSelectionCell();
-		if(selectedCell != null){
+		PNGraphCell selectedCell = (PNGraphCell) graph.getSelectionCell();
+		if (selectedCell != null) {
 			((mxGraphModel) graph.getModel()).beginUpdate();
-			((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph)graph,selectedCell.getId(),silent));
-			if(silent){
-			graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000");
-			graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1");
-			}
-			else{
+			((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph) graph, selectedCell.getId(), silent));
+			if (silent) {
+				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000");
+				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1");
+			} else {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
 			}
 			((mxGraphModel) graph.getModel()).endUpdate();
 		}
-		
-	}
 
+	}
 
 }

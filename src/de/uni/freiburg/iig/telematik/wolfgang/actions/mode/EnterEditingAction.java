@@ -11,10 +11,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 public class EnterEditingAction extends AbstractPNEditorAction {
 
 	private static final long serialVersionUID = 7716993627349722001L;
-
-	protected boolean success = false;
-	protected String errorMessage = null;
-
 	
 	public EnterEditingAction(PNEditorComponent editor) throws PropertyException, IOException {
 		super(editor, "Edit", IconFactory.getIcon("edit"));

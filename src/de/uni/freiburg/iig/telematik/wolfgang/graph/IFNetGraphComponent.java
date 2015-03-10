@@ -6,8 +6,6 @@ import java.awt.event.MouseWheelEvent;
 
 import javax.swing.SwingUtilities;
 
-import de.invation.code.toval.validate.ParameterException;
-
 public class IFNetGraphComponent extends PNGraphComponent {
 
 	private static final long serialVersionUID = -1698182711658593407L;

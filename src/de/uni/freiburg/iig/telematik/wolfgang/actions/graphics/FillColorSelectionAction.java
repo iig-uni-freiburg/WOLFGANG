@@ -1,11 +1,9 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.graphics;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 
 import com.mxgraph.util.mxConstants;
@@ -17,50 +15,20 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.G
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar.FillStyle;
 
 public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -7823581979779506827L;
-	public static Color DEFAULT_FILL_COLOR = new Color(255, 255, 255);
-	public static Color DEFAULT_GRADIENT_COLOR = new Color(0, 0, 0);
 
 	public FillColorSelectionAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "FillColor", IconFactory.getIcon("fill"));
-		setFillColor(DEFAULT_FILL_COLOR, DEFAULT_GRADIENT_COLOR, GradientRotation.VERTICAL);
-
-	}
-
-	public void setFillColor(Color fillColor, Color gradientColor, GradientRotation gradientRotation) throws PropertyException, IOException {
-		Image image = Utils.createIconImage(fillColor, gradientColor, gradientRotation, WolfgangProperties.getInstance().getIconSize().getSize());
-			setIconImage(image);
-
-
-	}
-
-	public void setIconImage(Image image) {
-		getIcon().setImage(image);
-
-	}
-
-	public void setNoFill() throws ParameterException, PropertyException, IOException {
-		ImageIcon noFill;
-
-			noFill = IconFactory.getIcon("no_fill");
-			java.awt.Image img = noFill.getImage();
-			int size = getIcon().getIconWidth();
-			java.awt.Image newimg = img.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH);
-			getIcon().setImage(newimg);
-
-
+		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
 	}
 
 	@Override
-	protected void performLabelAction() {
+	protected void performLabelAction() throws PropertyException, IOException {
 
 		switch (getEditor().getEditorToolbar().getGraphicsToolbar().getFillStyle()) {
 		case SOLID:
@@ -80,7 +48,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 			if (newColor != null) {
 				getGraph().setCellStyles(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, mxUtils.hexString(newColor));
 				getGraph().setCellStyles(MXConstants.LABEL_GRADIENT_ROTATION, null);
-				getGraph().setCellStyles(MXConstants.LABEL_GRADIENTCOLOR, mxUtils.hexString(FillGradientColorAction.DEFAULT_GRADIENT_COLOR));
+				getGraph().setCellStyles(MXConstants.LABEL_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor()));
 				getEditor().getEditorToolbar().getGraphicsToolbar().setFillStyle(FillStyle.SOLID);
 			}
 			break;
@@ -88,7 +56,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 	}
 
 	@Override
-	protected void performNoLabelAction() {
+	protected void performNoLabelAction() throws PropertyException, IOException {
 		switch (getEditor().getEditorToolbar().getGraphicsToolbar().getFillStyle()) {
 		case SOLID:
 			if (!getGraph().isSelectionEmpty()) {
@@ -111,7 +79,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 			if (newColor != null) {
 				getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(newColor));
 				getGraph().setCellStyles(MXConstants.GRADIENT_ROTATION, null);
-				getGraph().setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(FillGradientColorAction.DEFAULT_GRADIENT_COLOR));
+				getGraph().setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor()));
 				getEditor().getEditorToolbar().getGraphicsToolbar().setFillStyle(FillStyle.SOLID);
 			}
 
@@ -121,9 +89,6 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 }

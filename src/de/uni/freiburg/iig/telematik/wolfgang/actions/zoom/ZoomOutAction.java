@@ -13,27 +13,21 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperti
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ZoomOutAction extends AbstractPNEditorAction {
-	
+
 	private static final long serialVersionUID = 7450908146578160638L;
-	private String 	degree = "90";
 	private mxGraphView view;
 	private double currentZoom;
-	
-	
-	public ZoomOutAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
-		super(editor, "Zoom Out", IconFactory.getIcon("zoom_out"));		
-		view = getEditor().getGraphComponent().getGraph().getView();
-		
 
+	public ZoomOutAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
+		super(editor, "Zoom Out", IconFactory.getIcon("zoom_out"));
+		view = getEditor().getGraphComponent().getGraph().getView();
 
 	}
-
-
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		currentZoom = view.getScale();
-		if(currentZoom >0 +  WolfgangProperties.getInstance().getDefaultZoomStep() )
+		if (currentZoom > 0 + WolfgangProperties.getInstance().getDefaultZoomStep())
 			getEditor().getGraphComponent().zoomTo(currentZoom - WolfgangProperties.getInstance().getDefaultZoomStep(), getEditor().getGraphComponent().isCenterZoom());
-			}
+	}
 }

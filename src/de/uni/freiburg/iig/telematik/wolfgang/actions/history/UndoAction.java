@@ -21,7 +21,7 @@ public class UndoAction extends AbstractPNEditorAction {
 		if (editor != null) {
 			editor.getUndoManager().undo();
 			editor.getGraphComponent().getGraph().updateViews();
-		}		
+		}
 	}
 
 }

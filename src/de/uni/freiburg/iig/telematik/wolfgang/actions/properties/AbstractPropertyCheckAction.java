@@ -18,11 +18,9 @@ import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction {
@@ -64,9 +62,9 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 			worker.execute();
 			break;
 		case STARTED:
-			//Abort?
-//			setFillColor(PropertyUnknownColor);
-//			worker.cancel(true);
+			// Abort?
+			// setFillColor(PropertyUnknownColor);
+			// worker.cancel(true);
 			break;
 		default:
 			break;
@@ -124,7 +122,6 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 		g2d.dispose();
 		setIconImage(img);
 	}
-
 
 	private int drawString(Graphics2D g, String text, int x, int y) {
 		for (String line : text.split("\n"))

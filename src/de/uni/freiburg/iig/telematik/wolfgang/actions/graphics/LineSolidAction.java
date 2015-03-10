@@ -14,15 +14,13 @@ public class LineSolidAction extends AbstractPNEditorGraphicsAction {
 
 	public LineSolidAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_vertical", IconFactory.getIcon("solid"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size / 2, size / 3, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(5, 5);
+		setIconImage(getIcon().getImage());
 	}
 
 	@Override
 	protected void performLabelAction() {
-		getGraph().setCellStyles(MXConstants.LABEL_LINE_STYLE, "solid");		
+		getGraph().setCellStyles(MXConstants.LABEL_LINE_STYLE, "solid");
 	}
 
 	@Override
@@ -32,8 +30,6 @@ public class LineSolidAction extends AbstractPNEditorGraphicsAction {
 
 	@Override
 	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

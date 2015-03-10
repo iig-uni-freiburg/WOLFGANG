@@ -13,35 +13,25 @@ public class ToggleModeAction extends AbstractPNEditorAction {
 
 	private static final long serialVersionUID = 7716993627349722001L;
 
-	protected boolean success = false;
-	protected String errorMessage = null;
-
 	private Image edit;
-
 	private Image play;
 
-
-	
 	public ToggleModeAction(PNEditorComponent editor) throws PropertyException, IOException {
 		super(editor, "Mode", IconFactory.getIcon("switch_edit"));
 		edit = getIcon().getImage();
 		play = IconFactory.getIcon("switch_play").getImage();
-		
-	}
 
+	}
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (getIcon().getImage() == edit) {
 			getEditor().getEditorToolbar().setExecutionMode();
 			getIcon().setImage(play);
-		}
-		else if (getIcon().getImage() == play) {
+		} else if (getIcon().getImage() == play) {
 			getEditor().getEditorToolbar().setEditingMode();
 			getIcon().setImage(edit);
-		}		
+		}
 	}
-
-
 
 }

@@ -14,11 +14,9 @@ public class NewPTAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	
 	public NewPTAction(Wolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "New PT");
 	}
-
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {

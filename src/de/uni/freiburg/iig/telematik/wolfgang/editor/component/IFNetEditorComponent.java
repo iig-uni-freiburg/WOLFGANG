@@ -1,10 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
-import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.JToolBar;
 
@@ -14,7 +10,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraphComponent;
@@ -32,8 +27,8 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 	 * 
 	 */
 	private static final long serialVersionUID = -5600305366471054461L;
-	
-	public IFNetEditorComponent(){
+
+	public IFNetEditorComponent() {
 		super();
 	}
 
@@ -48,12 +43,12 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 	public IFNetEditorComponent(GraphicalIFNet netContainer, LayoutOption layoutOption) {
 		super(netContainer, layoutOption);
 	}
-	
+
 	@Override
 	protected GraphicalIFNet createNetContainer() {
 		return new GraphicalIFNet(new IFNet(), new IFNetGraphics());
 	}
-	
+
 	@Override
 	public GraphicalIFNet getNetContainer() {
 		return (GraphicalIFNet) super.getNetContainer();
@@ -64,8 +59,6 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 		return (IFNetProperties) super.getPNProperties();
 
 	}
-
-
 
 	@Override
 	protected PNGraphComponent createGraphComponent() {
@@ -92,19 +85,19 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 
 	@Override
 	public TransitionPopupMenu getTransitionPopupMenu() {
-				try {
-					return new TransitionPopupMenu(this);
-				} catch (ParameterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (PropertyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return null;
+		try {
+			return new TransitionPopupMenu(this);
+		} catch (ParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 
@@ -112,12 +105,12 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 	protected PNProperties createPNProperties() {
 		return new IFNetProperties(getNetContainer());
 	}
-	
+
 	@Override
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
 		return new CPNToolBar(this, JToolBar.HORIZONTAL);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	protected String getArcConstraint(AbstractFlowRelation relation) {

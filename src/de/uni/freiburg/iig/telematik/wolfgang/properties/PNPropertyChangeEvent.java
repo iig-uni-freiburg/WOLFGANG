@@ -4,8 +4,8 @@ import java.util.EventObject;
 
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 
-public class PNPropertyChangeEvent extends EventObject{
-	
+public class PNPropertyChangeEvent extends EventObject {
+
 	private static final long serialVersionUID = -4892583337247587700L;
 	private PNProperty property = null;
 	private PNComponent fieldType = null;
@@ -21,11 +21,11 @@ public class PNPropertyChangeEvent extends EventObject{
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
+
 	public PNProperty getProperty() {
 		return property;
 	}

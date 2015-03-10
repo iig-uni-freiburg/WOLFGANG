@@ -11,17 +11,16 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 public class RedoAction extends AbstractPNEditorAction {
 
 	private static final long serialVersionUID = 4315293729223367039L;
-	
+
 	public RedoAction(PNEditorComponent pnEditor) throws PropertyException, IOException {
 		super(pnEditor, "Redo", IconFactory.getIcon("redo"));
 	}
-
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (editor != null) {
 			editor.getUndoManager().redo();
 			editor.getGraphComponent().getGraph().updateViews();
-		}		
+		}
 	}
 }

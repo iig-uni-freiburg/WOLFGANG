@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -30,6 +31,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import de.invation.code.toval.graphic.component.RestrictedTextField;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
@@ -67,9 +69,11 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	/**
 	 * Configures the tree, and adds the trees basic nodes {@link #placesNode},{@link #transitionsNode} and {@link #arcsNode} <br>
 	 * and assigns the renderer and and editor.
+	 * @throws IOException 
+	 * @throws PropertyException 
 	 * @
 	 */
-	public void setUpGUI()  {
+	public void setUpGUI() throws PropertyException, IOException  {
 		String netName = properties.getNetContainer().getPetriNet().getName();
 		add(new JLabel(netName));
 		root = new PNTreeNode(netName, PNTreeNodeType.ROOT);

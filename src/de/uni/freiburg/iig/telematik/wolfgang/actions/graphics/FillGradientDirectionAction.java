@@ -27,21 +27,34 @@ public class FillGradientDirectionAction extends AbstractPNEditorGraphicsAction 
 
 	public FillGradientDirectionAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_horizontal", IconFactory.getIcon("gradient_horizontal"));
+		setButtonScale(2, 2);
 		horizontal = getIcon().getImage();
 		vertical = getVerticalImage();
 		diagonal = IconFactory.getIcon("gradient-diagonal").getImage();
 		gradientno = IconFactory.getIcon("gradient_no").getImage();
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size / 2, size / 2, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setIconImage(horizontal);
+	}
+	
+	public void setGradientnoIconImage() throws PropertyException, IOException {
+		setIconImage(gradientno);
+	}
+
+	public void setVerticalIconImage() throws PropertyException, IOException {
+		setIconImage(vertical);
+	}
+
+	public void setHorizontalIconImage() throws PropertyException, IOException {
+		setIconImage(horizontal);
+	}
+
+	public void setDiagonalIconImage() throws PropertyException, IOException {
+		setIconImage(diagonal);
 	}
 
 	private Image getVerticalImage() throws PropertyException, IOException {
 		int size = 0;
 		IconSize iconSize = WolfgangProperties.getInstance().getIconSize();
 		size = iconSize.getSize();
-
 		Image image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB_PRE);
 		Graphics g = image.getGraphics();
 		Graphics2D g2 = (Graphics2D) g;
@@ -53,25 +66,6 @@ public class FillGradientDirectionAction extends AbstractPNEditorGraphicsAction 
 		return image;
 	}
 
-	public void setImageIcon(Image image) {
-		getIcon().setImage(image);
-	}
-
-	public void setGradientnoIconImage() {
-		getIcon().setImage(gradientno);
-	}
-
-	public void setVerticalIconImage() {
-		getIcon().setImage(vertical);
-	}
-
-	public void setHorizontalIconImage() {
-		getIcon().setImage(horizontal);
-	}
-
-	public void setDiagonalIconImage() {
-		getIcon().setImage(diagonal);
-	}
 
 	@Override
 	protected void performLabelAction() {
@@ -108,9 +102,6 @@ public class FillGradientDirectionAction extends AbstractPNEditorGraphicsAction 
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 }

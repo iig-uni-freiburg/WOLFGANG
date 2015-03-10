@@ -37,7 +37,7 @@ public class PropertySettingDialog extends AbstractDialog {
 	private RestrictedTextField txtDefVertLabelOffset;
 	private RestrictedTextField txtDefHorizLabelOffset;
 	private RestrictedTextField txtGridSize;
-	
+
 	private ColorChooserPanel colDefLabelBGColor;
 	private ColorChooserPanel colDefLabelLineColor;
 	private ColorChooserPanel colDefPlaceColor;
@@ -46,10 +46,10 @@ public class PropertySettingDialog extends AbstractDialog {
 	private ColorChooserPanel colDefGradientColor;
 	private ColorChooserPanel colBGColor;
 	private ColorChooserPanel colGridColor;
-	
+
 	private JCheckBox chckGridVisibility;
 	private JCheckBox chckSnapToGrid;
-	
+
 	private EnumComboBox<GradientRotation> comboGradientRotation;
 	private FontComboBox comboFontFamily;
 	private RestrictedTextField txtDefFontSize;
@@ -72,7 +72,7 @@ public class PropertySettingDialog extends AbstractDialog {
 		txtDefVertLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultVerticalLabelOffset().toString());
 		txtDefHorizLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset().toString());
 		txtGridSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getGridSize().toString());
-		
+
 		colDefLabelBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelBackgroundColor());
 		colDefLabelLineColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelLineColor());
 		colDefPlaceColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultPlaceColor());
@@ -81,21 +81,21 @@ public class PropertySettingDialog extends AbstractDialog {
 		colDefGradientColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultGradientColor());
 		colBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getBackgroundColor());
 		colGridColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getGridColor());
-		
+
 		comboGradientRotation = new EnumComboBox<GradientRotation>(GradientRotation.class);
 		comboGradientRotation.setSelectedItem(WolfgangProperties.getInstance().getDefaultGradientDirection());
-		
+
 		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
 		comboFontFamily.setSelectedItem(WolfgangProperties.getInstance().getDefaultFontFamily());
 		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultFontSize().toString());
 		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, WolfgangProperties.getInstance().getDefaultZoomStep().toString());
-		
+
 		chckGridVisibility = new JCheckBox();
 		chckGridVisibility.setSelected(WolfgangProperties.getInstance().getGridVisibility());
 		chckSnapToGrid = new JCheckBox();
 		chckSnapToGrid.setSelected(WolfgangProperties.getInstance().getSnapToGrid());
 	}
-	
+
 	@Override
 	protected void addComponents() throws Exception {
 		mainPanel().setLayout(new BorderLayout());
@@ -110,7 +110,6 @@ public class PropertySettingDialog extends AbstractDialog {
 	protected void setTitle() {
 		setTitle("Edit Wolfgang Properties");
 	}
-	
 
 	@Override
 	protected void okProcedure() {
@@ -146,7 +145,7 @@ public class PropertySettingDialog extends AbstractDialog {
 		super.okProcedure();
 	}
 
-	public static void showDialog(Window parent) throws Exception{
+	public static void showDialog(Window parent) throws Exception {
 		PropertySettingDialog dialog = new PropertySettingDialog(parent);
 		dialog.setUpGUI();
 	}
@@ -174,7 +173,7 @@ public class PropertySettingDialog extends AbstractDialog {
 			add(txtDefVertLabelOffset);
 			add(new JLabel("Default Horizontal Label Offset:", JLabel.RIGHT));
 			add(txtDefHorizLabelOffset);
-			
+
 			add(new JLabel("Default Label BG Color:", JLabel.RIGHT));
 			add(colDefLabelBGColor);
 			add(new JLabel("Default Label Line Color:", JLabel.RIGHT));
@@ -194,10 +193,10 @@ public class PropertySettingDialog extends AbstractDialog {
 			add(txtDefFontSize);
 			add(new JLabel("Default Zoom Step:", JLabel.RIGHT));
 			add(txtDefZoomStep);
-			
+
 			add(new JLabel("Background Color:", JLabel.RIGHT));
 			add(colBGColor);
-			
+
 			add(new JLabel("Grid Size:", JLabel.RIGHT));
 			add(txtGridSize);
 			add(new JLabel("Grid Color:", JLabel.RIGHT));
@@ -211,7 +210,7 @@ public class PropertySettingDialog extends AbstractDialog {
 		}
 
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		PropertySettingDialog.showDialog(null);
 	}

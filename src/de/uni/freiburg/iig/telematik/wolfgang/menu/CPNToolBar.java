@@ -9,8 +9,6 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.pn.ChecKSoundnessAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.pn.CheckValidityAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenToolBar;

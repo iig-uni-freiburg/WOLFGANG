@@ -37,8 +37,8 @@ public class ChecKSoundnessAction extends AbstractPNEditorAction {
 				} catch (PNSoundnessException e1) {
 					JOptionPane.showMessageDialog(editor.getGraphComponent(), e1.getMessage(), "CWN Is Not Sound", JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
-		}		
+		}
 	}
 }

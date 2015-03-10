@@ -9,9 +9,9 @@ public class CapacityChange extends mxAtomicGraphModelChange {
 	/**
 	 *
 	 */
-	protected String name;
-	int value;
-	protected int previous;
+	private String name;
+	private int value;
+	private int previous;
 	private PNGraph graph;
 	private String color;
 

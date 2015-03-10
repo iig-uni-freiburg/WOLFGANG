@@ -1,23 +1,18 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
 import java.awt.Dimension;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.Box.Filler;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -31,7 +26,6 @@ import com.mxgraph.view.mxGraphView;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;

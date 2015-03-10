@@ -17,7 +17,6 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 
 	public CheckBoundednessAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

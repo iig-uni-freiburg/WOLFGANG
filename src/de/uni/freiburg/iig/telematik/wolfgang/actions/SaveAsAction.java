@@ -20,11 +20,9 @@ public class SaveAsAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	
 	public SaveAsAction(Wolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Save", IconFactory.getIcon("save"));
 	}
-
 
 	public boolean isSuccess() {
 		return success;
@@ -36,16 +34,17 @@ public class SaveAsAction extends AbstractWolfgangAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if(wolfgang.getEditorComponent() == null)
+		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
 		JFileChooser fc;
-			fc = new JFileChooser(System.getProperty("user.home"));
-		
+		fc = new JFileChooser(System.getProperty("user.home"));
+
 		fc.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
 			}
+
 			public boolean accept(File f) {
 				if (f.isDirectory()) {
 					return true;
@@ -56,18 +55,17 @@ public class SaveAsAction extends AbstractWolfgangAction {
 		});
 		fc.setDialogTitle("Save PNML");
 		int returnVal = fc.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
-		
+
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fc.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".pnml"))
 				filename += ".pnml";
-		String netName = fc.getName(fc.getSelectedFile());
-		if(netName != null)
-			wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
+			String netName = fc.getName(fc.getSelectedFile());
+			if (netName != null)
+				wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
 			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
 			wolfgang.getEditorComponent().setModified(false);
 		}
-		}
+	}
 
-	
 }

@@ -15,10 +15,8 @@ public class FillGradientRotationHorizontal extends AbstractPNEditorGraphicsActi
 
 	public FillGradientRotationHorizontal(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_horizontal", IconFactory.getIcon("gradient_horizontal"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size /3, size /3, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(3, 3);
+		setIconImage(getIcon().getImage());
 	}
 
 	@Override
@@ -33,10 +31,7 @@ public class FillGradientRotationHorizontal extends AbstractPNEditorGraphicsActi
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 
 

@@ -8,18 +8,19 @@ import com.mxgraph.util.mxConstants;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar.LineStyle;
 
 public class LineNoFillAction extends AbstractPNEditorGraphicsAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3418591697032917397L;
+
 	public LineNoFillAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "NoFill", IconFactory.getIcon("no_fill"));
-		java.awt.Image img = getIcon().getImage();
-		int size = WolfgangProperties.getInstance().getIconSize().getSize() / 3;
-		java.awt.Image newimg = img.getScaledInstance(size, size, java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
-
+		setButtonScale(3, 3);
+		setIconImage(getIcon().getImage());
 	}
 
 	@Override

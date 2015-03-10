@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import com.mxgraph.util.mxPoint;
 

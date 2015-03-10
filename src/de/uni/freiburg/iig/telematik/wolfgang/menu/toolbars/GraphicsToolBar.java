@@ -4,13 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -25,10 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import com.mxgraph.swing.util.mxGraphTransferable;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxUtils;
-
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
@@ -37,9 +30,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
@@ -64,7 +54,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 
@@ -407,14 +396,6 @@ public class GraphicsToolBar extends JToolBar {
 		add(pane);
 	}
 
-	private JComponent add(Action action, boolean asToggleButton) {
-		if (!asToggleButton)
-			return super.add(action);
-		JToggleButton b = createToggleActionComponent(action);
-		b.setAction(action);
-		add(b);
-		return b;
-	}
 
 	private JComponent nestedAdd(Action action) {
 		JToggleButton b = createToggleActionComponent(action);
@@ -496,13 +477,6 @@ public class GraphicsToolBar extends JToolBar {
 		colorSelectionAction.setEnabled(b);
 	}
 
-	private boolean isCellInClipboard() {
-		Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
-
-		return clipBoard.isDataFlavorAvailable(mxGraphTransferable.dataFlavor);
-
-	}
-
 	public void updateView(Set<PNGraphCell> selectedComponents) throws PropertyException, IOException {
 		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
 			if (selectedComponents == null || selectedComponents.isEmpty()) {
@@ -512,12 +486,9 @@ public class GraphicsToolBar extends JToolBar {
 			}
 			if (!selectedComponents.isEmpty()) {
 
-				// addImageAction.setEnabled(true);
 
 				if (selectedComponents.size() >= 1) {
-					// Enables Toolbar Buttons
 					this.selectedCell = selectedComponents.iterator().next();
-					boolean isPlaceCell = selectedCell.getType() == PNComponent.PLACE;
 					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
 					boolean isTransitionSilent = false;
 					if (isTransitionCell) {
@@ -526,15 +497,6 @@ public class GraphicsToolBar extends JToolBar {
 					}
 					boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
 					boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
-					boolean isBold = false;
-					boolean isItalic = false;
-					boolean isUnderlined = false;
-					boolean isAlignLeft = false;
-					boolean isAlignCenter = false;
-					boolean isAlignRight = false;
-
-					String fontFamily = null;
-					String fontSize = null;
 
 					NodeGraphics nodeGraphics = null;
 					AnnotationGraphics annotationGraphics = null;
@@ -561,7 +523,6 @@ public class GraphicsToolBar extends JToolBar {
 
 							Fill fill = nodeGraphics.getFill();
 							setFillToolbar(fill, false);
-
 							Line line = nodeGraphics.getLine();
 							setLineToolbar(line);
 
@@ -570,44 +531,15 @@ public class GraphicsToolBar extends JToolBar {
 						if (arcGraphics != null && isArcCell) {
 							Line line = arcGraphics.getLine();
 							setLineToolbar(line);
-
-							// setLineStyleButton(line);
-							// setLineShapeButton(line);
 						}
 
 						if (annotationGraphics != null && labelSelected) {
-							Font font = annotationGraphics.getFont();
-							fontFamily = font.getFamily();
-							fontSize = font.getSize();
-							String fontWeight = font.getWeight();
-							if (fontWeight.equals("bold"))
-								isBold = true;
-							String fontStyle = font.getStyle();
-							if (fontStyle.equals("italic"))
-								isItalic = true;
-							Decoration fontDecoration = font.getDecoration();
-							if (fontDecoration != null && fontDecoration.equals(Font.Decoration.UNDERLINE))
-								isUnderlined = true;
-							Align fontAlign = font.getAlign();
-							if (fontAlign.equals(Font.Align.CENTER))
-								isAlignCenter = true;
-							else if (fontAlign.equals(Font.Align.LEFT))
-								isAlignLeft = true;
-							else if (fontAlign.equals(Font.Align.RIGHT))
-								isAlignRight = true;
-
 							Fill fill = annotationGraphics.getFill();
 							setFillToolbar(fill, true);
 							gradientColorAction.setEnabled(false);
 							gradientDiagonalAction.setEnabled(false);
 							gradientHorizontalAction.setEnabled(false);
 							gradientVerticalAction.setEnabled(false);
-
-							// normalFillButton.setBackground(new Color(255, 0,
-							// 0,
-							// 100));
-							// normalFillButton.setForeground(new Color(255, 0,
-							// 255));
 							backgroundColorButton.repaint();
 
 							Line line = annotationGraphics.getLine();
@@ -639,21 +571,21 @@ public class GraphicsToolBar extends JToolBar {
 			boolean containsFillColor = false;
 			boolean containsGradientColor = false;
 			boolean containsGradientRotation = false;
-			Color fillColor = FillGradientColorAction.DEFAULT_FILL_COLOR;
+			Color fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
 			if (colorString != null) {
 				if (!colorString.equals("transparent")) {
 					fillColor = Utils.parseColor(colorString);
 					containsFillColor = true;
 				} else {
 					containsFillColor = false;
-					fillColor = FillBackgroundColorAction.DEFAULT_FILL_COLOR;
+					fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
 				}
 			}
 
 			if (fillColor == null)
 				containsFillColor = false;
 
-			Color gradientColor = FillGradientColorAction.DEFAULT_GRADIENT_COLOR;
+			Color gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
 			if (gradientString != null) {
 				gradientColor = Utils.parseColor(gradientString);
 				containsGradientColor = true;
@@ -694,9 +626,7 @@ public class GraphicsToolBar extends JToolBar {
 				}
 			}
 
-			gradientColorButton.repaint();
-			backgroundColorButton.repaint();
-			colorSelectionButton.repaint();
+	
 
 			fillGroup.clearSelection();
 			backgroundColorButton.setSelected(isFillSolid);
@@ -708,10 +638,9 @@ public class GraphicsToolBar extends JToolBar {
 			gradientHorizontalButton.setSelected(isGradientHorizontal);
 			gradientVerticalButton.setSelected(isGradientVertical);
 
-			// normalFillButton.setBackground(new Color(255, 0, 0,
-			// 100));
-			// normalFillButton.setForeground(new Color(255, 0,
-			// 255));
+			gradientColorButton.repaint();
+			backgroundColorButton.repaint();
+			colorSelectionButton.repaint();
 			backgroundColorButton.repaint();
 		}
 
@@ -724,15 +653,12 @@ public class GraphicsToolBar extends JToolBar {
 			break;
 		case NORMAL:
 			if (fillColor != null)
-				lineColorSelectionAction.setFillColor(fillColor, 1.0, linestyle, isLineCurve);
+				lineColorSelectionAction.setLineColor(fillColor, 1.0, linestyle, isLineCurve);
 			break;
 		default:
 			break;
 		}
-		if (fillColor != null) {
-			lineAction.setFillColor(fillColor, 1.0);
-			curveAction.setLineColor(fillColor);
-		}
+
 
 		colorSelectionButton.repaint();
 	}
@@ -752,7 +678,6 @@ public class GraphicsToolBar extends JToolBar {
 
 			boolean containsLineColor = false;
 			boolean containsStyle = false;
-			Color lineColor = LineColorSelectionAction.DEFAULT_FILL_COLOR;
 
 			switch (lineShape) {
 			case CURVE:
@@ -843,7 +768,7 @@ public class GraphicsToolBar extends JToolBar {
 				colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
 
 			} else {
-				colorSelectionAction.setFillColor(fillColor, FillGradientColorAction.DEFAULT_GRADIENT_COLOR, GradientRotation.VERTICAL);
+				colorSelectionAction.setFillColor(fillColor, WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
 			}
 
 			gradientColorButton.setSelected(true);
@@ -860,7 +785,7 @@ public class GraphicsToolBar extends JToolBar {
 		if (fillColor != null)
 			backgroundColorAction.setFillColor(fillColor);
 		if (fillColor == gradientColor)
-			gradientColor = FillGradientColorAction.DEFAULT_GRADIENT_COLOR;
+			gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
 		if (fillColor != null && gradientColor != null)
 			gradientColorAction.setFillColor(fillColor, gradientColor);
 		colorSelectionButton.repaint();

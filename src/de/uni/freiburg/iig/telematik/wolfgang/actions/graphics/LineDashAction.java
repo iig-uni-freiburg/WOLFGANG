@@ -14,28 +14,22 @@ public class LineDashAction extends AbstractPNEditorGraphicsAction {
 
 	public LineDashAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "gradient_horizontal", IconFactory.getIcon("dash"));
-		java.awt.Image img = getIcon().getImage();
-		int size = getIcon().getIconWidth();
-		java.awt.Image newimg = img.getScaledInstance(size /2, size /3 , java.awt.Image.SCALE_SMOOTH);
-		getIcon().setImage(newimg);
+		setButtonScale(2, 3);
+		setIconImage(getIcon().getImage());
 	}
 
 	@Override
 	protected void performLabelAction() {
 		getGraph().setCellStyles(MXConstants.LABEL_LINE_STYLE, "dash");
-		
+
 	}
 
 	@Override
 	protected void performNoLabelAction() {
-		getGraph().setCellStyles(MXConstants.LINE_STYLE, "dash");		
+		getGraph().setCellStyles(MXConstants.LINE_STYLE, "dash");
 	}
 
 	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
+	protected void doMoreFancyStuff(ActionEvent e) throws Exception {}
 
 }

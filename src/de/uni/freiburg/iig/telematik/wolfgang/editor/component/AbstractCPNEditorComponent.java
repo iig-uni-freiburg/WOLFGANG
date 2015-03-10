@@ -17,8 +17,6 @@ public abstract class AbstractCPNEditorComponent extends PNEditorComponent {
 	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer) {
 		super(netContainer);
 	}
-	
-	
 
 	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer, boolean askForLayout) {
 		super(netContainer, askForLayout);
@@ -27,13 +25,14 @@ public abstract class AbstractCPNEditorComponent extends PNEditorComponent {
 	public AbstractCPNEditorComponent(AbstractGraphicalCPN netContainer, LayoutOption layoutOption) {
 		super(netContainer, layoutOption);
 	}
+
 	@Override
 	protected PNProperties createPNProperties() {
-		//TODO:		return new CPNProperties(getNetContainer());
+		// TODO: return new CPNProperties(getNetContainer());
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes") 
+	@SuppressWarnings("rawtypes")
 	protected String getArcConstraint(AbstractFlowRelation relation) {
 		// TODO: Do something
 		return null;
@@ -43,5 +42,5 @@ public abstract class AbstractCPNEditorComponent extends PNEditorComponent {
 	protected PNProperties getPNProperties() {
 		return (CPNProperties) super.getPNProperties();
 	}
-	
+
 }

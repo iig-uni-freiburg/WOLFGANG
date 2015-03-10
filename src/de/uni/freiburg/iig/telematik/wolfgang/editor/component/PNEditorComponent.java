@@ -1,18 +1,15 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -51,7 +48,6 @@ import com.mxgraph.view.mxGraph;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -64,8 +60,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListenerSupport;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
@@ -74,7 +68,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
-import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar.Mode;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
@@ -83,24 +76,26 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 
-public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent{
-	
-
+public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
 
 	public static final boolean DEFAULT_ASK_FOR_LAYOUT = false;
 
 	private static final long serialVersionUID = 1023415244830760771L;
-	private static final String scaleMessageFormat = "Scale: %s %%";
-
 	protected JPanel statusPanel = null;
 	protected NodePalettePanel palettePanel = null;
 	protected PNGraphComponent graphComponent;
 	protected AbstractToolBar toolbar = null;
+	protected boolean modified = false;
+	protected PNProperties properties = null;
+	protected PropertiesView propertiesView = null;
+	public AbstractGraphicalPN netContainer = null;
+	protected Wolfgang wolfgang = null;
 	protected mxRubberband rubberband;
 	protected mxKeyboardHandler keyboardHandler;
 	protected mxUndoManager undoManager;
+
+	private PNEditorListenerSupport editorListenerSupport = new PNEditorListenerSupport();
 
 	protected mxIEventListener undoHandler = new mxIEventListener() {
 		public void invoke(Object source, mxEventObject evt) {
@@ -112,16 +107,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			setModified(true);
 		}
 	};
-
-	protected boolean modified = false;
-
-	protected PNProperties properties = null;
-	protected PropertiesView propertiesView = null;
-	public AbstractGraphicalPN netContainer = null;
-
-	private PNEditorListenerSupport editorListenerSupport = new PNEditorListenerSupport();
-	
-	protected Wolfgang wolfgang = null;
 
 	// ------- Constructors
 	// --------------------------------------------------------------------
@@ -135,25 +120,30 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	public PNEditorComponent(AbstractGraphicalPN netContainer) {
 		this(netContainer, DEFAULT_ASK_FOR_LAYOUT);
 	}
-	
+
 	public PNEditorComponent(AbstractGraphicalPN netContainer, boolean askForLayout) {
 		super();
 		Validate.notNull(netContainer);
 		initialize(netContainer);
 		setUpGUI();
-		propertiesView.setUpGUI();
+		try {
+			propertiesView.setUpGUI();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Property Exception.\nReason: " + e.getMessage(), "Property Exception",
+					JOptionPane.ERROR_MESSAGE);
+		}
 
 		if (!graphComponent.getGraph().containedGraphics() && askForLayout) {
 			String selectedLayout = showLayoutDialog();
-			if(selectedLayout != null){
+			if (selectedLayout != null) {
 				setLayout(selectedLayout);
 			}
 		}
 	}
-	
+
 	public PNEditorComponent(AbstractGraphicalPN netContainer, LayoutOption layoutOption) {
 		this(netContainer, false);
-		if(layoutOption != null)
+		if (layoutOption != null)
 			setLayout(layoutOption.getLayoutCode());
 	}
 
@@ -171,8 +161,8 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 				layouts[0]);
 		return selectedLayout;
 	}
-	
-	private void setLayout(String selectedLayout){
+
+	private void setLayout(String selectedLayout) {
 		mxIGraphLayout layout = createLayout(selectedLayout, true);
 		mxGraph graph = graphComponent.getGraph();
 		Object cell = graph.getSelectionCell();
@@ -183,9 +173,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 		graph.getModel().beginUpdate();
 		try {
-			long t0 = System.currentTimeMillis();
 			layout.execute(cell);
-			status("Layout: " + (System.currentTimeMillis() - t0) + " ms");
 		} finally {
 			mxMorphing morph = new mxMorphing(graphComponent, 20, 1.2, 20);
 
@@ -208,7 +196,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		} else {
 			this.netContainer = netContainer;
 		}
-		
+
 		// UIManager.put("Tree.rendererFillBackground", false);
 		properties = createPNProperties();
 		propertiesView = new PropertiesView(properties);
@@ -216,10 +204,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		properties.addPNPropertiesListener(propertiesView);
 		properties.setPropertiesView(propertiesView);
 
-		
 	}
-
-
 
 	protected abstract AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> createNetContainer();
 
@@ -300,16 +285,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	public JComponent getMainComponent() {
 		return this;
-	}
-
-	private JPanel getStatusPanel() {
-		if (statusPanel == null) {
-			statusPanel = new JPanel();
-			JLabel statusBar = new JLabel();
-			statusBar.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
-			statusPanel.add(statusBar);
-		}
-		return statusPanel;
 	}
 
 	// ------- Functionality
@@ -545,34 +520,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	}
 
-	private void treeNodeSelected(PNTreeNode node) {
-		if (node == null) {
-			return;
-		}
-		switch (node.getFieldType()) {
-		case ARC:
-			getGraph().selectArc(node.toString());
-			break;
-		case TRANSITION:
-			getGraph().selectTransition(node.toString());
-			break;
-		case PLACE:
-			getGraph().selectPlace(node.toString());
-			break;
-		case LEAF:
-			PNTreeNode parentNode = null;
-			try {
-				parentNode = (PNTreeNode) node.getParent();
-			} catch (Exception ex) {
-				return;
-			}
-			treeNodeSelected(parentNode);
-			break;
-		default:
-			getGraph().clearSelection();
-		}
-	}
-
 	@Override
 	public void placeAdded(AbstractPlace place) {
 		propertiesView.componentAdded(PNComponent.PLACE, place.getName());
@@ -624,39 +571,28 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		}
 	}
 
-	public void status(String msg) {
-		// statusBar.setText(msg);
-	}
-	
 	public enum LayoutOption {
-		
-		VERTICAL_HIERARCHICAL("verticalHierarchical"),
-		HORIZONTAL_HIERARCHICAL("horizontalHierarchical"),
-		ORGANIC("organicLayout"),
-		CIRCLE("circleLayout");
-		
+
+		VERTICAL_HIERARCHICAL("verticalHierarchical"), HORIZONTAL_HIERARCHICAL("horizontalHierarchical"), ORGANIC("organicLayout"), CIRCLE("circleLayout");
+
 		private String layoutCode = null;
-		
-		private LayoutOption(String layoutCode){
+
+		private LayoutOption(String layoutCode) {
 			this.layoutCode = layoutCode;
 		}
-		
-		public String getLayoutCode(){
+
+		public String getLayoutCode() {
 			return layoutCode;
 		}
-		
-		
+
 	}
 
 	public void loadEditorToolbar() {
 		try {
 			toolbar = createNetSpecificToolbar();
 		} catch (EditorToolbarException e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
-
 
 }

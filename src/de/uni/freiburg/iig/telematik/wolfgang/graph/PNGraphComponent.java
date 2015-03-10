@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -62,8 +61,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.DefaultTextShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.EllipseShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.HtmlTextShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.RectangleShape;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;

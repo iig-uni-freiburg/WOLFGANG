@@ -23,15 +23,6 @@ public class LineShapeAction extends AbstractPNEditorAction {
 		curve = IconFactory.getIcon("round").getImage();
 	}
 
-	public void setCurveIconImage() {
-		getIcon().setImage(curve);
-
-	}
-
-	public void setLineIconImage() {
-		getIcon().setImage(line);
-	}
-
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (getIcon().getImage() == line) {

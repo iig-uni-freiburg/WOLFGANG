@@ -7,8 +7,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 
 public class ConstraintChange extends mxAtomicGraphModelChange {
 
-	protected String name;
-	protected Multiset value, previous;
+	private String name;
+	private Multiset value, previous;
 	private PNGraph graph;
 
 	public ConstraintChange() {

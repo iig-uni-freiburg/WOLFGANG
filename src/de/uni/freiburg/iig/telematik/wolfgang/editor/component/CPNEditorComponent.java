@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JToolBar;
@@ -26,7 +25,7 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 
 	private static final long serialVersionUID = 7463202384539027183L;
 
-	public CPNEditorComponent(){
+	public CPNEditorComponent() {
 		super();
 	}
 
@@ -54,7 +53,7 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 
 	@Override
 	protected PNProperties createPNProperties() {
-			return new CPNProperties(getNetContainer());
+		return new CPNProperties(getNetContainer());
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -71,7 +70,7 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 
 	@Override
 	protected PNGraphComponent createGraphComponent() {
-			return new CPNGraphComponent(new CPNGraph(getNetContainer(), getPNProperties()));
+		return new CPNGraphComponent(new CPNGraph(getNetContainer(), getPNProperties()));
 	}
 
 	@Override
@@ -96,7 +95,7 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
 		return new CPNToolBar(this, JToolBar.HORIZONTAL);

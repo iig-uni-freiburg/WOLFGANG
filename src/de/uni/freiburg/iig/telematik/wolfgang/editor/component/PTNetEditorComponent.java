@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JToolBar;
@@ -21,11 +20,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PTProperties;
 
 public class PTNetEditorComponent extends PNEditorComponent {
-
-	// public final static String PNML =
-	// PNEditor.class.getResource("/samples/samplePTnet.pnml").getPath();
-	// public final static String LABELING =
-	// PNEditor.class.getResource("/samples/sampleIFnetLabeling01.xml").getPath();
 
 	private static final long serialVersionUID = -5130690639223735136L;
 
@@ -89,25 +83,6 @@ public class PTNetEditorComponent extends PNEditorComponent {
 		return null;
 
 	}
-
-//	private static void testEmptyNet(JFrame frame) throws IOException, ParserException, ParameterException {
-//		JPanel panel = createFrameEpmtyNet(frame);
-//		PropertiesView pV = ((PNEditor) panel).getPropertiesView();
-//		frame.setLayout(new BorderLayout());
-//		frame.getContentPane().add(panel, BorderLayout.CENTER);
-//		frame.getContentPane().add(pV, BorderLayout.LINE_END);
-//
-//	}
-
-//	public static JPanel createFrameEpmtyNet(JFrame frame) throws IOException, ParserException, ParameterException {
-//		String userHome = System.getProperty("user.home");
-//		File file = new File(userHome + "test");
-//		JPanel panel = new PTNetEditor(file);
-//		frame.setTitle("PTNet Editor");
-//		frame.setSize(800, 500);
-//		panel.setBackground(Color.black);
-//		return panel;
-//	}
 
 	@Override
 	public TransitionPopupMenu getTransitionPopupMenu() {

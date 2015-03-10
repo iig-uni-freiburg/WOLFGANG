@@ -151,7 +151,7 @@ public class TokenConfigurerToolBar extends JToolBar {
 
 		try {
 			tokenColorAction = new TokenColorSelectionAction(editor);
-			tokenColorAction.setTokenColor(Color.BLACK);
+			tokenColorAction.setFillColor(Color.BLACK);
 			JComponent tokenColorButton = nestedAdd(tokenColorAction);
 			myPanel.add(tokenColorButton);
 		} catch (Exception e) {
@@ -180,9 +180,9 @@ public class TokenConfigurerToolBar extends JToolBar {
 			PNGraph graph = editor.getGraphComponent().getGraph();
 			mxGraphModel model = ((mxGraphModel) graph.getModel());
 			model.beginUpdate();
-			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getTokenColor()));
+			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
 			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenChange((PNGraph) editor.getGraphComponent().getGraph(), name, placeMarking));
-			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getTokenColor()));
+			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
 			model.endUpdate();
 
 		}
@@ -209,9 +209,9 @@ public class TokenConfigurerToolBar extends JToolBar {
 		try {
 			TokenColorSelectionAction tokenColorAction = new TokenColorSelectionAction(editor, tokenLabel);
 			if (tokenColor != null)
-				tokenColorAction.setTokenColor(tokenColor);
+				tokenColorAction.setFillColor(tokenColor);
 			else
-				tokenColorAction.setTokenColor(Color.BLACK);
+				tokenColorAction.setFillColor(Color.BLACK);
 			JComponent tokenColorButton = nestedAdd(tokenColorAction);
 			firstElement.add(tokenColorButton);
 

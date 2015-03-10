@@ -25,9 +25,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
 public class LayoutAction extends AbstractPNEditorAction {
-
-	private int deltaX;
-	private int deltaY;
 	mxIGraphLayout layout;
 
 	public LayoutAction(PNEditorComponent editor, String layoutName, boolean animate) throws ParameterException {
@@ -36,7 +33,6 @@ public class LayoutAction extends AbstractPNEditorAction {
 	}
 
 	private static final long serialVersionUID = 1728027231812006823L;
-
 
 	/**
 	 * Creates an action that executes the specified layout.
@@ -47,7 +43,7 @@ public class LayoutAction extends AbstractPNEditorAction {
 	 *            example.
 	 * @return an action that executes the specified layout
 	 */
-	
+
 	/**
 	 * Creates a layout instance for the given identifier.
 	 */
@@ -57,24 +53,24 @@ public class LayoutAction extends AbstractPNEditorAction {
 		if (ident != null) {
 			mxGraph graph = getEditor().getGraphComponent().getGraph();
 			if (ident.equals("verticalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph){
+				layout = new mxHierarchicalLayout(graph) {
 
 					@Override
 					public void execute(Object parent) {
 						getEditor().getGraphComponent().getGraph().removeAllArcPoints();
 						super.execute(parent);
 					}
-					
+
 				};
 			} else if (ident.equals("horizontalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph, JLabel.WEST){
+				layout = new mxHierarchicalLayout(graph, JLabel.WEST) {
 
 					@Override
 					public void execute(Object parent) {
 						getEditor().getGraphComponent().getGraph().removeAllArcPoints();
 						super.execute(parent);
 					}
-					
+
 				};
 			} else if (ident.equals("verticalTree")) {
 				layout = new mxCompactTreeLayout(graph, false);
@@ -85,14 +81,14 @@ public class LayoutAction extends AbstractPNEditorAction {
 			} else if (ident.equals("placeEdgeLabels")) {
 				layout = new mxEdgeLabelLayout(graph);
 			} else if (ident.equals("organicLayout")) {
-				layout = new mxOrganicLayout(graph){
+				layout = new mxOrganicLayout(graph) {
 
 					@Override
 					public void execute(Object parent) {
 						getEditor().getGraphComponent().getGraph().removeAllArcPoints();
 						super.execute(parent);
 					}
-					
+
 				};
 			}
 			if (ident.equals("verticalPartition")) {
@@ -136,49 +132,49 @@ public class LayoutAction extends AbstractPNEditorAction {
 					}
 				};
 			} else if (ident.equals("circleLayout")) {
-				layout = new mxCircleLayout(graph){
+				layout = new mxCircleLayout(graph) {
 
 					@Override
 					public void execute(Object parent) {
 						getEditor().getGraphComponent().getGraph().removeAllArcPoints();
 						super.execute(parent);
 					}
-					
+
 				};
 			}
 		}
 
 		return layout;
 	}
+
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if(layout != null){
-		mxGraph graph = getEditor().getGraphComponent().getGraph();
-		Object cell = graph.getSelectionCell();
+		if (layout != null) {
+			mxGraph graph = getEditor().getGraphComponent().getGraph();
+			Object cell = graph.getSelectionCell();
 
-		if (cell == null || graph.getModel().getChildCount(cell) == 0) {
-			cell = graph.getDefaultParent();
+			if (cell == null || graph.getModel().getChildCount(cell) == 0) {
+				cell = graph.getDefaultParent();
+			}
+
+			graph.getModel().beginUpdate();
+			try {
+				long t0 = System.currentTimeMillis();
+				layout.execute(cell);
+			} finally {
+				mxMorphing morph = new mxMorphing(getEditor().getGraphComponent(), 20, 1.2, 20);
+
+				morph.addListener(mxEvent.DONE, new mxIEventListener() {
+
+					public void invoke(Object sender, mxEventObject evt) {
+						getEditor().getGraphComponent().getGraph().getModel().endUpdate();
+					}
+
+				});
+
+				morph.startAnimation();
+			}
 		}
-
-		graph.getModel().beginUpdate();
-		try {
-			long t0 = System.currentTimeMillis();
-			layout.execute(cell);
-		} finally {
-			mxMorphing morph = new mxMorphing(getEditor().getGraphComponent(), 20, 1.2, 20);
-
-			morph.addListener(mxEvent.DONE, new mxIEventListener() {
-
-				public void invoke(Object sender, mxEventObject evt) {
-					getEditor().getGraphComponent().getGraph().getModel().endUpdate();
-				}
-
-			});
-
-			morph.startAnimation();
-		}
-		}		
 	}
-
 
 }

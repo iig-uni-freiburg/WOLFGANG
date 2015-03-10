@@ -36,7 +36,6 @@ import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -161,7 +160,7 @@ public class TokenToolBar extends JToolBar {
 
 		try {
 			tokenColorAction = new TokenColorSelectionAction(editor);
-			tokenColorAction.setTokenColor(Color.BLACK);
+			tokenColorAction.setFillColor(Color.BLACK);
 			JComponent tokenColorButton = nestedAdd(tokenColorAction);
 			myPanel.add(tokenColorButton);
 		} catch (ParameterException e) {
@@ -182,11 +181,11 @@ public class TokenToolBar extends JToolBar {
 		else if (newTokenColor.equals(""))
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name is empty", "Problem", JOptionPane.ERROR_MESSAGE);
 		else {
-			colorMap.put(newTokenColor, tokenColorAction.getTokenColor());
+			colorMap.put(newTokenColor, tokenColorAction.getButtonFillColor());
 
 			// UpdateBlock
 
-			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getTokenColor()));
+			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
 
 			updateView();
 
@@ -214,9 +213,9 @@ public class TokenToolBar extends JToolBar {
 		try {
 			TokenColorSelectionAction tokenColorAction = new TokenColorSelectionAction(editor, tokenLabel);
 			if (tokenColor != null)
-				tokenColorAction.setTokenColor(tokenColor);
+				tokenColorAction.setFillColor(tokenColor);
 			else
-				tokenColorAction.setTokenColor(Color.BLACK);
+				tokenColorAction.setFillColor(Color.BLACK);
 			JComponent tokenColorButton = nestedAdd(tokenColorAction);
 			firstElement.add(tokenColorButton);
 
