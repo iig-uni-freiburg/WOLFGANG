@@ -6,6 +6,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
+import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -75,6 +77,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
@@ -129,8 +132,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		try {
 			propertiesView.setUpGUI();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Property Exception.\nReason: " + e.getMessage(), "Property Exception",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Property Exception.\nReason: " + e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
 		}
 
 		if (!graphComponent.getGraph().containedGraphics() && askForLayout) {
@@ -517,7 +519,44 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
+		Object treeSelection = e.getPath().getLastPathComponent();
+		if (treeSelection instanceof PNTreeNode) {
+			String treeSelectionName = ((PNTreeNode) treeSelection).toString();
+			ArrayList<PNGraphCell> selectedCells = new ArrayList<PNGraphCell>();
 
+			switch (((PNTreeNode) treeSelection).getFieldType()) {
+			case ARC:
+				getGraph().setSelectionCell(getGraph().getNodeCell(treeSelectionName));
+				break;
+			case ARCS:
+				getGraph().selectCells(false, true);
+				break;
+			case LEAF:
+				break;
+			case PLACE:
+				getGraph().setSelectionCell(getGraph().getNodeCell(treeSelectionName));
+				break;
+			case PLACES:
+				for (AbstractPlace p : getNetContainer().getPetriNet().getPlaces()) {
+					selectedCells.add(getGraph().getNodeCell(p.getName()));
+				}
+				getGraph().setSelectionCells(selectedCells.toArray());
+				break;
+			case ROOT:
+				break;
+			case TRANSITION:
+				getGraph().setSelectionCell(getGraph().getNodeCell(treeSelectionName));
+				break;
+			case TRANSITIONS:
+				for (AbstractTransition p : getNetContainer().getPetriNet().getTransitions()) {
+					selectedCells.add(getGraph().getNodeCell(p.getName()));
+				}
+				getGraph().setSelectionCells(selectedCells.toArray());
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.plaf.TreeUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -460,6 +461,18 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			collapseRow(i);
 		}
 	}
+	@Override
+    protected void fireValueChanged(final TreeSelectionEvent e)
+    {
+        if (this.isValid())
+            super.fireValueChanged(e);
+        else
+        {
+            super.clearSelection();
+        }
+
+    }
+
 
 	private DefaultMutableTreeNode findTreeNodeByName(DefaultMutableTreeNode root, String name) {
 		@SuppressWarnings("unchecked")
