@@ -307,7 +307,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		PNTreeNode child = (PNTreeNode) findTreeNodeByName((DefaultMutableTreeNode) getModel().getRoot(), name).getFirstChild();
 		int i = 0;
 		for (i = 0; i <= child.getTable().getRowCount(); i++) {
-			if (property == child.getTable().getValueAt(i, 0))
+			if (child.getTable().getValueAt(i, 0).toString().equals(property+":"))
 				break;
 		}
 		((JTextField) child.getTable().getValueAt(i, 1)).setText(oldValue);
