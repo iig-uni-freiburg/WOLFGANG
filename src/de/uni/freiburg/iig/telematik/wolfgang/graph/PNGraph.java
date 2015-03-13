@@ -927,7 +927,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		PNGraphCell placeCell = getNodeCell(name);
 
 		mxRectangle bounds;
-		double dy;
 		switch (property) {
 		case PLACE_LABEL:
 			getModel().setValue(placeCell, newValue);
@@ -953,25 +952,31 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected boolean handleTransitionPropertyChange(String name, PNProperty property, Object oldValue, Object newValue) {
 		PNGraphCell transitionCell = getNodeCell(name);
-
+		mxRectangle bounds;
 		switch (property) {
 		case TRANSITION_LABEL:
 			getModel().setValue(transitionCell, newValue);
 			return true;
 		case TRANSITION_POSITION_X:
-			transitionCell.getGeometry().setX(new Integer((Integer) newValue).doubleValue());
+			moveCells(new Object[] { transitionCell }, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue(), 0);
 			setSelectionCell(transitionCell);
 			return true;
 		case TRANSITION_POSITION_Y:
-			transitionCell.getGeometry().setY(new Integer((Integer) newValue).doubleValue());
+			moveCells(new Object[] { transitionCell }, 0, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue());
 			setSelectionCell(transitionCell);
 			return true;
 		case TRANSITION_SIZE_X:
-			transitionCell.getGeometry().setWidth(new Integer((Integer) newValue).doubleValue());
+			bounds = getView().getState(transitionCell).getBoundingBox();
+			bounds.setWidth(new Integer((Integer) newValue).doubleValue());
+			bounds.setHeight(transitionCell.getGeometry().getHeight());
+			resizeCell(transitionCell, bounds);
 			setSelectionCell(transitionCell);
 			return true;
 		case TRANSITION_SIZE_Y:
-			transitionCell.getGeometry().setHeight(new Integer((Integer) newValue).doubleValue());
+			bounds = getView().getState(transitionCell).getBoundingBox();
+			bounds.setWidth(transitionCell.getGeometry().getWidth());
+			bounds.setHeight(new Integer((Integer) newValue).doubleValue());
+			resizeCell(transitionCell, bounds);
 			setSelectionCell(transitionCell);
 			return true;
 		}
