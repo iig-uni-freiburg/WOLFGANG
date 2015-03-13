@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.plaf.basic.BasicTreeUI.NodeDimensionsHandler;
 import javax.swing.tree.AbstractLayoutCache;
 
 public class PNPropertiesTreeUI extends BasicTreeUI {
@@ -106,10 +105,4 @@ public class PNPropertiesTreeUI extends BasicTreeUI {
 		}
 
 	} // End of class BasicTreeUI.NodeDimensionsHandler
-
-	// @Override
-	// protected int getRowX(int row, int depth) {
-	// // TODO Auto-generated method stub
-	// return super.getRowX(row, depth);
-	// }
 }

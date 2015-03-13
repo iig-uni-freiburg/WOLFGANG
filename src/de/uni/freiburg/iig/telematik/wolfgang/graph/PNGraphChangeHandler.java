@@ -118,7 +118,7 @@ public class PNGraphChangeHandler {
 			graph.setArcLabel(labelCell.getId(), valueChange.getValue() + "");
 			break;
 		case PLACE:
-			graph.getPNProperties().setTransitionLabel(this, labelCell.getId(), (String) valueChange.getValue());
+			graph.getPNProperties().setPlaceLabel(this, labelCell.getId(), (String) valueChange.getValue());
 			break;
 		case TRANSITION:
 			graph.getPNProperties().setTransitionLabel(this, labelCell.getId(), (String) valueChange.getValue());
