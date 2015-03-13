@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.properties;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -69,6 +70,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	private static final long serialVersionUID = -23504178961013201L;
 
 	protected PNProperties properties = null;
+	private Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
 
 	// The Three basic ParentNodes of the tree
 	PNTreeNode placesNode = new PNTreeNode("Places", PNTreeNodeType.PLACES);
@@ -365,7 +367,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-				g.drawImage(IconFactory.getIconImageFixSize("edit_properties"), 45, 2, null);
+				g.drawImage(propertiesImage , 45, 2, null);
 		}
 
 		@Override
