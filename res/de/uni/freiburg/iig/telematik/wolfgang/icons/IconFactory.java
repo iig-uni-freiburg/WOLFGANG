@@ -82,7 +82,6 @@ public class IconFactory {
 		Validate.notNull(name);
 		Validate.notEmpty(name);
 		URL imageURL = IconFactory.class.getResource(name +".png");
-		System.out.println(imageURL);
 		try {
 			return new ImageIcon(imageURL).getImage();
 		} catch (Exception e) {
