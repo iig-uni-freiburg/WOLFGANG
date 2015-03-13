@@ -563,7 +563,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			}
 			try {
 				toolbar.updateView(selectedComponents);
-			} catch (EditorToolbarException e) {
+			} catch (Exception e) {
 				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Cannot update selected Toolbar components.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
 						JOptionPane.ERROR_MESSAGE);
 

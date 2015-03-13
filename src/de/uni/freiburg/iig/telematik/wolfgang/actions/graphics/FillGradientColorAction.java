@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.graphics;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
@@ -23,7 +24,11 @@ public class FillGradientColorAction extends AbstractPNEditorGraphicsAction {
 	public FillGradientColorAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "GradientColor", IconFactory.getIcon("fill"));
 		setButtonScale(3, 3);
-		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), WolfgangProperties.getInstance().getDefaultGradientColor());
+		Color gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
+		if(gradientColor != null)
+		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), gradientColor, GradientRotation.HORIZONTAL);
+		else
+			setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), Color.BLACK, GradientRotation.HORIZONTAL);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.properties.tree;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -9,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
@@ -38,7 +41,11 @@ public class PNCellEditor extends DefaultCellEditor {
 
 		switch (node.getFieldType()) {
 		case LEAF:
-			result = node.getTable();
+			JPanel tablePanel = new JPanel();
+			tablePanel.setLayout(new BorderLayout());
+			tablePanel.add(node.getTable(), BorderLayout.NORTH);
+			tablePanel.add(new JPopupMenu.Separator(), BorderLayout.SOUTH);
+			result = tablePanel;
 			break;
 
 		}

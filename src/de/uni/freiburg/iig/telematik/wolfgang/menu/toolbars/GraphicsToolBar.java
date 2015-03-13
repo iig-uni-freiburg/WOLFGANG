@@ -67,7 +67,7 @@ public class GraphicsToolBar extends JToolBar {
 	private Action gradientVerticalAction;
 	private Action gradientHorizontalAction;
 	private Action gradientDiagonalAction;
-	private FillGradientColorAction gradientColorAction;
+
 	private FillNoFillAction noFillAction;
 	private LineNoFillAction noLineAction;
 
@@ -75,15 +75,16 @@ public class GraphicsToolBar extends JToolBar {
 	private FillColorSelectionAction colorSelectionAction;
 	private LineShapeAction lineShapeAction;
 	private FillBackgroundColorAction backgroundColorAction;
+	private FillGradientColorAction gradientColorAction;
 
 	// Buttons
-	private JToggleButton backgroundColorButton;
-	private JToggleButton gradientColorButton;
-	private JToggleButton colorSelectionButton;
+	private JButton backgroundColorButton;
+	private JButton gradientColorButton;
+	private JButton colorSelectionButton;
 	private JToggleButton gradientDiagonalButton;
 	private JToggleButton gradientHorizontalButton;
 	private JToggleButton gradientVerticalButton;
-	private JToggleButton noFillButton;
+	private JButton noFillButton;
 	private ButtonGroup fillGroup;
 	private ButtonGroup gradientDirectionGroup;
 	private JComboBox strokeWeightBox;
@@ -175,9 +176,9 @@ public class GraphicsToolBar extends JToolBar {
 
 		fillLabel = new JLabel(fillLabelText);
 		add(fillLabel);
-		backgroundColorButton = (JToggleButton) nestedAdd(backgroundColorAction);
-		gradientColorButton = (JToggleButton) nestedAdd(gradientColorAction);
-		noFillButton = (JToggleButton) nestedAdd(noFillAction);
+		backgroundColorButton = (JButton) add(backgroundColorAction);
+		gradientColorButton = (JButton) add(gradientColorAction);
+		noFillButton = (JButton) add(noFillAction);
 
 		fillGroup = new ButtonGroup();
 		fillGroup.add(backgroundColorButton);
@@ -193,7 +194,7 @@ public class GraphicsToolBar extends JToolBar {
 		gradientDirectionGroup.add(gradientHorizontalButton);
 		gradientDirectionGroup.add(gradientDiagonalButton);
 
-		colorSelectionButton = (JToggleButton) nestedAdd(colorSelectionAction);
+		colorSelectionButton = (JButton) add(colorSelectionAction);
 
 		setUpFillPanel();
 		addSeparator();
@@ -557,93 +558,119 @@ public class GraphicsToolBar extends JToolBar {
 		}
 	}
 
-	private void setFillToolbar(Fill fill, boolean isLabel) throws PropertyException, IOException {
-		boolean isFillSolid = false;
-		boolean isFillGradient = false;
-		boolean isFillEmpty = false;
-		boolean isGradientDiagonal = false;
-		boolean isGradientVertical = false;
-		boolean isGradientHorizontal = false;
-		if (fill != null) {
-			String colorString = fill.getColor();
-			String gradientString = fill.getGradientColor();
-			GradientRotation gradientRotation = fill.getGradientRotation();
-			boolean containsFillColor = false;
-			boolean containsGradientColor = false;
-			boolean containsGradientRotation = false;
-			Color fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
-			if (colorString != null) {
-				if (!colorString.equals("transparent")) {
-					fillColor = Utils.parseColor(colorString);
-					containsFillColor = true;
-				} else {
-					containsFillColor = false;
-					fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
-				}
-			}
-
-			if (fillColor == null)
-				containsFillColor = false;
-
-			Color gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
-			if (gradientString != null) {
-				gradientColor = Utils.parseColor(gradientString);
-				containsGradientColor = true;
-			}
-
-			if (gradientRotation != null) {
-				containsGradientRotation = true;
-			} else
-				gradientRotation = GradientRotation.VERTICAL;
-
-			if (!containsFillColor) {
-
-				setFillStyle(FillStyle.NOFILL, null, null, null);
-				isFillEmpty = true;
-
-			} else if (containsFillColor && containsGradientColor && containsGradientRotation && !isLabel) {
-				setFillStyle(FillStyle.GRADIENT, fillColor, gradientColor, gradientRotation);
-				isFillGradient = true;
-			} else {
-				setFillStyle(FillStyle.SOLID, fillColor, fillColor, gradientRotation);
-				isFillSolid = true;
-			}
-			currentFillColor = fillColor;
-			if (containsGradientRotation) {
-				switch (gradientRotation) {
-				case DIAGONAL:
-					isGradientDiagonal = true;
-					break;
-				case HORIZONTAL:
-					isGradientHorizontal = true;
-					break;
-				case VERTICAL:
-					isGradientVertical = true;
-					break;
-				default:
-					break;
-
-				}
-			}
+//	private void setFillToolbar(Fill fill, boolean isLabel) throws PropertyException, IOException {
+//		boolean isFillSolid = false;
+//		boolean isFillGradient = false;
+//		boolean isFillEmpty = false;
+//		boolean isGradientDiagonal = false;
+//		boolean isGradientVertical = false;
+//		boolean isGradientHorizontal = false;
+//		boolean containsFillColor = false;
+//		boolean containsGradientColor = false;
+//		boolean containsGradientRotation = false;
+//		
+//		if (fill != null) {
+//			String colorString = fill.getColor();
+//			String gradientString = fill.getGradientColor();
+//			GradientRotation gradientRotation = fill.getGradientRotation();
+//
+//			
+//			
+//			Color fillColor = null;
+//			if (colorString != null) {
+//				if (!colorString.equals("transparent") && (colorString != null)) {
+//					fillColor = Utils.parseColor(colorString);
+//					containsFillColor = true;
+//				} else {
+//					fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
+//				}
+//			}
+//
+//
+//			Color gradientColor;
+//			if (!gradientString.equals("transparent") && (gradientString != null)) {
+//				gradientColor = Utils.parseColor(gradientString);
+//				containsGradientColor = true;
+//			}
+//			else {
+//				gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
+//				if(gradientColor == null)
+//					gradientColor = fillColor;
+//			}
+//
+//			if (gradientRotation != null) {
+//				containsGradientRotation = true;
+//			} else{
+//				gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
+//				if(gradientRotation == null)
+//					gradientRotation = GradientRotation.VERTICAL;
+//				}
+//
+//			if (!containsFillColor) {
+////				setFillStyle(FillStyle.NOFILL, null, null, null);
+//				isFillEmpty = true;
+//
+//			} else if (containsFillColor && containsGradientColor && containsGradientRotation && !isLabel) {
+////				setFillStyle(FillStyle.GRADIENT, fillColor, gradientColor, gradientRotation);
+//				isFillGradient = true;
+//			} else {
+////				setFillStyle(FillStyle.SOLID, fillColor, fillColor, gradientRotation);
+//				isFillSolid = true;
+//			}
+////			currentFillColor = fillColor;
+//			
+//			
+//			if (containsGradientRotation) {
+//				switch (gradientRotation) {
+//				case DIAGONAL:
+//					isGradientDiagonal = true;
+//					break;
+//				case HORIZONTAL:
+//					isGradientHorizontal = true;
+//					break;
+//				case VERTICAL:
+//					isGradientVertical = true;
+//					break;
+//				default:
+//					break;
+//
+//				}
+//			}
 
 	
 
-			fillGroup.clearSelection();
-			backgroundColorButton.setSelected(isFillSolid);
-			gradientColorButton.setSelected(isFillGradient);
-			noFillButton.setSelected(isFillEmpty);
+//			fillGroup.clearSelection();
+//			backgroundColorButton.setSelected(isFillSolid);
+//			gradientColorButton.setSelected(true);
+//			noFillButton.setSelected(isFillEmpty);
+//
+//			gradientDirectionGroup.clearSelection();
+//			gradientDiagonalButton.setSelected(isGradientDiagonal);
+//			gradientHorizontalButton.setSelected(isGradientHorizontal);
+//			gradientVerticalButton.setSelected(isGradientVertical);
+//
+//			gradientColorButton.repaint();
+//			backgroundColorButton.repaint();
+//			colorSelectionButton.repaint();
+//			backgroundColorButton.repaint();
+//		}
+//
+//	}
 
-			gradientDirectionGroup.clearSelection();
-			gradientDiagonalButton.setSelected(isGradientDiagonal);
-			gradientHorizontalButton.setSelected(isGradientHorizontal);
-			gradientVerticalButton.setSelected(isGradientVertical);
-
-			gradientColorButton.repaint();
-			backgroundColorButton.repaint();
-			colorSelectionButton.repaint();
-			backgroundColorButton.repaint();
+	private void setFillToolbar(Fill fill, boolean isLabel) throws NumberFormatException, PropertyException, IOException {
+		Validate.notNull(fill);
+		Color fillcolor = Utils.parseColor(fill.getColor());
+		if (fill.getGradientColor() != null && fill.getGradientRotation() != null) {
+			Color gradientColor = Utils.parseColor(fill.getGradientColor());
+			colorSelectionAction.setFillColor(fillcolor, gradientColor, fill.getGradientRotation());
+		} else {
+			colorSelectionAction.setFillColor(fillcolor);
+			gradientColorAction.setFillColor(fillcolor, gradientColorAction.getButtonGradientColor(), fill.getGradientRotation());
 		}
-
+		backgroundColorAction.setFillColor(fillcolor);
+		colorSelectionButton.repaint();
+		gradientColorButton.repaint();
+		backgroundColorButton.repaint();
 	}
 
 	private void setLineStyle(LineStyle nofill, Color fillColor, Style linestyle, boolean isLineCurve) throws ParameterException, PropertyException, IOException {
@@ -660,7 +687,7 @@ public class GraphicsToolBar extends JToolBar {
 		}
 
 
-		colorSelectionButton.repaint();
+//		colorSelectionButton.repaint();
 	}
 
 	private void setLineToolbar(Line line) throws ParameterException, PropertyException, IOException {
@@ -753,44 +780,43 @@ public class GraphicsToolBar extends JToolBar {
 		return fillStyle;
 	}
 
-	public void setFillStyle(FillStyle fillStyle, Color fillColor, Color gradientColor, GradientRotation rotation) throws PropertyException, IOException {
-		this.fillStyle = fillStyle;
-		switch (fillStyle) {
-
-		case SOLID:
-			if (fillColor != null)
-				backgroundColorButton.setSelected(true);
-			colorSelectionAction.setFillColor(fillColor, fillColor, rotation);
-
-			break;
-		case GRADIENT:
-			if (gradientColor != null) {
-				colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
-
-			} else {
-				colorSelectionAction.setFillColor(fillColor, WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
-			}
-
-			gradientColorButton.setSelected(true);
-
-			break;
-		case NOFILL:
-			noFillButton.setSelected(true);
-			colorSelectionAction.setNoFill();
-			break;
-		default:
-			break;
-
-		}
-		if (fillColor != null)
-			backgroundColorAction.setFillColor(fillColor);
-		if (fillColor == gradientColor)
-			gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
-		if (fillColor != null && gradientColor != null)
-			gradientColorAction.setFillColor(fillColor, gradientColor);
-		colorSelectionButton.repaint();
-
-	}
+//	public void setFillStyle(FillStyle fillStyle, Color fillColor, Color gradientColor, GradientRotation rotation) throws PropertyException, IOException {
+//		this.fillStyle = fillStyle;
+//		switch (fillStyle) {
+//
+//		case SOLID:
+//			if (fillColor != null)
+//				backgroundColorButton.setSelected(true);
+//			colorSelectionAction.setFillColor(fillColor, fillColor, rotation);
+//
+//			break;
+//		case GRADIENT:
+//			if (gradientColor != null) {
+//				colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
+////				gradientColorAction.setFillColor(gradientColor);
+//			} else {
+//				colorSelectionAction.setFillColor(fillColor, WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
+//			}
+////			gradientColorButton.setSelected(true);
+//			break;
+//		case NOFILL:
+//			noFillButton.setSelected(true);
+//			colorSelectionAction.setNoFill();
+//			break;
+//		default:
+//			break;
+//
+//		}
+//		if (fillColor != null)
+//			backgroundColorAction.setFillColor(fillColor);
+//		if (fillColor == gradientColor)
+//			gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
+//		if (fillColor != null && gradientColor != null)
+//			gradientColorAction.setFillColor(fillColor, gradientColor);
+//		
+//		colorSelectionButton.repaint();
+//
+//	}
 
 	public enum FillStyle {
 		SOLID, GRADIENT, NOFILL

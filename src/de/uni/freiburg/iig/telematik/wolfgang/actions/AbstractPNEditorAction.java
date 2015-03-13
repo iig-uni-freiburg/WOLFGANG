@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -71,7 +73,7 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 		return getGraphSelectionCell() != null;
 	}
 
-	protected void updateViewWithSelectedCell() throws EditorToolbarException {
+	protected void updateToolbarViewWithSelectedCell() throws EditorToolbarException, PropertyException, IOException {
 		if (isCellSelected()) {
 			Set<PNGraphCell> setWithOneCell = new HashSet<PNGraphCell>();
 			setWithOneCell.add(getGraphSelectionCell());

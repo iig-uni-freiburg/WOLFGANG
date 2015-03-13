@@ -55,8 +55,6 @@ public abstract class AbstractToolBar extends JToolBar {
 	protected static final String NO_SELECTION_TIME = "no time context...";
 
 	private JComboBox comboTimeContextModel = null;
-	
-
 
 	// further variables
 	protected PNEditorComponent pnEditor = null;
@@ -94,9 +92,9 @@ public abstract class AbstractToolBar extends JToolBar {
 	private JToggleButton redoButton;
 	private JToggleButton fontButton = null;
 	private JToggleButton graphicsButton = null;
-//	private JButton enterExecutionButton;
+	// private JButton enterExecutionButton;
 	private JButton reloadExecutionButton;
-//	private JButton enterEditingButton;
+	// private JButton enterEditingButton;
 	private JToggleButton zoomButton;
 	private JToggleButton nodeButton;
 	private JToggleButton exportButton;
@@ -110,8 +108,8 @@ public abstract class AbstractToolBar extends JToolBar {
 	private NodeToolBar nodeToolbar;
 
 	// Tooltips
-//	private String executionButtonTooltip = "execution mode";
-//	private String editingButtonTooltip = " editing mode";
+	// private String executionButtonTooltip = "execution mode";
+	// private String editingButtonTooltip = " editing mode";
 	private String fontTooltip = "font";
 	private String saveButtonTooltip = "save";
 	private String exportButtonTooltip = "export to pdf";
@@ -121,7 +119,6 @@ public abstract class AbstractToolBar extends JToolBar {
 	public JTextField executionTraceTextField;
 
 	private JLabel executionTraceLabel;
-
 
 	public JTextField getExecutionTrace() {
 		return executionTraceTextField;
@@ -159,11 +156,11 @@ public abstract class AbstractToolBar extends JToolBar {
 		toggleModeButton.setBorderPainted(false);
 		toggleModeButton.setIconTextGap(0);
 		toggleModeButton.setText("EDIT");
-//		enterExecutionButton = add(enterExecutionAction);
-//		setButtonSettings(enterExecutionButton);
+		// enterExecutionButton = add(enterExecutionAction);
+		// setButtonSettings(enterExecutionButton);
 
-//		enterEditingButton = add(enterEditingAction);
-//		setButtonSettings(enterEditingButton);
+		// enterEditingButton = add(enterEditingAction);
+		// setButtonSettings(enterEditingButton);
 
 		add(new Filler(new Dimension(0, 0), new Dimension(20, 0), new Dimension(30, 0)));
 		reloadExecutionButton = add(reloadExecutionAction);
@@ -172,7 +169,6 @@ public abstract class AbstractToolBar extends JToolBar {
 		executionTraceLabel = new JLabel("    Execution Trace: ");
 
 		setExecutionButtonsVisible(false);
-
 
 		undoButton = (JToggleButton) add(undoAction, true);
 		redoButton = (JToggleButton) add(redoAction, true);
@@ -189,25 +185,26 @@ public abstract class AbstractToolBar extends JToolBar {
 
 		zoomButton = (JToggleButton) add(zoomAction, true);
 		zoomButtonSettings();
-		
+
 		add(executionTraceLabel);
 		add(executionTraceTextField);
 
 		zoomAction.setButton(zoomButton);
 
-		
-//		if (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty()) {
-//			addSeparator();
-//			add(getComboTimeContextModel());
-//			addSeparator();
-//		}
+		// if
+		// (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty())
+		// {
+		// addSeparator();
+		// add(getComboTimeContextModel());
+		// addSeparator();
+		// }
 
 		addNetSpecificToolbarButtons();
 		doLayout();
 
 		exportButton.setToolTipText(exportButtonTooltip);
-//		enterExecutionButton.setToolTipText(executionButtonTooltip);
-//		enterEditingButton.setToolTipText(editingButtonTooltip);
+		// enterExecutionButton.setToolTipText(executionButtonTooltip);
+		// enterEditingButton.setToolTipText(editingButtonTooltip);
 
 		undoButton.setToolTipText(undoTooltip);
 		redoButton.setToolTipText(redoTooltip);
@@ -244,47 +241,45 @@ public abstract class AbstractToolBar extends JToolBar {
 		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", "zoom_in", zoomToolbar);
 	}
 
-	
-	
+	// private JComboBox getComboTimeContextModel() {
+	// if (comboTimeContextModel == null) {
+	// comboTimeContextModel = new JComboBox();
+	// comboTimeContextModel.setMinimumSize(new Dimension(200, 24));
+	// comboTimeContextModel.setPreferredSize(new Dimension(200, 24));
+	// comboTimeContextModel.setMaximumSize(new Dimension(200, 24));
+	//
+	// comboTimeContextModel.addItemListener(new ItemListener() {
+	//
+	// @Override
+	// public void itemStateChanged(ItemEvent arg0) {
+	// if (arg0.getItem() instanceof TimeContext)
+	// SwatState.getInstance().setActiveContext(pnEditor.getNetContainer().getPetriNet().getName(),
+	// ((TimeContext) arg0.getItem()).getName());
+	// }
+	// });
+	//
+	// }
+	//
+	// updateTimeContextModelComboBox();
+	//
+	//
+	// return comboTimeContextModel;
+	// }
 
-
-//	private JComboBox getComboTimeContextModel() {
-//		if (comboTimeContextModel == null) {
-//			comboTimeContextModel = new JComboBox();
-//			comboTimeContextModel.setMinimumSize(new Dimension(200, 24));
-//			comboTimeContextModel.setPreferredSize(new Dimension(200, 24));
-//			comboTimeContextModel.setMaximumSize(new Dimension(200, 24));
-//
-//			comboTimeContextModel.addItemListener(new ItemListener() {
-//
-//				@Override
-//				public void itemStateChanged(ItemEvent arg0) {
-//					if (arg0.getItem() instanceof TimeContext)
-//						SwatState.getInstance().setActiveContext(pnEditor.getNetContainer().getPetriNet().getName(),
-//								((TimeContext) arg0.getItem()).getName());
-//				}
-//			});
-//
-//		}
-//
-//		updateTimeContextModelComboBox();
-//
-//
-//		return comboTimeContextModel;
-//	}
-
-//	private void updateTimeContextModelComboBox() {
-//		DefaultComboBoxModel theModel = (DefaultComboBoxModel) comboTimeContextModel.getModel();
-//		theModel.removeAllElements();
-//		List<TimeContext> timeContexts = SwatComponents.getInstance().getTimeContexts(pnEditor.getNetContainer().getPetriNet().getName());
-//		theModel.addElement(NO_SELECTION_TIME);
-//		if (timeContexts != null && !timeContexts.isEmpty()) {
-//			for (TimeContext context : timeContexts) {
-//				theModel.addElement(context);
-//			}
-//		}
-//		comboTimeContextModel.repaint();
-//	}
+	// private void updateTimeContextModelComboBox() {
+	// DefaultComboBoxModel theModel = (DefaultComboBoxModel)
+	// comboTimeContextModel.getModel();
+	// theModel.removeAllElements();
+	// List<TimeContext> timeContexts =
+	// SwatComponents.getInstance().getTimeContexts(pnEditor.getNetContainer().getPetriNet().getName());
+	// theModel.addElement(NO_SELECTION_TIME);
+	// if (timeContexts != null && !timeContexts.isEmpty()) {
+	// for (TimeContext context : timeContexts) {
+	// theModel.addElement(context);
+	// }
+	// }
+	// comboTimeContextModel.repaint();
+	// }
 
 	private void zoomButtonSettings() {
 		final mxGraphView view = pnEditor.getGraphComponent().getGraph().getView();
@@ -366,25 +361,18 @@ public abstract class AbstractToolBar extends JToolBar {
 		return b;
 	}
 
-	public void updateView(Set<PNGraphCell> selectedComponents) throws EditorToolbarException {
+	public void updateView(Set<PNGraphCell> selectedComponents) throws EditorToolbarException, PropertyException, IOException {
 		switch (mode) {
 		case EDIT:
 			fontToolbar.updateView(selectedComponents);
-			try {
-				graphicsToolbar.updateView(selectedComponents);
-			} catch (PropertyException e) {
-				throw new EditorToolbarException("Invalid Property.\nReason: " + e.getMessage());
-			} catch (IOException e) {
-				throw new EditorToolbarException("Invalid File Path.\nReason: " + e.getMessage());
-			}
+			graphicsToolbar.updateView(selectedComponents);
+
 			break;
 		case PLAY:
 			break;
 
 		}
 	}
-	
-
 
 	public void setExecutionMode() {
 		mode = Mode.PLAY;
@@ -399,7 +387,7 @@ public abstract class AbstractToolBar extends JToolBar {
 	}
 
 	private void setEditButtonsVisible(boolean b) {
-//		enterEditingButton.setVisible(b);
+		// enterEditingButton.setVisible(b);
 		undoButton.setVisible(b);
 		redoButton.setVisible(b);
 		nodeButton.setVisible(b);
@@ -417,7 +405,7 @@ public abstract class AbstractToolBar extends JToolBar {
 	protected abstract void setNetSpecificButtonsVisible(boolean b);
 
 	private void setExecutionButtonsVisible(boolean b) {
-//		enterExecutionButton.setVisible(b);
+		// enterExecutionButton.setVisible(b);
 		reloadExecutionButton.setVisible(b);
 		setExecutionTraceVisible(b);
 	}
@@ -425,9 +413,7 @@ public abstract class AbstractToolBar extends JToolBar {
 	private void setExecutionTraceVisible(boolean b) {
 		executionTraceLabel.setVisible(b);
 		executionTraceTextField.setVisible(b);
-		
-		
-		
+
 	}
 
 	public void setEditingMode() {
@@ -439,10 +425,10 @@ public abstract class AbstractToolBar extends JToolBar {
 		setExecutionButtonsVisible(false);
 	}
 
-//	public JButton getExecutionButton() {
-//		return enterExecutionButton;
-//
-//	}
+	// public JButton getExecutionButton() {
+	// return enterExecutionButton;
+	//
+	// }
 
 	public GraphicsToolBar getGraphicsToolbar() {
 		// TODO Auto-generated method stub
@@ -451,14 +437,13 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	public void addTransitionToTrace(PNGraphCell cell) {
 		String lastFiredTransistion = pnEditor.getNetContainer().getPetriNet().getLastFiredTransition().getName();
-		if(cell.getType().equals(PNComponent.TRANSITION) && cell.getId().equals(lastFiredTransistion)){
+		if (cell.getType().equals(PNComponent.TRANSITION) && cell.getId().equals(lastFiredTransistion)) {
 			String label = pnEditor.getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
-			if(getExecutionTrace().getText().length()>0)
-			getExecutionTrace().setText(getExecutionTrace().getText() + " -> "+ label );
+			if (getExecutionTrace().getText().length() > 0)
+				getExecutionTrace().setText(getExecutionTrace().getText() + " -> " + label);
 			else
 				getExecutionTrace().setText(label);
 		}
 	}
-
 
 }

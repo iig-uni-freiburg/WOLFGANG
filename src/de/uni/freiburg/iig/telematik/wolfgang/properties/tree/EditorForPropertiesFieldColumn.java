@@ -24,7 +24,6 @@ public class EditorForPropertiesFieldColumn implements TableCellEditor {
 	}
 
 	public Component getTableCellEditorComponent(final JTable table, Object value, boolean isSelected, final int row, int column) {
-
 		if (value instanceof JTextField)
 			textField = (PropertiesField) value;
 		else
@@ -41,7 +40,6 @@ public class EditorForPropertiesFieldColumn implements TableCellEditor {
 			@Override
 			public void focusGained(FocusEvent e) {
 				table.setRowSelectionInterval(row, row);
-				// select whole row
 			}
 		});
 		return textField;

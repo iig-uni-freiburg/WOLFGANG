@@ -20,10 +20,11 @@ public class JTableRenderer implements TableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-		if (value instanceof JTextField)
+		if (value instanceof JTextField){
 			textField = (JTextField) value;
-		else
-			textField.setText((String) value);
+			}
+		else{
+			textField.setText((String) value);}
 		
 		return textField;
 	}

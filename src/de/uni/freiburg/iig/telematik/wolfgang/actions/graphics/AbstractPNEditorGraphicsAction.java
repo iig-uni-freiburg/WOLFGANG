@@ -28,6 +28,7 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 	private Color buttonFillColor;
 	private int heightDenominator = 1;
 	private int widthDenominator = 1;
+	private Color buttonGradientColor;
 
 	public Color getButtonFillColor() {
 		return buttonFillColor;
@@ -66,7 +67,17 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 		gradientColor = (gradientColor == null) ? fillColor : gradientColor;
 		Image image = Utils.createIconImage(fillColor, gradientColor, gradientRotation, WolfgangProperties.getInstance().getIconSize().getSize());
 		setButtonFillColor(fillColor);
+		setButtonGradientColor(gradientColor);
 		setIconImage(image);
+	}
+
+
+	public Color getButtonGradientColor() {
+		return buttonGradientColor;
+	}
+
+	public void setButtonGradientColor(Color buttonGradienColor) {
+		this.buttonGradientColor = buttonGradienColor;
 	}
 
 	public void setLineColor(Color fillColor, Double defaultStrokewidth) throws PropertyException, IOException {
@@ -107,7 +118,7 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 			performNoLabelAction();
 		}
 		doMoreFancyStuff(e);
-		updateViewWithSelectedCell();
+		updateToolbarViewWithSelectedCell();
 	}
 
 	protected abstract void performLabelAction() throws PropertyException, IOException;
