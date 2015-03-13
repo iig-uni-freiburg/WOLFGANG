@@ -556,6 +556,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			default:
 				break;
 			}
+			getGraphComponent().requestFocus();
 		}
 	}
 
