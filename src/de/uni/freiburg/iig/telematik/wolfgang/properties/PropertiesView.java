@@ -362,15 +362,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			try {
-				g.drawImage(IconFactory.getIcon("edit_properties").getImage(), 45, 2, null);
-			} catch (PropertyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				g.drawImage(IconFactory.getIconImageFixSize("edit_properties"), 45, 2, null);
 		}
 
 		@Override
