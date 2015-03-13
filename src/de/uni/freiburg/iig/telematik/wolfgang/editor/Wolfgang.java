@@ -44,8 +44,8 @@ public class Wolfgang extends JFrame {
 	private static final long serialVersionUID = 6384805641357595809L;
 
 	public static final Dimension PREFERRED_SIZE_WORKBENCH = new Dimension(1024, 768);
-	private static final Dimension PREFERRED_SIZE_PROPERTIES_PANEL = new Dimension(200, 768);
-	private static final Dimension MINIMUM_SIZE_EDITOR_PANEL = new Dimension(824, 768);
+	private static final Dimension PREFERRED_SIZE_PROPERTIES_PANEL = new Dimension(120, 768);
+	private static final Dimension MINIMUM_SIZE_EDITOR_PANEL = new Dimension(904, 768);
 
 	private File fileReference = null;
 
@@ -296,7 +296,7 @@ public class Wolfgang extends JFrame {
 	protected JComponent getCenterComponent() throws Exception {
 		if (centerPanel == null) {
 			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-			centerPanel.setDividerLocation(0.8);
+			centerPanel.setDividerLocation(885);
 		}
 		return centerPanel;
 	}

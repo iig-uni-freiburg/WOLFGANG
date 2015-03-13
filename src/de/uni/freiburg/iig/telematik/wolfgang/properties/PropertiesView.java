@@ -81,6 +81,9 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	public PropertiesView(PNProperties properties) {
 		Validate.notNull(properties);
 		this.properties = properties;
+//		setPreferredSize(new java.awt.Dimension(120, 600));
+//		setMaximumSize(new java.awt.Dimension(120, 600));
+//setMinimumSize(new java.awt.Dimension(120, 600));
 		// expand all nodes in the tree to be visible
 		for (int i = 0; i < getRowCount(); i++) {
 			expandRow(i);
