@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 
 public class IconFactory {
@@ -75,6 +76,18 @@ public class IconFactory {
 	
 	public static void main(String[] args) throws ParameterException, PropertyException, IOException {
 		IconFactory.getIcon("save");
+	}
+
+	public static Image getIconImageFixSize(String name) {
+		Validate.notNull(name);
+		Validate.notEmpty(name);
+		URL imageURL = IconFactory.class.getResource(name +".png");
+		System.out.println(imageURL);
+		try {
+			return new ImageIcon(imageURL).getImage();
+		} catch (Exception e) {
+			throw new ParameterException("Cannot load icon with name \"" + name + "\": " + e.getMessage());
+		}
 	}
 
 }
