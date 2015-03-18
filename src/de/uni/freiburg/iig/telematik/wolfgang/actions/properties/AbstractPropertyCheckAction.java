@@ -32,6 +32,7 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 	private SwingWorker worker;
 	private int iconSize;
 	private String propertyString;
+	private Color fillColor;
 
 	public SwingWorker getWorker() {
 		return worker;
@@ -45,7 +46,6 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 		super(editor, "PropertyCheck", new ImageIcon());
 		iconSize = WolfgangProperties.getInstance().getIconSize().getSize();
 		setInitialFill();
-		createNewWorker();
 	}
 
 	protected abstract void setInitialFill();
@@ -54,6 +54,7 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
+		createNewWorker();
 		switch (worker.getState()) {
 		case DONE:
 			worker.execute();
@@ -93,7 +94,7 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 	}
 
 	public void setFillColor(Color fillColor) {
-
+		this.fillColor = fillColor;
 		BufferedImage image = new BufferedImage(iconSize, iconSize, BufferedImage.TYPE_INT_ARGB_PRE);
 		Graphics g = image.getGraphics();
 		Graphics2D g2 = (Graphics2D) g;
@@ -121,6 +122,10 @@ public abstract class AbstractPropertyCheckAction extends AbstractPNEditorAction
 		g2d.drawRect(0, 0, image.getHeight() - 1, image.getWidth() - 1);
 		g2d.dispose();
 		setIconImage(img);
+	}
+
+	public Color getFillColor() {
+		return fillColor;
 	}
 
 	private int drawString(Graphics2D g, String text, int x, int y) {

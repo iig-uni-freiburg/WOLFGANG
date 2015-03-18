@@ -10,18 +10,17 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public class CheckBoundednessAction extends AbstractPropertyCheckAction {
+public class CheckValidityAction extends AbstractPropertyCheckAction {
 
-	public CheckBoundednessAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
+	public CheckValidityAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor);
 	}
 
 	@Override
 	protected void setInitialFill() {
-		setPropertyString("Bound-\nedness");
+		setPropertyString("Valid-\nity");
 		setFillColor(PropertyUnknownColor);
 	}
 
@@ -34,12 +33,11 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 				setIconImage(getLoadingDots());
 				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
 				try {
-					PNPropertiesChecker.validateBoundedness(net);
+					net.checkValidity();
 				} catch (PNValidationException e) {
 					return e;
 				}
 				return null;
-
 			}
 
 			@Override
@@ -48,7 +46,7 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 					if (get() == null)// hasWFNetStructure
 						setFillColor(PropertyHolds);
 					else {
-						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net is not bounded", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net is not valid", JOptionPane.ERROR_MESSAGE);
 						setFillColor(PropertyDoesntHold);
 					}
 				} catch (InterruptedException e) {

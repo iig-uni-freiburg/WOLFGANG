@@ -9,19 +9,19 @@ import javax.swing.SwingWorker;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.WFNetChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public class CheckBoundednessAction extends AbstractPropertyCheckAction {
+public class CheckWFNetStructureAction extends AbstractPropertyCheckAction {
 
-	public CheckBoundednessAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
+	public CheckWFNetStructureAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor);
 	}
 
 	@Override
 	protected void setInitialFill() {
-		setPropertyString("Bound-\nedness");
+		setPropertyString("WF-Str\nucture");
 		setFillColor(PropertyUnknownColor);
 	}
 
@@ -32,14 +32,13 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 			@Override
 			public PNValidationException doInBackground() {
 				setIconImage(getLoadingDots());
-				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
+				AbstractPTNet net = (AbstractPTNet) getEditor().getNetContainer().getPetriNet().clone();
 				try {
-					PNPropertiesChecker.validateBoundedness(net);
+					WFNetChecker.checkWFNetStructure(net);
 				} catch (PNValidationException e) {
 					return e;
 				}
 				return null;
-
 			}
 
 			@Override
@@ -48,7 +47,7 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 					if (get() == null)// hasWFNetStructure
 						setFillColor(PropertyHolds);
 					else {
-						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net is not bounded", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net has no WF Net Structure", JOptionPane.ERROR_MESSAGE);
 						setFillColor(PropertyDoesntHold);
 					}
 				} catch (InterruptedException e) {
