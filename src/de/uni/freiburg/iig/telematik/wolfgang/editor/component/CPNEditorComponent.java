@@ -5,11 +5,14 @@ import java.io.IOException;
 import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.AbstractPropertyCheckAction;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraphComponent;
@@ -99,6 +102,36 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 	@Override
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
 		return new CPNToolBar(this, JToolBar.HORIZONTAL);
+	}
+
+	@Override
+	protected void setPropertyChecksUnknown() {
+		((CPNToolBar)getEditorToolbar()).getCheckValidityAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor );
+//		((CPNToolBar)getEditorToolbar()).getCheckSoundnessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		((CPNToolBar)getEditorToolbar()).getCheckBoundednessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		((CPNToolBar)getEditorToolbar()).getCheckCWNStructureAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		((CPNToolBar)getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		getPropertyCheckView().updateCWNProperties(new CWNProperties());
+	}
+	
+	@Override
+	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
+		setPropertyChecksUnknown();		
+	}
+
+	@Override
+	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
+		setPropertyChecksUnknown();	
+	}
+
+	@Override
+	public void constraintChanged(String flowRelation, Multiset constraint) {
+		setPropertyChecksUnknown();		
+	}
+
+	@Override
+	protected CWNProperties createPropertyCheckProperties() {
+		return new CWNProperties();
 	}
 
 }

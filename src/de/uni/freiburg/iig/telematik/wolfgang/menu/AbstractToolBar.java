@@ -212,7 +212,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	}
 
-	protected abstract void createAdditionalToolbarActions(PNEditorComponent pnEditor);
+	protected abstract void createAdditionalToolbarActions(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException;
 
 	protected abstract void addNetSpecificToolbarButtons();
 

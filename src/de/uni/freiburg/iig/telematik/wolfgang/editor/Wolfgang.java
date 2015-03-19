@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -53,8 +57,11 @@ public class Wolfgang extends JFrame {
 	private WGMenuBar menuBar = null;
 	protected JPanel content = null;
 	protected JSplitPane centerPanel = null;
+	private JSplitPane rightPanel;
 
 	private String netName;
+
+
 
 	public Wolfgang() throws Exception {
 	}
@@ -135,8 +142,19 @@ public class Wolfgang extends JFrame {
 	}
 
 	public void setUpGUI() throws PropertyException, IOException, Exception {
+		addWindowListener(new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		      dispose();
+		      int result = JOptionPane.showConfirmDialog(getWolfgangPanel(), "Exit Wolfgang -The Petri Net Editor- too?",
+		    		  "Close Window Alert", JOptionPane.OK_CANCEL_OPTION);
+		      if(result == 0)
+		      System.exit(0); //calling the method is a must
+		    }
+		 });
 		setLookAndFeel();
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setPreferredSize(PREFERRED_SIZE_WORKBENCH);
 		setResizable(true);
 		if (editorComponent != null)
@@ -147,6 +165,9 @@ public class Wolfgang extends JFrame {
 		pack();
 		setVisible(true);
 	}
+
+
+	
 
 	@Override
 	public String getTitle() {
@@ -296,9 +317,17 @@ public class Wolfgang extends JFrame {
 	protected JComponent getCenterComponent() throws Exception {
 		if (centerPanel == null) {
 			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-			centerPanel.setDividerLocation(885);
+			centerPanel.setDividerLocation(835);
 		}
 		return centerPanel;
+	}
+	
+	protected JComponent getRightComponent() throws Exception {
+		if (rightPanel == null) {
+			rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+			rightPanel.setDividerLocation(450);
+		}
+		return rightPanel;
 	}
 
 	protected JComponent getBottomComponent() throws Exception {
@@ -308,7 +337,12 @@ public class Wolfgang extends JFrame {
 	protected void setEditorPanels() throws Exception {
 		content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
 		centerPanel.add(getEditorPanel());
-		centerPanel.add(editorComponent.getPropertiesView());
+		centerPanel.add(getRightComponent());
+		rightPanel.add(editorComponent.getPropertiesView());
+		rightPanel.add(editorComponent.getPropertyCheckView());
+
+		
+		
 	}
 
 	protected JComponent getEditorPanel() {

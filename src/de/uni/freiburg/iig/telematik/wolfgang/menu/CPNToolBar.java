@@ -35,17 +35,35 @@ public class CPNToolBar extends AbstractToolBar {
 	private PopUpToolBarAction tokenAction;
 	private PopUpToolBarAction editTokenlabelAction;
 //	private CheckValidityAction checkValidityAction;
-//	private ChecKSoundnessAction checkSoundnessAction;
 	private JToggleButton tokenButton;
 //	private JToggleButton checkValidityButton;
 //	private JToggleButton checkSoundnessButton;
 	private CheckValidityAction checkValidityAction;
+	public CheckValidityAction getCheckValidityAction() {
+		return checkValidityAction;
+	}
+
+	public void setCheckValidityAction(CheckValidityAction checkValidityAction) {
+		this.checkValidityAction = checkValidityAction;
+	}
+
 	private JButton validityButton;
 	private CheckCWNStructureAction checkCWNStructureAction;
 	private JButton cwfStructureButton;
-	private CheckSoundnessAction checkSoundnessAction;
-	private JButton soudnessButton;
+	
+	//currently soudness is same as validity in cpn		
+//	private CheckSoundnessAction checkSoundnessAction;
+//	private JButton soudnessButton;
+	
 	private CheckBoundednessAction checkBoundednessAction;
+	public CheckBoundednessAction getCheckBoundednessAction() {
+		return checkBoundednessAction;
+	}
+
+	public void setCheckBoundednessAction(CheckBoundednessAction checkBoundednessAction) {
+		this.checkBoundednessAction = checkBoundednessAction;
+	}
+
 	private JButton boundednessButton;
 	private CheckCWNSoundnessAction checkCWNSoundnessAction;
 	protected JButton cwfSoundnessButton;
@@ -63,8 +81,8 @@ public class CPNToolBar extends AbstractToolBar {
 		validityButton = add(checkValidityAction);	
 		validityButton.setBorderPainted(false);
 		
-		soudnessButton = add(checkSoundnessAction);	
-		soudnessButton.setBorderPainted(false);
+//		soudnessButton = add(checkSoundnessAction);	
+//		soudnessButton.setBorderPainted(false);
 		
 		boundednessButton = add(checkBoundednessAction);	
 		boundednessButton.setBorderPainted(false);
@@ -81,36 +99,20 @@ public class CPNToolBar extends AbstractToolBar {
 	}
 
 	@Override
-	protected void createAdditionalToolbarActions(PNEditorComponent pnEditor) {
-		try {
+	protected void createAdditionalToolbarActions(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException {
 		if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN
 				|| pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.IFNet) {
 			tokenToolbar = new TokenToolBar(pnEditor, JToolBar.HORIZONTAL);
 
 				tokenAction = new PopUpToolBarAction(pnEditor, "Token", "marking", tokenToolbar);
 
-//			tokenlabelToolbar = new TokenlabelToolBar(pnEditor, JToolBar.HORIZONTAL);
-//			editTokenlabelAction = new PopUpToolBarAction(pnEditor, "Tokenlabel", "tokenlabel", tokenlabelToolbar);
-//			if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN) {
-//				checkValidityAction = new CheckValidityAction(pnEditor);
-//				checkSoundnessAction = new ChecKSoundnessAction(pnEditor);
-//			}
 				checkValidityAction= new CheckValidityAction(pnEditor);
-				checkSoundnessAction= new CheckSoundnessAction(pnEditor);
+//				checkSoundnessAction= new CheckSoundnessAction(pnEditor);
 				checkBoundednessAction= new CheckBoundednessAction(pnEditor);
 				setCheckCWNStructureAction(new CheckCWNStructureAction(pnEditor));
 				setCheckCWNSoundnessAction(new CheckCWNSoundnessAction(pnEditor));
 		}
-		} catch (ParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 	}
 	

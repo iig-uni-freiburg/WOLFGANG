@@ -10,6 +10,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
@@ -29,36 +30,42 @@ public class CheckCWNStructureAction extends AbstractPropertyCheckAction {
 	@Override
 	protected void createNewWorker() {
 
-		SwingWorker worker = new SwingWorker<PNValidationException, String>() {
+		SwingWorker worker = new SwingWorker<CWNProperties, String>() {
 			@Override
-			public PNValidationException doInBackground() {
+			public CWNProperties doInBackground() {
 				setIconImage(getLoadingDots());
 				AbstractCPN net = (AbstractCPN) getEditor().getNetContainer().getPetriNet().clone();
-				try {
-					CWNChecker.checkCWNStructure(net);
-				} catch (PNValidationException e) {
-					return e;
-				}
-				return null;
+			
+				return CWNChecker.checkCWNStructure(net);
 			}
 
 			@Override
 			public void done() {
 				try {
-					if (get() == null) {
-						setFillColor(PropertyHolds);
-						((CPNToolBar) getEditor().getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(PropertyUnknownColor);
-					} else {
-						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net has no WF Net Structure", JOptionPane.ERROR_MESSAGE);
+					getEditor().getPropertyCheckView().updateCWNStructuredness(get().hasCWNStructure,get().validInOutPlaces, get().strongConnectedness, get().validInitialMarking, get().controlFlowDependency, get().exception);
+					switch(get().hasCWNStructure){
+					case FALSE:
 						setFillColor(PropertyDoesntHold);
 						((CPNToolBar) getEditor().getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(PropertyDoesntHold);
+						break;
+					case TRUE:
+						setFillColor(PropertyHolds);
+						((CPNToolBar) getEditor().getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(PropertyUnknownColor);
+						break;
+					case UNKNOWN:
+						setFillColor(PropertyUnknownColor);
+						((CPNToolBar) getEditor().getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(PropertyUnknownColor);
+						break;
+					default:
+						break;
+					
 					}
-
 				} catch (InterruptedException e) {
 					setFillColor(PropertyUnknownColor);
 				} catch (ExecutionException e) {
 					setFillColor(PropertyUnknownColor);
 				}
+
 			};
 		};
 		setWorker(worker);

@@ -76,6 +76,8 @@ public class CPNGraph extends PNGraph {
 		CPNMarking initialMarking = getNetContainer().getPetriNet().getInitialMarking();
 		initialMarking.set(name, state);
 		getNetContainer().getPetriNet().setInitialMarking(initialMarking);
+		
+		graphListenerSupport.notifyMarkingForPlaceChanged(name, state);
 	}
 
 	@Override
@@ -135,20 +137,23 @@ public class CPNGraph extends PNGraph {
 		colors.remove(name);	
 		}
 		getNetContainer().getPetriNetGraphics().setColors(colors);
+		
+		
 		} 
 	@Override
-	public void updateConstraint(String name, Multiset value) {
-		CPNFlowRelation flowrelation = (CPNFlowRelation) getNetContainer().getPetriNet().getFlowRelation(name);
-		if(value != null)
-			flowrelation.setConstraint(value);	
+	public void updateConstraint(String flowRelation, Multiset constraint) {
+		CPNFlowRelation flowrelation = (CPNFlowRelation) getNetContainer().getPetriNet().getFlowRelation(flowRelation);
+		if(constraint != null)
+			flowrelation.setConstraint(constraint);	
 		else{
 				flowrelation.setConstraint(new Multiset<String>());
 		}
 //		flowrelation.setConstraint(value);		
-		PNGraphCell cell = getNodeCell(name);
+		PNGraphCell cell = getNodeCell(flowRelation);
 		cell.setValue(getArcConstraint(flowrelation));
 		refresh();
 		
+		graphListenerSupport.notifyConstraintChanged(flowRelation, constraint);	
 	}
 
 	public void newTokenConfigurer(PNGraphCell cell, CPNGraphComponent cpnGraphComponent) {
@@ -227,7 +232,9 @@ default:
 		if(newCapacity <= 0)
 			place.removeColorCapacity(color);
 		else
-		place.setColorCapacity(color, newCapacity);			
+		place.setColorCapacity(color, newCapacity);	
+		
+		graphListenerSupport.notifyPlaceCapacityChanged(name,color,newCapacity);
 	}
 
 	@Override

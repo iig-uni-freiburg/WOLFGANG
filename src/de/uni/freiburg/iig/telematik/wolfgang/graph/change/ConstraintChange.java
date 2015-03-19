@@ -51,9 +51,9 @@ public class ConstraintChange extends mxAtomicGraphModelChange {
 		previous = valueForCellChanged(name, previous);
 	}
 
-	protected Multiset valueForCellChanged(String name, Multiset value) {
-		Multiset<String> oldValue = graph.getConstraintforArc(name);
-		graph.updateConstraint(name, value);
+	protected Multiset valueForCellChanged(String flowRelation, Multiset constraint) {
+		Multiset<String> oldValue = graph.getConstraintforArc(flowRelation);
+		graph.updateConstraint(flowRelation, constraint);
 
 		return oldValue;
 	}

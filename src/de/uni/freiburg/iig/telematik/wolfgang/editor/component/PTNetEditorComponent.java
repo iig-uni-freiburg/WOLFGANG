@@ -5,10 +5,14 @@ import java.io.IOException;
 import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetCheckingProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.WFNetProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.AbstractPropertyCheckAction;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PTGraph;
@@ -105,5 +109,34 @@ public class PTNetEditorComponent extends PNEditorComponent {
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
 		return new PTNetToolBar(this, JToolBar.HORIZONTAL);
 	}
+	
+	@Override
+	protected void setPropertyChecksUnknown() {
+		((PTNetToolBar)getEditorToolbar()).getCheckBoundednessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		((PTNetToolBar)getEditorToolbar()).getCheckWFNetAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
+		getPropertyCheckView().updateWFNetProperties(new WFNetProperties());
+	}
+
+	@Override
+	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
+		setPropertyChecksUnknown();		
+	}
+
+	@Override
+	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
+		setPropertyChecksUnknown();	
+	}
+
+	@Override
+	public void constraintChanged(String flowRelation, Multiset constraint) {
+		setPropertyChecksUnknown();		
+	}
+
+	@Override
+	protected NetCheckingProperties createPropertyCheckProperties() {
+		return new WFNetProperties();
+	}
+	
+	
 
 }

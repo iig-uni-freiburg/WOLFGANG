@@ -8,10 +8,14 @@ import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
 
 public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 
@@ -28,28 +32,41 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 	@Override
 	protected void createNewWorker() {
 
-		SwingWorker worker = new SwingWorker<PNValidationException, String>() {
+		SwingWorker worker = new SwingWorker<CWNProperties, String>() {
 			@Override
-			public PNValidationException doInBackground() {
+			public CWNProperties doInBackground() {
 				setIconImage(getLoadingDots());
 				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
+				CWNProperties result = new CWNProperties();
 				try {
 					PNPropertiesChecker.validateBoundedness(net);
-				} catch (PNValidationException e) {
-					return e;
+					result.isBounded = PropertyCheckingResult.fromBoundedness(net.getBoundedness());
+				} catch (PNValidationException e1) {
+					result.isBounded = PropertyCheckingResult.FALSE;
+					result.exception = new PNSoundnessException("Net is not bounded.");
+					return result;
 				}
-				return null;
+				return result;
 
 			}
 
 			@Override
 			public void done() {
 				try {
-					if (get() == null)// hasWFNetStructure
-						setFillColor(PropertyHolds);
-					else {
-						JOptionPane.showMessageDialog(editor.getGraphComponent(), get().getMessage(), "Net is not bounded", JOptionPane.ERROR_MESSAGE);
+					getEditor().getPropertyCheckView().updateBoundedness(get().isBounded, get().exception);
+					switch(get().isBounded){
+					case FALSE:
 						setFillColor(PropertyDoesntHold);
+						break;
+					case TRUE:
+						setFillColor(PropertyHolds);
+						break;
+					case UNKNOWN:
+						setFillColor(PropertyUnknownColor);
+						break;
+					default:
+						break;
+					
 					}
 				} catch (InterruptedException e) {
 					setFillColor(PropertyUnknownColor);
@@ -60,5 +77,4 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 		};
 		setWorker(worker);
 	}
-
 }

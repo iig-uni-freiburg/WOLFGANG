@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -47,12 +48,16 @@ import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
 import de.invation.code.toval.types.HashList;
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetCheckingProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.export.ExportPDFAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
@@ -76,6 +81,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
@@ -110,6 +116,10 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			setModified(true);
 		}
 	};
+
+	private PropertyCheckView propertyCheckView;
+
+	private NetCheckingProperties propertyCheckProperties;
 
 	// ------- Constructors
 	// --------------------------------------------------------------------
@@ -205,13 +215,18 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		propertiesView.addTreeSelectionListener(this);
 		properties.addPNPropertiesListener(propertiesView);
 		properties.setPropertiesView(propertiesView);
-
+		
+		propertyCheckProperties = createPropertyCheckProperties();
+		propertyCheckView = new PropertyCheckView(propertyCheckProperties);
+		
 	}
 
 	protected abstract AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> createNetContainer();
 
 	protected abstract PNProperties createPNProperties();
-
+	
+	abstract protected NetCheckingProperties createPropertyCheckProperties();
+	
 	public void addEditorListener(PNEditorListener listener) {
 		editorListenerSupport.addEditorListener(listener);
 	}
@@ -278,6 +293,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 		// Updates the modified flag if the graph model changes
 		getGraph().getModel().addListener(mxEvent.CHANGE, changeTracker);
+		
 
 		// Adds the command history to the model and view
 		getGraph().getModel().addListener(mxEvent.UNDO, undoHandler);
@@ -299,10 +315,17 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	public PropertiesView getPropertiesView() {
 		return propertiesView;
 	}
+	
+	public PropertyCheckView getPropertyCheckView() {
+		return propertyCheckView;
+	}
+	
 
 	protected PNProperties getPNProperties() {
 		return properties;
 	}
+	
+	
 
 	private PNGraph getGraph() {
 		return graphComponent.getGraph();
@@ -563,32 +586,41 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	@Override
 	public void placeAdded(AbstractPlace place) {
 		propertiesView.componentAdded(PNComponent.PLACE, place.getName());
+		setPropertyChecksUnknown();
 	}
+
+	abstract protected void setPropertyChecksUnknown();
 
 	@Override
 	public void transitionAdded(AbstractTransition transition) {
 		propertiesView.componentAdded(PNComponent.TRANSITION, transition.getName());
+		setPropertyChecksUnknown();
 	}
 
 	@Override
 	public void relationAdded(AbstractFlowRelation relation) {
 		propertiesView.componentAdded(PNComponent.ARC, relation.getName());
+		setPropertyChecksUnknown();
 	}
 
 	@Override
 	public void placeRemoved(AbstractPlace place) {
 		propertiesView.componentRemoved(PNComponent.PLACE, place.getName());
+		setPropertyChecksUnknown();
 	}
 
 	@Override
 	public void transitionRemoved(AbstractTransition transition) {
 		propertiesView.componentRemoved(PNComponent.TRANSITION, transition.getName());
+		setPropertyChecksUnknown();
 	}
 
 	@Override
 	public void relationRemoved(AbstractFlowRelation relation) {
 		propertiesView.componentRemoved(PNComponent.ARC, relation.getName());
+		setPropertyChecksUnknown();
 	}
+	
 
 	@Override
 	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
@@ -633,6 +665,10 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		} catch (EditorToolbarException e) {
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	public void updatePropertyCheckView(PropertyCheckView pCView) {
+		propertyCheckView = pCView;
 	}
 
 }

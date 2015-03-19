@@ -54,7 +54,8 @@ public class PTGraph extends PNGraph {
 		Integer tokens =  state.multiplicity("black");
 		PTMarking initialMarking = getNetContainer().getPetriNet().getInitialMarking();
 		initialMarking.set(name, new Integer(tokens));
-		getNetContainer().getPetriNet().setInitialMarking(initialMarking);
+		getNetContainer().getPetriNet().setInitialMarking(initialMarking);	
+		graphListenerSupport.notifyMarkingForPlaceChanged(name, state);
 	}
 	
 	@Override
@@ -141,8 +142,8 @@ public class PTGraph extends PNGraph {
 	}
 
 	@Override
-	public void updateConstraint(String name, Multiset value) {
-		// TODO Auto-generated method stub
+	public void updateConstraint(String flowRelation, Multiset constraint) {
+		graphListenerSupport.notifyConstraintChanged(flowRelation, constraint);	
 		
 	}
 
@@ -160,8 +161,7 @@ public class PTGraph extends PNGraph {
 
 	@Override
 	public void updatePlaceCapacity(String name, String color, int newCapacity) {
-		// TODO Auto-generated method stub
-		
+		graphListenerSupport.notifyPlaceCapacityChanged(name,color,newCapacity);		
 	}
 
 	@Override

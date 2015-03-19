@@ -89,7 +89,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	private PNGraphChangeHandler changeHandler;
 
-	private PNGraphListenerSupport graphListenerSupport = new PNGraphListenerSupport();
+	protected PNGraphListenerSupport graphListenerSupport = new PNGraphListenerSupport();
 
 	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
 		super();
@@ -573,10 +573,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public abstract void updateConstraint(String name, Multiset value);
 
 	public abstract void updateTokenConfigurer(String name);
+	
+	public abstract void updatePlaceCapacity(String name, String color, int newCapacity);
 
 	public abstract int getCapacityforPlace(String name, String color);
 
-	public abstract void updatePlaceCapacity(String name, String color, int newCapacity);
+
 
 	public abstract void updateViews();
 
@@ -1169,7 +1171,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	@Override
 	public void invoke(Object sender, mxEventObject evt) {
-		
+
 		if (evt.getName().equals(mxEvent.CHANGE)) {
 			changeHandler.handleChange(evt);
 			if (sender instanceof mxGraphSelectionModel || sender instanceof PNGraphComponent) {
