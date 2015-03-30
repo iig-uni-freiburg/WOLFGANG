@@ -72,7 +72,22 @@ public class WGMenuBar extends JMenuBar {
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wolfgang.dispose();
+			     int question = JOptionPane.showConfirmDialog(null, "Save the net?",
+			    	  "Save", JOptionPane.YES_NO_OPTION);
+			     if(question == JOptionPane.YES_OPTION)
+			     {
+						SaveAction save;
+						try {
+							save = new SaveAction(wolfgang);
+							save.actionPerformed(null);
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(wolfgang, ex.getMessage(), "Saving Error", JOptionPane.ERROR_MESSAGE);
+						}
+					
+			
+			     }
+			     
+			     wolfgang.dispose();
 			}
 		});
 		fileMenu.add(exit);
