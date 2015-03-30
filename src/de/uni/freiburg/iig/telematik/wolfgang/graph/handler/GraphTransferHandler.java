@@ -157,13 +157,17 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 		}
 		
 		for (PNGraphCell remainingArcCell: remainingArcCells) {
+			PNGraphCell sourceCell;
+			PNGraphCell targetCell;
 			// Check if source and target nodes already have been added
-			PNGraphCell sourceCell = insertedCells.get(remainingArcCell.getSource().getId());
-			PNGraphCell targetCell = insertedCells.get(remainingArcCell.getTarget().getId());
-			if (sourceCell == null || targetCell == null) {
+			if (remainingArcCell.getSource() != null && remainingArcCell.getTarget() != null) {
+				sourceCell = insertedCells.get(remainingArcCell.getSource().getId());
+				targetCell = insertedCells.get(remainingArcCell.getTarget().getId());
+			}
+			
+			else
 				// Skip import of arc cells with missing source or target cell
 				continue;
-			}
 			
 			Offset offset = new Offset(remainingArcCell.getGeometry().getOffset().getX(), remainingArcCell.getGeometry().getOffset().getY());
 			PNGraphCell insertedArcCell = graph.addNewFlowRelation(sourceCell, targetCell, offset, remainingArcCell.getGeometry().getPoints(), new mxPoint(dx, dy), remainingArcCell.getStyle());
