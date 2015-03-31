@@ -259,6 +259,7 @@ public abstract class PNProperties {
 		Validate.notNull(placeName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
+		Validate.smaller(size, 500);
 		if(!getNetContainer().getPetriNet().containsPlace(placeName))
 			throw new ParameterException("Unknown Place");
 		
@@ -557,6 +558,7 @@ public abstract class PNProperties {
 		Validate.notNull(transitionName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
+		Validate.smaller(size, 500);
 		if(!getNetContainer().getPetriNet().containsTransition(transitionName))
 			throw new ParameterException("Unknown Transition");
 		
@@ -594,6 +596,7 @@ public abstract class PNProperties {
 		Validate.notNull(transitionName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
+		Validate.smaller(size, 500);
 		if(!getNetContainer().getPetriNet().containsTransition(transitionName))
 			throw new ParameterException("Unknown Transition");
 		
