@@ -123,12 +123,14 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		PNGraph graph = getEditor().getGraphComponent().getGraph();
 		PNGraphCell selectedCell = (PNGraphCell) graph.getSelectionCell();
-		if (selectedCell != null) {
+		PNGraphCell[] selectedCellArray = new PNGraphCell[1];
+		selectedCellArray[0] = selectedCell;
+		if (selectedCell != null && selectedCell.getType().toString() == "TRANSITION") {
 			((mxGraphModel) graph.getModel()).beginUpdate();
 			((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph) graph, selectedCell.getId(), silent));
 			if (silent) {
-				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000");
-				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1");
+				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000", selectedCellArray);
+				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", selectedCellArray);
 			} else {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
