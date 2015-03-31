@@ -33,6 +33,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.CPNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.IFNetEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -60,6 +61,8 @@ public class Wolfgang extends JFrame {
 	private JSplitPane rightPanel;
 
 	private String netName;
+	
+	private static Wolfgang save_wolf;
 
 
 
@@ -147,6 +150,19 @@ public class Wolfgang extends JFrame {
 		    public void windowClosing(WindowEvent e)
 		    {
 		      dispose();
+		      
+		      int question = JOptionPane.showConfirmDialog(null, "Save the net?",
+			    	  "Save", JOptionPane.YES_NO_OPTION);
+		      if(question == 0)
+		      {
+		    	  try {
+						SaveAction save = new SaveAction(save_wolf);
+						save.actionPerformed(null);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(save_wolf, ex.getMessage(), "Saving Error", JOptionPane.ERROR_MESSAGE);
+					}
+		      }
+		      
 		      int result = JOptionPane.showConfirmDialog(getWolfgangPanel(), "Exit Wolfgang -The Petri Net Editor- too?",
 		    		  "Close Window Alert", JOptionPane.OK_CANCEL_OPTION);
 		      if(result == 0)
@@ -366,6 +382,7 @@ public class Wolfgang extends JFrame {
 		Wolfgang wolfgang = new Wolfgang(); // starts new empty Wolfgang
 											// allowing to choose between PT and
 											// CPN
+		save_wolf = wolfgang;
 		wolfgang.setUpGUI();
 
 		// Wolfgang wolfgang = new Wolfgang(new GraphicalIFNet());
