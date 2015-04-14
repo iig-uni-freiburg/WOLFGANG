@@ -1,11 +1,13 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.properties;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import de.invation.code.toval.graphic.dialog.AbstractDialog;
 import de.invation.code.toval.properties.PropertyException;
@@ -13,6 +15,7 @@ import de.invation.code.toval.validate.ParameterException;
 
 public class WGPropertySettingDialog extends AbstractDialog {
 
+	private static final Dimension PREFERED_SIZE = new Dimension(400,400);
 	private static final long serialVersionUID = 1855588446219004779L;
 	private WGPropertySettingPanel settingPanel = null;
 	
@@ -20,18 +23,19 @@ public class WGPropertySettingDialog extends AbstractDialog {
 		super(parent, ButtonPanelLayout.CENTERED);
 		setIncludeCancelButton(false);
 		settingPanel = new WGPropertySettingPanel();
+		setPreferredSize(PREFERED_SIZE);
 	}
 	
-	
-
 	@Override
 	protected void addComponents() throws Exception {
 		mainPanel().setLayout(new BorderLayout());
-		mainPanel().add(createNewWGPropertySettingPanel(), BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(getPropertySettingPanel());
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		mainPanel().add(scrollPane, BorderLayout.CENTER);
 	}
 
-	protected Component createNewWGPropertySettingPanel() throws PropertyException, IOException {
-		return new WGPropertySettingPanel();
+	protected JPanel getPropertySettingPanel(){
+		return settingPanel;
 	}
 
 	@Override

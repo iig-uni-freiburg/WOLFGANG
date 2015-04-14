@@ -16,7 +16,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.NewPTAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAsAction;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.PropertySettingDialog;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WGPropertySettingDialog;
 
 public class WGMenuBar extends JMenuBar {
 
@@ -104,7 +104,7 @@ public class WGMenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					PropertySettingDialog.showDialog(SwingUtilities.getWindowAncestor(WGMenuBar.this));
+					WGPropertySettingDialog.showDialog(SwingUtilities.getWindowAncestor(WGMenuBar.this));
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(WGMenuBar.this), "Cannot open settings dialog.\nReason: " + e1.getMessage(), "Internal Exception", JOptionPane.ERROR_MESSAGE);
 				}
