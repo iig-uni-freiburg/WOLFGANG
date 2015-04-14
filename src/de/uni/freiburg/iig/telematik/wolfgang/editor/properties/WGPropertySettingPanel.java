@@ -54,6 +54,11 @@ public class WGPropertySettingPanel extends JPanel {
 	public WGPropertySettingPanel() throws PropertyException, IOException {
 		super(new SpringLayout());
 		initialize();
+		addSettingComponents();
+		generateGrid();
+	}
+	
+	protected void addSettingComponents(){
 		add(new JLabel("Icon Size:", JLabel.RIGHT));
 		add(comboIconSize);
 		add(new JLabel("Default Place Size:", JLabel.RIGHT));
@@ -102,11 +107,13 @@ public class WGPropertySettingPanel extends JPanel {
 		add(chckGridVisibility);
 		add(new JLabel("Snap To Grid:", JLabel.RIGHT));
 		add(chckSnapToGrid);
-
+	}
+	
+	protected void generateGrid(){
 		SpringUtilities.makeCompactGrid(this, 22, 2, 5, 5, 5, 5);
 	}
 	
-	private void initialize() throws PropertyException, IOException {
+	protected void initialize() throws PropertyException, IOException {
 		comboIconSize = new EnumComboBox<IconSize>(IconSize.class);
 		comboIconSize.setSelectedItem(WolfgangProperties.getInstance().getIconSize());
 		txtDefPlaceSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultPlaceSize().toString());
