@@ -369,8 +369,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
 			relation = getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
 		}
-		PNGraphCell newRelationCell = getNodeCell(relation.getName());
 		if (relation != null) {
+			PNGraphCell newRelationCell = getNodeCell(relation.getName());
 			ArcGraphics arcGraphics = Utils.createArcGraphicsFromStyle(style);
 			if (points != null && !points.isEmpty() && referencePoint != null) {
 				Vector<Position> vector = new Vector<Position>();
