@@ -21,6 +21,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
 public class NodeToolBarAction extends PopUpToolBarAction {
@@ -29,7 +30,7 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 	private static String nodeColor = "#333333";
 
 	public NodeToolBarAction(PNEditorComponent editor, String name, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
-		super(editor, name, "plus", toolbar);
+		super(editor, name, IconFactory.getIcon("plus"), toolbar);
 		getIcon().setImage(createIconImage());
 	}
 
