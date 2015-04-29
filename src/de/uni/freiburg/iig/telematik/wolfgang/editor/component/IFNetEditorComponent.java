@@ -26,9 +26,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
 
 public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5600305366471054461L;
 
 	public IFNetEditorComponent() {

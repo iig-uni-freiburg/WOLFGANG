@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -47,8 +46,6 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
-import de.invation.code.toval.types.HashList;
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -56,8 +53,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetCheckingProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.export.ExportPDFAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
@@ -81,10 +76,10 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
 
