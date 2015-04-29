@@ -114,6 +114,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		treeModel = new DefaultTreeModel(root);
 		this.setModel(treeModel);
 		setInvokesStopCellEditing(false);
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		setRootVisible(false);
 		Color bgcolor = UIManager.getColor("Panel.background");
