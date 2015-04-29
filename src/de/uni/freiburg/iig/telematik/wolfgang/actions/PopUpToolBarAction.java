@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JToggleButton;
@@ -23,12 +24,13 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.ToolBarDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PopupToolBar;
 
+/**
+ * 
+ */
 public class PopUpToolBarAction extends AbstractPNEditorAction {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3097560664208606500L;
+	
 	private JDialog popupDialog;
 	private JToggleButton button;
 	private JToolBar toolbarContent;
@@ -36,8 +38,8 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	private PopupToolBar popupToolBar;
 	protected JDialog dialog;
 
-	public PopUpToolBarAction(PNEditorComponent editor, String name, String iconName, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
-		super(editor, name, IconFactory.getIcon(iconName));
+	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
+		super(editor, name, icon);
 		popupToolBar = new PopupToolBar();
 		toolbarContent = toolbar;
 		newDialogButton = new JButton(IconFactory.getIcon("maximize"));
@@ -60,7 +62,6 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 
 	public void setButton(JToggleButton addedButton) {
 		this.button = addedButton;
-
 	}
 
 	private void newWindowButton(final PopupToolBar popupToolBar, final JToolBar toolbarContent, final JButton newDialogButton) {
