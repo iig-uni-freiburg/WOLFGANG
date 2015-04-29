@@ -36,7 +36,6 @@ public class ExportToolBar extends JToolBar {
 		pdfButton = add(pdfAction);
 		setButtonSettings(pdfButton);
 		pdfButton.setToolTipText(pdfButtonTooltip);
-
 	}
 
 	private void setButtonSettings(final JButton button) {

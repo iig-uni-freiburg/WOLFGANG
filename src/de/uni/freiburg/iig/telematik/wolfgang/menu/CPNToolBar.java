@@ -18,6 +18,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckValidityAc
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckWFNetStructureAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenToolBar;
 
 public class CPNToolBar extends AbstractToolBar {
@@ -104,7 +105,7 @@ public class CPNToolBar extends AbstractToolBar {
 				|| pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.IFNet) {
 			tokenToolbar = new TokenToolBar(pnEditor, JToolBar.HORIZONTAL);
 
-				tokenAction = new PopUpToolBarAction(pnEditor, "Token", "marking", tokenToolbar);
+				tokenAction = new PopUpToolBarAction(pnEditor, "Token", IconFactory.getIcon("marking"), tokenToolbar);
 
 				checkValidityAction= new CheckValidityAction(pnEditor);
 //				checkSoundnessAction= new CheckSoundnessAction(pnEditor);

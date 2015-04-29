@@ -3,12 +3,11 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.AbstractPropertyCheckAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckSoundnessAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckValidityAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.BoundednessCheckLabel;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckBoundednessAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckWFNetStructureAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -73,7 +72,8 @@ public class PTNetToolBar extends AbstractToolBar {
 
 		wfButton = add(checkWFNetAction);
 		wfButton.setBorderPainted(false);
-
+		
+		add(new BoundednessCheckLabel(pnEditor));
 	}
 
 	@Override

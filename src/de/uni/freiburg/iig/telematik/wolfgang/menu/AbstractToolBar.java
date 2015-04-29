@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,6 +38,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.nodes.NodeToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ExportToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
@@ -53,6 +55,8 @@ public abstract class AbstractToolBar extends JToolBar {
 	protected static final String NO_SELECTION = "no selection...";
 
 	protected static final String NO_SELECTION_TIME = "no time context...";
+	
+	private static final Color DEFAULT_BG_COLOR = new Color(185,185,185);
 
 	private JComboBox comboTimeContextModel = null;
 
@@ -132,6 +136,8 @@ public abstract class AbstractToolBar extends JToolBar {
 		super(orientation);
 		Validate.notNull(pnEditor);
 		this.pnEditor = pnEditor;
+		
+		setBackground(DEFAULT_BG_COLOR);
 		try {
 			createToolbarActions(pnEditor);
 			createAdditionalToolbarActions(pnEditor);
@@ -218,7 +224,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	private void createToolbarActions(final PNEditorComponent pnEditor) throws PropertyException, IOException {
 		exportToolbar = new ExportToolBar(pnEditor, JToolBar.HORIZONTAL);
-		exportAction = new PopUpToolBarAction(pnEditor, "Export", "export", exportToolbar);
+		exportAction = new PopUpToolBarAction(pnEditor, "Export", IconFactory.getIcon("export"), exportToolbar);
 
 		toggleModeAction = new ToggleModeAction(pnEditor);
 		enterExecutionAction = new EnterExecutionAction(pnEditor);
@@ -232,13 +238,13 @@ public abstract class AbstractToolBar extends JToolBar {
 		nodeAction = new NodeToolBarAction(pnEditor, "Node", nodeToolbar);
 
 		fontToolbar = new FontToolBar(pnEditor, JToolBar.HORIZONTAL);
-		fontAction = new PopUpToolBarAction(pnEditor, "Font", "text", fontToolbar);
+		fontAction = new PopUpToolBarAction(pnEditor, "Font", IconFactory.getIcon("text"), fontToolbar);
 
 		graphicsToolbar = new GraphicsToolBar(pnEditor, JToolBar.HORIZONTAL);
-		graphicsAction = new PopUpToolBarAction(pnEditor, "Graphics", "bg_color", graphicsToolbar);
+		graphicsAction = new PopUpToolBarAction(pnEditor, "Graphics", IconFactory.getIcon("bg_color"), graphicsToolbar);
 
 		zoomToolbar = new ZoomToolBar(pnEditor, JToolBar.HORIZONTAL);
-		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", "zoom_in", zoomToolbar);
+		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", IconFactory.getIcon("zoom_in"), zoomToolbar);
 	}
 
 	// private JComboBox getComboTimeContextModel() {
