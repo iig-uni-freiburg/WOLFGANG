@@ -3,12 +3,10 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions.properties;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;

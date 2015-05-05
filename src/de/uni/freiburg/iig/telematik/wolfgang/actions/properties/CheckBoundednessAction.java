@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions.properties;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
@@ -15,7 +14,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
 
 public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 

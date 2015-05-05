@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;

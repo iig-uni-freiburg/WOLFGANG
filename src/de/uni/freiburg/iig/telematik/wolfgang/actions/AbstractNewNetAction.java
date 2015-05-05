@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 import de.invation.code.toval.graphic.dialog.FileNameDialog;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 
 public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extends AbstractWolfgangAction {
 
@@ -14,7 +14,7 @@ public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extend
 
 	N net = null;
 
-	protected AbstractNewNetAction(Wolfgang wolfgang) {
+	protected AbstractNewNetAction(AbstractWolfgang wolfgang) {
 		super(wolfgang);
 	}
 

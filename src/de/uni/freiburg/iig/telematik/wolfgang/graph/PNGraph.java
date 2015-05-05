@@ -50,7 +50,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
-import de.uni.freiburg.iig.telematik.sepia.event.StructureListener;
+import de.uni.freiburg.iig.telematik.sepia.event.PNStructureListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -77,7 +77,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertiesListener;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperty;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertyChangeEvent;
 
-public abstract class PNGraph extends mxGraph implements PNPropertiesListener, mxIEventListener, StructureListener {
+public abstract class PNGraph extends mxGraph implements PNPropertiesListener, mxIEventListener, PNStructureListener {
 
 	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer = null;
 	private PNProperties properties = null;

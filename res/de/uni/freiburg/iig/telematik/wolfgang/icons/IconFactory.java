@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 
 public class IconFactory {

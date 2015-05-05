@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
 
 public class NewPTAction extends AbstractWolfgangAction {
 
@@ -14,13 +14,14 @@ public class NewPTAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	public NewPTAction(Wolfgang wolfgang) throws PropertyException, IOException {
+	@SuppressWarnings("rawtypes")
+	public NewPTAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "New PT");
 	}
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		wolfgang = new Wolfgang(new GraphicalPTNet());
+		wolfgang = new WolfgangPT();
 		wolfgang.setUpGUI();
 	}
 }

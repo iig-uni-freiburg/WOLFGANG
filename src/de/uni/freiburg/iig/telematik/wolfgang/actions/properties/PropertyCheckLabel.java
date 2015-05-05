@@ -22,7 +22,7 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 	}
 	
 	@Override
-	protected void startExecutor() {
+	protected void startExecutor() throws Exception {
 		setExecutor(createNewExecutor());
 		super.startExecutor();
 	}

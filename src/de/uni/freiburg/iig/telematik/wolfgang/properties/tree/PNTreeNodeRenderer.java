@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -14,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -22,9 +20,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;

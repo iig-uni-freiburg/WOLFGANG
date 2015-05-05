@@ -60,7 +60,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.MoveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.NewNodeAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListenerSupport;
@@ -94,7 +94,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	protected PNProperties properties = null;
 	protected PropertiesView propertiesView = null;
 	public AbstractGraphicalPN netContainer = null;
-	protected Wolfgang wolfgang = null;
+	protected AbstractWolfgang wolfgang = null;
 	protected mxRubberband rubberband;
 	protected mxKeyboardHandler keyboardHandler;
 	protected mxUndoManager undoManager;
@@ -154,11 +154,11 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			setLayout(layoutOption.getLayoutCode());
 	}
 
-	public Wolfgang getWolfgang() {
+	public AbstractWolfgang getWolfgang() {
 		return wolfgang;
 	}
 
-	public void setWolfgang(Wolfgang wolfgang) {
+	public void setWolfgang(AbstractWolfgang wolfgang) {
 		this.wolfgang = wolfgang;
 	}
 

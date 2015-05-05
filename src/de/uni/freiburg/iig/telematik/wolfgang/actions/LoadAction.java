@@ -9,8 +9,12 @@ import javax.swing.filechooser.FileFilter;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangCPN;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
@@ -21,7 +25,8 @@ public class LoadAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	public LoadAction(Wolfgang wolfgang) throws PropertyException, IOException {
+	@SuppressWarnings("rawtypes")
+	public LoadAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Net PT Net", IconFactory.getIcon("save"));
 	}
 
@@ -54,9 +59,18 @@ public class LoadAction extends AbstractWolfgangAction {
 			String filename = fc.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".pnml"))
 				filename += ".pnml";
+			@SuppressWarnings("rawtypes")
 			AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
-			wolfgang = new Wolfgang(net);
-			wolfgang.setNetName(net.getPetriNet().getName());
+			switch(net.getPetriNet().getNetType()){
+			case CPN:
+				wolfgang = new WolfgangCPN((GraphicalCPN) net);
+				break;
+			case PTNet:
+				wolfgang = new WolfgangPT((GraphicalPTNet) net);
+				break;
+			default: 
+				throw new Exception("Incompatible net type: " + net.getPetriNet().getNetType());
+			}
 			wolfgang.setUpGUI();
 		}
 

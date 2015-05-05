@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;

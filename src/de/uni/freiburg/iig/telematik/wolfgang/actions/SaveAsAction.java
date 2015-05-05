@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileFilter;
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerialization;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class SaveAsAction extends AbstractWolfgangAction {
@@ -20,7 +20,8 @@ public class SaveAsAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	public SaveAsAction(Wolfgang wolfgang) throws PropertyException, IOException {
+	@SuppressWarnings("rawtypes")
+	public SaveAsAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Save", IconFactory.getIcon("save"));
 	}
 

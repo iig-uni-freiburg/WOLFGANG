@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileFilter;
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerialization;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class SaveAction extends AbstractWolfgangAction {
@@ -20,7 +20,8 @@ public class SaveAction extends AbstractWolfgangAction {
 	protected boolean success = false;
 	protected String errorMessage = null;
 
-	public SaveAction(Wolfgang wolfgang) throws PropertyException, IOException {
+	@SuppressWarnings("rawtypes")
+	public SaveAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super(wolfgang, "Save", IconFactory.getIcon("save"));
 	}
 
@@ -66,7 +67,6 @@ public class SaveAction extends AbstractWolfgangAction {
 					wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
 				PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
 				wolfgang.setFileReference(fc.getSelectedFile());
-				wolfgang.setNetName(netName);
 				wolfgang.setTitle(wolfgang.getTitle());
 				wolfgang.getEditorComponent().setModified(false);
 			}

@@ -8,27 +8,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.Wolfgang;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 
 public abstract class AbstractWolfgangAction extends AbstractAction {
 
 	private static final long serialVersionUID = -536769777534949749L;
 
-	protected Wolfgang wolfgang = null;
+	protected AbstractWolfgang wolfgang = null;
 
 	private ImageIcon icon;
 
-	protected AbstractWolfgangAction(Wolfgang wolfgang) {
+	protected AbstractWolfgangAction(AbstractWolfgang wolfgang) {
 		super();
 		setWolfgang(wolfgang);
 	}
 
-	protected AbstractWolfgangAction(Wolfgang wolfgang, String name) {
+	protected AbstractWolfgangAction(AbstractWolfgang wolfgang, String name) {
 		super(name);
 		setWolfgang(wolfgang);
 	}
 
-	protected AbstractWolfgangAction(Wolfgang wolfgang, String name, Icon icon) {
+	protected AbstractWolfgangAction(AbstractWolfgang wolfgang, String name, Icon icon) {
 		super(name, icon);
 		setWolfgang(wolfgang);
 		setIcon(icon);
@@ -43,12 +43,12 @@ public abstract class AbstractWolfgangAction extends AbstractAction {
 		return icon;
 	}
 
-	private void setWolfgang(Wolfgang wolfgang) {
+	private void setWolfgang(AbstractWolfgang wolfgang) {
 		Validate.notNull(wolfgang);
 		this.wolfgang = wolfgang;
 	}
 
-	protected Wolfgang getWolfgang() {
+	protected AbstractWolfgang getWolfgang() {
 		return wolfgang;
 	}
 

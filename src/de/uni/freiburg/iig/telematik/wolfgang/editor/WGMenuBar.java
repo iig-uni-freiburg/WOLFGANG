@@ -22,9 +22,9 @@ public class WGMenuBar extends JMenuBar {
 
 	private static final long serialVersionUID = -4524611329436093661L;
 	
-	private Wolfgang wolfgang = null;
+	private AbstractWolfgang wolfgang = null;
 	
-	public WGMenuBar(Wolfgang wolfgang) throws PropertyException, IOException {
+	public WGMenuBar(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super();
 		this.wolfgang = wolfgang;
 		add(getFileMenu());
@@ -63,10 +63,6 @@ public class WGMenuBar extends JMenuBar {
 		//save.setRolloverEnabled(true);
 		saveAS.addActionListener(new SaveAsAction(wolfgang));
 		fileMenu.add(saveAS);
-		
-	
-		
-
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {
