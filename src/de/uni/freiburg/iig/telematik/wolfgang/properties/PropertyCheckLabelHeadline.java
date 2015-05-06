@@ -20,9 +20,9 @@ public class PropertyCheckLabelHeadline extends JLabel {
 	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 		if(isExpanded)
-			setText("▼ " + headline);
+			setText("\u25bc " + headline);
 		else
-			setText("► " + headline);
+			setText("\u25ba " + headline);
 	}
 
 }
