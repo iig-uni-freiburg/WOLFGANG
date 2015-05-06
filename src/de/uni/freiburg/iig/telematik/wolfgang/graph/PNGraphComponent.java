@@ -47,6 +47,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
@@ -661,9 +662,10 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	}
 
 	public void removeCellOverlays() {
-		for (AbstractPNNode<?> node : getGraph().getNetContainer().getPetriNet().getNodes()) {
-			PNGraphCell cell = getGraph().getNodeCell(node.getName());
-			removeCellOverlays(cell.getValue());
+		
+		for (AbstractTransition transistion : getGraph().getNetContainer().getPetriNet().getTransitions()) {
+			PNGraphCell cell = getGraph().getNodeCell(transistion.getName());
+			removeCellOverlays(cell);
 		}
 
 	}
