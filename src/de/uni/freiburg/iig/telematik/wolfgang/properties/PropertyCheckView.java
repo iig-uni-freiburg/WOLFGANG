@@ -1,5 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.properties;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -39,33 +41,59 @@ public class PropertyCheckView extends JPanel {
 	private PropertyCheckPropertiesLabel labelProperCompletion;
 	private PropertyCheckPropertiesLabel labelNoDeadTransitions;
 	private JButton errorButton;
+	
+	private int lineHeight = 16;
 
 	public PropertyCheckView(NetCheckingProperties propertyCheckProperties) {
-		super(new SpringLayout());
+		super(new BorderLayout());
 		if(propertyCheckProperties instanceof CWNProperties)
 			setUpCWNGui((CWNProperties) propertyCheckProperties);
 		if(propertyCheckProperties instanceof WFNetProperties)
 			setUpPTGui((WFNetProperties) propertyCheckProperties);
-	
 
 	}
 	
 	public void setUpPTGui(WFNetProperties propertyCheckProperties) {
+		final JPanel upperPTPanel = new JPanel(new SpringLayout());
 		setPropertyCheckProperties(propertyCheckProperties);
-		int initialX = 0;
-		int initialY = 0;
-		int xPad = 0;
-		int yPad = 0;
 		boolean isExpanded = true;
 		String headline = "WF Net Check";
 		setHeadline(new PropertyCheckLabelHeadline(headline, isExpanded));
 
-		add(getHeadline());
+		upperPTPanel.add(getHeadline());
 
 		separator = new JPopupMenu.Separator();
-		add(separator);
+		upperPTPanel.add(separator);
 
 		errorButton = new JButton("Show Details");
+		addErrorButtonListener();
+		upperPTPanel.add(errorButton);
+		separator0 = new JPopupMenu.Separator();
+		upperPTPanel.add(separator0);
+
+		labelCWNStructure = new PropertyCheckPropertiesLabel(" \u2022 WF Net Structure", ((WFNetProperties)getPropertyCheckProperties()).hasWFNetStructure);
+		upperPTPanel.add(labelCWNStructure);
+		labelValidInOutPlaces = new PropertyCheckPropertiesLabel("    \u2022 Valid InOut Places", ((WFNetProperties)getPropertyCheckProperties()).validInOutPlaces);
+		upperPTPanel.add(labelValidInOutPlaces);
+		labelStrongConnectedness = new PropertyCheckPropertiesLabel("    \u2022 Strong Connectedness", ((WFNetProperties)getPropertyCheckProperties()).strongConnectedness);
+		upperPTPanel.add(labelStrongConnectedness);
+
+		separator1 = new JPopupMenu.Separator();
+		upperPTPanel.add(separator1);
+
+		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
+
+		System.out.println("lineHeight: " + lineHeight);
+		upperPTPanel.add(labelIsBounded);
+
+		int numberOfPanels = 9;
+		SpringUtilities.makeCompactGrid(upperPTPanel, numberOfPanels, 1, 0, 0, 0, 0);
+		add(upperPTPanel, BorderLayout.PAGE_START);
+		setMinimumSize(new Dimension((int)upperPTPanel.getSize().getWidth(), (int) (lineHeight*numberOfPanels)));
+		addHeadLineListener(upperPTPanel, numberOfPanels);
+	}
+
+	private void addErrorButtonListener() {
 		errorButton.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -77,142 +105,82 @@ public class PropertyCheckView extends JPanel {
 					JOptionPane.showMessageDialog(getPropertyCheckView().getParent().getParent(), "no error", "Property Check Details:", JOptionPane.INFORMATION_MESSAGE);
 				}
 
-			}
-		});
-		add(errorButton);
-		separator0 = new JPopupMenu.Separator();
-		add(separator0);
-
-		labelCWNStructure = new PropertyCheckPropertiesLabel(" \u8226 WF Net Structure", ((WFNetProperties)getPropertyCheckProperties()).hasWFNetStructure);
-		add(labelCWNStructure);
-		labelValidInOutPlaces = new PropertyCheckPropertiesLabel("    \u2022 Valid InOut Places", ((WFNetProperties)getPropertyCheckProperties()).validInOutPlaces);
-		add(labelValidInOutPlaces);
-		labelStrongConnectedness = new PropertyCheckPropertiesLabel("    \u2022 Strong Connectedness", ((WFNetProperties)getPropertyCheckProperties()).strongConnectedness);
-		add(labelStrongConnectedness);
-//		labelValidInitialMarking = new PropertyCheckPropertiesLabel("    \u2022 Valid Initial Marking", getPropertyCheckProperties().validInitialMarking);
-//		add(labelValidInitialMarking);
-//		labelControlFlowDependency = new PropertyCheckPropertiesLabel("    \u2022 Control Flow Dependency", getPropertyCheckProperties().controlFlowDependency);
-//		add(labelControlFlowDependency);
-//
-		separator1 = new JPopupMenu.Separator();
-		add(separator1);
-
-		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
-		add(labelIsBounded);
-//		separator2 = new JPopupMenu.Separator();
-//		add(separator2);
-//
-//		labelOptionToComplete = new PropertyCheckPropertiesLabel(" \u2022 Option To Complete", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
-//		add(labelOptionToComplete);
-//		separator3 = new JPopupMenu.Separator();
-//		add(separator3);
-//		labelProperCompletion = new PropertyCheckPropertiesLabel(" \u2022 Proper Completion", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
-//		add(labelProperCompletion);
-//		separator4 = new JPopupMenu.Separator();
-//		add(separator4);
-//		labelNoDeadTransitions = new PropertyCheckPropertiesLabel(" \u2022 No Dead Transitions", getPropertyCheckProperties().noDeadTransitions);
-//		add(labelNoDeadTransitions);
-		SpringUtilities.makeCompactGrid(getPropertyCheckView(), 9, 1, initialX, initialY, xPad, yPad);
-
-		getHeadline().addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					if (!getHeadline().isExpanded()) {
-						SpringUtilities.makeCompactGrid(getPropertyCheckView(), 9, 1, 0, 0, 0, 0);
-						showCheckedProperties(true);
-						getHeadline().setExpanded(true);
-
-					} else {
-						SpringUtilities.makeCompactGrid(getPropertyCheckView(), 1, 1, 0, 0, 0, 0);
-						showCheckedProperties(false);
-						getHeadline().setExpanded(false);
-
-					}
-				}
 			}
 		});
 	}
 
 	public void setUpCWNGui(CWNProperties propertyCheckProperties) {
+		final JPanel upperCWNPanel = new JPanel(new SpringLayout());
 		setPropertyCheckProperties(propertyCheckProperties);
-		int initialX = 0;
-		int initialY = 0;
-		int xPad = 0;
-		int yPad = 0;
 		boolean isExpanded = true;
 		String headline = "Colored WF Net Check";
 		setHeadline(new PropertyCheckLabelHeadline(headline, isExpanded));
 
-		add(getHeadline());
+		upperCWNPanel.add(getHeadline());
 
 		separator = new JPopupMenu.Separator();
-		add(separator);
+		upperCWNPanel.add(separator);
 
 		errorButton = new JButton("Show Details");
-		errorButton.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (getPropertyCheckProperties().exception != null) {
-					JOptionPane.showMessageDialog(getPropertyCheckView().getParent().getParent(), getPropertyCheckProperties().exception.getMessage(), "Property Check Details:",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(getPropertyCheckView().getParent().getParent(), "no error", "Property Check Details:", JOptionPane.INFORMATION_MESSAGE);
-				}
-
-			}
-		});
-		add(errorButton);
+		addErrorButtonListener();
+		upperCWNPanel.add(errorButton);
+		
 		separator0 = new JPopupMenu.Separator();
-		add(separator0);
+		upperCWNPanel.add(separator0);
 
 		labelCWNStructure = new PropertyCheckPropertiesLabel(" \u2022 CWN Structure", ((CWNProperties)getPropertyCheckProperties()).hasCWNStructure);
-		add(labelCWNStructure);
+		upperCWNPanel.add(labelCWNStructure);
 		labelValidInOutPlaces = new PropertyCheckPropertiesLabel("    \u2022 Valid InOut Places", ((CWNProperties)getPropertyCheckProperties()).validInOutPlaces);
-		add(labelValidInOutPlaces);
+		upperCWNPanel.add(labelValidInOutPlaces);
 		labelStrongConnectedness = new PropertyCheckPropertiesLabel("    \u2022 Strong Connectedness", ((CWNProperties)getPropertyCheckProperties()).strongConnectedness);
-		add(labelStrongConnectedness);
+		upperCWNPanel.add(labelStrongConnectedness);
 		labelValidInitialMarking = new PropertyCheckPropertiesLabel("    \u2022 Valid Initial Marking", ((CWNProperties)getPropertyCheckProperties()).validInitialMarking);
-		add(labelValidInitialMarking);
+		upperCWNPanel.add(labelValidInitialMarking);
 		labelControlFlowDependency = new PropertyCheckPropertiesLabel("    \u2022 Control Flow Dependency", ((CWNProperties)getPropertyCheckProperties()).controlFlowDependency);
-		add(labelControlFlowDependency);
+		upperCWNPanel.add(labelControlFlowDependency);
 
 		separator1 = new JPopupMenu.Separator();
-		add(separator1);
+		upperCWNPanel.add(separator1);
 
 		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
-		add(labelIsBounded);
+		upperCWNPanel.add(labelIsBounded);
 		separator2 = new JPopupMenu.Separator();
-		add(separator2);
+		upperCWNPanel.add(separator2);
 
 		labelOptionToComplete = new PropertyCheckPropertiesLabel(" \u2022 Option To Complete", ((CWNProperties)getPropertyCheckProperties()).optionToCompleteAndProperCompletion);
-		add(labelOptionToComplete);
+		upperCWNPanel.add(labelOptionToComplete);
 		separator3 = new JPopupMenu.Separator();
-		add(separator3);
+		upperCWNPanel.add(separator3);
 		labelProperCompletion = new PropertyCheckPropertiesLabel(" \u2022 Proper Completion", ((CWNProperties)getPropertyCheckProperties()).optionToCompleteAndProperCompletion);
-		add(labelProperCompletion);
+		upperCWNPanel.add(labelProperCompletion);
 		separator4 = new JPopupMenu.Separator();
-		add(separator4);
+		upperCWNPanel.add(separator4);
 		labelNoDeadTransitions = new PropertyCheckPropertiesLabel(" \u2022 No Dead Transitions", ((CWNProperties)getPropertyCheckProperties()).noDeadTransitions);
-		add(labelNoDeadTransitions);
-		SpringUtilities.makeCompactGrid(getPropertyCheckView(), 17, 1, initialX, initialY, xPad, yPad);
+		upperCWNPanel.add(labelNoDeadTransitions);
+		final int numberOfPanels = 17;
+		SpringUtilities.makeCompactGrid(upperCWNPanel, numberOfPanels, 1, 0, 0, 0, 0);
+		add(upperCWNPanel, BorderLayout.PAGE_START);
+		setMinimumSize(new Dimension((int)upperCWNPanel.getSize().getWidth(), (int) (lineHeight*numberOfPanels)));
+		addHeadLineListener(upperCWNPanel, numberOfPanels);
+	}
 
+	private void addHeadLineListener(final JPanel upperPanel, final int numberOfPanels) {
 		getHeadline().addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					if (!getHeadline().isExpanded()) {
-						SpringUtilities.makeCompactGrid(getPropertyCheckView(), 17, 1, 0, 0, 0, 0);
+						SpringUtilities.makeCompactGrid(upperPanel, numberOfPanels, 1, 0, 0, 0, 0);
 						showCheckedProperties(true);
 						getHeadline().setExpanded(true);
+						setMinimumSize(new Dimension((int)upperPanel.getSize().getWidth(), (int) (lineHeight*numberOfPanels)));
 
 					} else {
-						SpringUtilities.makeCompactGrid(getPropertyCheckView(), 1, 1, 0, 0, 0, 0);
+						SpringUtilities.makeCompactGrid(upperPanel, 1, 1, 0, 0, 0, 0);
 						showCheckedProperties(false);
 						getHeadline().setExpanded(false);
+						setMinimumSize(new Dimension((int)upperPanel.getSize().getWidth(), (int) (lineHeight*1)));
 
 					}
 				}
@@ -278,8 +246,6 @@ public class PropertyCheckView extends JPanel {
 	}
 
 	public void updateCWNProperties(CWNProperties cwnProperties) {
-//		if(getPropertyCheckProperties().isBounded.equals(PropertyCheckingResult.TRUE))
-//			cwnProperties.isBounded = getPropertyCheckProperties().isBounded;
 		setPropertyCheckProperties(cwnProperties);
 		labelCWNStructure.updatePropertyCheckingResult(cwnProperties.hasCWNStructure);
 		labelValidInOutPlaces.updatePropertyCheckingResult(cwnProperties.validInOutPlaces);
@@ -294,19 +260,11 @@ public class PropertyCheckView extends JPanel {
 	}
 	
 	public void updateWFNetProperties(WFNetProperties wfNetProperties) {
-//		if(getPropertyCheckProperties().isBounded.equals(PropertyCheckingResult.TRUE))
-//			cwnProperties.isBounded = getPropertyCheckProperties().isBounded;
 		setPropertyCheckProperties(wfNetProperties);
 		labelCWNStructure.updatePropertyCheckingResult(wfNetProperties.hasWFNetStructure);
 		labelValidInOutPlaces.updatePropertyCheckingResult(wfNetProperties.validInOutPlaces);
 		labelStrongConnectedness.updatePropertyCheckingResult(wfNetProperties.strongConnectedness);
-//		labelValidInitialMarking.updatePropertyCheckingResult(cwnProperties.validInitialMarking);
-//		labelControlFlowDependency.updatePropertyCheckingResult(cwnProperties.controlFlowDependency);
 		labelIsBounded.updatePropertyCheckingResult(wfNetProperties.isBounded);
-//		labelOptionToComplete.updatePropertyCheckingResult(cwnProperties.optionToCompleteAndProperCompletion);
-//		labelProperCompletion.updatePropertyCheckingResult(cwnProperties.optionToCompleteAndProperCompletion);
-//		labelNoDeadTransitions.updatePropertyCheckingResult(cwnProperties.noDeadTransitions);
-
 	}
 
 
