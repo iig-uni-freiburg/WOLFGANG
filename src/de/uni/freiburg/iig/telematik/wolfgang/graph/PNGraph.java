@@ -737,6 +737,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 				if (customcell.getType() == PNComponent.TRANSITION) {
 					try {
 						drawAdditionalTransitionGrahpics(canvas, state);
+						drawAdditionalContextToTransition(canvas, state);
 
 					} catch (ParameterException e) {
 						JOptionPane.showMessageDialog(null, "Graphic for Access Mode is not avaiable \nReason: " + e.getMessage(), "Parameter Exception", JOptionPane.ERROR);
@@ -766,6 +767,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected abstract void drawAdditionalTransitionGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException;
 
+	protected abstract void drawAdditionalContextToTransition(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException;
+	
 	protected void drawAdditionalPlaceGrahpics(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {
 		Rectangle temp = state.getRectangle();
 		PNGraphCell cell = (PNGraphCell) state.getCell();

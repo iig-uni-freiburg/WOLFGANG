@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -87,7 +88,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private EditorPopupMenu popupMenu = null;
 
-	private TransitionPopupMenu transitionPopupMenu;
+	private JPopupMenu transitionPopupMenu;
 
 	private Map<String, mxCellMarker> markerReference = new HashMap<String, mxCellMarker>();
 
@@ -388,11 +389,11 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		return popupMenu;
 	}
 
-	public void setTransitionPopupMenu(TransitionPopupMenu transitionPopupMenu) {
-		this.transitionPopupMenu = transitionPopupMenu;
+	public void setTransitionPopupMenu(JPopupMenu jPopupMenu) {
+		this.transitionPopupMenu = jPopupMenu;
 	}
 
-	public TransitionPopupMenu getTransitionPopupMenu() {
+	public JPopupMenu getTransitionPopupMenu() {
 		return transitionPopupMenu;
 	}
 

@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Window;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +18,7 @@ import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxCellState;
 
 import de.invation.code.toval.graphic.misc.CircularPointGroup;
+import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
@@ -309,7 +311,8 @@ default:
 		
 	}
 
-
-
+	@Override
+	protected void drawAdditionalContextToTransition(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {
+	}
 
 }

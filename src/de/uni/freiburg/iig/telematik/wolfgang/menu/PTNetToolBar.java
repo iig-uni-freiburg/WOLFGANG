@@ -72,7 +72,7 @@ public class PTNetToolBar extends AbstractToolBar {
 		wfButton = add(checkWFNetAction);
 		wfButton.setBorderPainted(false);
 		
-		add(new BoundednessCheckLabel(pnEditor));
+//		add(new BoundednessCheckLabel(pnEditor));
 	}
 
 	@Override

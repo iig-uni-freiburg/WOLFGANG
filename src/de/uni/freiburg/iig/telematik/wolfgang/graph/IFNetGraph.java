@@ -51,7 +51,7 @@ public class IFNetGraph extends PNGraph {
 	private HashMap<String, AbstractTokenConfigurer> tokenConfigurerWindows = new HashMap<String, AbstractTokenConfigurer>();
 	private AbstractTokenConfigurer lastTokenConfigurer;
 
-	private boolean containsAnalysisContext = false;
+
 
 	public IFNetGraph(GraphicalIFNet GraphicalIFNet, IFNetProperties IFNetProperties) throws ParameterException {
 		super(GraphicalIFNet, IFNetProperties);
@@ -391,13 +391,7 @@ public class IFNetGraph extends PNGraph {
 		return bimage;
 	}
 
-	public boolean isContainsAnalysisContext() {
-		return containsAnalysisContext;
-	}
 
-	public void setContainsAnalysisContext(boolean containsAnalysisContext) {
-		this.containsAnalysisContext = containsAnalysisContext;
-	}
 
 	@Override
 	protected void drawAdditionalArcGrahpics(mxGraphics2DCanvas canvas, mxCellState state) {
@@ -453,6 +447,10 @@ public class IFNetGraph extends PNGraph {
 
 		}
 
+	}
+//do nothing here in Wolfgang
+	@Override
+	protected void drawAdditionalContextToTransition(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {	
 	}
 	
 }

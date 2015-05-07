@@ -108,6 +108,7 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 						try {
 							placeCell = (PNGraphCell) graph.addNewPlace(new mxPoint(dx, dy));
 						} catch (Exception e) {
+							System.out.println(e);
 							JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert place.\nReason: " + e.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
 						}
 					} else {

@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.io.IOException;
 
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
@@ -84,7 +85,7 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 	}
 
 	@Override
-	public TransitionPopupMenu getTransitionPopupMenu() {
+	public JPopupMenu getTransitionPopupMenu() {
 		try {
 			return new TransitionPopupMenu(this);
 		} catch (ParameterException e) {

@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -339,7 +340,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	public abstract EditorPopupMenu getPopupMenu();
 
-	public abstract TransitionPopupMenu getTransitionPopupMenu();
+	public abstract JPopupMenu getTransitionPopupMenu();
 
 	public void setModified(boolean modified) {
 		boolean oldValue = this.modified;
