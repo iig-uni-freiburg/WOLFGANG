@@ -83,7 +83,6 @@ public class PropertyCheckView extends JPanel {
 
 		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
 
-		System.out.println("lineHeight: " + lineHeight);
 		upperPTPanel.add(labelIsBounded);
 
 		int numberOfPanels = 9;
