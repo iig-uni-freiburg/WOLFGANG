@@ -18,15 +18,15 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimens
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 
 public class PNGraphChangeHandler {
-	
+
 	private PNGraph graph;
-	
-	public PNGraphChangeHandler(PNGraph graph){
+
+	public PNGraphChangeHandler(PNGraph graph) {
 		this.graph = graph;
 	}
-	
-	public void handleChange(mxEventObject evt){
-		if(evt.getProperties().isEmpty()){
+
+	public void handleChange(mxEventObject evt) {
+		if (evt.getProperties().isEmpty()) {
 			graph.getSelectionCell();
 		}
 		ArrayList<mxAtomicGraphModelChange> changes = (ArrayList<mxAtomicGraphModelChange>) evt.getProperty("changes");
@@ -44,20 +44,20 @@ public class PNGraphChangeHandler {
 			}
 		}
 	}
-	
+
 	private void handleChildChange(mxChildChange childChange) {
 		if (childChange.getChild() instanceof PNGraphCell) {
 			PNGraphCell cell = (PNGraphCell) childChange.getChild();
 			if (childChange.getPrevious() == null) {
 				switch (cell.getType()) {
 				case PLACE:
-					if (!graph.getNetContainer().getPetriNet().containsPlace(cell.getId()) ) {
+					if (!graph.getNetContainer().getPetriNet().containsPlace(cell.getId())) {
 						// Same code as case 4 in class GraphTransferHandler
 						Offset offset = new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY());
 						Dimension dimension = new Dimension(cell.getGeometry().getWidth(), cell.getGeometry().getHeight());
 						graph.addNewPlace(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), cell.getStyle(), offset, dimension);
-						
-						if(!cell.getId().equals(cell.getValue())){
+
+						if (!cell.getId().equals(cell.getValue())) {
 							graph.getNetContainer().getPetriNet().getPlace(cell.getId()).setLabel(cell.getValue().toString());
 						}
 					}
@@ -70,18 +70,19 @@ public class PNGraphChangeHandler {
 						Offset offset = new Offset(cell.getGeometry().getOffset().getX(), cell.getGeometry().getOffset().getY());
 						Dimension dimension = new Dimension(cell.getGeometry().getWidth(), cell.getGeometry().getHeight());
 						graph.addNewTransition(new mxPoint(cell.getGeometry().getCenterX(), cell.getGeometry().getCenterY()), cell.getStyle(), offset, dimension);
-						
-						if(!cell.getId().equals(cell.getValue())){
+
+						if (!cell.getId().equals(cell.getValue())) {
 							graph.getNetContainer().getPetriNet().getTransition(cell.getId()).setLabel(cell.getValue().toString());
 						}
 
 					}
 					break;
 				case ARC:
-					if (!graph.getNetContainer().getPetriNet().containsFlowRelation(cell.getId()) ) {
-						
-//						 Same code as in GraphTransferHandler
-//						 Check if source and target nodes already have been added
+					if (!graph.getNetContainer().getPetriNet().containsFlowRelation(cell.getId())) {
+
+						// Same code as in GraphTransferHandler
+						// Check if source and target nodes already have been
+						// added
 						PNGraphCell sourceCell = (PNGraphCell) cell.getSource();
 						PNGraphCell targetCell = (PNGraphCell) cell.getTarget();
 						if (sourceCell != null || targetCell != null) {
@@ -91,7 +92,7 @@ public class PNGraphChangeHandler {
 					}
 					break;
 				}
-			} 
+			}
 			if (childChange.getPrevious() != null && childChange.getParent() == null) {
 
 				switch (cell.getType()) {
@@ -162,37 +163,46 @@ public class PNGraphChangeHandler {
 		}
 
 	}
-	
+
 	private void handleTerminalChange(mxTerminalChange terminalChange) {
 		PNGraphCell arc = (PNGraphCell) terminalChange.getCell();
 		PNGraphCell prevArcEnd = (PNGraphCell) terminalChange.getPrevious();
 		PNGraphCell newArcEnd = (PNGraphCell) terminalChange.getTerminal();
 		if (prevArcEnd != null && newArcEnd != null) {
 			if (graph.getNetContainer().getPetriNet().containsFlowRelation(arc.getId())) {
-
-				graph.removeFlowRelation(arc.getId());
+				if (prevArcEnd != newArcEnd)
+					graph.removeFlowRelation(arc.getId());
 				PNGraphCell sourceCell = (PNGraphCell) arc.getSource();
 				PNGraphCell targetCell = (PNGraphCell) arc.getTarget();
 				Offset offset = new Offset(arc.getGeometry().getOffset().getX(), arc.getGeometry().getOffset().getY());
 				graph.addNewFlowRelation(sourceCell, targetCell, offset, arc.getGeometry().getPoints(), new mxPoint(0.0, 0.0), arc.getStyle());
-				graph.removeCells(new Object[]{arc});
+				graph.removeCells(new Object[] { arc });
+				graph.refresh();
+				// AbstractFlowRelation relation = null;
+				// if (sourceCell.getType() == PNComponent.PLACE &&
+				// targetCell.getType() == PNComponent.TRANSITION) {
+				// relation =
+				// graph.getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(),
+				// targetCell.getId());
+				// } else if (sourceCell.getType() == PNComponent.TRANSITION &&
+				// targetCell.getType() == PNComponent.PLACE) {
+				// relation =
+				// graph.getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(),
+				// targetCell.getId());
+				// }
+				// PNGraphCell arcCell = arcReferences.get(arc.getId());
+				// addArcReference(relation.getName(), arcCell);
+				// ArcGraphics arcGraphics =
+				// graph.getNetContainer().getPetriNetGraphics().getArcGraphics().get(arc.getId());
+				// AnnotationGraphics annotationGraphics =
+				// graph.getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().get(arc.getId());
+				// addGraphicalInfoToPNArc(relation, arcGraphics,
+				// annotationGraphics);
+				// graph.removeFlowRelation(arc.getId());
+				// arcCell.setId(relation.getName());
+				// graphListenerSupport.notifyRelationAdded(relation);
+				// graph.setSelectionCell(arcCell);
 
-//				AbstractFlowRelation relation = null;
-//				if (sourceCell.getType() == PNComponent.PLACE && targetCell.getType() == PNComponent.TRANSITION) {
-//					relation = graph.getNetContainer().getPetriNet().addFlowRelationPT(sourceCell.getId(), targetCell.getId());
-//				} else if (sourceCell.getType() == PNComponent.TRANSITION && targetCell.getType() == PNComponent.PLACE) {
-//					relation = graph.getNetContainer().getPetriNet().addFlowRelationTP(sourceCell.getId(), targetCell.getId());
-//				}
-//				PNGraphCell arcCell = arcReferences.get(arc.getId());
-//				addArcReference(relation.getName(), arcCell);
-//				ArcGraphics arcGraphics = graph.getNetContainer().getPetriNetGraphics().getArcGraphics().get(arc.getId());
-//				AnnotationGraphics annotationGraphics = graph.getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().get(arc.getId());
-//				addGraphicalInfoToPNArc(relation, arcGraphics, annotationGraphics);
-//				graph.removeFlowRelation(arc.getId());
-//				arcCell.setId(relation.getName());
-//				graphListenerSupport.notifyRelationAdded(relation);
-//				graph.setSelectionCell(arcCell);
-				
 			}
 		}
 	}
