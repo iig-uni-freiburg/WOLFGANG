@@ -1,7 +1,11 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.history;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+
+import javax.swing.JToggleButton;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
@@ -18,10 +22,11 @@ public class UndoAction extends AbstractPNEditorAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
+
 		if (editor != null) {
 			editor.getUndoManager().undo();
 			editor.getGraphComponent().getGraph().updateViews();
+			editor.requestFocus();
 		}
 	}
-
 }
