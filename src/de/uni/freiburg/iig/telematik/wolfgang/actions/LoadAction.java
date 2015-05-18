@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -27,7 +28,7 @@ public class LoadAction extends AbstractWolfgangAction {
 
 	@SuppressWarnings("rawtypes")
 	public LoadAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
-		super(wolfgang, "Net PT Net", IconFactory.getIcon("save"));
+		super(wolfgang, "Open Net", IconFactory.getIcon("save"));
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class LoadAction extends AbstractWolfgangAction {
 		JFileChooser fc;
 
 		fc = new JFileChooser(System.getProperty("user.home"));
-
+		fc.removeChoosableFileFilter(fc.getFileFilter());
 		fc.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
@@ -57,21 +58,22 @@ public class LoadAction extends AbstractWolfgangAction {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fc.getSelectedFile().getAbsolutePath();
-			if (!filename.toLowerCase().endsWith(".pnml"))
-				filename += ".pnml";
-			@SuppressWarnings("rawtypes")
-			AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
-			switch(net.getPetriNet().getNetType()){
-			case CPN:
-				wolfgang = new WolfgangCPN((GraphicalCPN) net);
-				break;
-			case PTNet:
-				wolfgang = new WolfgangPT((GraphicalPTNet) net);
-				break;
-			default: 
-				throw new Exception("Incompatible net type: " + net.getPetriNet().getNetType());
-			}
-			wolfgang.setUpGUI();
+
+			if (filename.toLowerCase().endsWith(".pnml")) {
+				AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
+				switch (net.getPetriNet().getNetType()) {
+				case CPN:
+					wolfgang = new WolfgangCPN((GraphicalCPN) net);
+					break;
+				case PTNet:
+					wolfgang = new WolfgangPT((GraphicalPTNet) net);
+					break;
+				default:
+					throw new Exception("Incompatible net type: " + net.getPetriNet().getNetType());
+				}
+				wolfgang.setUpGUI();
+			} else
+				throw new Exception("File is not in .pnml format");
 		}
 
 	}
