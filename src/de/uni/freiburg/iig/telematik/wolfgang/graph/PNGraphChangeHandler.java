@@ -17,6 +17,11 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 
+/**
+ * @author julius
+ *
+ */
+
 public class PNGraphChangeHandler {
 
 	private PNGraph graph;
@@ -164,20 +169,28 @@ public class PNGraphChangeHandler {
 
 	}
 
+
+	/**
+	 * @param terminalChange
+	 * Handles Editing of Arcs. 
+	 * If the new arc end equals the previous arc end, the inner method is not executed. However, in this case, arc-points are reset (this can be used as a further "fast editing" feature).
+	 */
 	private void handleTerminalChange(mxTerminalChange terminalChange) {
 		PNGraphCell arc = (PNGraphCell) terminalChange.getCell();
 		PNGraphCell prevArcEnd = (PNGraphCell) terminalChange.getPrevious();
 		PNGraphCell newArcEnd = (PNGraphCell) terminalChange.getTerminal();
 		if (prevArcEnd != null && newArcEnd != null) {
 			if (graph.getNetContainer().getPetriNet().containsFlowRelation(arc.getId())) {
-				if (prevArcEnd != newArcEnd)
+				//
+				if (prevArcEnd != newArcEnd) {
 					graph.removeFlowRelation(arc.getId());
-				PNGraphCell sourceCell = (PNGraphCell) arc.getSource();
-				PNGraphCell targetCell = (PNGraphCell) arc.getTarget();
-				Offset offset = new Offset(arc.getGeometry().getOffset().getX(), arc.getGeometry().getOffset().getY());
-				graph.addNewFlowRelation(sourceCell, targetCell, offset, arc.getGeometry().getPoints(), new mxPoint(0.0, 0.0), arc.getStyle());
-				graph.removeCells(new Object[] { arc });
-				graph.refresh();
+					PNGraphCell sourceCell = (PNGraphCell) arc.getSource();
+					PNGraphCell targetCell = (PNGraphCell) arc.getTarget();
+					Offset offset = new Offset(arc.getGeometry().getOffset().getX(), arc.getGeometry().getOffset().getY());
+					graph.addNewFlowRelation(sourceCell, targetCell, offset, arc.getGeometry().getPoints(), new mxPoint(0.0, 0.0), arc.getStyle());
+					graph.removeCells(new Object[] { arc });
+					graph.refresh();
+				}
 				// AbstractFlowRelation relation = null;
 				// if (sourceCell.getType() == PNComponent.PLACE &&
 				// targetCell.getType() == PNComponent.TRANSITION) {
