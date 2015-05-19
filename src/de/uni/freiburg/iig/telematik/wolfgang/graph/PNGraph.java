@@ -277,7 +277,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Adds anew place with default style.
 	 * 
 	 * @param point
-	 * @return
 	 * @throws IOException
 	 * @throws PropertyException
 	 */
@@ -290,9 +289,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	/**
 	 * Adds a new place with existing style.
 	 * 
-	 * @param mxPoint
+	 * @param point
 	 * @param style
-	 * @return
 	 */
 	public PNGraphCell addNewPlace(mxPoint point, String style, Offset offset, Dimension dimension) {
 		String nodeName = getNewPlaceName();
@@ -322,10 +320,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Inserts a new place with existing graphic information into the graphical
 	 * Petri net.
 	 * 
-	 * @param place
-	 * @param nodeGraphics
-	 * @param annotationGraphics
-	 * @return
+	 * @param nodeName
+	 * @param style
 	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell addPlaceCell(String nodeName, String style) {
@@ -457,10 +453,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Inserts a new place with existing graphic information into the graphical
 	 * Petri net.
 	 * 
-	 * @param place
-	 * @param nodeGraphics
-	 * @param annotationGraphics
-	 * @return
+	 * @param nodeName
+	 * @param style
 	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell addTransitionCell(String nodeName, String style) {
@@ -583,9 +577,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public abstract void updateViews();
 
 	/**
-	 * @param name
+	 * @param id
 	 * @param circularPointGroup
-	 * @return
 	 */
 	public abstract Multiset<String> getPlaceStateForCell(String id, CircularPointGroup circularPointGroup);
 
@@ -605,9 +598,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * arguments recursively, starting at the given parent or the default parent
 	 * if no parent is specified. Use <code>selectAll</code> to select all
 	 * cells.
-	 * 
-	 * @param vertices
-	 *            Boolean indicating if vertices should be selected.
 	 */
 	public void selectPNGraphCells(final PNComponent type) {
 
@@ -859,9 +849,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Sets the positions of place and transition labels according to the<br>
 	 * information contained in the corresponding annotation graphics.<br>
 	 * This method is called when a graph is created with a non-empty Petri net.
-	 * 
-	 * @param pnGraphics
-	 *            The Petri net graphics
 	 */
 	// public void updatePositionPropertiesFromCells() {
 	// for (PNGraphCell cell : nodeReferences.values()) {
@@ -1307,10 +1294,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return cells;
 	}
 
-	/**
-	 * @param graph
-	 * @return
-	 */
 	public String getNewTransitionName() {
 		String prefix = MXConstants.TRANSITION_NAME_PREFIX;
 		Integer index = 0;
