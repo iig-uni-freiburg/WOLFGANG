@@ -293,7 +293,7 @@
 
 	<!-- TODO -->
 	<target name="bundle-macosx" depends="package" description="Creates a Mac OS X application bundle">
-		<bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
+		<bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" icon="res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
 			<classpath file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
 			<option value="-Dapple.laf.useScreenMenuBar=true" />
 		</bundleapp>
