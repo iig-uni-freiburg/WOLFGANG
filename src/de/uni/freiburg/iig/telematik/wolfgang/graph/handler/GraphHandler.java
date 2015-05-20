@@ -22,15 +22,10 @@ public class GraphHandler extends mxGraphHandler {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		MouseEvent e2 = e;
-		System.out.println("x:" + e.getX() + " y:" + e.getY());
-		System.out.println("first:" + first);
-		System.out.println(previewBounds);
-		System.out.println(movePreview);
+
 		if (first != null && previewBounds != null) {
 			setStaticX((int) (first.getX() - previewBounds.getX()));
-			System.out.println("CASE1");
 			setStaticY((int) (first.getY() - previewBounds.getY()));
-			System.out.println(getStaticY());
 
 			x = e.getX();
 			if (getStaticX() != null) {
@@ -47,21 +42,9 @@ public class GraphHandler extends mxGraphHandler {
 			super.mouseDragged(e2);
 		}
 		if (first == null && previewBounds != null) {
-			System.out.println("Case2");
 
-			// if(previewBounds.getX()<0){
-			// x = (int) (previewBounds.getWidth()/2);
-			// System.out.println("XXXXXX: " +x);
-			// }
-			// if(previewBounds.getY()<0){
-			// y = (int) (previewBounds.getHeight()/2);
-			// }
-			// // previewBounds.setBounds(x, y, width, height);
-			// System.out.println(previewBounds);
-			// x += previewBounds.getWidth()/2;
-			// y += previewBounds.getHeight()/2;
 			e2 = new MouseEvent(e.getComponent(), e.getModifiers(), 0, 0, x + 50, y + 50, e.getClickCount(), true);
-			 super.mouseDragged(e2);
+			super.mouseDragged(e2);
 		}
 	}
 
@@ -73,16 +56,11 @@ public class GraphHandler extends mxGraphHandler {
 
 	@Override
 	public void dragOver(DropTargetDragEvent e) {
-		System.out.println("1");
 		if (canImport) {
-			System.out.println("2");
-
 			mouseDragged(createEvent(e));
 			mxGraphTransferHandler handler = getGraphTransferHandler(e);
 
 			if (handler != null) {
-				System.out.println("3");
-
 				mxGraph graph = graphComponent.getGraph();
 				double scale = graph.getView().getScale();
 				Point pt = SwingUtilities.convertPoint(graphComponent, e.getLocation(), graphComponent.getGraphControl());
@@ -95,7 +73,6 @@ public class GraphHandler extends mxGraphHandler {
 
 				// Centers the preview image
 				if (centerPreview && transferBounds != null) {
-					System.out.println("4");
 
 					dx -= Math.round(transferBounds.getWidth() * scale / 2);
 					dy -= Math.round(transferBounds.getHeight() * scale / 2);
@@ -109,7 +86,6 @@ public class GraphHandler extends mxGraphHandler {
 				// Shifts the preview so that overlapping parts do not
 				// affect the centering
 				if (transferBounds != null && dragImage != null) {
-					System.out.println("5");
 
 					dx = (int) Math.round((dragImage.getIconWidth() - 2 - transferBounds.getWidth() * scale) / 2);
 					dy = (int) Math.round((dragImage.getIconHeight() - 2 - transferBounds.getHeight() * scale) / 2);
@@ -117,18 +93,20 @@ public class GraphHandler extends mxGraphHandler {
 				}
 
 				if (!handler.isLocalDrag() && previewBounds != null) {
-//					pt.setLocation(pt.x - previewBounds.width / 2, pt.y - previewBounds.height / 2);
+					// pt.setLocation(pt.x - previewBounds.width / 2, pt.y -
+					// previewBounds.height / 2);
 					// TODO: drag n drop generation has different reference
-					// points than handling a already generated cell: this results in not
-					// being able to place a newly generated cell directly at the
+					// points than handling a already generated cell: this
+					// results in not
+					// being able to place a newly generated cell directly at
+					// the
 					// border...it snaps to the next best grid.
 
-					pt.x = pt.x <0? 0 :pt.x;
-					pt.y = pt.y <0? 0 :pt.y;
+					pt.x = pt.x < 0 ? 0 : pt.x;
+					pt.y = pt.y < 0 ? 0 : pt.y;
 
 					setPreviewBounds(new Rectangle(pt, previewBounds.getSize()));
-					handler.setLocation(new Point(pt.x+previewBounds.width , pt.y+previewBounds.height ));
-					System.out.println(pt.x+"#"+previewBounds.width);
+					handler.setLocation(new Point(pt.x + previewBounds.width, pt.y + previewBounds.height));
 
 				}
 			}
