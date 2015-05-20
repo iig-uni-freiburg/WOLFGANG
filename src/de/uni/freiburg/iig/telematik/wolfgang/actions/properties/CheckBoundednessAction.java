@@ -36,14 +36,14 @@ public class CheckBoundednessAction extends AbstractPropertyCheckAction {
 				setIconImage(getLoadingDots());
 				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
 				CWNProperties result = new CWNProperties();
-				try {
-					PNPropertiesChecker.validateBoundedness(net);
-					result.isBounded = PropertyCheckingResult.fromBoundedness(net.getBoundedness());
-				} catch (PNValidationException e1) {
-					result.isBounded = PropertyCheckingResult.FALSE;
-					result.exception = new PNSoundnessException("Net is not bounded.");
-					return result;
-				}
+//				try {
+//					PNPropertiesChecker.validateBoundedness(net);
+//					result.isBounded = PropertyCheckingResult.fromBoundedness(net.getBoundedness());
+//				} catch (PNValidationException e1) {
+//					result.isBounded = PropertyCheckingResult.FALSE;
+//					result.exception = new PNSoundnessException("Net is not bounded.");
+//					return result;
+//				}
 				return result;
 
 			}

@@ -47,12 +47,12 @@ import com.mxgraph.view.mxEdgeStyle.mxEdgeStyleFunction;
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphTransferHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNCellHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.PNEdgeHandler;
@@ -65,7 +65,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.HtmlTextShape;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.shape.RectangleShape;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 
 public abstract class PNGraphComponent extends mxGraphComponent {
 
@@ -82,6 +81,12 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		// but toggle for right mouse buttons requires CTRL to be pressed.
 		return (event != null) ? ((mxUtils.IS_MAC) ? ((SwingUtilities.isLeftMouseButton(event) && event.isMetaDown()) || (SwingUtilities.isRightMouseButton(event) && event.isControlDown() || event
 				.isShiftDown())) : event.isControlDown()) : false;
+	}
+
+	@Override
+	protected GraphHandler createGraphHandler() {
+		// TODO Auto-generated method stub
+		return new GraphHandler(this);
 	}
 
 	private static final long serialVersionUID = 1411737962538427287L;
