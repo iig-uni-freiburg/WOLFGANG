@@ -98,7 +98,7 @@ public static String createHtmlDoc(Map<String, Object> style,
 					mxConstants.DEFAULT_FONTFAMILIES) + ";");
 	css.append("font-size:"
 			+ (int) (mxUtils.getInt(style, mxConstants.STYLE_FONTSIZE,
-					mxConstants.DEFAULT_FONTSIZE) * scale) + " pt;");
+					mxConstants.DEFAULT_FONTSIZE)) + " pt;");
 
 	String color = "#000000";
 
