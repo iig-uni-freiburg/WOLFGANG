@@ -26,6 +26,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  */
 public abstract class PNProperties {
 
+	private static final Integer MAX_NODE_SIZE = 501;
 	/**
 	 * The change support which allows to notify all registered listeners about
 	 * changes.
@@ -330,7 +331,7 @@ public abstract class PNProperties {
 		Validate.notNull(placeName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
-		Validate.smaller(size, 500);
+		Validate.smaller(size, MAX_NODE_SIZE);
 		if (!getNetContainer().getPetriNet().containsPlace(placeName))
 			throw new ParameterException("Unknown Place");
 
@@ -727,7 +728,7 @@ public abstract class PNProperties {
 		Validate.notNull(transitionName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
-		Validate.smaller(size, 500);
+		Validate.smaller(size, MAX_NODE_SIZE);
 		if (!getNetContainer().getPetriNet().containsTransition(transitionName))
 			throw new ParameterException("Unknown Transition");
 
@@ -775,7 +776,7 @@ public abstract class PNProperties {
 		Validate.notNull(transitionName);
 		Validate.notNull(size);
 		Validate.bigger(size, 0);
-		Validate.smaller(size, 500);
+		Validate.smaller(size, MAX_NODE_SIZE);
 		if (!getNetContainer().getPetriNet().containsTransition(transitionName))
 			throw new ParameterException("Unknown Transition");
 
