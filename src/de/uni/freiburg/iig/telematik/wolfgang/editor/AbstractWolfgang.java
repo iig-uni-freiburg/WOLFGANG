@@ -84,7 +84,6 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 	protected AbstractWolfgang(NN net, boolean askForLayout) throws Exception {
 		this();
 		runningInstances.add(this);
-		System.out.println(runningInstances.size());
 		setNet(net, askForLayout);
 	}
 	
@@ -94,6 +93,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 	
 	protected abstract PNEditorComponent newEditorComponent(NN net, boolean askForLayout);
 	
+	protected abstract NetType getAcceptedNetType();
 
 	public void setNet(NN net, LayoutOption layoutOption) {
 		if(net == null)
@@ -108,8 +108,6 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 		this.editorComponent = newEditorComponent(net, askForLayout);
 		setName(net.getPetriNet().getName());
 	}
-
-	protected abstract NetType getAcceptedNetType();
 
 	private void prepareNetInsertion(NN net) {
 		Validate.notNull(net);
@@ -151,11 +149,15 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 
 	public void setUpGUI() throws PropertyException, IOException, Exception {
 		addWindowListener(new WindowAdapter() {
+			
+			
+			
 			public void windowClosing(WindowEvent e) {
 				if(runningInstances.size() > 1){
 					int closeAllInstances = JOptionPane.showConfirmDialog(AbstractWolfgang.this, "Close all "+runningInstances.size()+" Wolfgang instanes?", "Multiple running instances", JOptionPane.YES_NO_CANCEL_OPTION);
-					if(closeAllInstances == JOptionPane.CANCEL_OPTION)
+					if(closeAllInstances == JOptionPane.CANCEL_OPTION){
 						return;
+					}
 					if(closeAllInstances == JOptionPane.YES_OPTION){
 						for(@SuppressWarnings("rawtypes") AbstractWolfgang runningInstance: runningInstances){
 							runningInstance.dispose();
@@ -164,15 +166,16 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 						System.exit(0);
 					} else if(closeAllInstances == JOptionPane.NO_OPTION){
 						dispose();
-						runningInstances.remove(this);
+						runningInstances.remove(AbstractWolfgang.this);
 					}
 				} else {
 					dispose();
-					runningInstances.remove(this);
+					runningInstances.remove(AbstractWolfgang.this);
 					System.exit(0);
 				}
 			}
 		});
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setLookAndFeel();
 		setPreferredSize(PREFERRED_SIZE_WORKBENCH);
 		setResizable(true);
