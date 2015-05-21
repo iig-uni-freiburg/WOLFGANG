@@ -67,12 +67,13 @@
 		<pathelement location="${SEWOL.location}/bin/classes" />
 		<path refid="TOVAL.classpath" />
 		<path refid="JAGAL.classpath" />
-		<pathelement location="${SEWOL.location}/lib/openxes/OpenXES.jar" />
+		<pathelement location="${SEWOL.location}/lib/guava-16.0.1.jar" />
 		<pathelement location="${SEWOL.location}/lib/collections-generic-4.01.jar" />
 		<pathelement location="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
 		<pathelement location="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
 		<pathelement location="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
 		<pathelement location="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/xstream-1.4.8.jar" />
 	</path>
 
 	<path id="SEPIA.classpath">
@@ -84,10 +85,8 @@
 		<pathelement location="${SEPIA.location}/lib/hamcrest/hamcrest-core-1.3.jar" />
 		<pathelement location="${SEPIA.location}/lib/isorelax/isorelax.jar" />
 		<pathelement location="${SEPIA.location}/lib/msv/msv-core-2013.6.1.jar" />
-		<pathelement location="${SEPIA.location}/lib/relaxngDatatype/relaxngDatatype-20020414.jar">
-		</pathelement>
-		<pathelement location="${SEPIA.location}/lib/xsdlib/xsdlib-2.2.jar">
-		</pathelement>
+		<pathelement location="${SEPIA.location}/lib/relaxngDatatype/relaxngDatatype-20020414.jar" />
+		<pathelement location="${SEPIA.location}/lib/xsdlib/xsdlib-2.2.jar" />
 		<pathelement location="${SEPIA.location}/lib/xsom/xsom-20110101-SNAPSHOT.jar" />
 	</path>
 
@@ -131,6 +130,9 @@
 			<fileset dir="${SEWOL.location}/src">
 				<include name="**/*.java" />
 			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
 			<fileset dir="${SEPIA.location}/src">
 				<include name="**/*.java" />
 			</fileset>
@@ -152,6 +154,9 @@
 				<include name="**/*.java" />
 			</fileset>
 			<fileset dir="${SEWOL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
 				<include name="**/*.java" />
 			</fileset>
 			<fileset dir="${SEPIA.location}/src">
@@ -207,13 +212,13 @@
 			<fileset dir="${res.dir}" />
 			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/junit/junit-4.11.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/openxes/OpenXES.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/openxes/guava-16.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/xstream-1.4.8.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/isorelax/isorelax.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/msv/msv-core-2013.6.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/relaxngDatatype/relaxngDatatype-20020414.jar" />
@@ -291,7 +296,6 @@
 		</deb>
 	</target>
 
-	<!-- TODO -->
 	<target name="bundle-macosx" depends="package" description="Creates a Mac OS X application bundle">
 		<bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" icon="res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
 			<classpath file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
