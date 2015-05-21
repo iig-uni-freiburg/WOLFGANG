@@ -28,6 +28,16 @@ public class ZoomInAction extends AbstractPNEditorAction {
 		currentZoom = view.getScale();
 		if (currentZoom >= 0 && currentZoom <= 4)
 			getEditor().getGraphComponent().zoomTo(currentZoom + WolfgangProperties.getInstance().getDefaultZoomStep(), getEditor().getGraphComponent().isCenterZoom());
+		switch(getEditor().getEditorToolbar().getMode()){
+		case EDIT:
+			break;
+		case PLAY:
+			getEditor().getGraphComponent().removeCellOverlays();
+			getEditor().getGraphComponent().highlightEnabledTransitions();
+			break;
+		default:
+			break;
+		}
 	}
 
 }
