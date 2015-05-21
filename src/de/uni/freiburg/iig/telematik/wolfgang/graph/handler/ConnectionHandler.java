@@ -8,17 +8,23 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.handler.mxConnectPreview;
 import com.mxgraph.swing.handler.mxConnectionHandler;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
+import com.mxgraph.util.mxRectangle;
 import com.mxgraph.view.mxCellState;
+import com.mxgraph.view.mxGraph;
 
+import de.invation.code.toval.properties.PropertyException;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
@@ -34,6 +40,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
  * passed to mouseReleased.
  */
 public class ConnectionHandler extends mxConnectionHandler {
+	private int xPosition;
+	private int yPosition;
 
 	public ConnectionHandler(PNGraphComponent arg0) {
 		super(arg0);
@@ -50,8 +58,77 @@ public class ConnectionHandler extends mxConnectionHandler {
 	@Override
 	protected mxConnectPreview createConnectPreview() {
 		return new mxConnectPreview(getGraphComponent()) {
+	
+
+			@Override
+			/**
+			 * 
+			 */
+			public void update(MouseEvent e, mxCellState targetState, double x, double y) {
+				mxGraph graph = graphComponent.getGraph();
+				mxICell cell = (mxICell) previewState.getCell();
+
+				mxRectangle dirty = graphComponent.getGraph().getPaintBounds(new Object[] { previewState.getCell() });
+
+				if (cell.getTerminal(false) != null) {
+					cell.getTerminal(false).removeEdge(cell, false);
+				}
+
+				if (targetState != null) {
+					((mxICell) targetState.getCell()).insertEdge(cell, false);
+				}
+
+				mxGeometry geo = graph.getCellGeometry(previewState.getCell());
+				geo.setTerminalPoint(startPoint, true);
+
+				try {
+					int placeSize = WolfgangProperties.getInstance().getDefaultPlaceSize() / 2;
+					int transitionWidth = WolfgangProperties.getInstance().getDefaultTransitionWidth()/2;
+					int transitionHeight = WolfgangProperties.getInstance().getDefaultTransitionHeight()/2;
+					if(sourceState != null)
+					 if (sourceState.getCell() instanceof PNGraphCell) {
+						PNGraphCell pnCell = ((PNGraphCell) sourceState.getCell());
+						switch (pnCell.getType()) {
+						case ARC:
+							break;
+						case PLACE:
+							x = x < transitionWidth ? transitionWidth : x;
+							y = y < transitionHeight ? transitionHeight : y;
+							break;
+						case TRANSITION:
+							x = x < placeSize ? placeSize : x;
+							y = y < placeSize ? placeSize : y;
+							break;
+						default:
+							break;
+						}
+					}
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(getGraphComponent(), "Nodesizes could not be loaded from WolfgangProperties", "Wolfgang Property Exception", JOptionPane.ERROR_MESSAGE);
+				}
+				//set xPosition and yPosition for creation of Mousevent in mousereleased()
+				xPosition = (int) x;
+				yPosition = (int) y;
+				
+				geo.setTerminalPoint(transformScreenPoint(x, y), false);
+
+				revalidate(graph.getView().getState(graph.getDefaultParent()), previewState.getCell());
+				fireEvent(new mxEventObject(mxEvent.CONTINUE, "event", e, "x", x, "y", y));
+
+				// Repaints the dirty region
+				// TODO: Cache the new dirty region for next repaint
+				Rectangle tmp = getDirtyRect(dirty);
+
+				if (tmp != null) {
+					graphComponent.getGraphControl().repaint(tmp);
+				} else {
+					graphComponent.getGraphControl().repaint();
+				}
+			}
+
 			@Override
 			public Object stop(boolean commit, MouseEvent e) {
+
 				Object result = (sourceState != null) ? sourceState.getCell() : null;
 
 				if (previewState != null) {
@@ -74,7 +151,8 @@ public class ConnectionHandler extends mxConnectionHandler {
 						try {
 							result = ((PNGraph) graphComponent.getGraph()).addNewFlowRelation((PNGraphCell) src, (PNGraphCell) trg);
 						} catch (Exception ex) {
-							JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert flow relation.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert flow relation.\nReason: " + ex.getMessage(), "Internal Error",
+									JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					fireEvent(new mxEventObject(mxEvent.STOP, "event", e, "commit", commit, "cell", (commit) ? result : null));
@@ -107,6 +185,7 @@ public class ConnectionHandler extends mxConnectionHandler {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
+		e = new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiers(), xPosition, yPosition, e.getClickCount(), false);
 		if (isActive()) {
 			if (error == null && first != null) {
 				PNGraph graph = getGraphComponent().getGraph();
@@ -128,14 +207,16 @@ public class ConnectionHandler extends mxConnectionHandler {
 								try {
 									targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewTransition(graphComponent.getPointForEvent(e));
 								} catch (Exception ex) {
-									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert transition.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert transition.\nReason: " + ex.getMessage(), "Internal Error",
+											JOptionPane.ERROR_MESSAGE);
 								}
 								break;
 							case TRANSITION:
 								try {
 									targetCell = (PNGraphCell) ((PNGraph) graphComponent.getGraph()).addNewPlace(graphComponent.getPointForEvent(e));
 								} catch (Exception ex) {
-									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert place.\nReason: " + ex.getMessage(), "Internal Error", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(graphComponent), "Cannot insert place.\nReason: " + ex.getMessage(), "Internal Error",
+											JOptionPane.ERROR_MESSAGE);
 								}
 								break;
 							}
