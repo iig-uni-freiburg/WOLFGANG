@@ -291,6 +291,7 @@ public abstract class MXConstants {
 	public static String getDefaultArcStyle() throws IOException, PropertyException {
 		Hashtable<String, Object> style = new Hashtable<String, Object>();
 		addDefaultLineStyle(style);
+		addDefaultAnnotationStyle(style);
 		return getShortenedStyle(style);
 	}
 	
@@ -368,7 +369,7 @@ public abstract class MXConstants {
 		style.put(MXConstants.FONT_STYLE, DEFAULT_LABEL_FONT_STYLE);
 
 		// Set label line color
-		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLineColor();
+		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLabelLineColor();
 		style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, getMXColor(lineColorPNDefault));
 		
 		// Set label line style
