@@ -437,6 +437,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	}
 
 	protected boolean doubleClickOnCanvas(MouseEvent e) {
+		getGraph().setSelectionCell(null);
 		return false;
 	}
 
