@@ -284,6 +284,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		setGridVisibility();
 		addWGPropertiesListener();
 		setToolTips(true);
+		setBorder(null);
 		getGraphControl().addMouseListener(new GCMouseAdapter());
 		addMouseWheelListener(new GCMouseWheelListener());
 		// addKeyListener(new GCKeyListener());
