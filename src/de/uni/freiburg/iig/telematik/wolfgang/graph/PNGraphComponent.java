@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.graph;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -126,8 +127,10 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 				// image.ge
 				String label = getGraph().getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
 				BufferedImage img = drawLabelonPlayIcon((BufferedImage) bi, label);
-
-				overlay = new mxCellOverlay(new ImageIcon(img), null);
+				BufferedImage blankImage = new BufferedImage((int)cell.getGeometry().getWidth(), (int)cell.getGeometry().getHeight(),BufferedImage.TYPE_INT_ARGB);
+				Graphics blankGraphics = blankImage.getGraphics();
+				blankGraphics.drawImage(img, (int)cell.getGeometry().getWidth()/2-img.getWidth()/2, (int)cell.getGeometry().getHeight()/2-img.getHeight()/2, null);
+				overlay = new mxCellOverlay(new ImageIcon(blankImage), null);
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, "playred-Icon could not be assinged as cell-overlay. \nReason: " + e1.getMessage(), "" + e1.getClass(), JOptionPane.ERROR);
 			}
