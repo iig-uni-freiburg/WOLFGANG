@@ -21,9 +21,11 @@ public class NetTypeChooserDialog extends JDialog {
 	
 	private JButton btnPTNet;
 	private JButton btnCPN;
+	private JButton btnOpen;
 	private JLabel lblWolfgang;
 	
 	private NetType chosenNetType = null;
+	private boolean openNet = false;
 
 	public NetTypeChooserDialog(Window owner){
 		super(owner);
@@ -37,6 +39,7 @@ public class NetTypeChooserDialog extends JDialog {
 		JPanel chooseNetPanel = new JPanel();
 		chooseNetPanel.add(getButtonPTNet());
 		chooseNetPanel.add(getButtonCPN());
+		chooseNetPanel.add(getButtonOpen());
 		getContentPane().add(chooseNetPanel, BorderLayout.PAGE_END);
 		
 		pack();
@@ -82,6 +85,27 @@ public class NetTypeChooserDialog extends JDialog {
 		return btnCPN;
 	}
 
+	private JButton getButtonOpen() {
+		if(btnOpen == null){
+			URL imageURL = IconFactory.class.getResource("opennet.png");
+			ImageIcon icon = new ImageIcon(imageURL);
+			btnOpen = new JButton(icon);
+			btnOpen.setFocusPainted(false);
+			btnOpen.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					openNet = true;
+					dispose();
+				}
+			});
+		}
+		return btnOpen;
+	}
+	
+	public boolean openNetOption(){
+		return openNet;
+	}
+	
 	private JLabel getLabelWolfgang() {
 		if(lblWolfgang == null){
 			URL imageURL = IconFactory.class.getResource("wolfgang.png");
