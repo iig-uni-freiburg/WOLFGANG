@@ -25,56 +25,49 @@ public class PNVertexHandler extends mxVertexHandler {
 	@Override
 	protected boolean isHandleVisible(int index) {
 		// TODO Auto-generated method stub
-		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
+		return !isLabel(index) || (isLabelMovable() && ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
 	}
+
 	@Override
-	protected void resizeCell(MouseEvent e)
-	{
+	protected void resizeCell(MouseEvent e) {
 		mxGraph graph = graphComponent.getGraph();
 		double scale = graph.getView().getScale();
 
 		Object cell = state.getCell();
 		mxGeometry geometry = graph.getModel().getGeometry(cell);
 
-		if (geometry != null)
-		{
+		if (geometry != null) {
 			double dx = (e.getX() - first.x) / scale;
 			double dy = (e.getY() - first.y) / scale;
 
-			if (isLabel(index))
-			{
+			if (isLabel(index)) {
 				geometry = (mxGeometry) geometry.clone();
 
-				if (geometry.getOffset() != null)
-				{
+				if (geometry.getOffset() != null) {
 					dx += geometry.getOffset().getX();
 					dy += geometry.getOffset().getY();
 				}
 
-				if (gridEnabledEvent)
-				{
+				if (gridEnabledEvent) {
 					dx = graph.snap(dx);
 					dy = graph.snap(dy);
 				}
 
 				geometry.setOffset(new mxPoint(dx, dy));
 				graph.getModel().setGeometry(cell, geometry);
-			}
-			else
-			{
-				
-				//keeps aspect ratio
+			} else {
+
+				// keeps aspect ratio
 				double size = Math.min(dx, dy);
 				dx = size;
 				dy = size;
 				//
-				
+
 				mxRectangle bounds = union(geometry, dx, dy, index);
 				Rectangle rect = bounds.getRectangle();
 
 				// Snaps new bounds to grid (unscaled)
-				if (gridEnabledEvent)
-				{
+				if (gridEnabledEvent) {
 					int x = (int) graph.snap(rect.x);
 					int y = (int) graph.snap(rect.y);
 					rect.width = (int) graph.snap(rect.width - x + rect.x);
@@ -82,17 +75,16 @@ public class PNVertexHandler extends mxVertexHandler {
 					rect.x = x;
 					rect.y = y;
 				}
-
-				graph.resizeCell(cell, new mxRectangle(rect));
+				// Checks if resized cells lies in canvas
+				if (rect.getX() >= 0 && rect.getY() >= 0)
+					graph.resizeCell(cell, new mxRectangle(rect));
 			}
 		}
 	}
 
 	@Override
-	protected Color getHandleFillColor(int index)
-	{
-		if (isLabel(index))
-		{
+	protected Color getHandleFillColor(int index) {
+		if (isLabel(index)) {
 			return MXConstants.LABEL_HANDLE_FILLCOLOR;
 		}
 
@@ -103,8 +95,7 @@ public class PNVertexHandler extends mxVertexHandler {
 	/**
 	 * 
 	 */
-	public Color getSelectionColor()
-	{
+	public Color getSelectionColor() {
 		return MXConstants.VERTEX_SELECTION_COLOR;
 	}
 
