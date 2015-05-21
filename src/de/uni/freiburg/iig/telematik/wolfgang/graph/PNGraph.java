@@ -1190,6 +1190,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		for (Object cell : getSelectionCells()) {
 			if (cell instanceof PNGraphCell) {
 				String styleKey = (isLabelSelected()) ? MXConstants.LABEL_LINE_WIDTH : mxConstants.STYLE_STROKEWIDTH;
+				if(getView().getState(cell)!= null)
 				if(getView().getState(cell).getStyle().containsKey(styleKey)){
 				String currentStrokeWidth = mxUtils.getString(getView().getState(cell).getStyle(), styleKey).replace(".0", "");
 				if (!currentStrokeWidth.equals(strokeWeight)) {
