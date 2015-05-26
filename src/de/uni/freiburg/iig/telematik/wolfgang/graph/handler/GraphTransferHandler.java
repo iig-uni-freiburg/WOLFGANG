@@ -24,6 +24,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 
 public class GraphTransferHandler extends mxGraphTransferHandler {
 
@@ -142,6 +143,9 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 						if(!cell.getId().equals(cell.getValue())){
 							graph.getNetContainer().getPetriNet().getTransition(cell.getId()).setLabel(cell.getValue().toString());
 						}
+						Object silentValue = graph.getCellStyle(cell).get(MXConstants.SILENT);
+						if(silentValue == null || silentValue.equals("1"));
+							graph.getNetContainer().getPetriNet().getTransition(transitionCell.getId()).setSilent(true);
 					}
 					insertedCells.put(cell.getId(), transitionCell);
 					break;

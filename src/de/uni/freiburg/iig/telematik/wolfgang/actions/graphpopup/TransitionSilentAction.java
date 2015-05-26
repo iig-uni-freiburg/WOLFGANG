@@ -26,6 +26,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperti
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TransitionSilentChange;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 
 public class TransitionSilentAction extends AbstractPNEditorAction {
 	private boolean silent;
@@ -131,9 +132,12 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 			if (silent) {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000", selectedCellArray);
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", selectedCellArray);
+				graph.setCellStyles(MXConstants.SILENT, "1", selectedCellArray);
 			} else {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
+				graph.setCellStyles(MXConstants.SILENT, "0", selectedCellArray);
+
 			}
 			((mxGraphModel) graph.getModel()).endUpdate();
 		}

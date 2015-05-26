@@ -115,6 +115,7 @@ public abstract class MXConstants {
 	public static final String FONT_DECORATION = "labelFontDecoration";
 	public static final String FONT_STYLE = "labelFontStyle";
 	public static final String FONT_WEIGHT = "labelFontWeight";
+	public static final String SILENT = "transitionSilent";
 	
 	public static String getDefaultNodeStyle(PNComponent type) throws PropertyException, IOException {
 		Hashtable<String, Object> style = new Hashtable<String, Object>();

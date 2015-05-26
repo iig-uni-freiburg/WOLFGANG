@@ -1,7 +1,10 @@
 package de.uni.freiburg.iig.telematik.wolfgang.graph;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+
+import javax.swing.SwingUtilities;
 
 public class CPNGraphComponent extends PNGraphComponent {
 
@@ -14,6 +17,13 @@ public class CPNGraphComponent extends PNGraphComponent {
 	@Override
 	public CPNGraph getGraph() {
 		return (CPNGraph) super.getGraph();
+	}
+	
+	@Override
+	protected boolean rightClickOnTransition(PNGraphCell cell, MouseEvent e) {
+		Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), this);
+		getTransitionPopupMenu().show(CPNGraphComponent.this, pt.x, pt.y);
+		return false;
 	}
 
 	@Override
