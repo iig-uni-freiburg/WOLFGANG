@@ -2,15 +2,18 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions.export;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfGState;
@@ -63,51 +66,60 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 			String filename = fc.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".pdf"))
 				filename += ".pdf";
-
-			PNEditorComponent editor = getEditor();
-			PNGraph pnGraph = editor.getGraphComponent().getGraph();
-
 			
-			
-				JFrame f = new JFrame();
-				PNGraphComponent forPrint = new PNGraphComponent(pnGraph) {
-				};
-				mxRectangle size = forPrint.getGraph().getGraphBounds();
-				double space = 4;
-				float x = (float) (size.getRectangle().getWidth() + size.getRectangle().getX() + space);
-				float y = (float) (size.getRectangle().getHeight() + size.getRectangle().getY() + space);
-				Document document = new Document(new Rectangle(x, y));
-				PdfWriter writer = null;
-				writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-
-				// set crop of pdf doc = ll=lowerleft; ur=upper right
-				float llx = (float) size.getX();
-				float lly = 0;
-				float urx = x;
-				float ury = (float) ((float) size.getRectangle().getHeight() + space*4);
-				com.itextpdf.text.Rectangle crop = new com.itextpdf.text.Rectangle(llx, lly, urx, ury);
-				writer.setCropBoxSize(crop);
-
-				document.open();
-
-				PdfContentByte canvas = writer.getDirectContent();
-
-				// make pdf-background transparent
-				PdfGState gState = new PdfGState();
-				gState.setFillOpacity(0.0f);
-				canvas.setGState(gState);
-				
-				forPrint.setGridVisible(false);
-
-				PdfGraphics2D g2 = new PdfGraphics2D(canvas, x, y);
-
-				f.getContentPane().add(forPrint);
-				f.pack();
-				forPrint.paint(g2);
-				g2.dispose();
-
-				document.close();	
+			if (new File(filename).isFile()) {
+			     int overwrite = JOptionPane.showConfirmDialog(null, "PDF File exists already. Overwrite?", "Overwrite", JOptionPane.YES_NO_OPTION);
+			     if (overwrite == JOptionPane.YES_OPTION)
+			    	 createPDFFile(filename);
+			     else
+			    	 JOptionPane.showMessageDialog(null, "Export cancelled", "Information", JOptionPane.OK_OPTION);	 
+			}
+			else
+				createPDFFile(filename);
 		}
+	}
+
+	private void createPDFFile(String filename) throws FileNotFoundException, DocumentException {
+		PNEditorComponent editor = getEditor();
+    	PNGraph pnGraph = editor.getGraphComponent().getGraph();
+
+    	JFrame f = new JFrame();
+    	PNGraphComponent forPrint = new PNGraphComponent(pnGraph) {
+    	};
+    	mxRectangle size = forPrint.getGraph().getGraphBounds();
+    	double space = 4;
+    	float x = (float) (size.getRectangle().getWidth() + size.getRectangle().getX() + space);
+    	float y = (float) (size.getRectangle().getHeight() + size.getRectangle().getY() + space);
+    	Document document = new Document(new Rectangle(x, y));
+    	PdfWriter writer = null;
+    	writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+
+    	// set crop of pdf doc = ll=lowerleft; ur=upper right
+    	float llx = (float) size.getX();
+    	float lly = 0;
+    	float urx = x;
+    	float ury = (float) ((float) size.getRectangle().getHeight() + space*4);
+    	com.itextpdf.text.Rectangle crop = new com.itextpdf.text.Rectangle(llx, lly, urx, ury);
+    	writer.setCropBoxSize(crop);
+
+    	document.open();
+
+    	PdfContentByte canvas = writer.getDirectContent();
+
+    	// make pdf-background transparent
+    	PdfGState gState = new PdfGState();
+    	gState.setFillOpacity(0.0f);
+    	canvas.setGState(gState);
 		
+    	forPrint.setGridVisible(false);
+
+    	PdfGraphics2D g2 = new PdfGraphics2D(canvas, x, y);
+
+    	f.getContentPane().add(forPrint);
+    	f.pack();
+    	forPrint.paint(g2);
+    	g2.dispose();
+
+    	document.close();
 	}
 }
