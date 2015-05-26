@@ -38,7 +38,7 @@ public abstract class PNProperties {
 	 * {@link #getNetContainer()}, which returns a net container of the expected
 	 * type.
 	 */
-	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer = null;
+	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> netContainer = null;
 	private PropertiesView propertiesView;
 
 	/**
@@ -52,7 +52,7 @@ public abstract class PNProperties {
 	 *            The net container. @ If the given net container is
 	 *            <code>null</code>.
 	 */
-	public PNProperties(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer) {
+	public PNProperties(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> netContainer) {
 		Validate.notNull(netContainer);
 		this.netContainer = netContainer;
 	}
@@ -67,7 +67,7 @@ public abstract class PNProperties {
 	 * 
 	 * @return The net container.
 	 */
-	protected AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> getNetContainer() {
+	protected AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {
 		return netContainer;
 	}
 

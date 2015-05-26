@@ -198,7 +198,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		}
 	}
 
-	private void initialize(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer) {
+	private void initialize(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> netContainer) {
 		if (netContainer == null) {
 			this.netContainer = createNetContainer();
 		} else {
@@ -217,7 +217,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		
 	}
 
-	protected abstract AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> createNetContainer();
+	protected abstract AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> createNetContainer();
 
 	protected abstract PNProperties createPNProperties();
 	
@@ -304,7 +304,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	// ------- Functionality
 	// --------------------------------------------------------------------
 
-	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> getNetContainer() {
+	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {
 		return netContainer;
 	}
 

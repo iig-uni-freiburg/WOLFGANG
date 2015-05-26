@@ -45,9 +45,9 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>, 
 										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										N extends AbstractPetriNet<P,T,F,M,S,X,Y>, 
+										N extends AbstractPetriNet<P,T,F,M,S>, 
 										G extends AbstractPNGraphics<P,T,F,M,S>,
-										NN extends AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G>> extends JFrame {
+										NN extends AbstractGraphicalPN<P,T,F,M,S,N,G>> extends JFrame {
 
 	private static final long serialVersionUID = -7994645960400940612L;
 	private static final String titleFormat = "WOLFGANG | %s | %s";

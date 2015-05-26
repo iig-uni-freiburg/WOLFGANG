@@ -79,7 +79,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertyChangeEvent;
 
 public abstract class PNGraph extends mxGraph implements PNPropertiesListener, mxIEventListener, PNStructureListener {
 
-	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer = null;
+	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> netContainer = null;
 	private PNProperties properties = null;
 
 	private boolean labelSelected = false;
@@ -91,7 +91,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	protected PNGraphListenerSupport graphListenerSupport = new PNGraphListenerSupport();
 
-	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
+	public PNGraph(AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> netContainer, PNProperties properties) {
 		super();
 		addWGPropertiesListener();
 
@@ -265,7 +265,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		return placeCells;
 	}
 
-	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> getNetContainer() {
+	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {
 		return netContainer;
 	}
 

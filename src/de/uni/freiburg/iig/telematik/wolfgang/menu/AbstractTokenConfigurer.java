@@ -540,7 +540,7 @@ public class AbstractTokenConfigurer extends JDialog {
 
 	}
 
-	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?, ?, ?> getNetContainer() {
+	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {
 		AbstractGraphicalCPN graphicalNet = (AbstractGraphicalCPN) graph.getNetContainer();
 		return graphicalNet;
 	}
