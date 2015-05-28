@@ -129,7 +129,7 @@ public abstract class MXConstants {
 			break;
 		case TRANSITION:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
-			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultPlaceColor();
+			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultTransitionColor();
 			break;
 		}
 		style.put(mxConstants.STYLE_FILLCOLOR, getMXColor(fillColorPNDefault));
