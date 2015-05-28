@@ -88,12 +88,6 @@ public class PTGraphComponent extends PNGraphComponent {
 	@Override
 	protected boolean doubleClickOnArcLabel(PNGraphCell cell, MouseEvent e) {
 		String weight = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new arc weight");
-		if(weight != null){
-		try {
-			Validate.positiveInteger(weight);
-		} catch (ParameterException ex) {
-			JOptionPane.showMessageDialog(PTGraphComponent.this, "Input is not a positive integer.", "Invalid parameter", JOptionPane.ERROR_MESSAGE);
-		}
 
 		if (weight != null) {
 			try {
@@ -101,7 +95,6 @@ public class PTGraphComponent extends PNGraphComponent {
 			} catch (ParameterException e2) {
 				JOptionPane.showMessageDialog(PTGraphComponent.this, "Cannot set arc weight.\n Reason: " + e2.getMessage(), "Graph Exception", JOptionPane.ERROR_MESSAGE);
 			}
-		}
 		return true;
 		}
 		return false;
