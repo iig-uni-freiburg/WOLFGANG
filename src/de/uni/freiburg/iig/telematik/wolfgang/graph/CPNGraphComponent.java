@@ -34,7 +34,7 @@ public class CPNGraphComponent extends PNGraphComponent {
 
 
 	@Override
-	protected boolean doubleClickOnArc(PNGraphCell cell, MouseEvent e) {
+	protected boolean doubleClickOnArcLabel(PNGraphCell cell, MouseEvent e) {
 		getGraph().newTokenConfigurer(cell,this);
 		return true;
 	}
