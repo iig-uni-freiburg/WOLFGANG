@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties.tree;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -22,7 +22,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class PNTreeNodeRenderer extends DefaultTreeCellRenderer {
 

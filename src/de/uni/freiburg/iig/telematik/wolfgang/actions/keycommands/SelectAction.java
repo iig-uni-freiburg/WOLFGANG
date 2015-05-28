@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class SelectAction extends AbstractPNEditorAction {
 

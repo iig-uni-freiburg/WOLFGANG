@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties.tree;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree;
 
 import java.awt.Component;
 import java.util.EventObject;

@@ -23,7 +23,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PTProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PTProperties;
 
 /**
  * @author julius

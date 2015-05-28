@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,15 +56,15 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.EditorForFirstColumn;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.EditorForPropertiesFieldColumn;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.JTableRenderer;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNCellEditor;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNPropertiesTreeUI;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNodeRenderer;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNodeType;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.EditorForFirstColumn;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.EditorForPropertiesFieldColumn;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.JTableRenderer;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNCellEditor;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNPropertiesTreeUI;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNodeRenderer;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNodeType;
 
 public class PropertiesView extends JTree implements PNPropertiesListener {
 

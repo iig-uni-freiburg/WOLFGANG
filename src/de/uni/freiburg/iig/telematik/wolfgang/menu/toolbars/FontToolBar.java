@@ -46,7 +46,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.text.ShowHideTokensOnArcsA
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class FontToolBar extends JToolBar {
 

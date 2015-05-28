@@ -1,8 +1,9 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view;
 
 import java.util.EventObject;
 
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+
 
 public class PNPropertyChangeEvent extends EventObject {
 

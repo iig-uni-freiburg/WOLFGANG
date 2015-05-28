@@ -31,7 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurer;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.CPNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.CPNProperties;
 
 /**
  * @author julius

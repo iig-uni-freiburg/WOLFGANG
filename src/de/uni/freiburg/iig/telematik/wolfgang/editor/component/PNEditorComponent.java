@@ -76,11 +76,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar.Mode;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodePalettePanel;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckView;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.tree.PNTreeNode;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.PropertyCheckView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
 

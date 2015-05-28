@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.check;
 
 import java.awt.Color;
 
@@ -6,12 +6,13 @@ import javax.swing.JLabel;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 
-public class PropertyCheckPropertiesLabel extends JLabel {
+public class PropertyCheckResultLabel extends JLabel {
 
-	public PropertyCheckPropertiesLabel(String string, PropertyCheckingResult result) {
+	private static final long serialVersionUID = -3387692188070593237L;
+
+	public PropertyCheckResultLabel(String string, PropertyCheckingResult result) {
 		super(string);
 		updatePropertyCheckingResult(result);
-
 	}
 
 	public void updatePropertyCheckingResult(PropertyCheckingResult result) {
@@ -30,7 +31,6 @@ public class PropertyCheckPropertiesLabel extends JLabel {
 			break;
 		}
 		repaint();
-
 	}
 
 }

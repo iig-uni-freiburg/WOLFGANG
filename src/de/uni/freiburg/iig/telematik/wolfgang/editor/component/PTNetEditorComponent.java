@@ -22,7 +22,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.PTNetToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PTProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PTProperties;
 
 public class PTNetEditorComponent extends PNEditorComponent {
 

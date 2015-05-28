@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view;
 
 import java.util.HashSet;
 import java.util.Set;

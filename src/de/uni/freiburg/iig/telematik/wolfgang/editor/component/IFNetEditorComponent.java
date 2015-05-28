@@ -22,8 +22,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.IFNetProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 
 public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 

@@ -3,7 +3,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.graph;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class PNGraphCell extends mxCell{
 	

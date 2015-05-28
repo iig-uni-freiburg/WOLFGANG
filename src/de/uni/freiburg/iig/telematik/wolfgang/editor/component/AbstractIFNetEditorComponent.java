@@ -3,8 +3,8 @@ package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.IFNetProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 
 public abstract class AbstractIFNetEditorComponent extends PNEditorComponent {
 

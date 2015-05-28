@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties.tree;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,8 +7,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperty;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertiesView.PropertiesField;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperty;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView.PropertiesField;
 
 public class PNTreeNode extends DefaultMutableTreeNode {
 

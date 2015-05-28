@@ -1,13 +1,15 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.check;
 
 import javax.swing.JLabel;
 
-public class PropertyCheckLabelHeadline extends JLabel {
+public class PropertyCheckHeadlineLabel extends JLabel {
 
+	private static final long serialVersionUID = 4058709892403753995L;
+	
 	private boolean isExpanded;
 	private String headline;
 
-	public PropertyCheckLabelHeadline(String headline, boolean expanded) {
+	public PropertyCheckHeadlineLabel(String headline, boolean expanded) {
 		super(headline);
 		this.headline = headline;
 		setExpanded(expanded);

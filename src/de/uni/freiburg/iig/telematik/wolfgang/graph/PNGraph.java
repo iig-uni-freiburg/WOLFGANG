@@ -48,9 +48,9 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.event.PNStructureListener;
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
-import de.uni.freiburg.iig.telematik.sepia.event.PNStructureListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -71,11 +71,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperty
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.StyleChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperties.PNComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertiesListener;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNProperty;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PNPropertyChangeEvent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNPropertiesListener;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperty;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNPropertyChangeEvent;
 
 public abstract class PNGraph extends mxGraph implements PNPropertiesListener, mxIEventListener, PNStructureListener {
 

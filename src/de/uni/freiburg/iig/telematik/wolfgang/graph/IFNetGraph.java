@@ -43,7 +43,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperti
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurer;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.IFNetProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
 
 
 public class IFNetGraph extends PNGraph {

@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view;
 
 import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 

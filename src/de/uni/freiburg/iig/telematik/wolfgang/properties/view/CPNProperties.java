@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.properties.view;
 
 import java.util.Set;
 
@@ -45,7 +45,6 @@ public class CPNProperties extends PNProperties {
 	 * This method calls {@link #getArcWeight(String)}
 	 * @see #getArcWeight(String)
 	 */
-	@SuppressWarnings("incomplete-switch")
 	@Override
 	protected String getArcProperty(String name, PNProperty property)  {
 		String superResult = super.getArcProperty(name, property);
@@ -113,8 +112,7 @@ public class CPNProperties extends PNProperties {
 	}
 
 	@Override
-	protected String getPlaceProperty(String name, PNProperty property)
-			 {
+	protected String getPlaceProperty(String name, PNProperty property){
 		Validate.notNull(property);
 		String result = super.getPlaceProperty(name, property);
 		switch(property){
@@ -130,7 +128,7 @@ public class CPNProperties extends PNProperties {
 	 * @return The weight of the arc with the given name.
 	 * @ If the given arc name is <code>null</code> or the net does not contain an arc with the given name.
 	 */
-	public Integer getPlaceCapacity(String placeName)  {
+	public Integer getPlaceCapacity(String placeName){
 		Validate.notNull(placeName);
 		if(!getNetContainer().getPetriNet().containsPlace(placeName))
 			throw new ParameterException("Unknown Place");
@@ -175,9 +173,7 @@ public class CPNProperties extends PNProperties {
 	}
 
 	@Override
-	protected boolean setPlaceProperty(Object sender, String name,
-			PNProperty property, String value)  {
-		// TODO Auto-generated method stub
+	protected boolean setPlaceProperty(Object sender, String name, PNProperty property, String value)  {
 		boolean result = super.setPlaceProperty(sender, name, property, value);
 		switch(property){
 		case PLACE_CAPACITY:

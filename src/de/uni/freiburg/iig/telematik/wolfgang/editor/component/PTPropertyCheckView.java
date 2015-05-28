@@ -14,13 +14,13 @@ import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckLabelHeadline;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckPropertiesLabel;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.PropertyCheckHeadlineLabel;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.PropertyCheckResultLabel;
 
 public class PTPropertyCheckView extends JPanel {
 
 	private CWNProperties propertyCheckProperties;
-	private PropertyCheckLabelHeadline headline;
+	private PropertyCheckHeadlineLabel headline;
 
 	private Separator separator;
 	private Separator separator0;
@@ -29,15 +29,15 @@ public class PTPropertyCheckView extends JPanel {
 	private Separator separator3;
 	private Separator separator4;
 
-	private PropertyCheckPropertiesLabel labelCWNStructure;
-	private PropertyCheckPropertiesLabel labelValidInOutPlaces;
-	private PropertyCheckPropertiesLabel labelStrongConnectedness;
-	private PropertyCheckPropertiesLabel labelValidInitialMarking;
-	private PropertyCheckPropertiesLabel labelControlFlowDependency;
-	private PropertyCheckPropertiesLabel labelIsBounded;
-	private PropertyCheckPropertiesLabel labelOptionToComplete;
-	private PropertyCheckPropertiesLabel labelProperCompletion;
-	private PropertyCheckPropertiesLabel labelNoDeadTransitions;
+	private PropertyCheckResultLabel labelCWNStructure;
+	private PropertyCheckResultLabel labelValidInOutPlaces;
+	private PropertyCheckResultLabel labelStrongConnectedness;
+	private PropertyCheckResultLabel labelValidInitialMarking;
+	private PropertyCheckResultLabel labelControlFlowDependency;
+	private PropertyCheckResultLabel labelIsBounded;
+	private PropertyCheckResultLabel labelOptionToComplete;
+	private PropertyCheckResultLabel labelProperCompletion;
+	private PropertyCheckResultLabel labelNoDeadTransitions;
 	private JButton errorButton;
 
 	public PTPropertyCheckView(CWNProperties propertyCheckProperties) {
@@ -54,7 +54,7 @@ public class PTPropertyCheckView extends JPanel {
 		int yPad = 0;
 		boolean isExpanded = true;
 		String headline = "Colored WF Net Check";
-		setHeadline(new PropertyCheckLabelHeadline(headline, isExpanded));
+		setHeadline(new PropertyCheckHeadlineLabel(headline, isExpanded));
 
 		add(getHeadline());
 
@@ -79,34 +79,34 @@ public class PTPropertyCheckView extends JPanel {
 		separator0 = new JPopupMenu.Separator();
 		add(separator0);
 
-		labelCWNStructure = new PropertyCheckPropertiesLabel(" ● CWN Structure", getPropertyCheckProperties().hasCWNStructure);
+		labelCWNStructure = new PropertyCheckResultLabel(" ● CWN Structure", getPropertyCheckProperties().hasCWNStructure);
 		add(labelCWNStructure);
-		labelValidInOutPlaces = new PropertyCheckPropertiesLabel("    ● Valid InOut Places", getPropertyCheckProperties().validInOutPlaces);
+		labelValidInOutPlaces = new PropertyCheckResultLabel("    ● Valid InOut Places", getPropertyCheckProperties().validInOutPlaces);
 		add(labelValidInOutPlaces);
-		labelStrongConnectedness = new PropertyCheckPropertiesLabel("    ● Strong Connectedness", getPropertyCheckProperties().strongConnectedness);
+		labelStrongConnectedness = new PropertyCheckResultLabel("    ● Strong Connectedness", getPropertyCheckProperties().strongConnectedness);
 		add(labelStrongConnectedness);
-		labelValidInitialMarking = new PropertyCheckPropertiesLabel("    ● Valid Initial Marking", getPropertyCheckProperties().validInitialMarking);
+		labelValidInitialMarking = new PropertyCheckResultLabel("    ● Valid Initial Marking", getPropertyCheckProperties().validInitialMarking);
 		add(labelValidInitialMarking);
-		labelControlFlowDependency = new PropertyCheckPropertiesLabel("    ● Control Flow Dependency", getPropertyCheckProperties().controlFlowDependency);
+		labelControlFlowDependency = new PropertyCheckResultLabel("    ● Control Flow Dependency", getPropertyCheckProperties().controlFlowDependency);
 		add(labelControlFlowDependency);
 
 		separator1 = new JPopupMenu.Separator();
 		add(separator1);
 
-		labelIsBounded = new PropertyCheckPropertiesLabel(" ● Is Bounded", getPropertyCheckProperties().isBounded);
+		labelIsBounded = new PropertyCheckResultLabel(" ● Is Bounded", getPropertyCheckProperties().isBounded);
 		add(labelIsBounded);
 		separator2 = new JPopupMenu.Separator();
 		add(separator2);
 
-		labelOptionToComplete = new PropertyCheckPropertiesLabel(" ● Option To Complete", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
+		labelOptionToComplete = new PropertyCheckResultLabel(" ● Option To Complete", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
 		add(labelOptionToComplete);
 		separator3 = new JPopupMenu.Separator();
 		add(separator3);
-		labelProperCompletion = new PropertyCheckPropertiesLabel(" ● Proper Completion", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
+		labelProperCompletion = new PropertyCheckResultLabel(" ● Proper Completion", getPropertyCheckProperties().optionToCompleteAndProperCompletion);
 		add(labelProperCompletion);
 		separator4 = new JPopupMenu.Separator();
 		add(separator4);
-		labelNoDeadTransitions = new PropertyCheckPropertiesLabel(" ● No Dead Transitions", getPropertyCheckProperties().noDeadTransitions);
+		labelNoDeadTransitions = new PropertyCheckResultLabel(" ● No Dead Transitions", getPropertyCheckProperties().noDeadTransitions);
 		add(labelNoDeadTransitions);
 		SpringUtilities.makeCompactGrid(getPropertyCheckView(), 17, 1, initialX, initialY, xPad, yPad);
 
@@ -131,12 +131,12 @@ public class PTPropertyCheckView extends JPanel {
 		});
 	}
 
-	private void setHeadline(PropertyCheckLabelHeadline propertyCheckLabelHeadline) {
+	private void setHeadline(PropertyCheckHeadlineLabel propertyCheckLabelHeadline) {
 		this.headline = propertyCheckLabelHeadline;
 
 	}
 
-	public PropertyCheckLabelHeadline getHeadline() {
+	public PropertyCheckHeadlineLabel getHeadline() {
 		return this.headline;
 	}
 
