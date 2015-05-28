@@ -7,8 +7,6 @@ import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
@@ -31,10 +29,11 @@ public class CheckCWNStructureAction extends AbstractPropertyCheckAction {
 		SwingWorker worker = new SwingWorker<CWNProperties, String>() {
 			@Override
 			public CWNProperties doInBackground() {
-				setIconImage(getLoadingDots());
-				AbstractCPN net = (AbstractCPN) getEditor().getNetContainer().getPetriNet().clone();
-			
-				return CWNChecker.checkCWNStructure(net);
+//				setIconImage(getLoadingDots());
+//				AbstractCPN net = (AbstractCPN) getEditor().getNetContainer().getPetriNet().clone();
+//			
+//				return CWNChecker.checkCWNStructure(net);
+				return null;
 			}
 
 			@Override

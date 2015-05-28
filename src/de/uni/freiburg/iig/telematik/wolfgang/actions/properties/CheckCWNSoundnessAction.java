@@ -11,8 +11,6 @@ import com.mxgraph.util.mxEventSource.mxIEventListener;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
@@ -44,11 +42,11 @@ public class CheckCWNSoundnessAction extends AbstractPropertyCheckAction {
 		SwingWorker worker = new SwingWorker<CWNProperties, String>() {
 			@Override
 			public CWNProperties doInBackground() {
-				setIconImage(getLoadingDots());
-				AbstractCPN net = (AbstractCPN) getEditor().getNetContainer().getPetriNet().clone();
-			
-				return CWNChecker.checkCWNSoundness(net, true, null);
-
+//				setIconImage(getLoadingDots());
+//				AbstractCPN net = (AbstractCPN) getEditor().getNetContainer().getPetriNet().clone();
+//			
+//				return CWNChecker.checkCWNSoundness(net, true, null);
+				return null;
 			}
 
 			@Override

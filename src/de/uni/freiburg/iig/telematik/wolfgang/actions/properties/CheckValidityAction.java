@@ -30,13 +30,13 @@ public class CheckValidityAction extends AbstractPropertyCheckAction {
 		SwingWorker worker = new SwingWorker<PNValidationException, String>() {
 			@Override
 			public PNValidationException doInBackground() {
-				setIconImage(getLoadingDots());
-				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
-				try {
-					net.checkValidity();
-				} catch (PNValidationException e) {
-					return e;
-				}
+//				setIconImage(getLoadingDots());
+//				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
+//				try {
+//					net.checkValidity();
+//				} catch (PNValidationException e) {
+//					return e;
+//				}
 				return null;
 			}
 

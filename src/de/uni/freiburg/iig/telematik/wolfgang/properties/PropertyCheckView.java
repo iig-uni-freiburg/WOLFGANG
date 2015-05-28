@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -83,7 +84,8 @@ public class PropertyCheckView extends JPanel {
 		separator1 = new JPopupMenu.Separator();
 		upperPTPanel.add(separator1);
 
-		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
+//		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
+		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", PropertyCheckingResult.TRUE);
 
 		upperPTPanel.add(labelIsBounded);
 
@@ -143,7 +145,8 @@ public class PropertyCheckView extends JPanel {
 		separator1 = new JPopupMenu.Separator();
 		upperCWNPanel.add(separator1);
 
-		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
+//		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", getPropertyCheckProperties().isBounded);
+		labelIsBounded = new PropertyCheckPropertiesLabel(" \u2022 Is Bounded", PropertyCheckingResult.TRUE);
 		upperCWNPanel.add(labelIsBounded);
 		separator2 = new JPopupMenu.Separator();
 		upperCWNPanel.add(separator2);
@@ -265,7 +268,7 @@ public class PropertyCheckView extends JPanel {
 		labelCWNStructure.updatePropertyCheckingResult(wfNetProperties.hasWFNetStructure);
 		labelValidInOutPlaces.updatePropertyCheckingResult(wfNetProperties.validInOutPlaces);
 		labelStrongConnectedness.updatePropertyCheckingResult(wfNetProperties.strongConnectedness);
-		labelIsBounded.updatePropertyCheckingResult(wfNetProperties.isBounded);
+//		labelIsBounded.updatePropertyCheckingResult(wfNetProperties.isBounded);
 	}
 
 
@@ -274,8 +277,8 @@ public class PropertyCheckView extends JPanel {
 	}
 
 	public void updateBoundedness(PropertyCheckingResult isBounded, Exception exception) {
-		getPropertyCheckProperties().isBounded = isBounded;
-		labelIsBounded.updatePropertyCheckingResult(getPropertyCheckProperties().isBounded);
+//		getPropertyCheckProperties().isBounded = isBounded;
+//		labelIsBounded.updatePropertyCheckingResult(getPropertyCheckProperties().isBounded);
 		if (exception != null)
 		getPropertyCheckProperties().exception = exception;
 	}

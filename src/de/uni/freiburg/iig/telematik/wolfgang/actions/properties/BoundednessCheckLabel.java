@@ -14,7 +14,8 @@ public class BoundednessCheckLabel extends PropertyCheckLabel {
 
 	@Override
 	protected SingleThreadExecutorService createNewExecutor() {
-		return ThreadedMGCalculator.getCalculator(editorComponent.getNetContainer().getPetriNet());
+//		return ThreadedMGCalculator.getCalculator(editorComponent.getNetContainer().getPetriNet());
+		return null;
 	}
 
 	@Override

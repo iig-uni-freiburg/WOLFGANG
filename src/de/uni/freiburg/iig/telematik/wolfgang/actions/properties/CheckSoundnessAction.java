@@ -32,13 +32,13 @@ public class CheckSoundnessAction extends AbstractPropertyCheckAction {
 		SwingWorker worker = new SwingWorker<PNException, String>() {
 			@Override
 			public PNException doInBackground() {
-				setIconImage(getLoadingDots());
-				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
-				try {
-					net.checkSoundness();
-				} catch (PNException e) {
-					return e;
-				}
+//				setIconImage(getLoadingDots());
+//				AbstractPetriNet net = getEditor().getNetContainer().getPetriNet().clone();
+//				try {
+//					net.checkSoundness();
+//				} catch (PNException e) {
+//					return e;
+//				}
 				return null;
 			}
 
