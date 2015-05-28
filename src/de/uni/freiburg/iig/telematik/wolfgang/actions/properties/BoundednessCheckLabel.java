@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.properties;
 
 import de.invation.code.toval.thread.SingleThreadExecutorService;
-import de.uni.freiburg.iig.telematik.sepia.property.mg.ThreadedMGCalculator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.mg.ThreadedMGCalculator;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
 public class BoundednessCheckLabel extends PropertyCheckLabel {

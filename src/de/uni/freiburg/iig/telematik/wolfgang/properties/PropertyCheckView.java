@@ -14,13 +14,15 @@ import javax.swing.SpringLayout;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.util.SpringUtilities;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.NetCheckingProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.WFNetProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.NetCheckingProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetProperties;
 
 public class PropertyCheckView extends JPanel {
 
+	private static final long serialVersionUID = -3684835731900532246L;
+	
 	private NetCheckingProperties propertyCheckProperties;
 	private PropertyCheckLabelHeadline headline;
 

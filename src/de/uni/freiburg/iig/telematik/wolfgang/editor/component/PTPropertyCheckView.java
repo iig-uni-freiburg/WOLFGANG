@@ -12,8 +12,8 @@ import javax.swing.SpringLayout;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.util.SpringUtilities;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckLabelHeadline;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.PropertyCheckPropertiesLabel;
 

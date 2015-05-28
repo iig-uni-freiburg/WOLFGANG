@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;

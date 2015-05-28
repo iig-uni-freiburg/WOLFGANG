@@ -7,9 +7,9 @@ import javax.swing.SwingWorker;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.WFNetChecker;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.WFNetProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
 public class CheckWFNetStructureAction extends AbstractPropertyCheckAction {

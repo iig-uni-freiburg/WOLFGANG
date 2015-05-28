@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JLabel;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 
 public class PropertyCheckPropertiesLabel extends JLabel {
 
