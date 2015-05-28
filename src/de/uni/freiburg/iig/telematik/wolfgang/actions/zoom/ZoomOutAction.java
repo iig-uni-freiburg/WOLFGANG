@@ -27,6 +27,7 @@ public class ZoomOutAction extends AbstractPNEditorAction {
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		currentZoom = view.getScale();
+		currentZoom = Math.round(currentZoom*100)/100.0; 
 		if (currentZoom > 0 + WolfgangProperties.getInstance().getDefaultZoomStep())
 			getEditor().getGraphComponent().zoomTo(currentZoom - WolfgangProperties.getInstance().getDefaultZoomStep(), getEditor().getGraphComponent().isCenterZoom());
 		switch(getEditor().getEditorToolbar().getMode()){
