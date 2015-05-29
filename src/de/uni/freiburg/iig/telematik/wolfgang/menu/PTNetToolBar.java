@@ -7,18 +7,18 @@ import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.BoundednessCheckLabel;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckBoundednessAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckWFNetStructureAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PropertyCheckToolbar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.BoundednessCheckLabel;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.AbstractPropertyCheckToolbar;
 
 public class PTNetToolBar extends AbstractToolBar {
 
 	private CheckBoundednessAction checkBoundednessAction;
 	
-	protected PropertyCheckToolbar propertyCheckToolbar;
+	protected AbstractPropertyCheckToolbar propertyCheckToolbar;
 
 
 	public CheckBoundednessAction getCheckBoundednessAction() {
@@ -89,7 +89,7 @@ public class PTNetToolBar extends AbstractToolBar {
 	@Override
 	protected JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException {
 		if (propertyCheckToolbar == null) {
-			propertyCheckToolbar = new PropertyCheckToolbar(pnEditor, JToolBar.HORIZONTAL);
+			propertyCheckToolbar = new AbstractPropertyCheckToolbar(pnEditor, JToolBar.HORIZONTAL);
 		}
 		return propertyCheckToolbar;
 	}

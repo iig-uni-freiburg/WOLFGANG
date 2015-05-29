@@ -17,8 +17,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckValidityAc
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PropertyCheckToolbar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.AbstractPropertyCheckToolbar;
 
 public class CPNToolBar extends AbstractToolBar {
 
@@ -41,7 +41,7 @@ public class CPNToolBar extends AbstractToolBar {
 	// private JToggleButton checkSoundnessButton;
 	private CheckValidityAction checkValidityAction;
 	
-	protected PropertyCheckToolbar propertyCheckToolbar;
+	protected AbstractPropertyCheckToolbar propertyCheckToolbar;
 
 
 	public CheckValidityAction getCheckValidityAction() {
@@ -152,7 +152,7 @@ public class CPNToolBar extends AbstractToolBar {
 	@Override
 	protected JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException {
 		if (propertyCheckToolbar == null) {
-			propertyCheckToolbar = new PropertyCheckToolbar(pnEditor, JToolBar.HORIZONTAL);
+			propertyCheckToolbar = new AbstractPropertyCheckToolbar(pnEditor, JToolBar.HORIZONTAL);
 		}
 		return propertyCheckToolbar;
 	}

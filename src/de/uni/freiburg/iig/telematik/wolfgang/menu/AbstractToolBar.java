@@ -43,7 +43,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ExportToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodeToolBar;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PropertyCheckToolbar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 

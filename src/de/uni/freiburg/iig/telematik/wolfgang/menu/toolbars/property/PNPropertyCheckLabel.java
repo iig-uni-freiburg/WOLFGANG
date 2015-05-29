@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.actions.properties;
+package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,10 +10,10 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import de.invation.code.toval.graphic.component.ExecutorLabel;
-import de.invation.code.toval.thread.SingleThreadExecutorService;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public abstract class PropertyCheckLabel extends ExecutorLabel {
+public abstract class PNPropertyCheckLabel extends ExecutorLabel {
 
 	private static final long serialVersionUID = -2807606775313824173L;
 	private static final Dimension DEFAULT_SIZE = new Dimension(40,40);
@@ -26,8 +26,10 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 	private String propertyString = "";
 
 	protected PNEditorComponent editorComponent;
+	
+	protected boolean propertyHolds = false;
 
-	public PropertyCheckLabel(PNEditorComponent editorComponent) {
+	public PNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
 		setPreferredSize(DEFAULT_SIZE);
 		setMinimumSize(DEFAULT_SIZE);
@@ -36,7 +38,7 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 		this.editorComponent = editorComponent;
 	}
 
-	public PropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
+	public PNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		this(editorComponent);
 		this.propertyString = propertyName;
 	}
@@ -47,7 +49,7 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 		super.startExecutor();
 	}
 
-	protected abstract SingleThreadExecutorService createNewExecutor();
+	protected abstract AbstractThreadedPNPropertyChecker<?,?,?,?,?,?> createNewExecutor();
 
 	public String getPropertyString() {
 		return propertyString;
@@ -60,7 +62,6 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-
 		drawPropertyString(g);
 	}
 
@@ -97,5 +98,28 @@ public abstract class PropertyCheckLabel extends ExecutorLabel {
 		g.drawString(s, x, y);
 		return y;
 	}
+	
+	@Override
+	protected Color getColorInitial() {
+		return COLOR_PROPERTY_UNKNOWN;
+	}
+
+	@Override
+	protected Color getColorCancelled() {
+		return COLOR_PROPERTY_UNKNOWN;
+	}
+
+	@Override
+	protected Color getColorDone() {
+		if(propertyHolds){
+			return COLOR_PROPERTY_TRUE;
+		} else {
+			return COLOR_PROPERTY_FALSE;
+		}
+	}
+	
+	
+
+	protected abstract void setPropertyHolds();
 
 }
