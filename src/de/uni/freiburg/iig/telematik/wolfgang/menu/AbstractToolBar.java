@@ -211,8 +211,18 @@ public abstract class AbstractToolBar extends JToolBar {
 
 		addNetSpecificToolbarButtons();
 		
-		if(propertyCheckToolbar!= null)
-		add(propertyCheckToolbar);
+		try {
+			add(getPropertyCheckToolbar());
+		} catch (ParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		
 		doLayout();
@@ -227,7 +237,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	}
 
-	protected abstract JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;
+	protected abstract JToolBar createPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;
 
 	protected abstract void createAdditionalToolbarActions(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException;
 
@@ -255,9 +265,14 @@ public abstract class AbstractToolBar extends JToolBar {
 		graphicsAction = new PopUpToolBarAction(pnEditor, "Graphics", IconFactory.getIcon("bg_color"), graphicsToolbar);
 
 		zoomToolbar = new ZoomToolBar(pnEditor, JToolBar.HORIZONTAL);
-		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", IconFactory.getIcon("zoom_in"), zoomToolbar);
-		
-		propertyCheckToolbar = getPropertyCheckToolbar();		
+		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", IconFactory.getIcon("zoom_in"), zoomToolbar);	
+	}
+	
+	protected JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException {
+		if (propertyCheckToolbar == null) {
+			propertyCheckToolbar = createPropertyCheckToolbar();
+		}
+		return propertyCheckToolbar;
 	}
 
 	// private JComboBox getComboTimeContextModel() {

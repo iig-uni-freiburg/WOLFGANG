@@ -13,7 +13,7 @@ import de.invation.code.toval.graphic.component.ExecutorLabel;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public abstract class PNPropertyCheckLabel extends ExecutorLabel {
+public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 
 	private static final long serialVersionUID = -2807606775313824173L;
 	private static final Dimension DEFAULT_SIZE = new Dimension(40,40);
@@ -26,6 +26,7 @@ public abstract class PNPropertyCheckLabel extends ExecutorLabel {
 	private String propertyString = "";
 
 	protected PNEditorComponent editorComponent;
+	
 	
 	protected boolean propertyHolds = false;
 
@@ -49,7 +50,7 @@ public abstract class PNPropertyCheckLabel extends ExecutorLabel {
 		super.startExecutor();
 	}
 
-	protected abstract AbstractThreadedPNPropertyChecker<?,?,?,?,?,?> createNewExecutor();
+	protected abstract AbstractThreadedPNPropertyChecker<?,?,?,?,?,Z> createNewExecutor();
 
 	public String getPropertyString() {
 		return propertyString;
@@ -117,9 +118,13 @@ public abstract class PNPropertyCheckLabel extends ExecutorLabel {
 			return COLOR_PROPERTY_FALSE;
 		}
 	}
-	
-	
 
-	protected abstract void setPropertyHolds();
+	@Override
+	public void executorFinished(Z result) {
+		setPropertyHolds(result);
+		super.executorFinished(result);
+	}
+
+	protected abstract void setPropertyHolds(Z calculationResult);
 
 }

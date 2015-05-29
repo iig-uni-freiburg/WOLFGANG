@@ -11,9 +11,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.AbstractPropertyCheckAction;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraphComponent;
@@ -22,6 +20,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.CWNPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 
@@ -118,35 +118,26 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 		// TODO: Do something
 		return null;
 	}
-	
-	@Override
-	protected void setPropertyChecksUnknown() {
-		((CPNToolBar)getEditorToolbar()).getCheckValidityAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor );
-//		((CPNToolBar)getEditorToolbar()).getCheckSoundnessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		((CPNToolBar)getEditorToolbar()).getCheckBoundednessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		((CPNToolBar)getEditorToolbar()).getCheckCWNStructureAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		((CPNToolBar)getEditorToolbar()).getCheckCWNSoundnessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		getPropertyCheckView().updateCWNProperties(new CWNProperties());
-	}
 
 	@Override
 	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
-		setPropertyChecksUnknown();		
+		resetPropertyCheckView();		
 	}
 
 	@Override
 	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
-		setPropertyChecksUnknown();	
+		resetPropertyCheckView();	
 	}
 
 	@Override
 	public void constraintChanged(String flowRelation, Multiset constraint) {
-		setPropertyChecksUnknown();		
+		resetPropertyCheckView();		
 	}
 
 	@Override
-	protected CWNProperties createPropertyCheckProperties() {
-		return new CWNProperties();
+	protected AbstractPropertyCheckView createPropertyCheckView() {
+		return new CWNPropertyCheckView();
 	}
+
 
 }

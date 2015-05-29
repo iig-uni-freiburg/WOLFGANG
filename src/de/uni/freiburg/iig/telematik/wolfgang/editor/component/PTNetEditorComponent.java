@@ -10,10 +10,8 @@ import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.NetCheckingProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetProperties;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.AbstractPropertyCheckAction;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PTGraph;
@@ -22,6 +20,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.PTNetToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.WFNetPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PTProperties;
 
 public class PTNetEditorComponent extends PNEditorComponent {
@@ -110,32 +110,25 @@ public class PTNetEditorComponent extends PNEditorComponent {
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
 		return new PTNetToolBar(this, JToolBar.HORIZONTAL);
 	}
-	
-	@Override
-	protected void setPropertyChecksUnknown() {
-		((PTNetToolBar)getEditorToolbar()).getCheckBoundednessAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		((PTNetToolBar)getEditorToolbar()).getCheckWFNetAction().setFillColor(AbstractPropertyCheckAction.PropertyUnknownColor);
-		getPropertyCheckView().updateWFNetProperties(new WFNetProperties());
-	}
 
 	@Override
 	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
-		setPropertyChecksUnknown();		
+		resetPropertyCheckView();		
 	}
 
 	@Override
 	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
-		setPropertyChecksUnknown();	
+		resetPropertyCheckView();	
 	}
 
 	@Override
 	public void constraintChanged(String flowRelation, Multiset constraint) {
-		setPropertyChecksUnknown();		
+		resetPropertyCheckView();		
 	}
 
 	@Override
-	protected NetCheckingProperties createPropertyCheckProperties() {
-		return new WFNetProperties();
+	protected AbstractPropertyCheckView createPropertyCheckView() {
+		return new WFNetPropertyCheckView();
 	}
 	
 	
