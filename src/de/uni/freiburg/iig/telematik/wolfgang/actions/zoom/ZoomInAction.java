@@ -16,6 +16,7 @@ public class ZoomInAction extends AbstractPNEditorAction {
 	private static final long serialVersionUID = 7450908146578160638L;
 	private mxGraphView view;
 	private double currentZoom;
+	private double newZoom;
 
 	public ZoomInAction(PNEditorComponent editor) throws PropertyException, IOException {
 		super(editor, "Zoom In", IconFactory.getIcon("zoom_in"));
@@ -26,8 +27,13 @@ public class ZoomInAction extends AbstractPNEditorAction {
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		currentZoom = view.getScale();
-		if (currentZoom >= 0 && currentZoom <= 4)
-			getEditor().getGraphComponent().zoomTo(currentZoom + WolfgangProperties.getInstance().getDefaultZoomStep(), getEditor().getGraphComponent().isCenterZoom());
+		currentZoom = Math.round(currentZoom*100)/100.0; 
+		if (currentZoom <= 4 - WolfgangProperties.getInstance().getDefaultZoomStep()) {
+			newZoom = currentZoom + WolfgangProperties.getInstance().getDefaultZoomStep();
+			newZoom = Math.round(newZoom*100)/100.0;
+			getEditor().getGraphComponent().zoomTo(newZoom, getEditor().getGraphComponent().isCenterZoom());
+		}
+		
 		switch(getEditor().getEditorToolbar().getMode()){
 		case EDIT:
 			break;
