@@ -43,6 +43,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ExportToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodeToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PropertyCheckToolbar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
@@ -124,6 +125,8 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	private JLabel executionTraceLabel;
 
+	private JToolBar propertyCheckToolbar;
+
 	public JTextField getExecutionTrace() {
 		return executionTraceTextField;
 	}
@@ -196,6 +199,8 @@ public abstract class AbstractToolBar extends JToolBar {
 		add(executionTraceTextField);
 
 		zoomAction.setButton(zoomButton);
+		
+
 
 		// if
 		// (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty())
@@ -206,6 +211,11 @@ public abstract class AbstractToolBar extends JToolBar {
 		// }
 
 		addNetSpecificToolbarButtons();
+		
+		if(propertyCheckToolbar!= null)
+		add(propertyCheckToolbar);
+
+		
 		doLayout();
 
 		exportButton.setToolTipText(exportButtonTooltip);
@@ -217,6 +227,8 @@ public abstract class AbstractToolBar extends JToolBar {
 		fontButton.setToolTipText(fontTooltip);
 
 	}
+
+	protected abstract JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;
 
 	protected abstract void createAdditionalToolbarActions(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException;
 
@@ -245,6 +257,8 @@ public abstract class AbstractToolBar extends JToolBar {
 
 		zoomToolbar = new ZoomToolBar(pnEditor, JToolBar.HORIZONTAL);
 		zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", IconFactory.getIcon("zoom_in"), zoomToolbar);
+		
+		propertyCheckToolbar = getPropertyCheckToolbar();		
 	}
 
 	// private JComboBox getComboTimeContextModel() {

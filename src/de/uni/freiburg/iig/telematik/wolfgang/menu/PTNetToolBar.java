@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -11,10 +12,14 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckBoundednes
 import de.uni.freiburg.iig.telematik.wolfgang.actions.properties.CheckWFNetStructureAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PropertyCheckToolbar;
 
 public class PTNetToolBar extends AbstractToolBar {
 
 	private CheckBoundednessAction checkBoundednessAction;
+	
+	protected PropertyCheckToolbar propertyCheckToolbar;
+
 
 	public CheckBoundednessAction getCheckBoundednessAction() {
 		return checkBoundednessAction;
@@ -81,5 +86,12 @@ public class PTNetToolBar extends AbstractToolBar {
 
 	}
 
+	@Override
+	protected JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException {
+		if (propertyCheckToolbar == null) {
+			propertyCheckToolbar = new PropertyCheckToolbar(pnEditor, JToolBar.HORIZONTAL);
+		}
+		return propertyCheckToolbar;
+	}
 
 }

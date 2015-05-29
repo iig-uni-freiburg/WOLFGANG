@@ -29,7 +29,4 @@ public interface PNGraphListener {
 	
 	public void componentsSelected(Set<PNGraphCell> selectedComponents);
 
-
-
-
 }

@@ -60,6 +60,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 public class AbstractTokenConfigurer extends JDialog {
 	private static final double TOKEN_ROW_WIDTH = 250;
 	private static final double TOKEN_ROW_HEIGHT = 40;
+	private static final int MAX_CAPACITY = 99;
+	private static final int SPINNER_DEFAULT_WIDTH = 63;
 
 	private JButton addButton;
 	private PNGraph graph;
@@ -126,25 +128,35 @@ public class AbstractTokenConfigurer extends JDialog {
 		final String tokenName = tokenLabel;
 		if (!isTransition) {
 			int size = multisetPA.multiplicity(tokenLabel);
-			int cap = 99;
+			int cap = MAX_CAPACITY;
 			if (isPlace && !(place.getColorCapacity(tokenName) < 0))
 				cap = place.getColorCapacity(tokenName);
 			int min = 0;
 			int step = 1;
 			SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
 			Spinner spinner = new Spinner(model, tokenName, cap);
-			RestrictedTextField textfield = new RestrictedTextField(Restriction.ZERO_OR_POSITIVE_INTEGER, "" + size + "");
-			textfield.addListener(spinner);
-			textfield.setValidateOnTyping(true);
-			spinner.setEditor(textfield);
+//			RestrictedTextField textfield = new RestrictedTextField(Restriction.ZERO_OR_POSITIVE_INTEGER, "" + size + "");
+//			textfield.addListener(spinner);
+//			textfield.setValidateOnTyping(true);
+//			spinner.setEditor(textfield);
+			int w = spinner.getWidth();
+			int h = spinner.getHeight();
+			Dimension d = new Dimension(SPINNER_DEFAULT_WIDTH, h);
+			spinner.setPreferredSize(d);
+			spinner.setMinimumSize(d);
+
 			spinner.addChangeListener(new ChangeListener() {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
+					System.out.println("change");
 					JSpinner spinner = (Spinner) e.getSource();
 					Integer currentValue = (Integer) spinner.getValue();
-					RestrictedTextField tf = (RestrictedTextField) spinner.getEditor();
-					tf.setText("" + currentValue + "");
+					System.out.println("current" + currentValue);
+					if(currentValue > MAX_CAPACITY)
+						spinner.setValue(MAX_CAPACITY);
+//					RestrictedTextField tf = (RestrictedTextField) spinner.getEditor();
+//					tf.setText("" + currentValue + "");
 
 					Multiset<String> newMarking = getMultiSet();
 					if (newMarking == null)
@@ -220,7 +232,7 @@ public class AbstractTokenConfigurer extends JDialog {
 				capacitySpinner = new JSpinner(capacityModel);
 			} else {
 				int capacitiy = place.getColorCapacity(tokenName);
-				SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, multisetPA.multiplicity(tokenName), 99, 1);
+				SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, multisetPA.multiplicity(tokenName), MAX_CAPACITY, 1);
 				capacitySpinner = new JSpinner(capacityModel);
 			}
 
@@ -450,9 +462,9 @@ public class AbstractTokenConfigurer extends JDialog {
 
 		// JPanel capacityPanel = new JPanel();
 
-		if (isPlace)
+		if (isPlace) {
 			panel.add(new JLabel("Tokens"));
-		else if (isTransition)
+		} else if (isTransition)
 			panel.add(new JLabel("Data Usage"));
 		else
 			panel.add(new JLabel("Constraints"));
