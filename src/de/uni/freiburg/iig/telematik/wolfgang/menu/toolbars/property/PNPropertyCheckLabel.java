@@ -50,7 +50,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		super.startExecutor();
 	}
 
-	protected abstract AbstractThreadedPNPropertyChecker<?,?,?,?,?,Z> createNewExecutor();
+	protected abstract AbstractThreadedPNPropertyChecker<?,?,?,?,?,?,Z,?> createNewExecutor();
 
 	public String getPropertyString() {
 		return propertyString;
