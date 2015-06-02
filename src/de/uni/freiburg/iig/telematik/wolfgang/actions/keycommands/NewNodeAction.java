@@ -60,15 +60,16 @@ public class NewNodeAction extends AbstractPNEditorAction {
 		PNGraph graph = getEditor().getGraphComponent().getGraph();
 		PNGraphCell source = (PNGraphCell) graph.getSelectionCell();
 		PNGraphCell target = null;
-		double centerX = source.getGeometry().getCenterX();
-		double centerY = source.getGeometry().getCenterY();
-		centerX += deltaX;
-		centerY += deltaY;
-		if (centerX > 0 && centerY > 0) {
-			target = createNewNodeWithEdge(source, getEditor().getGraphComponent().getGraph(), centerX, centerY);
-			graph.setSelectionCell(target);
+		if (source != null) {
+			double centerX = source.getGeometry().getCenterX();
+			double centerY = source.getGeometry().getCenterY();
+			centerX += deltaX;
+			centerY += deltaY;
+			if (centerX > 0 && centerY > 0) {
+				target = createNewNodeWithEdge(source, getEditor().getGraphComponent().getGraph(), centerX, centerY);
+				graph.setSelectionCell(target);
+			}
 		}
-
 	}
 
 }
