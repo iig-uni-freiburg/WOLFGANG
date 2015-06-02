@@ -32,6 +32,8 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 	protected O checkResult = null;
 	protected Exception exception;
 
+	protected JButton btnException;
+
 	public AbstractPropertyCheckView() {
 		super(new BorderLayout());
 	}
@@ -49,7 +51,8 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 		propertyPanel.add(getLabelHeadline());
 
 		propertyPanel.add(new JPopupMenu.Separator());
-		propertyPanel.add(getButtonErrorDetails());
+		btnException = getButtonErrorDetails();
+		propertyPanel.add(btnException);
 		propertyPanel.add(new JPopupMenu.Separator());
 		
 		propertyPanel.add(getPanelSpecificFields());
@@ -85,6 +88,10 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 			});
 		}
 		return btnErrorDetails;
+	}
+	
+	protected void updateBTNException() {
+		this.btnException.setEnabled(this.exception != null);	
 	}
 	
 	private PropertyCheckHeadlineLabel getLabelHeadline(){

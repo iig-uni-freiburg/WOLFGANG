@@ -9,9 +9,16 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 public class CPNPropertyCheckToolbar extends AbstractPropertyCheckToolbar {
 
 	private static final long serialVersionUID = -5578367037954223835L;
+	private CPNValidityCheckLabel cpnValidityCheckLabel;
 
 	public CPNPropertyCheckToolbar(PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
 		super(pnEditor, orientation);
+	}
+
+	@Override
+	protected void addNetSpecificCheckLabels(PNEditorComponent pnEditor) {
+		cpnValidityCheckLabel = new CPNValidityCheckLabel(pnEditor, "Validity");
+		add(cpnValidityCheckLabel);		
 	}
 	
 	

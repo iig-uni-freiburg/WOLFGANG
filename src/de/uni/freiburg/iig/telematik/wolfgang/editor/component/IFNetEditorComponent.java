@@ -136,7 +136,9 @@ public class IFNetEditorComponent extends AbstractIFNetEditorComponent {
 
 	@Override
 	protected AbstractPropertyCheckView createPropertyCheckView() {
-		return new CWNPropertyCheckView();
+		CWNPropertyCheckView cwnPropertyCheck = new CWNPropertyCheckView();
+		cwnPropertyCheck.setUpGui();
+		return cwnPropertyCheck;
 	}
 
 

@@ -9,7 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetPro
 public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetProperties> {
 
 	private static final long serialVersionUID = -950169446391727139L;
-	
+
 	private PropertyCheckResultLabel lblStructure;
 	private PropertyCheckResultLabel lblInOutPlaces;
 	private PropertyCheckResultLabel lblConnectedness;
@@ -18,24 +18,21 @@ public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetPrope
 	protected String getHeadline() {
 		return "WF-Net Check";
 	}
-	
+
 	@Override
 	protected void addSpecificFields(JPanel panel) {
-		lblStructure = 		new PropertyCheckResultLabel(" \u2022 WF Net Structure", 			PropertyCheckingResult.UNKNOWN);
+		lblStructure = new PropertyCheckResultLabel(" \u2022 WF Net Structure", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblStructure);
-		lblInOutPlaces = 	new PropertyCheckResultLabel("		\u2022 Valid InOut Places", 	PropertyCheckingResult.UNKNOWN);
+		lblInOutPlaces = new PropertyCheckResultLabel("		\u2022 Valid InOut Places", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblInOutPlaces);
-		lblConnectedness = 	new PropertyCheckResultLabel("		\u2022 Strong Connectedness", 	PropertyCheckingResult.UNKNOWN);
+		lblConnectedness = new PropertyCheckResultLabel("		\u2022 Strong Connectedness", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblConnectedness);
 	}
-	
+
 	@Override
 	public void resetFieldContent() {
-		if(lblStructure != null)
 		lblStructure.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if(lblInOutPlaces != null)
 		lblInOutPlaces.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if(lblConnectedness != null)
 		lblConnectedness.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
 	}
 
@@ -45,8 +42,9 @@ public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetPrope
 		lblInOutPlaces.updatePropertyCheckingResult(checkResult.validInOutPlaces);
 		lblConnectedness.updatePropertyCheckingResult(checkResult.strongConnectedness);
 		this.exception = exception;
+		updateBTNException();
 	}
-	
+
 	public static void main(String[] args) {
 		WFNetPropertyCheckView view = new WFNetPropertyCheckView();
 		view.setUpGui();

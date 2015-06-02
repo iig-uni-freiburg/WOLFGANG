@@ -54,23 +54,14 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
 
 	@Override
 	public void resetFieldContent() {
-		if (lblStructure != null)
 			lblStructure.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblInOutPlaces != null)
 			lblInOutPlaces.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblConnectedness != null)
 			lblConnectedness.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblValidMarking != null)
 			lblValidMarking.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblCFDependency != null)
 			lblCFDependency.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblBounded != null)
 			lblBounded.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblOptionComplete != null)
 			lblOptionComplete.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblCompletion != null)
 			lblCompletion.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
-		if (lblNoDeadTransitions != null)
 			lblNoDeadTransitions.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
 
 	}
@@ -87,6 +78,7 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
 		lblCompletion.updatePropertyCheckingResult(checkResult.optionToCompleteAndProperCompletion);
 		lblNoDeadTransitions.updatePropertyCheckingResult(checkResult.noDeadTransitions);
 		this.exception = exception;
+		updateBTNException();
 	}
 
 	public static void main(String[] args) {

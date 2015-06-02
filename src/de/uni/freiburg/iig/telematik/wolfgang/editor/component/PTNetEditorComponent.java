@@ -128,7 +128,9 @@ public class PTNetEditorComponent extends PNEditorComponent {
 
 	@Override
 	protected AbstractPropertyCheckView createPropertyCheckView() {
-		return new WFNetPropertyCheckView();
+		WFNetPropertyCheckView wfNetPropertyCheck = new WFNetPropertyCheckView();
+		wfNetPropertyCheck.setUpGui();
+		return wfNetPropertyCheck;
 	}
 	
 	

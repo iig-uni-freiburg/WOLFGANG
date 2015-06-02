@@ -22,6 +22,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.CWNPropertyCheckView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.WFNetPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.CPNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 
@@ -134,7 +135,9 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 
 	@Override
 	protected AbstractPropertyCheckView createPropertyCheckView() {
-		return new CWNPropertyCheckView();
+		CWNPropertyCheckView cwnPropertyCheck = new CWNPropertyCheckView();
+		cwnPropertyCheck.setUpGui();
+		return cwnPropertyCheck;
 	}
 
 }

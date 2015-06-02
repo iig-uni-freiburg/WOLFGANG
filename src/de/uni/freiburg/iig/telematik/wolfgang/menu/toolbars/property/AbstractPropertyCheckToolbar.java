@@ -33,7 +33,10 @@ public abstract class AbstractPropertyCheckToolbar extends JToolBar implements P
 
 		boundednessCheckLabel = new BoundednessCheckLabel(pnEditor, "Bound-\nedness");
 		add(boundednessCheckLabel);
+		addNetSpecificCheckLabels(pnEditor);
 	}
+
+	protected abstract void addNetSpecificCheckLabels(PNEditorComponent pnEditor);
 
 	// Listeners
 	@Override
