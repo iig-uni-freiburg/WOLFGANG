@@ -16,7 +16,7 @@ public class BoundednessCheckLabel extends PNPropertyCheckLabel<BoundednessCheck
 
 	@Override
 	protected ThreadedBoundednessChecker createNewExecutor() {
-		return new ThreadedBoundednessChecker(new BoundednessCheckGenerator(editorComponent.getNetContainer().getPetriNet()));
+		return new ThreadedBoundednessChecker(new BoundednessCheckGenerator(editorComponent.getNetContainer().getPetriNet().clone()));
 	}
 
 	@Override
