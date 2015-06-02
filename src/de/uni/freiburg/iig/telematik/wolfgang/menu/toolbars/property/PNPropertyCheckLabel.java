@@ -36,6 +36,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		setMinimumSize(DEFAULT_SIZE);
 		setMaximumSize(DEFAULT_SIZE);
 		setOpaque(true);
+		setBackground(getColorInitial());
 		this.editorComponent = editorComponent;
 	}
 
