@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="WOLFGANG.package" default="package" basedir=".">
+
+	<!--
+	Apache Ant build file for the WOLFGANG project
+	
+	This build file generates three JAR-files from the project:
+	- wolfgang-0.0.1.jar
+	- wolfgang-0.0.1-sources.jar
+	- wolfgang-0.0.1-javadoc.jar
+	- wolfgang-0.0.1-runnable.jar
+	
+	The building process starts with cleaning all target files including compiles
+	java classes, compiled tests, and test reports (see #clean). Afterwards a
+	timestamp is generated and the target directory structure is created (see #init).
+	Then the project gets compiled (see #compile) and all unit tests are performed
+	(see #test). If the compilation ran without errors, the JARs are packaged (see #package).
+	
+	WOLFGANG depends on the projects TOVAL, JAGAL, SEWOL and SEPIA which compiled classes must
+	be present under the specified paths.
+	
+	author: Adrian Lange
+	 -->
+
+	<!-- Project details -->
+	<property name="project.description" value="Wolfgang is a lightweight tool that allows users to easily create and edit Petri nets and check them against general and workflow specific net properties. Specifically, Wolfgang supports full PNML conform editing functionality of Place-Transition Nets (P/T-Nets) and Colored Petri Nets (CPN) as they are defined in the SEPIA package. Its simple and easy to use interface allows to quickly create Petri nets from scratch, edit them graphically in many ways, store and even export them as PDFs. Use Wolfgang to smoothly create the Petri net you want!" />
+	<property name="artifact.name" value="wolfgang" />
+	<property name="version.name" value="0.0.1" />
+	<property name="main-class" value="de.uni.freiburg.iig.telematik.wolfgang.WolfgangStartup" />
+	<property name="main-class-uri" value="de/uni/freiburg/iig/telematik/wolfgang/WolfgangStartup" />
+
+	<!-- Names for generated files -->
+	<property name="jar.file.name" value="${artifact.name}-${version.name}" />
+	<property name="jar.sources.file.name" value="${jar.file.name}-sources" />
+	<property name="jar.javadoc.file.name" value="${jar.file.name}-javadoc" />
+
+	<!-- Source and destination directories -->
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="res.dir" value="${basedir}/res" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="target.dir" value="${basedir}/bin" />
+	<property name="target.dir.jar" value="${target.dir}/${artifact.name}-${version.name}" />
+	<property name="libs.dir" value="${basedir}/lib" />
+	<property name="docs.temp.dir" value="${target.dir}/docs" />
+	<property name="classes.target.dir" value="${target.dir}/classes-ant" />
+	<property name="docs.temp.dir" value="${target.dir}/docs" />
+	<property name="icon.file" value="${res.dir}/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" />
+
+	<!-- Define classpath -->
+	<property name="TOVAL.location" value="../TOVAL" />
+	<property name="JAGAL.location" value="../JAGAL" />
+	<property name="SEWOL.location" value="../SEWOL" />
+	<property name="SEPIA.location" value="../SEPIA" />
+
+	<path id="TOVAL.classpath">
+		<pathelement location="${TOVAL.location}/bin/classes-ant" />
+	</path>
+
+	<path id="JAGAL.classpath">
+		<pathelement location="${JAGAL.location}/bin/classes-ant" />
+		<path refid="TOVAL.classpath" />
+		<pathelement location="${JAGAL.location}/lib/junit/junit-4.11.jar" />
+		<pathelement location="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+	</path>
+
+	<path id="SEWOL.classpath">
+		<pathelement location="${SEWOL.location}/bin/classes-ant" />
+		<path refid="TOVAL.classpath" />
+		<path refid="JAGAL.classpath" />
+		<pathelement location="${SEWOL.location}/lib/guava-16.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/collections-generic-4.01.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/xstream-1.4.8.jar" />
+	</path>
+
+	<path id="SEPIA.classpath">
+		<pathelement location="${SEPIA.location}/bin/classes-ant" />
+		<path refid="TOVAL.classpath" />
+		<path refid="JAGAL.classpath" />
+		<path refid="SEWOL.classpath" />
+		<pathelement location="${SEPIA.location}/lib/junit/junit-4.11.jar" />
+		<pathelement location="${SEPIA.location}/lib/hamcrest/hamcrest-core-1.3.jar" />
+		<pathelement location="${SEPIA.location}/lib/isorelax/isorelax.jar" />
+		<pathelement location="${SEPIA.location}/lib/msv/msv-core-2013.6.1.jar" />
+		<pathelement location="${SEPIA.location}/lib/relaxngDatatype/relaxngDatatype-20020414.jar" />
+		<pathelement location="${SEPIA.location}/lib/xsdlib/xsdlib-2.2.jar" />
+		<pathelement location="${SEPIA.location}/lib/xsom/xsom-20110101-SNAPSHOT.jar" />
+	</path>
+
+	<path id="WOLFGANG.classpath">
+		<pathelement location="${classes.target.dir}" />
+		<path refid="TOVAL.classpath" />
+		<path refid="JAGAL.classpath" />
+		<path refid="SEWOL.classpath" />
+		<path refid="SEPIA.classpath" />
+		<pathelement location="${libs.dir}/itextpdf-5.5.0.jar" />
+		<pathelement location="${libs.dir}/jgraphXwithsources.jar" />
+	</path>
+
+	<mkdir dir="${target.dir.jar}"/>
+
+	<!-- Package JARs -->
+	<target name="package" depends="compile,package-consistent" description="Packages the project to JAR files">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<echo>Deleting old JARs...</echo>
+		<delete file="${target.dir.jar}/${jar.file.name}.jar" />
+		<delete file="${target.dir.jar}/${jar.sources.file.name}.jar" />
+		<delete file="${target.dir.jar}/${jar.javadoc.file.name}.jar" />
+
+		<echo>Generating javadoc files...</echo>
+		<javadoc sourcepath="${src.dir}" destdir="${docs.temp.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/res">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${JAGAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEPIA.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+		<javadoc sourcepath="${res.dir}" destdir="${docs.temp.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/res">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${JAGAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEPIA.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+
+		<echo>Creating new JARs...</echo>
+		<jar jarfile="${target.dir.jar}/${jar.file.name}.jar">
+			<fileset dir="${classes.target.dir}" />
+			<fileset dir="${res.dir}" />
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${target.dir.jar}/${jar.sources.file.name}.jar">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}" />
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${target.dir.jar}/${jar.javadoc.file.name}.jar" basedir="${docs.temp.dir}">
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+
+		<echo>Deleting temporary javadoc files...</echo>
+		<delete dir="${docs.temp.dir}" />
+	</target>
+
+	<!-- Package JARs -->
+	<target name="package-consistent" depends="compile" description="Packages the project to a consistent JAR file">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<echo>Deleting old JAR...</echo>
+		<delete file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
+
+		<echo>Creating new JAR...</echo>
+		<jar jarfile="${target.dir.jar}/${jar.file.name}-runnable.jar" basedir="${classes.target.dir}">
+			<manifest>
+				<attribute name="Class-Path" value="." />
+				<attribute name="X-Date" value="${touch.time}" />
+				<attribute name="Main-Class" value="${main-class}"/>
+			</manifest>
+			<fileset dir="${classes.target.dir}" />
+			<fileset dir="${TOVAL.location}/bin/classes-ant" />
+			<fileset dir="${JAGAL.location}/bin/classes-ant" />
+			<fileset dir="${SEWOL.location}/bin/classes-ant" />
+			<fileset dir="${SEPIA.location}/bin/classes-ant" />
+			<fileset dir="${res.dir}" />
+			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/junit/junit-4.11.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/xstream-1.4.8.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/isorelax/isorelax.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/msv/msv-core-2013.6.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/relaxngDatatype/relaxngDatatype-20020414.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/xsdlib/xsdlib-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/hamcrest/hamcrest-core-1.3.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/xsom/xsom-20110101-SNAPSHOT.jar" />
+
+			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/itextpdf-5.5.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/jgraphXwithsources.jar" />
+		</jar>
+	</target>
+
+	<target name="compile" depends="init" description="Compiles the source and the test files">
+		<echo>Compile classes...</echo>
+		<javac destdir="${classes.target.dir}" includeantruntime="false">
+			<src path="${src.dir}" />
+			<src path="${res.dir}" />
+			<classpath refid="WOLFGANG.classpath" />
+			<compilerarg value="-Xlint:-path"/>
+		</javac>
+	</target>
+
+	<target name="clean" description="Deletes the target files including current JARs. Old versions of the JARs stay untouched.">
+		<echo>Delete target files...</echo>
+		<!-- Delete compiled classes and tests -->
+		<delete dir="${classes.target.dir}" />
+	</target>
+
+	<target name="init" depends="clean" description="Creates the target directory structure">
+		<echo>Create timestamp...</echo>
+		<tstamp>
+			<format property="touch.time" pattern="dd/MM/yyyy hh:mm aa" />
+		</tstamp>
+		<echo>Prepare directories...</echo>
+		<mkdir dir="${classes.target.dir}" />
+		<copy includeemptydirs="false" todir="${classes.target.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="bundle-deb" depends="package" description="Creates a Debian package">
+		<property name="deb.installpath" value="/usr/share/wolfgang" />
+		<property name="deb.execpath" value="/usr/local/bin" />
+		<!-- Copy control file -->
+		<copy todir="${classes.target.dir}/deb/control">
+			<fileset dir="${build.dir}/deb/control" />
+			<filterset begintoken="[[" endtoken="]]">
+				<filter token="version" value="${version.name}" />
+				<filter token="description" value="${project.description}" />
+				<filter token="name" value="${artifact.name}" />
+			</filterset>
+		</copy>
+		<!-- Copy starter file -->
+		<copy todir="${classes.target.dir}/deb/starter">
+			<fileset dir="${build.dir}/deb/starter" />
+			<filterset begintoken="[[" endtoken="]]">
+				<filter token="path" value="${deb.installpath}" />
+				<filter token="filename" value="${jar.file.name}-runnable.jar" />
+			</filterset>
+		</copy>
+		<!-- Create debian package -->
+		<deb destfile="${target.dir.jar}/${jar.file.name}.deb" control="${classes.target.dir}/deb/control" verbose="true">
+			<data src="${target.dir.jar}/${jar.file.name}-runnable.jar" type="file">
+				<mapper type="perm" prefix="${deb.installpath}" />
+			</data>
+			<data src="${classes.target.dir}/deb/starter/wolfgang.sh" type="file">
+				<mapper type="perm" prefix="${deb.installpath}" />
+			</data>
+			<link name="${deb.execpath}/wolfgang.sh" target="${deb.installpath}/wolfgang.sh" symbolic="true" mode="777" />
+		</deb>
+	</target>
+
+	<target name="bundle-macosx" depends="package" description="Creates a Mac OS X application bundle">
+		<bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" icon="res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
+			<classpath file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
+			<option value="-Dapple.laf.useScreenMenuBar=true" />
+		</bundleapp>
+	</target>
+
+</project>
