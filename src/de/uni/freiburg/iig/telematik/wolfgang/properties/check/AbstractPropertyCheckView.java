@@ -8,13 +8,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.graphic.util.SpringUtilities;
+import de.invation.code.toval.validate.ExceptionDialog;
 
 public abstract class AbstractPropertyCheckView<O> extends JPanel {
 
@@ -32,15 +32,16 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 	protected O checkResult = null;
 	protected Exception exception;
 
-	protected JButton btnException;
-
 	public AbstractPropertyCheckView() {
 		super(new BorderLayout());
 	}
 
 	public abstract void resetFieldContent();
 	
-	public abstract void updateFieldContent(O checkResult, Exception exception);
+	public void updateFieldContent(O checkResult, Exception exception){
+		this.exception = exception;
+		getButtonErrorDetails().setEnabled(exception != null);
+	}
 	
 	protected abstract String getHeadline();
 	
@@ -51,8 +52,7 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 		propertyPanel.add(getLabelHeadline());
 
 		propertyPanel.add(new JPopupMenu.Separator());
-		btnException = getButtonErrorDetails();
-		propertyPanel.add(btnException);
+		propertyPanel.add(getButtonErrorDetails());
 		propertyPanel.add(new JPopupMenu.Separator());
 		
 		propertyPanel.add(getPanelSpecificFields());
@@ -83,15 +83,11 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					if(exception == null)
 						return;
-					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(AbstractPropertyCheckView.this), exception.getMessage(), "Property Check Details:", JOptionPane.ERROR_MESSAGE);
+					ExceptionDialog.showException(SwingUtilities.getWindowAncestor(AbstractPropertyCheckView.this), "PN Property Check Exception", exception, true);
 				}
 			});
 		}
 		return btnErrorDetails;
-	}
-	
-	protected void updateBTNException() {
-		this.btnException.setEnabled(this.exception != null);	
 	}
 	
 	private PropertyCheckHeadlineLabel getLabelHeadline(){

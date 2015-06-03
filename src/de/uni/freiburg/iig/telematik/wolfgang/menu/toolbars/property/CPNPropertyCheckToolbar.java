@@ -20,6 +20,24 @@ public class CPNPropertyCheckToolbar extends AbstractPropertyCheckToolbar {
 		cpnValidityCheckLabel = new CPNValidityCheckLabel(pnEditor, "Validity");
 		add(cpnValidityCheckLabel);		
 	}
+
+	@Override
+	public void labelCalculationFinished(Object sender, Object result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void labelCalculationException(Object sender, Exception exception) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void labelCalculationStopped(Object sender, Object result) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

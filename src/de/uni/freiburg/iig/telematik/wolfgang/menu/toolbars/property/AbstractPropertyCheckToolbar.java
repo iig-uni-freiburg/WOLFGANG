@@ -1,10 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
@@ -18,7 +15,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public abstract class AbstractPropertyCheckToolbar extends JToolBar implements PNStructureListener, PNMarkingListener {
+public abstract class AbstractPropertyCheckToolbar extends JToolBar implements PNStructureListener, PNMarkingListener, PNPropertyCheckLabelListener {
 
 	private static final long serialVersionUID = 6881881369803746536L;
 	

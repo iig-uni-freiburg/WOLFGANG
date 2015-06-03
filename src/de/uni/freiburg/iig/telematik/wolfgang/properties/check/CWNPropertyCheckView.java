@@ -68,6 +68,7 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
 
 	@Override
 	public void updateFieldContent(CWNProperties checkResult, Exception exception) {
+		super.updateFieldContent(checkResult, exception);
 		lblStructure.updatePropertyCheckingResult(checkResult.hasCWNStructure);
 		lblInOutPlaces.updatePropertyCheckingResult(checkResult.validInOutPlaces);
 		lblConnectedness.updatePropertyCheckingResult(checkResult.strongConnectedness);
@@ -77,8 +78,6 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
 		lblOptionComplete.updatePropertyCheckingResult(checkResult.optionToCompleteAndProperCompletion);
 		lblCompletion.updatePropertyCheckingResult(checkResult.optionToCompleteAndProperCompletion);
 		lblNoDeadTransitions.updatePropertyCheckingResult(checkResult.noDeadTransitions);
-		this.exception = exception;
-		updateBTNException();
 	}
 
 	public static void main(String[] args) {

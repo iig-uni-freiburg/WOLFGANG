@@ -8,6 +8,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.invation.code.toval.graphic.component.ExecutorLabel;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
@@ -27,8 +29,9 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 
 	protected PNEditorComponent editorComponent;
 	
-	
 	protected boolean propertyHolds = false;
+	
+	protected Set<PNPropertyCheckLabelListener> labelListeners = new HashSet<PNPropertyCheckLabelListener>();
 
 	public PNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
@@ -43,6 +46,10 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	public PNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		this(editorComponent);
 		this.propertyString = propertyName;
+	}
+	
+	public void addListener(PNPropertyCheckLabelListener listener){
+		labelListeners.add(listener);
 	}
 
 	@Override
@@ -124,6 +131,24 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	public void executorFinished(Z result) {
 		setPropertyHolds(result);
 		super.executorFinished(result);
+		for(PNPropertyCheckLabelListener listener: labelListeners)
+			listener.labelCalculationFinished(PNPropertyCheckLabel.this, result);
+	}
+
+	@Override
+	public void executorStopped() {
+		this.propertyHolds = false;
+		super.executorStopped();
+		for(PNPropertyCheckLabelListener listener: labelListeners)
+			listener.labelCalculationStopped(PNPropertyCheckLabel.this, null);
+	}
+
+	@Override
+	public void executorException(Exception exception) {
+		this.propertyHolds = false;
+		super.executorException(exception);
+		for(PNPropertyCheckLabelListener listener: labelListeners)
+			listener.labelCalculationException(PNPropertyCheckLabel.this, exception);
 	}
 
 	protected abstract void setPropertyHolds(Z calculationResult);

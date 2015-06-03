@@ -10,9 +10,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 
 public abstract class AbstractValidityCheckLabel extends PNPropertyCheckLabel<Boolean> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2534069643060024803L;
 
 	public AbstractValidityCheckLabel(PNEditorComponent editorComponent, String propertyName) {
