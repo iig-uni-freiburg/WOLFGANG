@@ -173,22 +173,23 @@ public class TokenToolBar extends JToolBar {
 		myPanel.add(textField);
 		tokenColorAction.setParent(myPanel);
 		int result = JOptionPane.showConfirmDialog(null, myPanel, "Please Enter Name and Color of the new Token", JOptionPane.OK_CANCEL_OPTION);
-
-		String newTokenColor = textField.getText();
-
-		if (colorMap.keySet().contains(newTokenColor))
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name already exists", "Problem", JOptionPane.ERROR_MESSAGE);
-		else if (newTokenColor.equals(""))
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name is empty", "Problem", JOptionPane.ERROR_MESSAGE);
-		else {
-			colorMap.put(newTokenColor, tokenColorAction.getButtonFillColor());
-
-			// UpdateBlock
-
-			((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
-
-			updateView();
-
+		
+		if (result == JOptionPane.OK_OPTION) {
+			String newTokenColor = textField.getText();
+	
+			if (colorMap.keySet().contains(newTokenColor))
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name already exists", "Problem", JOptionPane.ERROR_MESSAGE);
+			else if (newTokenColor.equals(""))
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name is empty", "Problem", JOptionPane.ERROR_MESSAGE);
+			else {
+				colorMap.put(newTokenColor, tokenColorAction.getButtonFillColor());
+	
+				// UpdateBlock
+	
+				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
+	
+				updateView();
+			}
 		}
 
 	}
