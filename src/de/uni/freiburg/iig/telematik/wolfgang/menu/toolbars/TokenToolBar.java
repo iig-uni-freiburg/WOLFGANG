@@ -151,7 +151,6 @@ public class TokenToolBar extends JToolBar {
 	}
 
 	protected void addNewTokenColor() {
-
 		JTextField textField = new RestrictedTextField(Restriction.NOT_EMPTY, 5);
 
 		TokenColorSelectionAction tokenColorAction = null;
@@ -221,7 +220,7 @@ public class TokenToolBar extends JToolBar {
 			firstElement.add(tokenColorButton);
 
 			RestrictedTextField textField = new RestrictedTextField(Restriction.NOT_EMPTY, name);
-
+			
 			addTokenRenamingListener(tokenLabel, textField);
 
 			firstElement.add(textField);
@@ -331,79 +330,83 @@ public class TokenToolBar extends JToolBar {
 				RestrictedTextField tf = (RestrictedTextField) e.getSource();
 				String newTokenName = tf.getText();
 
-				PNGraph graph = editor.getGraphComponent().getGraph();
-				mxGraphModel model = ((mxGraphModel) graph.getModel());
-				CPN pn = null;
-				if (editor.getNetContainer().getPetriNet() instanceof CPN)
-					pn = (CPN) graph.getNetContainer().getPetriNet();
-				IFNet ifnet = null;
-				if (editor.getNetContainer().getPetriNet() instanceof IFNet)
-					ifnet = (IFNet) graph.getNetContainer().getPetriNet();
-				AbstractCPNGraphics pnGraphics = (AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics();
-				CPNMarking am = pn.getInitialMarking();
-				Map<String, Color> colorsMap = pnGraphics.getColors();
-				Color color = colorsMap.get(tokenLabel);
+				if (newTokenName.length() <= 15) {
 
-				// UpdateBlock
-				model.beginUpdate();
-				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, color));
-				if (editor.getNetContainer().getPetriNet() instanceof CPN) {
-					for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
-						Multiset<String> constraint = flowrelation.getConstraint();
-						if (constraint != null) {
-							if (constraint.contains(tokenLabel)) {
-								int constraintMultiplicity = constraint.multiplicity(tokenLabel);
-								constraint.setMultiplicity(newTokenName, constraintMultiplicity);
-								constraint.setMultiplicity(tokenLabel, 0);
-								model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
+					PNGraph graph = editor.getGraphComponent().getGraph();
+					mxGraphModel model = ((mxGraphModel) graph.getModel());
+					CPN pn = null;
+					if (editor.getNetContainer().getPetriNet() instanceof CPN)
+						pn = (CPN) graph.getNetContainer().getPetriNet();
+					IFNet ifnet = null;
+					if (editor.getNetContainer().getPetriNet() instanceof IFNet)
+						ifnet = (IFNet) graph.getNetContainer().getPetriNet();
+					AbstractCPNGraphics pnGraphics = (AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics();
+					CPNMarking am = pn.getInitialMarking();
+					Map<String, Color> colorsMap = pnGraphics.getColors();
+					Color color = colorsMap.get(tokenLabel);
+	
+					// UpdateBlock
+					model.beginUpdate();
+					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, color));
+					if (editor.getNetContainer().getPetriNet() instanceof CPN) {
+						for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
+							Multiset<String> constraint = flowrelation.getConstraint();
+							if (constraint != null) {
+								if (constraint.contains(tokenLabel)) {
+									int constraintMultiplicity = constraint.multiplicity(tokenLabel);
+									constraint.setMultiplicity(newTokenName, constraintMultiplicity);
+									constraint.setMultiplicity(tokenLabel, 0);
+									model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
+								}
 							}
 						}
+	
+						for (CPNPlace place : pn.getPlaces()) {
+							Multiset<String> multiSet = (Multiset<String>) am.get(place.getName());
+							if (multiSet != null) {
+								if (multiSet.contains(tokenLabel)) {
+									int multiplicity = multiSet.multiplicity(tokenLabel);
+									multiSet.setMultiplicity(newTokenName, multiplicity);
+									multiSet.remove(tokenLabel);
+									model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+								}
+							}
+	
+						}
 					}
-
-					for (CPNPlace place : pn.getPlaces()) {
-						Multiset<String> multiSet = (Multiset<String>) am.get(place.getName());
-						if (multiSet != null) {
-							if (multiSet.contains(tokenLabel)) {
-								int multiplicity = multiSet.multiplicity(tokenLabel);
-								multiSet.setMultiplicity(newTokenName, multiplicity);
-								multiSet.remove(tokenLabel);
-								model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+					if (editor.getNetContainer().getPetriNet() instanceof IFNet) {
+						for (IFNetFlowRelation flowrelation : ifnet.getFlowRelations()) {
+							Multiset<String> constraint = flowrelation.getConstraint();
+							if (constraint != null) {
+								if (constraint.contains(tokenLabel)) {
+									int constraintMultiplicity = constraint.multiplicity(tokenLabel);
+									constraint.setMultiplicity(newTokenName, constraintMultiplicity);
+									constraint.setMultiplicity(tokenLabel, 0);
+									model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
+								}
 							}
 						}
-
+	
+						for (IFNetPlace place : ifnet.getPlaces()) {
+							Multiset<String> multiSet = (Multiset<String>) am.get(place.getName());
+							if (multiSet != null) {
+								if (multiSet.contains(tokenLabel)) {
+									int multiplicity = multiSet.multiplicity(tokenLabel);
+									multiSet.setMultiplicity(newTokenName, multiplicity);
+									multiSet.remove(tokenLabel);
+									model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+								}
+							}
+	
+						}
 					}
+					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
+					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
+					model.endUpdate();
+					updateView();
 				}
-				if (editor.getNetContainer().getPetriNet() instanceof IFNet) {
-					for (IFNetFlowRelation flowrelation : ifnet.getFlowRelations()) {
-						Multiset<String> constraint = flowrelation.getConstraint();
-						if (constraint != null) {
-							if (constraint.contains(tokenLabel)) {
-								int constraintMultiplicity = constraint.multiplicity(tokenLabel);
-								constraint.setMultiplicity(newTokenName, constraintMultiplicity);
-								constraint.setMultiplicity(tokenLabel, 0);
-								model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
-							}
-						}
-					}
-
-					for (IFNetPlace place : ifnet.getPlaces()) {
-						Multiset<String> multiSet = (Multiset<String>) am.get(place.getName());
-						if (multiSet != null) {
-							if (multiSet.contains(tokenLabel)) {
-								int multiplicity = multiSet.multiplicity(tokenLabel);
-								multiSet.setMultiplicity(newTokenName, multiplicity);
-								multiSet.remove(tokenLabel);
-								model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
-							}
-						}
-
-					}
-				}
-				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
-				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
-				model.endUpdate();
-				updateView();
-
+				else
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Lenght of token name has to be 15 characters at maximum", "Problem", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}
