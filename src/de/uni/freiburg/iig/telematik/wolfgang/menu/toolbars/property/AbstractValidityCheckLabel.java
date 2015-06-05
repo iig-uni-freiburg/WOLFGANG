@@ -8,7 +8,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public abstract class AbstractValidityCheckLabel extends PNPropertyCheckLabel<Boolean> {
+public abstract class AbstractValidityCheckLabel extends AbstractPNPropertyCheckLabel<Boolean> {
 
 	private static final long serialVersionUID = 2534069643060024803L;
 

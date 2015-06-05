@@ -8,7 +8,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.PTNetPropertyCheckToolbar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.pt.PTNetPropertyCheckToolbar;
 
 public class PTNetToolBar extends AbstractToolBar {
 

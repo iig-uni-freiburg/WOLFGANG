@@ -13,7 +13,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenToolBar;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.CPNPropertyCheckToolbar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.cpn.CPNPropertyCheckToolbar;
 
 public class CPNToolBar extends AbstractToolBar {
 

@@ -1,7 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
-
-import java.util.HashSet;
-import java.util.Set;
+package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.pt;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
@@ -11,37 +8,15 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetPro
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.structure.ThreadedWFNetStructureChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.structure.WFNetStructureCheckingCallableGenerator;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.AbstractWFCheckLabel;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.WFCheckLabelListener;
 
-public class WFNetStructureCheckLabel extends PNPropertyCheckLabel<WFNetProperties> {
+public class WFNetStructureCheckLabel extends AbstractWFCheckLabel<WFNetProperties> {
 
 	private static final long serialVersionUID = -8561240983245503666L;
-	
-	protected Set<WFNetCheckLabelListener<WFNetProperties>> wfNetCheckListeners = new HashSet<WFNetCheckLabelListener<WFNetProperties>>();
 
 	public WFNetStructureCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		super(editorComponent, propertyName);
-	}
-
-	public WFNetStructureCheckLabel(PNEditorComponent editorComponent) {
-		super(editorComponent);
-	}
-	
-	public void addWFNetCheckListener(WFNetCheckLabelListener<WFNetProperties> listener){
-		wfNetCheckListeners.add(listener);
-	}
-	
-	@Override
-	public void executorFinished(WFNetProperties result) {
-		super.executorFinished(result);
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
-			listener.wfNetCheckFinished(WFNetStructureCheckLabel.this, result);
-	}
-
-	@Override
-	public void executorStopped() {
-		super.executorStopped();
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)			
-			listener.wfNetCheckStopped(WFNetStructureCheckLabel.this, null);
 	}
 
 	@Override
@@ -65,8 +40,8 @@ public class WFNetStructureCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 		} else {
 			editorComponent.getPropertyCheckView().resetFieldContent();
 		}
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
-			listener.wfNetCheckException(WFNetStructureCheckLabel.this, exception);
+		for(WFCheckLabelListener<WFNetProperties> listener: wfCheckListeners)
+			listener.wfCheckException(WFNetStructureCheckLabel.this, exception);
 	}
 	
 	

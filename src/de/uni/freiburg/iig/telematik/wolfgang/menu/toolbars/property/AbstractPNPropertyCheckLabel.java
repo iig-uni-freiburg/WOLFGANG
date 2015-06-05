@@ -8,8 +8,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +15,7 @@ import de.invation.code.toval.graphic.component.ExecutorLabel;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
+public abstract class AbstractPNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 
 	private static final long serialVersionUID = -2807606775313824173L;
 	private static final Dimension DEFAULT_SIZE = new Dimension(40,40);
@@ -34,9 +32,8 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	protected boolean propertyHolds = false;
 	
 	protected Set<PNPropertyCheckLabelListener> labelListeners = new HashSet<PNPropertyCheckLabelListener>();
-	protected Object isEnabled;
 
-	public PNPropertyCheckLabel(PNEditorComponent editorComponent) {
+	public AbstractPNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
 		setPreferredSize(DEFAULT_SIZE);
 		setMinimumSize(DEFAULT_SIZE);
@@ -44,16 +41,9 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		setOpaque(true);
 		setBackground(getColorInitial());
 		this.editorComponent = editorComponent;
-		this.addPropertyChangeListener(new PropertyChangeListener() {
-			   public void propertyChange(PropertyChangeEvent evt) {
-				    if (!evt.getPropertyName().equals("enabled"))
-				     return;
-				   isEnabled = evt.getNewValue();
-				   }
-				  });
 	}
 
-	public PNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
+	public AbstractPNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		this(editorComponent);
 		this.propertyString = propertyName;
 	}
@@ -146,7 +136,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		setPropertyHolds(result);
 		super.executorFinished(result);
 		for(PNPropertyCheckLabelListener listener: labelListeners)
-			listener.labelCalculationFinished(PNPropertyCheckLabel.this, result);
+			listener.labelCalculationFinished(AbstractPNPropertyCheckLabel.this, result);
 	}
 
 	@Override
@@ -154,7 +144,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		this.propertyHolds = false;
 		super.executorStopped();
 		for(PNPropertyCheckLabelListener listener: labelListeners)
-			listener.labelCalculationStopped(PNPropertyCheckLabel.this, null);
+			listener.labelCalculationStopped(AbstractPNPropertyCheckLabel.this, null);
 	}
 
 	@Override
@@ -162,7 +152,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		this.propertyHolds = false;
 		super.executorException(exception);
 		for(PNPropertyCheckLabelListener listener: labelListeners)
-			listener.labelCalculationException(PNPropertyCheckLabel.this, exception);
+			listener.labelCalculationException(AbstractPNPropertyCheckLabel.this, exception);
 	}
 
 	protected abstract void setPropertyHolds(Z calculationResult);

@@ -1,7 +1,4 @@
-package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
-
-import java.util.HashSet;
-import java.util.Set;
+package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.pt;
 
 import javax.swing.SwingUtilities;
 
@@ -15,15 +12,15 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetPro
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.soundness.ThreadedWFNetSoundnessChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.soundness.WFNetSoundnessCheckingCallableGenerator;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.AbstractWFCheckLabel;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.WFCheckLabelListener;
 
-public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperties> {
+public class WFNetSoundnessCheckLabel extends AbstractWFCheckLabel<WFNetProperties> {
 
 	private static final long serialVersionUID = -8561240983245503666L;
 	
 	private boolean checkCWNStructure = true;
 	private AbstractMarkingGraph markingGraph = null;
-	protected Set<WFNetCheckLabelListener<WFNetProperties>> wfNetCheckListeners = new HashSet<WFNetCheckLabelListener<WFNetProperties>>();
-
 
 	public WFNetSoundnessCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		super(editorComponent, propertyName);
@@ -37,24 +34,6 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 		this.checkCWNStructure = checkCWNStructure;
 	}
 	
-	public void addWFNetCheckListener(WFNetCheckLabelListener<WFNetProperties> listener){
-		wfNetCheckListeners.add(listener);
-	}
-	
-	@Override
-	public void executorFinished(WFNetProperties result) {
-		super.executorFinished(result);
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
-			listener.wfNetCheckFinished(WFNetSoundnessCheckLabel.this, result);
-	}
-
-	@Override
-	public void executorStopped() {
-		super.executorStopped();
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)			
-			listener.wfNetCheckStopped(WFNetSoundnessCheckLabel.this, null);
-	}
-
 	public AbstractMarkingGraph getMarkingGraph() {
 		return markingGraph;
 	}
@@ -75,7 +54,6 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 	@Override
 	protected void setPropertyHolds(WFNetProperties calculationResult) {
 		this.propertyHolds = calculationResult.hasWFNetStructure == PropertyCheckingResult.TRUE;
-		editorComponent.getPropertyCheckView().updateFieldContent(calculationResult, null);
 	}
 
 	@Override
@@ -89,8 +67,8 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 			editorComponent.getPropertyCheckView().resetFieldContent();
 			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(editorComponent), "WFNet Soundness Check Exception", exception, true);
 		}
-		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
-			listener.wfNetCheckException(WFNetSoundnessCheckLabel.this, exception);
+		for(WFCheckLabelListener<WFNetProperties> listener: wfCheckListeners)
+			listener.wfCheckException(WFNetSoundnessCheckLabel.this, exception);
 	}
 	
 }

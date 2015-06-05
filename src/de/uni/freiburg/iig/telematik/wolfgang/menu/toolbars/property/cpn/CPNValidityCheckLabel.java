@@ -1,10 +1,11 @@
-package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
+package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.cpn;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.validity.CPNValidity;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.AbstractValidityCheckLabel;
 
 public class CPNValidityCheckLabel extends AbstractValidityCheckLabel {
 

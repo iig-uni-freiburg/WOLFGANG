@@ -6,7 +6,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.Bound
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.ThreadedBoundednessChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 
-public class BoundednessCheckLabel extends PNPropertyCheckLabel<BoundednessCheckResult> {
+public class BoundednessCheckLabel extends AbstractPNPropertyCheckLabel<BoundednessCheckResult> {
 	
 	public BoundednessCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		super(editorComponent, propertyName);
