@@ -1,5 +1,8 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.validate.ExceptionDialog;
@@ -19,6 +22,8 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 	
 	private boolean checkCWNStructure = true;
 	private AbstractMarkingGraph markingGraph = null;
+	protected Set<WFNetCheckLabelListener<WFNetProperties>> wfNetCheckListeners = new HashSet<WFNetCheckLabelListener<WFNetProperties>>();
+
 
 	public WFNetSoundnessCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		super(editorComponent, propertyName);
@@ -30,6 +35,24 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 
 	public void setCheckCWNStructure(boolean checkCWNStructure) {
 		this.checkCWNStructure = checkCWNStructure;
+	}
+	
+	public void addWFNetCheckListener(WFNetCheckLabelListener<WFNetProperties> listener){
+		wfNetCheckListeners.add(listener);
+	}
+	
+	@Override
+	public void executorFinished(WFNetProperties result) {
+		super.executorFinished(result);
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
+			listener.wfNetCheckFinished(WFNetSoundnessCheckLabel.this, result);
+	}
+
+	@Override
+	public void executorStopped() {
+		super.executorStopped();
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)			
+			listener.wfNetCheckStopped(WFNetSoundnessCheckLabel.this, null);
 	}
 
 	public AbstractMarkingGraph getMarkingGraph() {
@@ -64,10 +87,10 @@ public class WFNetSoundnessCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 			}
 		} else {
 			editorComponent.getPropertyCheckView().resetFieldContent();
-			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(editorComponent), "WFNet Structure Check Exception", exception, true);
+			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(editorComponent), "WFNet Soundness Check Exception", exception, true);
 		}
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
+			listener.wfNetCheckException(WFNetSoundnessCheckLabel.this, exception);
 	}
-	
-	
 	
 }

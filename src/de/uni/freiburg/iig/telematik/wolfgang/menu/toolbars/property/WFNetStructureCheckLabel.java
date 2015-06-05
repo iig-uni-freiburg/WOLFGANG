@@ -29,6 +29,20 @@ public class WFNetStructureCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 	public void addWFNetCheckListener(WFNetCheckLabelListener<WFNetProperties> listener){
 		wfNetCheckListeners.add(listener);
 	}
+	
+	@Override
+	public void executorFinished(WFNetProperties result) {
+		super.executorFinished(result);
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
+			listener.wfNetCheckFinished(WFNetStructureCheckLabel.this, result);
+	}
+
+	@Override
+	public void executorStopped() {
+		super.executorStopped();
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)			
+			listener.wfNetCheckStopped(WFNetStructureCheckLabel.this, null);
+	}
 
 	@Override
 	protected AbstractThreadedPNPropertyChecker<?,?,?,?,?,?,WFNetProperties,?> createNewExecutor() {
@@ -44,15 +58,15 @@ public class WFNetStructureCheckLabel extends PNPropertyCheckLabel<WFNetProperti
 	@Override
 	public void executorException(Exception exception) {
 		super.executorException(exception);
-		WFNetProperties properties = null;
 		if(exception instanceof WFNetException){
 			if(((WFNetException) exception).getProperties() != null){
-				properties = ((WFNetException) exception).getProperties();
-				editorComponent.getPropertyCheckView().updateFieldContent(properties, exception);
+				editorComponent.getPropertyCheckView().updateFieldContent(((WFNetException) exception).getProperties(), exception);
 			}
 		} else {
 			editorComponent.getPropertyCheckView().resetFieldContent();
 		}
+		for(WFNetCheckLabelListener listener: wfNetCheckListeners)
+			listener.wfNetCheckException(WFNetStructureCheckLabel.this, exception);
 	}
 	
 	

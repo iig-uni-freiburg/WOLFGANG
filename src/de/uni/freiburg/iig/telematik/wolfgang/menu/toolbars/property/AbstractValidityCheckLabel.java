@@ -25,7 +25,8 @@ public abstract class AbstractValidityCheckLabel extends PNPropertyCheckLabel<Bo
 			setPropertyHolds(false);
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editorComponent), "Violated validity constraint:\n" + e.getMessage(), "Validation Exception", JOptionPane.ERROR_MESSAGE);
 		}
-		setGraphicsFinished();
+		executorFinished(this.propertyHolds);
+//		setGraphicsFinished();
 		
 	}
 	

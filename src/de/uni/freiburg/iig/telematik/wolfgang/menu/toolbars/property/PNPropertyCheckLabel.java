@@ -8,6 +8,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +34,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	protected boolean propertyHolds = false;
 	
 	protected Set<PNPropertyCheckLabelListener> labelListeners = new HashSet<PNPropertyCheckLabelListener>();
+	protected Object isEnabled;
 
 	public PNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
@@ -41,6 +44,13 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		setOpaque(true);
 		setBackground(getColorInitial());
 		this.editorComponent = editorComponent;
+		this.addPropertyChangeListener(new PropertyChangeListener() {
+			   public void propertyChange(PropertyChangeEvent evt) {
+				    if (!evt.getPropertyName().equals("enabled"))
+				     return;
+				   isEnabled = evt.getNewValue();
+				   }
+				  });
 	}
 
 	public PNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {
@@ -91,6 +101,10 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		g2.setColor(Color.WHITE);
 		g2.setStroke(new BasicStroke(1));
 		g2.drawRect(0, 0, h - 1, w - 1);
+		if(!isEnabled()){
+			g2.setColor(new Color(100, 100,200, 150 ));
+			g2.fillRect(0, 0, w, h);
+		}
 		g2.dispose();
 	}
 
@@ -116,7 +130,7 @@ public abstract class PNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	@Override
 	protected Color getColorCancelled() {
 		return COLOR_PROPERTY_UNKNOWN;
-	}
+	}	
 
 	@Override
 	protected Color getColorDone() {
