@@ -19,19 +19,19 @@ public class WFNetSoundnessCheckLabel extends AbstractWFCheckLabel<WFNetProperti
 
 	private static final long serialVersionUID = -8561240983245503666L;
 	
-	private boolean checkCWNStructure = true;
+	private boolean checkWFNetStructure = true;
 	private AbstractMarkingGraph markingGraph = null;
 
 	public WFNetSoundnessCheckLabel(PNEditorComponent editorComponent, String propertyName) {
 		super(editorComponent, propertyName);
 	}
 	
-	public boolean isCheckCWNStructure() {
-		return checkCWNStructure;
+	public boolean isCheckWFNetStructure() {
+		return checkWFNetStructure;
 	}
 
-	public void setCheckCWNStructure(boolean checkCWNStructure) {
-		this.checkCWNStructure = checkCWNStructure;
+	public void setCheckWFNetStructure(boolean checkWFNetStructure) {
+		this.checkWFNetStructure = checkWFNetStructure;
 	}
 	
 	public AbstractMarkingGraph getMarkingGraph() {
@@ -45,7 +45,7 @@ public class WFNetSoundnessCheckLabel extends AbstractWFCheckLabel<WFNetProperti
 	@Override
 	protected AbstractThreadedPNPropertyChecker<?,?,?,?,?,?,WFNetProperties,?> createNewExecutor() {
 		WFNetSoundnessCheckingCallableGenerator generator = new WFNetSoundnessCheckingCallableGenerator((AbstractPTNet<?,?,?,?>) editorComponent.getNetContainer().getPetriNet().clone());
-		generator.setCheckCWNStructure(isCheckCWNStructure());
+		generator.setCheckCWNStructure(isCheckWFNetStructure());
 		if(getMarkingGraph() != null)
 			generator.setMarkingGraph(getMarkingGraph());
 		return new ThreadedWFNetSoundnessChecker(generator);

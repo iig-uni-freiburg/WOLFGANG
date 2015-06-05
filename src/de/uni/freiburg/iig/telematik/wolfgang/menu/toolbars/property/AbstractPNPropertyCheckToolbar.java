@@ -23,7 +23,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 	private static final long serialVersionUID = 6881881369803746536L;
 	
 	protected BoundednessCheckLabel boundednessCheckLabel;
-	protected AbstractMarkingGraph<?, ?, ?, ?> markingGraph = null;
+	private AbstractMarkingGraph<?, ?, ?, ?> markingGraph = null;
 	protected AbstractValidityCheckLabel validityCheckLabel;
 	protected PNEditorComponent pnEditor = null;
 	
@@ -79,7 +79,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 		validityCheckLabel.reset();
 		boundednessCheckLabel.reset();
 		boundednessCheckLabel.setEnabled(false);
-		markingGraph = null;
+		setMarkingGraph(null);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 	}
 	
 	protected void boundednessCheckFinished(BoundednessCheckResult result){
-		this.markingGraph = result.getMarkingGraph();
+		setMarkingGraph(result.getMarkingGraph());
 	}
 
 	@Override
@@ -133,6 +133,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 	
 	protected void boundednessCheckStopped(BoundednessCheckResult result){
 //		boundednessCheckLabel.reset();
+		setMarkingGraph(null);
 	}
 
 	@Override
@@ -152,7 +153,16 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 	
 	protected void boundednessCheckException(Exception exception){
 		ExceptionDialog.showException(SwingUtilities.getWindowAncestor(this), "Boundedness Check Exception", exception, true);
+		setMarkingGraph(null);
 //		boundednessCheckLabel.reset();
+	}
+	
+	protected void setMarkingGraph(AbstractMarkingGraph<?,?,?,?> markingGraph){
+		this.markingGraph = markingGraph;
+	}
+	
+	protected AbstractMarkingGraph<?,?,?,?> getMarkingGraph(){
+		return markingGraph;
 	}
 
 }

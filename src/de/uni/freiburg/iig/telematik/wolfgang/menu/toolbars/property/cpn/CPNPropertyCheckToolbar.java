@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ExceptionDialog;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
@@ -25,7 +26,7 @@ public class CPNPropertyCheckToolbar extends AbstractWFCheckToolbar<CWNPropertie
 	@Override
 	public void wfCheckFinished(Object sender, CWNProperties result) {
 		if (sender == structureCheckLabel) {
-			soundnessCheckLabel.setEnabled(markingGraph != null && result.hasCWNStructure == PropertyCheckingResult.TRUE);
+			soundnessCheckLabel.setEnabled(getMarkingGraph() != null && result.hasCWNStructure == PropertyCheckingResult.TRUE);
 		} else if (sender instanceof CWNSoundnessCheckLabel) {
 			
 		}
@@ -47,7 +48,7 @@ public class CPNPropertyCheckToolbar extends AbstractWFCheckToolbar<CWNPropertie
 				return;
 			this.checkStructure = !(properties.hasCWNStructure == PropertyCheckingResult.TRUE);
 			this.checkSoundness = !(properties.isSoundCWN == PropertyCheckingResult.TRUE);
-			this.markingGraph = properties.markingGraph;	
+			setMarkingGraph(properties.markingGraph);	
 		}
 	}
 
@@ -59,7 +60,9 @@ public class CPNPropertyCheckToolbar extends AbstractWFCheckToolbar<CWNPropertie
 
 	@Override
 	protected AbstractWFCheckLabel<CWNProperties> createSoundnessCheckLabel() {
-		return new CWNSoundnessCheckLabel(pnEditor, "CWN\nSoundness");
+		CWNSoundnessCheckLabel label = new CWNSoundnessCheckLabel(pnEditor, "CWN\nSoundness");
+		label.setCheckCWNStructure(false);
+		return label;
 	}
 
 	@Override
@@ -67,6 +70,12 @@ public class CPNPropertyCheckToolbar extends AbstractWFCheckToolbar<CWNPropertie
 		CPNValidityCheckLabel validityCheckLabel = new CPNValidityCheckLabel(pnEditor, "Validity");
 		validityCheckLabel.setEnabled(true);
 		return validityCheckLabel;
+	}
+	
+	@Override
+	protected void setMarkingGraph(AbstractMarkingGraph<?,?,?,?> markingGraph) {
+		super.setMarkingGraph(markingGraph);
+		((CWNSoundnessCheckLabel) soundnessCheckLabel).setMarkingGraph(markingGraph);
 	}
 	
 }

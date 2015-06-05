@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ExceptionDialog;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetProperties;
@@ -24,9 +25,10 @@ public class PTNetPropertyCheckToolbar extends AbstractWFCheckToolbar<WFNetPrope
 	
 	@Override
 	public void wfCheckFinished(Object sender, WFNetProperties result) {
-		if (sender instanceof WFNetStructureCheckLabel) {
-			soundnessCheckLabel.setEnabled(markingGraph != null && result.hasWFNetStructure == PropertyCheckingResult.TRUE);
-		} else if (sender instanceof WFNetSoundnessCheckLabel) {
+		if (sender == structureCheckLabel) {
+			boolean wfStructure = result.hasWFNetStructure == PropertyCheckingResult.TRUE;
+			soundnessCheckLabel.setEnabled(getMarkingGraph() != null && wfStructure);
+		} else if (sender == soundnessCheckLabel) {
 			
 		}
 	}
@@ -47,7 +49,7 @@ public class PTNetPropertyCheckToolbar extends AbstractWFCheckToolbar<WFNetPrope
 				return;
 			this.checkStructure = !(properties.hasWFNetStructure == PropertyCheckingResult.TRUE);
 			this.checkSoundness = !(properties.isSoundWFNet == PropertyCheckingResult.TRUE);
-			this.markingGraph = properties.markingGraph;	
+			setMarkingGraph(properties.markingGraph);	
 		}
 	}
 
@@ -67,7 +69,15 @@ public class PTNetPropertyCheckToolbar extends AbstractWFCheckToolbar<WFNetPrope
 
 	@Override
 	protected AbstractWFCheckLabel<WFNetProperties> createSoundnessCheckLabel() {
-		return new WFNetSoundnessCheckLabel(pnEditor, "WF-Net\nSoundness");
+		WFNetSoundnessCheckLabel label = new WFNetSoundnessCheckLabel(pnEditor, "WF-Net\nSoundness");
+		label.setCheckWFNetStructure(false);
+		return label;
+	}
+
+	@Override
+	protected void setMarkingGraph(AbstractMarkingGraph<?,?,?,?> markingGraph) {
+		super.setMarkingGraph(markingGraph);
+		((WFNetSoundnessCheckLabel) soundnessCheckLabel).setMarkingGraph(markingGraph);
 	}
 
 }
