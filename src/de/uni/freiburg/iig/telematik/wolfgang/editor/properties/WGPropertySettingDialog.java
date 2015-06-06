@@ -31,6 +31,7 @@ public class WGPropertySettingDialog extends AbstractDialog {
 		mainPanel().setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(getPropertySettingPanel());
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		mainPanel().add(scrollPane, BorderLayout.CENTER);
 	}
 
