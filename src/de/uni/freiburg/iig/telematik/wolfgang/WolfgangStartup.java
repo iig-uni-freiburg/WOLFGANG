@@ -2,7 +2,9 @@ package de.uni.freiburg.iig.telematik.wolfgang;
 
 import java.io.File;
 
+import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import de.invation.code.toval.graphic.misc.AbstractStartup;
@@ -67,24 +69,29 @@ public class WolfgangStartup extends AbstractStartup {
 		});
 		fc.setDialogTitle("Load PNML");
 		int returnVal = fc.showDialog(null, "load PNML");
-
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String filename = fc.getSelectedFile().getAbsolutePath();
-			if (!filename.toLowerCase().endsWith(".pnml"))
-				filename += ".pnml";
-			@SuppressWarnings("rawtypes")
-			AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
-			switch(net.getPetriNet().getNetType()){
-			case CPN:
-				new WolfgangCPN((GraphicalCPN) net).setUpGUI();
-				break;
-			case PTNet:
-				new WolfgangPT((GraphicalPTNet) net).setUpGUI();
-				break;
-			default: 
-				throw new Exception("Incompatible net type: " + net.getPetriNet().getNetType());
+			if (!filename.toLowerCase().endsWith(".pnml")) {
+				JOptionPane.showMessageDialog(null, "File is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+				startApplication();
+			}		
+			else {
+				@SuppressWarnings("rawtypes")
+				AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
+				switch(net.getPetriNet().getNetType()){
+				case CPN:
+					new WolfgangCPN((GraphicalCPN) net).setUpGUI();
+					break;
+				case PTNet:
+					new WolfgangPT((GraphicalPTNet) net).setUpGUI();
+					break;
+				default: 
+					throw new Exception("Incompatible net type: " + net.getPetriNet().getNetType());
+				}
 			}
 		}
+		else
+			startApplication();
 	}
 
 	public static void main(String[] args) {
