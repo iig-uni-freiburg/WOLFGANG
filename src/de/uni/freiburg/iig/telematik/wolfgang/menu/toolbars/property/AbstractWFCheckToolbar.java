@@ -45,7 +45,7 @@ public abstract class AbstractWFCheckToolbar<P> extends AbstractPNPropertyCheckT
 	protected void boundednessCheckFinished(BoundednessCheckResult result) {
 		super.boundednessCheckFinished(result);
 		Boundedness boundedness = result.getBoundedness();
-		soundnessCheckLabel.setEnabled(!checkStructure && (boundedness != null ? result.getBoundedness() == Boundedness.BOUNDED : false));
+		soundnessCheckLabel.setEnabled(structureCheckLabel.propertyHolds && (boundedness != null ? result.getBoundedness() == Boundedness.BOUNDED : false));
 	}
 
 	@Override
@@ -59,9 +59,12 @@ public abstract class AbstractWFCheckToolbar<P> extends AbstractPNPropertyCheckT
 		super.boundednessCheckStopped(result);
 		if(result == null){
 			soundnessCheckLabel.setEnabled(false);
+			soundnessCheckLabel.setEnabled(true);
 		} else {
 			Boundedness boundedness = result.getBoundedness();
 			soundnessCheckLabel.setEnabled(boundedness != null ? boundedness == Boundedness.BOUNDED : false);
+			if(structureCheckLabel.propertyHolds)
+				soundnessCheckLabel.setEnabled(true);
 		}
 	}
 	

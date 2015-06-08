@@ -46,14 +46,15 @@ public class WFNetSoundnessCheckLabel extends AbstractWFCheckLabel<WFNetProperti
 	protected AbstractThreadedPNPropertyChecker<?,?,?,?,?,?,WFNetProperties,?> createNewExecutor() {
 		WFNetSoundnessCheckingCallableGenerator generator = new WFNetSoundnessCheckingCallableGenerator((AbstractPTNet<?,?,?,?>) editorComponent.getNetContainer().getPetriNet().clone());
 		generator.setCheckCWNStructure(isCheckWFNetStructure());
-		if(getMarkingGraph() != null)
+		if(getMarkingGraph() != null){
 			generator.setMarkingGraph(getMarkingGraph());
+			}
 		return new ThreadedWFNetSoundnessChecker(generator);
 	}
 
 	@Override
 	protected void setPropertyHolds(WFNetProperties calculationResult) {
-		this.propertyHolds = calculationResult.hasWFNetStructure == PropertyCheckingResult.TRUE;
+		this.propertyHolds = calculationResult.isSoundWFNet == PropertyCheckingResult.TRUE;
 	}
 
 	@Override

@@ -46,14 +46,15 @@ public class CWNSoundnessCheckLabel extends AbstractWFCheckLabel<CWNProperties> 
 	protected AbstractThreadedPNPropertyChecker<?,?,?,?,?,?,CWNProperties,?> createNewExecutor() {
 		CWNSoundnessCheckingCallableGenerator generator = new CWNSoundnessCheckingCallableGenerator((AbstractCPN<?,?,?,?>) editorComponent.getNetContainer().getPetriNet().clone());
 		generator.setCheckCWNStructure(isCheckCWNStructure());
-		if(getMarkingGraph() != null)
-			generator.setMarkingGraph(getMarkingGraph());
+		if(getMarkingGraph() != null){
+			System.out.println(getMarkingGraph());
+			generator.setMarkingGraph(getMarkingGraph());}
 		return new ThreadedCWNSoundnessChecker(generator);
 	}
 
 	@Override
 	protected void setPropertyHolds(CWNProperties calculationResult) {
-		this.propertyHolds = calculationResult.hasCWNStructure == PropertyCheckingResult.TRUE;
+		this.propertyHolds = calculationResult.isSoundCWN == PropertyCheckingResult.TRUE;
 		editorComponent.getPropertyCheckView().updateFieldContent(calculationResult, null);
 	}
 
