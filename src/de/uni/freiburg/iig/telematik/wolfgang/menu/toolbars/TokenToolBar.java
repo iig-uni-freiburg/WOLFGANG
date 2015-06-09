@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
@@ -82,7 +84,9 @@ public class TokenToolBar extends JToolBar {
 	private JPanel tokenPanel;
 
 	private PNEditorComponent editor;
-
+	
+	private String oldTokenName = null;
+	
 	public TokenToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException {
 		super(orientation);
 		Validate.notNull(pnEditor);
@@ -180,6 +184,8 @@ public class TokenToolBar extends JToolBar {
 				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name already exists", "Problem", JOptionPane.ERROR_MESSAGE);
 			else if (newTokenColor.equals(""))
 				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Token Name is empty", "Problem", JOptionPane.ERROR_MESSAGE);
+			else if (newTokenColor.length() > 15)
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Lenght of token name has to be 15 characters at maximum", "Problem", JOptionPane.ERROR_MESSAGE);
 			else {
 				colorMap.put(newTokenColor, tokenColorAction.getButtonFillColor());
 	
@@ -220,7 +226,8 @@ public class TokenToolBar extends JToolBar {
 			firstElement.add(tokenColorButton);
 
 			RestrictedTextField textField = new RestrictedTextField(Restriction.NOT_EMPTY, name);
-			
+	
+
 			addTokenRenamingListener(tokenLabel, textField);
 
 			firstElement.add(textField);
@@ -323,14 +330,28 @@ public class TokenToolBar extends JToolBar {
 	}
 
 	private void addTokenRenamingListener(final String tokenLabel, RestrictedTextField textField) {
+	
+	
+		textField.addFocusListener(new FocusAdapter() {
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				super.focusGained(e);
+				RestrictedTextField tf = (RestrictedTextField) e.getSource();
+				oldTokenName = tf.getText();
+			}
+		});
+		
+		
 		textField.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RestrictedTextField tf = (RestrictedTextField) e.getSource();
+				
 				String newTokenName = tf.getText();
 
-				if (newTokenName.length() <= 15) {
+				if (newTokenName.length() <= 15 && !oldTokenName.equals(newTokenName)) {
 
 					PNGraph graph = editor.getGraphComponent().getGraph();
 					mxGraphModel model = ((mxGraphModel) graph.getModel());
@@ -405,8 +426,10 @@ public class TokenToolBar extends JToolBar {
 					model.endUpdate();
 					updateView();
 				}
-				else
-					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Lenght of token name has to be 15 characters at maximum", "Problem", JOptionPane.ERROR_MESSAGE);
+				else {
+					tf.setText(oldTokenName);
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Lenght of token name has to between 0 and 15 characters", "Problem", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 	}
