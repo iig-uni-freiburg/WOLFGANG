@@ -107,7 +107,6 @@ public class CPNProperties extends PNProperties {
 	@Override
 	public Set<PNProperty> getPlaceProperties() {
 		Set<PNProperty> result =  super.getPlaceProperties();
-		result.add(PNProperty.PLACE_CAPACITY);
 		return result;
 	}
 
