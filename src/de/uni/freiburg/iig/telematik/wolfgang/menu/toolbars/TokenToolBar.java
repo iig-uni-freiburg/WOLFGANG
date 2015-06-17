@@ -193,7 +193,7 @@ public class TokenToolBar extends JToolBar {
 	
 				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenColor, tokenColorAction.getButtonFillColor()));
 	
-				updateView();
+				updateTokenToolbarView();
 			}
 		}
 
@@ -323,7 +323,7 @@ public class TokenToolBar extends JToolBar {
 
 				model.endUpdate();
 
-				updateView();
+				updateTokenToolbarView();
 
 			}
 		});
@@ -424,7 +424,7 @@ public class TokenToolBar extends JToolBar {
 					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
 					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
 					model.endUpdate();
-					updateView();
+					updateTokenToolbarView();
 				}
 				else {
 					tf.setText(oldTokenName);
@@ -457,7 +457,7 @@ public class TokenToolBar extends JToolBar {
 		return b;
 	}
 
-	public void updateView() {
+	public void updateTokenToolbarView() {
 		tokenPanel.removeAll();
 		AbstractCPN cpn = (AbstractCPN) editor.getGraphComponent().getGraph().getNetContainer().getPetriNet();
 		Set<String> colorsTemp = cpn.getTokenColors();

@@ -354,7 +354,7 @@ public class TokenConfigurerToolBar extends JToolBar {
 		return b;
 	}
 
-	public void updateView() {
+	public void updateTCTBView() {
 		tokenPanel.removeAll();
 		AbstractCPN cpn = (AbstractCPN) editor.getGraphComponent().getGraph().getNetContainer().getPetriNet();
 		Set<String> colorsTemp = cpn.getTokenColors();

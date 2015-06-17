@@ -84,7 +84,7 @@ public class AbstractTokenConfigurer extends JDialog {
 		add(panel);
 		paName = place2.getName();
 		graph = cpnGraph;
-		updateView();
+		updateTokenConfigurerView();
 
 	}
 
@@ -96,7 +96,7 @@ public class AbstractTokenConfigurer extends JDialog {
 		add(panel);
 		paName = flowRelation.getName();
 		graph = cpnGraph;
-		updateView();
+		updateTokenConfigurerView();
 	}
 
 	public AbstractTokenConfigurer(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
@@ -111,7 +111,7 @@ public class AbstractTokenConfigurer extends JDialog {
 
 		// for
 
-		updateView();
+		updateTokenConfigurerView();
 	}
 
 	private void addRow(String tokenLabel) {
@@ -218,7 +218,7 @@ public class AbstractTokenConfigurer extends JDialog {
 
 				addButton.setEnabled(true);
 				pack();
-				updateView();
+				updateTokenConfigurerView();
 			}
 		});
 
@@ -244,7 +244,7 @@ public class AbstractTokenConfigurer extends JDialog {
 					Integer currentValue = (Integer) capacitySpinner.getValue();
 
 					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, place.getName(), tokenName, currentValue));
-					updateView();
+					updateTokenConfigurerView();
 				}
 			});
 			panel.add(capacitySpinner);
@@ -325,7 +325,7 @@ public class AbstractTokenConfigurer extends JDialog {
 	protected void setNewMarking(Multiset<String> newPlaceMarking) {
 	}
 
-	public void updateView() {
+	public void updateTokenConfigurerView() {
 		panel.removeAll();
 
 		try {
@@ -362,7 +362,7 @@ public class AbstractTokenConfigurer extends JDialog {
 									if (!isTransition && multisetPA.contains(colors.keySet())) {
 										addButton.setEnabled(false);
 									}
-									updateView();
+									updateTokenConfigurerView();
 									pack();
 								}
 							});
@@ -389,7 +389,7 @@ public class AbstractTokenConfigurer extends JDialog {
 										}
 									}
 									((mxGraphModel) graph.getModel()).endUpdate();
-									updateView();
+									updateTokenConfigurerView();
 									pack();
 								}
 							});
@@ -425,7 +425,7 @@ public class AbstractTokenConfigurer extends JDialog {
 						for (String color : tokencolors)
 							((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, paName, color, newCapacity));
 						((mxGraphModel) graph.getModel()).endUpdate();
-						updateView();
+						updateTokenConfigurerView();
 					}
 
 				});
@@ -448,7 +448,7 @@ public class AbstractTokenConfigurer extends JDialog {
 							((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, paName, color, newCapacity));
 						}
 						((mxGraphModel) graph.getModel()).endUpdate();
-						updateView();
+						updateTokenConfigurerView();
 
 					}
 				});

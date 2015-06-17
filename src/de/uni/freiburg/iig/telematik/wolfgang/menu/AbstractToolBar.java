@@ -25,8 +25,12 @@ import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.view.mxGraphView;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
@@ -38,6 +42,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.nodes.NodeToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ExportToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
@@ -47,6 +52,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public abstract class AbstractToolBar extends JToolBar {
+
+
+
+
+
 
 	private static final long serialVersionUID = -6491749112943066366L;
 
@@ -138,7 +148,7 @@ public abstract class AbstractToolBar extends JToolBar {
 		super(orientation);
 		Validate.notNull(pnEditor);
 		this.pnEditor = pnEditor;
-		
+
 		setBackground(DEFAULT_BG_COLOR);
 		try {
 			createToolbarActions(pnEditor);
@@ -393,19 +403,6 @@ public abstract class AbstractToolBar extends JToolBar {
 		b.setVerticalTextPosition(JButton.BOTTOM);
 		b.setBorderPainted(false);
 		return b;
-	}
-
-	public void updateView(Set<PNGraphCell> selectedComponents) throws EditorToolbarException, PropertyException, IOException {
-		switch (mode) {
-		case EDIT:
-			fontToolbar.updateView(selectedComponents);
-			graphicsToolbar.updateView(selectedComponents);
-
-			break;
-		case PLAY:
-			break;
-
-		}
 	}
 
 	public void setExecutionMode() {

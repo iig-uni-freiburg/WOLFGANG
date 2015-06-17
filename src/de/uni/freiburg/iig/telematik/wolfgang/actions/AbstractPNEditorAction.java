@@ -73,14 +73,6 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 		return getGraphSelectionCell() != null;
 	}
 
-	protected void updateToolbarViewWithSelectedCell() throws EditorToolbarException, PropertyException, IOException {
-		if (isCellSelected()) {
-			Set<PNGraphCell> setWithOneCell = new HashSet<PNGraphCell>();
-			setWithOneCell.add(getGraphSelectionCell());
-			getEditor().getEditorToolbar().updateView(setWithOneCell);
-		}
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {

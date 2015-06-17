@@ -242,7 +242,7 @@ default:
 	@Override
 	public void updateViews() {
 		for(AbstractTokenConfigurer w:tokenConfigurerWindows.values())
-			w.updateView();
+			w.updateTokenConfigurerView();
 	}
 
 	@Override

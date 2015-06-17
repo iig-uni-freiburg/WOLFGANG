@@ -21,8 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
@@ -32,6 +35,9 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillBackgroundColorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillColorSelectionAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillGradientColorAction;
@@ -53,10 +59,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
-public class GraphicsToolBar extends JToolBar {
+public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 
 	private static final long serialVersionUID = -6491749112943066366L;
 
@@ -147,7 +154,7 @@ public class GraphicsToolBar extends JToolBar {
 		super(orientation);
 		Validate.notNull(pnEditor);
 		this.pnEditor = pnEditor;
-
+		this.pnEditor.getGraphComponent().getGraph().addPNGraphListener(this);
 		strokeColorAction = new LineStrokeColorAction(pnEditor);
 		backgroundColorAction = new FillBackgroundColorAction(pnEditor);
 		gradientColorAction = new FillGradientColorAction(pnEditor);
@@ -396,7 +403,6 @@ public class GraphicsToolBar extends JToolBar {
 		add(pane);
 	}
 
-
 	private JComponent nestedAdd(Action action) {
 		JToggleButton b = createToggleActionComponent(action);
 		b.setAction(action);
@@ -477,188 +483,113 @@ public class GraphicsToolBar extends JToolBar {
 		colorSelectionAction.setEnabled(b);
 	}
 
-	public void updateView(Set<PNGraphCell> selectedComponents) throws PropertyException, IOException {
-		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
-			if (selectedComponents == null || selectedComponents.isEmpty()) {
-				deactivate();
-				this.selectedCell = null;
-				return;
-			}
-			if (!selectedComponents.isEmpty()) {
 
+	// private void setFillToolbar(Fill fill, boolean isLabel) throws
+	// PropertyException, IOException {
+	// boolean isFillSolid = false;
+	// boolean isFillGradient = false;
+	// boolean isFillEmpty = false;
+	// boolean isGradientDiagonal = false;
+	// boolean isGradientVertical = false;
+	// boolean isGradientHorizontal = false;
+	// boolean containsFillColor = false;
+	// boolean containsGradientColor = false;
+	// boolean containsGradientRotation = false;
+	//
+	// if (fill != null) {
+	// String colorString = fill.getColor();
+	// String gradientString = fill.getGradientColor();
+	// GradientRotation gradientRotation = fill.getGradientRotation();
+	//
+	//
+	//
+	// Color fillColor = null;
+	// if (colorString != null) {
+	// if (!colorString.equals("transparent") && (colorString != null)) {
+	// fillColor = Utils.parseColor(colorString);
+	// containsFillColor = true;
+	// } else {
+	// fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
+	// }
+	// }
+	//
+	//
+	// Color gradientColor;
+	// if (!gradientString.equals("transparent") && (gradientString != null)) {
+	// gradientColor = Utils.parseColor(gradientString);
+	// containsGradientColor = true;
+	// }
+	// else {
+	// gradientColor =
+	// WolfgangProperties.getInstance().getDefaultGradientColor();
+	// if(gradientColor == null)
+	// gradientColor = fillColor;
+	// }
+	//
+	// if (gradientRotation != null) {
+	// containsGradientRotation = true;
+	// } else{
+	// gradientRotation =
+	// WolfgangProperties.getInstance().getDefaultGradientDirection();
+	// if(gradientRotation == null)
+	// gradientRotation = GradientRotation.VERTICAL;
+	// }
+	//
+	// if (!containsFillColor) {
+	// // setFillStyle(FillStyle.NOFILL, null, null, null);
+	// isFillEmpty = true;
+	//
+	// } else if (containsFillColor && containsGradientColor &&
+	// containsGradientRotation && !isLabel) {
+	// // setFillStyle(FillStyle.GRADIENT, fillColor, gradientColor,
+	// gradientRotation);
+	// isFillGradient = true;
+	// } else {
+	// // setFillStyle(FillStyle.SOLID, fillColor, fillColor, gradientRotation);
+	// isFillSolid = true;
+	// }
+	// // currentFillColor = fillColor;
+	//
+	//
+	// if (containsGradientRotation) {
+	// switch (gradientRotation) {
+	// case DIAGONAL:
+	// isGradientDiagonal = true;
+	// break;
+	// case HORIZONTAL:
+	// isGradientHorizontal = true;
+	// break;
+	// case VERTICAL:
+	// isGradientVertical = true;
+	// break;
+	// default:
+	// break;
+	//
+	// }
+	// }
 
-				if (selectedComponents.size() >= 1) {
-					this.selectedCell = selectedComponents.iterator().next();
-					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
-					boolean isTransitionSilent = false;
-					if (isTransitionCell) {
-						if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId()))
-							isTransitionSilent = pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getTransition(selectedCell.getId()).isSilent();
-					}
-					boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
-					boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
+	// fillGroup.clearSelection();
+	// backgroundColorButton.setSelected(isFillSolid);
+	// gradientColorButton.setSelected(true);
+	// noFillButton.setSelected(isFillEmpty);
+	//
+	// gradientDirectionGroup.clearSelection();
+	// gradientDiagonalButton.setSelected(isGradientDiagonal);
+	// gradientHorizontalButton.setSelected(isGradientHorizontal);
+	// gradientVerticalButton.setSelected(isGradientVertical);
+	//
+	// gradientColorButton.repaint();
+	// backgroundColorButton.repaint();
+	// colorSelectionButton.repaint();
+	// backgroundColorButton.repaint();
+	// }
+	//
+	// }
 
-					NodeGraphics nodeGraphics = null;
-					AnnotationGraphics annotationGraphics = null;
-					ArcGraphics arcGraphics = null;
-					if (!isTransitionSilent) {
-						setLineEnabled(true);
-						setFillEnabled(true);
-						switch (selectedCell.getType()) {
-						case PLACE:
-							nodeGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getPlaceGraphics().get(selectedCell.getId());
-							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getPlaceLabelAnnotationGraphics().get(selectedCell.getId());
-							break;
-						case TRANSITION:
-							nodeGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getTransitionGraphics().get(selectedCell.getId());
-							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getTransitionLabelAnnotationGraphics().get(selectedCell.getId());
-							break;
-						case ARC:
-							arcGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getArcGraphics().get(selectedCell.getId());
-							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().get(selectedCell.getId());
-							break;
-						}
-
-						if (nodeGraphics != null && !labelSelected) {
-
-							Fill fill = nodeGraphics.getFill();
-							setFillToolbar(fill, false);
-							Line line = nodeGraphics.getLine();
-							setLineToolbar(line);
-
-						}
-
-						if (arcGraphics != null && isArcCell) {
-							Line line = arcGraphics.getLine();
-							setLineToolbar(line);
-						}
-
-						if (annotationGraphics != null && labelSelected) {
-							Fill fill = annotationGraphics.getFill();
-							setFillToolbar(fill, true);
-							gradientColorAction.setEnabled(false);
-							gradientDiagonalAction.setEnabled(false);
-							gradientHorizontalAction.setEnabled(false);
-							gradientVerticalAction.setEnabled(false);
-							backgroundColorButton.repaint();
-
-							Line line = annotationGraphics.getLine();
-
-							setLineToolbar(line);
-							curveAction.setEnabled(false);
-						}
-
-					}
-
-				} else {
-					this.selectedCell = null;
-				}
-			}
-		}
-	}
-
-//	private void setFillToolbar(Fill fill, boolean isLabel) throws PropertyException, IOException {
-//		boolean isFillSolid = false;
-//		boolean isFillGradient = false;
-//		boolean isFillEmpty = false;
-//		boolean isGradientDiagonal = false;
-//		boolean isGradientVertical = false;
-//		boolean isGradientHorizontal = false;
-//		boolean containsFillColor = false;
-//		boolean containsGradientColor = false;
-//		boolean containsGradientRotation = false;
-//		
-//		if (fill != null) {
-//			String colorString = fill.getColor();
-//			String gradientString = fill.getGradientColor();
-//			GradientRotation gradientRotation = fill.getGradientRotation();
-//
-//			
-//			
-//			Color fillColor = null;
-//			if (colorString != null) {
-//				if (!colorString.equals("transparent") && (colorString != null)) {
-//					fillColor = Utils.parseColor(colorString);
-//					containsFillColor = true;
-//				} else {
-//					fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
-//				}
-//			}
-//
-//
-//			Color gradientColor;
-//			if (!gradientString.equals("transparent") && (gradientString != null)) {
-//				gradientColor = Utils.parseColor(gradientString);
-//				containsGradientColor = true;
-//			}
-//			else {
-//				gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
-//				if(gradientColor == null)
-//					gradientColor = fillColor;
-//			}
-//
-//			if (gradientRotation != null) {
-//				containsGradientRotation = true;
-//			} else{
-//				gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
-//				if(gradientRotation == null)
-//					gradientRotation = GradientRotation.VERTICAL;
-//				}
-//
-//			if (!containsFillColor) {
-////				setFillStyle(FillStyle.NOFILL, null, null, null);
-//				isFillEmpty = true;
-//
-//			} else if (containsFillColor && containsGradientColor && containsGradientRotation && !isLabel) {
-////				setFillStyle(FillStyle.GRADIENT, fillColor, gradientColor, gradientRotation);
-//				isFillGradient = true;
-//			} else {
-////				setFillStyle(FillStyle.SOLID, fillColor, fillColor, gradientRotation);
-//				isFillSolid = true;
-//			}
-////			currentFillColor = fillColor;
-//			
-//			
-//			if (containsGradientRotation) {
-//				switch (gradientRotation) {
-//				case DIAGONAL:
-//					isGradientDiagonal = true;
-//					break;
-//				case HORIZONTAL:
-//					isGradientHorizontal = true;
-//					break;
-//				case VERTICAL:
-//					isGradientVertical = true;
-//					break;
-//				default:
-//					break;
-//
-//				}
-//			}
-
-	
-
-//			fillGroup.clearSelection();
-//			backgroundColorButton.setSelected(isFillSolid);
-//			gradientColorButton.setSelected(true);
-//			noFillButton.setSelected(isFillEmpty);
-//
-//			gradientDirectionGroup.clearSelection();
-//			gradientDiagonalButton.setSelected(isGradientDiagonal);
-//			gradientHorizontalButton.setSelected(isGradientHorizontal);
-//			gradientVerticalButton.setSelected(isGradientVertical);
-//
-//			gradientColorButton.repaint();
-//			backgroundColorButton.repaint();
-//			colorSelectionButton.repaint();
-//			backgroundColorButton.repaint();
-//		}
-//
-//	}
-
-	private void setFillToolbar(Fill fill, boolean isLabel) throws NumberFormatException, PropertyException, IOException {
+	private void setFillToolbar(Fill fill, boolean isLabel) throws PropertyException, IOException {
 		Validate.notNull(fill);
 		Color fillcolor = Utils.parseColor(fill.getColor());
+
 		if (fill.getGradientColor() != null && fill.getGradientRotation() != null) {
 			Color gradientColor = Utils.parseColor(fill.getGradientColor());
 			colorSelectionAction.setFillColor(fillcolor, gradientColor, fill.getGradientRotation());
@@ -685,8 +616,7 @@ public class GraphicsToolBar extends JToolBar {
 			break;
 		}
 
-
-//		colorSelectionButton.repaint();
+		// colorSelectionButton.repaint();
 	}
 
 	private void setLineToolbar(Line line) throws ParameterException, PropertyException, IOException {
@@ -779,43 +709,48 @@ public class GraphicsToolBar extends JToolBar {
 		return fillStyle;
 	}
 
-//	public void setFillStyle(FillStyle fillStyle, Color fillColor, Color gradientColor, GradientRotation rotation) throws PropertyException, IOException {
-//		this.fillStyle = fillStyle;
-//		switch (fillStyle) {
-//
-//		case SOLID:
-//			if (fillColor != null)
-//				backgroundColorButton.setSelected(true);
-//			colorSelectionAction.setFillColor(fillColor, fillColor, rotation);
-//
-//			break;
-//		case GRADIENT:
-//			if (gradientColor != null) {
-//				colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
-////				gradientColorAction.setFillColor(gradientColor);
-//			} else {
-//				colorSelectionAction.setFillColor(fillColor, WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
-//			}
-////			gradientColorButton.setSelected(true);
-//			break;
-//		case NOFILL:
-//			noFillButton.setSelected(true);
-//			colorSelectionAction.setNoFill();
-//			break;
-//		default:
-//			break;
-//
-//		}
-//		if (fillColor != null)
-//			backgroundColorAction.setFillColor(fillColor);
-//		if (fillColor == gradientColor)
-//			gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
-//		if (fillColor != null && gradientColor != null)
-//			gradientColorAction.setFillColor(fillColor, gradientColor);
-//		
-//		colorSelectionButton.repaint();
-//
-//	}
+	// public void setFillStyle(FillStyle fillStyle, Color fillColor, Color
+	// gradientColor, GradientRotation rotation) throws PropertyException,
+	// IOException {
+	// this.fillStyle = fillStyle;
+	// switch (fillStyle) {
+	//
+	// case SOLID:
+	// if (fillColor != null)
+	// backgroundColorButton.setSelected(true);
+	// colorSelectionAction.setFillColor(fillColor, fillColor, rotation);
+	//
+	// break;
+	// case GRADIENT:
+	// if (gradientColor != null) {
+	// colorSelectionAction.setFillColor(fillColor, gradientColor, rotation);
+	// // gradientColorAction.setFillColor(gradientColor);
+	// } else {
+	// colorSelectionAction.setFillColor(fillColor,
+	// WolfgangProperties.getInstance().getDefaultGradientColor(),
+	// GradientRotation.VERTICAL);
+	// }
+	// // gradientColorButton.setSelected(true);
+	// break;
+	// case NOFILL:
+	// noFillButton.setSelected(true);
+	// colorSelectionAction.setNoFill();
+	// break;
+	// default:
+	// break;
+	//
+	// }
+	// if (fillColor != null)
+	// backgroundColorAction.setFillColor(fillColor);
+	// if (fillColor == gradientColor)
+	// gradientColor =
+	// WolfgangProperties.getInstance().getDefaultGradientColor();
+	// if (fillColor != null && gradientColor != null)
+	// gradientColorAction.setFillColor(fillColor, gradientColor);
+	//
+	// colorSelectionButton.repaint();
+	//
+	// }
 
 	public enum FillStyle {
 		SOLID, GRADIENT, NOFILL
@@ -832,6 +767,144 @@ public class GraphicsToolBar extends JToolBar {
 
 	public void setLineStyle(LineStyle nofill) {
 		this.lineStyle = nofill;
+
+	}
+
+	@Override
+	public void placeAdded(AbstractPlace place) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void transitionAdded(AbstractTransition transition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void relationAdded(AbstractFlowRelation relation) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void placeRemoved(AbstractPlace place) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void transitionRemoved(AbstractTransition transition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void relationRemoved(AbstractFlowRelation relation) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void constraintChanged(String flowRelation, Multiset constraint) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
+		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
+			if (selectedComponents == null || selectedComponents.isEmpty()) {
+				deactivate();
+				this.selectedCell = null;
+				return;
+			}
+			if (!selectedComponents.isEmpty()) {
+
+				if (selectedComponents.size() >= 1) {
+					this.selectedCell = selectedComponents.iterator().next();
+					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
+					boolean isTransitionSilent = false;
+					if (isTransitionCell) {
+						if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId()))
+							isTransitionSilent = pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getTransition(selectedCell.getId()).isSilent();
+					}
+					boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
+					boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
+
+					NodeGraphics nodeGraphics = null;
+					AnnotationGraphics annotationGraphics = null;
+					ArcGraphics arcGraphics = null;
+					if (!isTransitionSilent) {
+						setLineEnabled(true);
+						setFillEnabled(true);
+						switch (selectedCell.getType()) {
+						case PLACE:
+							nodeGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getPlaceGraphics().get(selectedCell.getId());
+							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getPlaceLabelAnnotationGraphics().get(selectedCell.getId());
+							break;
+						case TRANSITION:
+							nodeGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getTransitionGraphics().get(selectedCell.getId());
+							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getTransitionLabelAnnotationGraphics().get(selectedCell.getId());
+							break;
+						case ARC:
+							arcGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getArcGraphics().get(selectedCell.getId());
+							annotationGraphics = pnEditor.getNetContainer().getPetriNetGraphics().getArcAnnotationGraphics().get(selectedCell.getId());
+							break;
+						}
+						try {
+							if (nodeGraphics != null && !labelSelected) {
+
+								Fill fill = nodeGraphics.getFill();
+								setFillToolbar(fill, false);
+								Line line = nodeGraphics.getLine();
+								setLineToolbar(line);
+
+							}
+
+							if (arcGraphics != null && isArcCell) {
+								Line line = arcGraphics.getLine();
+								setLineToolbar(line);
+							}
+
+							if (annotationGraphics != null && labelSelected) {
+								Fill fill = annotationGraphics.getFill();
+								setFillToolbar(fill, true);
+								gradientColorAction.setEnabled(false);
+								gradientDiagonalAction.setEnabled(false);
+								gradientHorizontalAction.setEnabled(false);
+								gradientVerticalAction.setEnabled(false);
+								backgroundColorButton.repaint();
+
+								Line line = annotationGraphics.getLine();
+
+								setLineToolbar(line);
+								curveAction.setEnabled(false);
+							}
+						} catch (Exception e) {
+							ExceptionDialog.showException(SwingUtilities.getWindowAncestor(pnEditor), "Exception Updating Graphics Toolbar", e);
+						}
+
+					}
+
+				} else {
+					this.selectedCell = null;
+				}
+			}
+		}
 
 	}
 

@@ -626,13 +626,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 				PNGraphCell selectedCell = selectedComponents.iterator().next();
 				propertiesView.selectNode(selectedCell.getId());
 			}
-			try {
-				toolbar.updateView(selectedComponents);
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Cannot update selected Toolbar components.\nReason: " + e.getMessage(), "Editor Toolbar Exception",
-						JOptionPane.ERROR_MESSAGE);
-
-			}
 		}
 	}
 

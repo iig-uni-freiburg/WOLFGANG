@@ -117,7 +117,6 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 			performNoLabelAction();
 		}
 		doMoreFancyStuff(e);
-		updateToolbarViewWithSelectedCell();
 	}
 
 	protected abstract void performLabelAction() throws PropertyException, IOException;

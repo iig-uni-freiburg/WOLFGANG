@@ -47,7 +47,7 @@ public class CPNToolBar extends AbstractToolBar {
 	}
 
 	public void updateGlobalTokenConfigurer() {
-		tokenToolbar.updateView();
+		tokenToolbar.updateTokenToolbarView();
 	}
 
 	@Override

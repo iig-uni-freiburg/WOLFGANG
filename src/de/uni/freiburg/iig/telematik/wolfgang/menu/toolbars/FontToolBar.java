@@ -24,6 +24,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
@@ -32,6 +33,9 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillBackgroundColorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontAlignCenterAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontAlignLeftAction;
@@ -46,9 +50,10 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.text.ShowHideTokensOnArcsA
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
-public class FontToolBar extends JToolBar {
+public class FontToolBar extends JToolBar implements PNGraphListener {
 
 	private static final long serialVersionUID = -6491749112943066366L;
 
@@ -109,6 +114,7 @@ public class FontToolBar extends JToolBar {
 		Validate.notNull(pnEditor);
 		// setLayout(new WrapLayout(FlowLayout.LEFT));
 		this.pnEditor = pnEditor;
+		this.pnEditor.getGraphComponent().getGraph().addPNGraphListener(this);
 
 		showHideTokensOnArcsAction = new ShowHideTokensOnArcsAction(pnEditor);
 		showHideTokensOnArcsAction.setFontToolbar(this);
@@ -274,7 +280,90 @@ public class FontToolBar extends JToolBar {
 			showHideLabelsAction.setHideIconImage();
 	}
 
-	public void updateView(Set<PNGraphCell> selectedComponents) {
+	private void setButtonSettings(final JButton button) {
+		button.setBorderPainted(false);
+		button.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				button.setBorderPainted(false);
+				super.mouseReleased(e);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				button.setBorderPainted(true);
+				super.mousePressed(e);
+			}
+
+		});
+	}
+
+	public void setTokenOnArcEnabled(boolean b) {
+
+		if (b)
+			showHideTokensOnArcsAction.setShowIconImage();
+		else
+			showHideTokensOnArcsAction.setHideIconImage();
+
+	}
+
+	@Override
+	public void placeAdded(AbstractPlace place) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void transitionAdded(AbstractTransition transition) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void relationAdded(AbstractFlowRelation relation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void placeRemoved(AbstractPlace place) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void transitionRemoved(AbstractTransition transition) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void relationRemoved(AbstractFlowRelation relation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void constraintChanged(String flowRelation, Multiset constraint) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
 		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
 			if (selectedComponents == null || selectedComponents.isEmpty()) {
 				setFontEnabled(false);
@@ -375,34 +464,7 @@ public class FontToolBar extends JToolBar {
 				}
 			}
 		}
-	}
-
-	private void setButtonSettings(final JButton button) {
-		button.setBorderPainted(false);
-		button.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				button.setBorderPainted(false);
-				super.mouseReleased(e);
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				button.setBorderPainted(true);
-				super.mousePressed(e);
-			}
-
-		});
-	}
-
-	public void setTokenOnArcEnabled(boolean b) {
-
-		if (b)
-			showHideTokensOnArcsAction.setShowIconImage();
-		else
-			showHideTokensOnArcsAction.setHideIconImage();
-
+		
 	}
 
 }
