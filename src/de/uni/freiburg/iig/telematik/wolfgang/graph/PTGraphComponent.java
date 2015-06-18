@@ -61,7 +61,7 @@ public class PTGraphComponent extends PNGraphComponent {
 
 	@Override
 	protected boolean doubleClickOnPlace(PNGraphCell cell, MouseEvent e) {
-		String tokens = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new amount of tokens");
+		String tokens = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new amount of tokens", cell.getId() + " Token Change", JOptionPane.QUESTION_MESSAGE);
 		if(tokens != null){
 		boolean input_correct = true;
 		try {
@@ -87,7 +87,7 @@ public class PTGraphComponent extends PNGraphComponent {
 
 	@Override
 	protected boolean doubleClickOnArcLabel(PNGraphCell cell, MouseEvent e) {
-		String weight = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new arc weight");
+		String weight = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new arc weight", "Arc Weight", JOptionPane.QUESTION_MESSAGE);
 
 		if (weight != null) {
 			try {
