@@ -112,7 +112,7 @@ public class ConnectionHandler extends mxConnectionHandler {
 				
 				geo.setTerminalPoint(transformScreenPoint(x, y), false);
 
-				revalidate(graph.getView().getState(graph.getDefaultParent()), previewState.getCell());
+				revalidate(graph.getView().getState(graph.getDefaultParent()));
 				fireEvent(new mxEventObject(mxEvent.CONTINUE, "event", e, "x", x, "y", y));
 
 				// Repaints the dirty region
