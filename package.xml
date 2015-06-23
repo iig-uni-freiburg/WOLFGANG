@@ -60,7 +60,7 @@
 		<pathelement location="${JAGAL.location}/bin/classes-ant" />
 		<path refid="TOVAL.classpath" />
 		<pathelement location="${JAGAL.location}/lib/junit/junit-4.11.jar" />
-		<pathelement location="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+		<pathelement location="${JAGAL.location}/lib/jgraphx-3_1_2_1.jar" />
 	</path>
 
 	<path id="SEWOL.classpath">
@@ -97,7 +97,6 @@
 		<path refid="SEWOL.classpath" />
 		<path refid="SEPIA.classpath" />
 		<pathelement location="${libs.dir}/itextpdf-5.5.0.jar" />
-		<pathelement location="${libs.dir}/jgraphXwithsources.jar" />
 	</path>
 
 	<mkdir dir="${target.dir.jar}"/>
@@ -211,7 +210,7 @@
 			<fileset dir="${SEPIA.location}/bin/classes-ant" />
 			<fileset dir="${res.dir}" />
 			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/junit/junit-4.11.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphx-3_1_2_1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
@@ -227,7 +226,6 @@
 			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/xsom/xsom-20110101-SNAPSHOT.jar" />
 
 			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/itextpdf-5.5.0.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/jgraphXwithsources.jar" />
 		</jar>
 	</target>
 
