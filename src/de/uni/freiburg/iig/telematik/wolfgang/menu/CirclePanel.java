@@ -42,7 +42,15 @@ public class CirclePanel extends JPanel {
 
    }//end paintComponent
 
-   //========================================== drawCircle
+   public Color getColor() {
+	return color;
+}
+
+public void setColor(Color color) {
+	this.color = color;
+}
+
+//========================================== drawCircle
    // Convenience method to draw from center with radius
    public void drawCircle(Graphics cg, int xCenter, int yCenter, int r) {
        cg.drawOval(xCenter-r, yCenter-r, 2*r, 2*r);

@@ -42,14 +42,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurer;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.TokenConfigurerDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
 
 
 public class IFNetGraph extends PNGraph {
 
-	private HashMap<String, AbstractTokenConfigurer> tokenConfigurerWindows = new HashMap<String, AbstractTokenConfigurer>();
-	private AbstractTokenConfigurer lastTokenConfigurer;
+	private HashMap<String, TokenConfigurerDialog> tokenConfigurerWindows = new HashMap<String, TokenConfigurerDialog>();
+	private TokenConfigurerDialog lastTokenConfigurer;
 
 
 
@@ -169,7 +169,7 @@ public class IFNetGraph extends PNGraph {
 		case ARC:
 			IFNetFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cell.getId());
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				AbstractTokenConfigurer tc = new AbstractTokenConfigurer(window, flowRelation, this);
+				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, flowRelation, this);
 				spacing = (int) (window.getBounds().getY() + 120);
 				if (lastTokenConfigurer != null) {
 					height = lastTokenConfigurer.getBounds().getHeight();
@@ -192,7 +192,7 @@ public class IFNetGraph extends PNGraph {
 		case PLACE:
 			IFNetPlace place = getNetContainer().getPetriNet().getPlace(cell.getId());
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				AbstractTokenConfigurer tc = new AbstractTokenConfigurer(window, place, this);
+				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, place, this);
 				spacing = (int) (window.getBounds().getY() + 120);
 				if (lastTokenConfigurer != null) {
 					height = lastTokenConfigurer.getBounds().getHeight();
@@ -216,7 +216,7 @@ public class IFNetGraph extends PNGraph {
 		case TRANSITION:
 			AbstractIFNetTransition<IFNetFlowRelation> transition = getNetContainer().getPetriNet().getTransition(cell.getId());
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				AbstractTokenConfigurer tc = new AbstractTokenConfigurer(window, transition, this);
+				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, transition, this);
 				spacing = (int) (window.getBounds().getY() + 120);
 				if (lastTokenConfigurer != null) {
 					height = lastTokenConfigurer.getBounds().getHeight();
@@ -259,7 +259,7 @@ public class IFNetGraph extends PNGraph {
 
 	@Override
 	public void updateViews() {
-		for (AbstractTokenConfigurer w : tokenConfigurerWindows.values())
+		for (TokenConfigurerDialog w : tokenConfigurerWindows.values())
 			w.updateTokenConfigurerView();
 	}
 

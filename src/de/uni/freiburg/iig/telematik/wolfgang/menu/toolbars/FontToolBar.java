@@ -96,7 +96,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 	private String alignRightTooltip = "right";
 	private String alingCenterTooltip = "center";
 	private String alignLeftTooltip = "left";
-	private String textRotationTooltip = "rotate text 90�";
+	private String textRotationTooltip = "rotate text 90-Degrees";
 
 	private String fontTooltip = "choose fontfamily";
 	private String fontSizeTooltip = "fontsize";

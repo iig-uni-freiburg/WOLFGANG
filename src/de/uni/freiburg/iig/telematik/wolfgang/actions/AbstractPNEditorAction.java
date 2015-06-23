@@ -78,6 +78,7 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 		try {
 			doFancyStuff(e);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor), ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}

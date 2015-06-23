@@ -21,6 +21,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import de.uni.freiburg.iig.telematik.wolfgang.menu.ToolBarDialog;
+
 public class PopupToolBar {
 
 	private class DialogFocusListener implements WindowFocusListener {
@@ -33,8 +35,11 @@ public class PopupToolBar {
 			if (windows == null || windows.length == 0) {
 				return;
 			}
+
 			if (!Arrays.asList(windows).contains(e.getOppositeWindow())) {
-				disposeAllWindows();
+				//Reacting only if mouse is clicked outside opened toolbar OR if a ToolbarDialog is created
+				if (e.getOppositeWindow() != null && e.getComponent().getParent() != null && e.getOppositeWindow().equals(e.getComponent().getParent()) || (e.getOppositeWindow()instanceof ToolBarDialog))
+					disposeAllWindows();
 				if (!dialogOpen)
 					button.setSelected(false);
 			}
@@ -54,7 +59,6 @@ public class PopupToolBar {
 	private boolean dialogOpen;
 
 	public PopupToolBar() {
-
 	}
 
 	protected JToolBar createToolBar(int alignment) {
@@ -238,7 +242,7 @@ public class PopupToolBar {
 		this.focusListener = focusListener;
 	}
 
-	private void disposeAllWindows() {
+	public void disposeAllWindows() {
 		if (windows == null) {
 			return;
 		}
