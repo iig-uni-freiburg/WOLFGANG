@@ -14,7 +14,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenColorToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.cpn.CPNPropertyCheckToolbar;
 
 public class CPNToolBar extends AbstractToolBar {
@@ -23,7 +23,7 @@ public class CPNToolBar extends AbstractToolBar {
 	
 	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
 	
-	private TokenToolBar tokenToolbar;
+	private TokenColorToolBar tokenToolbar;
 	// private TokenlabelToolBar tokenlabelToolbar;
 	private PopUpToolBarAction tokenAction;
 	private PopUpToolBarAction editTokenlabelAction;
@@ -36,8 +36,9 @@ public class CPNToolBar extends AbstractToolBar {
 	@Override
 	protected void addNetSpecificToolbarButtons() {
 		tokenButton = (JToggleButton) add(tokenAction, true);
-		tokenAction.setButton(tokenButton);
 		tokenButton.setBackground(DEFAULT_BG_COLOR);
+		tokenAction.setButton(tokenButton);
+		tokenToolbar.setPopUpToolBarAction(tokenAction);
 	}
 
 	@Override
@@ -45,14 +46,14 @@ public class CPNToolBar extends AbstractToolBar {
 		if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.CPN
 				|| pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getNetType() == NetType.IFNet) {
 			
-			tokenToolbar = new TokenToolBar(pnEditor, JToolBar.HORIZONTAL);
+			tokenToolbar = new TokenColorToolBar(pnEditor, JToolBar.HORIZONTAL);
 			tokenAction = new PopUpToolBarAction(pnEditor, "Token", IconFactory.getIcon("marking"), tokenToolbar);
 		}
 
 	}
 
 	public void updateGlobalTokenConfigurer() {
-		tokenToolbar.updateTokenToolbarView();
+		tokenToolbar.setUpGui();
 	}
 
 	@Override
