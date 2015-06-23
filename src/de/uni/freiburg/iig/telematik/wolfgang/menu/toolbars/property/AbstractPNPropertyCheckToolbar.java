@@ -1,9 +1,11 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ExceptionDialog;
@@ -26,6 +28,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 	private AbstractMarkingGraph<?, ?, ?, ?> markingGraph = null;
 	protected AbstractValidityCheckLabel validityCheckLabel;
 	protected PNEditorComponent pnEditor = null;
+	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
 	
 
 	public AbstractPNPropertyCheckToolbar(final PNEditorComponent pnEditor, int orientation) throws PropertyException, IOException {
@@ -36,6 +39,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 		pnEditor.getNetContainer().getPetriNet().addStructureListener(this);
 		pnEditor.getNetContainer().getPetriNet().addMarkingListener(this);
 		
+
 		validityCheckLabel = createValidityCheckLabel();
 		validityCheckLabel.addListener(this);
 		add(validityCheckLabel);
@@ -44,6 +48,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 		boundednessCheckLabel.setEnabled(false);
 		add(boundednessCheckLabel);
 		addNetSpecificCheckLabels(pnEditor);
+		setBackground(DEFAULT_BG_COLOR);
 	}
 
 	protected abstract void addNetSpecificCheckLabels(PNEditorComponent pnEditor);

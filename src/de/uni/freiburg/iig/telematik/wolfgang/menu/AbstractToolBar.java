@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
@@ -56,7 +57,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 
 
-
+	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
 
 	private static final long serialVersionUID = -6491749112943066366L;
 
@@ -65,8 +66,6 @@ public abstract class AbstractToolBar extends JToolBar {
 	protected static final String NO_SELECTION = "no selection...";
 
 	protected static final String NO_SELECTION_TIME = "no time context...";
-	
-	private static final Color DEFAULT_BG_COLOR = new Color(185,185,185);
 
 	private JComboBox comboTimeContextModel = null;
 
@@ -148,8 +147,6 @@ public abstract class AbstractToolBar extends JToolBar {
 		super(orientation);
 		Validate.notNull(pnEditor);
 		this.pnEditor = pnEditor;
-
-		setBackground(DEFAULT_BG_COLOR);
 		try {
 			createToolbarActions(pnEditor);
 			createAdditionalToolbarActions(pnEditor);
@@ -244,7 +241,21 @@ public abstract class AbstractToolBar extends JToolBar {
 		undoButton.setToolTipText(undoTooltip);
 		redoButton.setToolTipText(redoTooltip);
 		fontButton.setToolTipText(fontTooltip);
-
+		
+		
+		// setting background colour for toolbar and buttons
+//		setBackground(DEFAULT_BG_COLOR);
+		exportButton.setBackground(DEFAULT_BG_COLOR);
+		undoButton.setBackground(DEFAULT_BG_COLOR);
+		redoButton.setBackground(DEFAULT_BG_COLOR);
+		fontButton.setBackground(DEFAULT_BG_COLOR);
+		graphicsButton.setBackground(DEFAULT_BG_COLOR);
+		reloadExecutionButton.setBackground(DEFAULT_BG_COLOR);
+		zoomButton.setBackground(DEFAULT_BG_COLOR);
+		nodeButton.setBackground(DEFAULT_BG_COLOR);
+		exportButton.setBackground(DEFAULT_BG_COLOR);
+		toggleModeButton.setBackground(DEFAULT_BG_COLOR);
+		
 	}
 
 	protected abstract JToolBar createPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;

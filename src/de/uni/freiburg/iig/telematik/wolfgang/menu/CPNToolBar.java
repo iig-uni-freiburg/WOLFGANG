@@ -1,9 +1,11 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -19,6 +21,8 @@ public class CPNToolBar extends AbstractToolBar {
 
 	private static final long serialVersionUID = -8554639019766448073L;
 	
+	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
+	
 	private TokenToolBar tokenToolbar;
 	// private TokenlabelToolBar tokenlabelToolbar;
 	private PopUpToolBarAction tokenAction;
@@ -33,6 +37,7 @@ public class CPNToolBar extends AbstractToolBar {
 	protected void addNetSpecificToolbarButtons() {
 		tokenButton = (JToggleButton) add(tokenAction, true);
 		tokenAction.setButton(tokenButton);
+		tokenButton.setBackground(DEFAULT_BG_COLOR);
 	}
 
 	@Override
