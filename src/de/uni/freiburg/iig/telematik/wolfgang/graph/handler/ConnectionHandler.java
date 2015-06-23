@@ -58,13 +58,13 @@ public class ConnectionHandler extends mxConnectionHandler {
 	@Override
 	protected mxConnectPreview createConnectPreview() {
 		return new mxConnectPreview(getGraphComponent()) {
-	
 
 			@Override
 			/**
 			 * 
 			 */
 			public void update(MouseEvent e, mxCellState targetState, double x, double y) {
+
 				mxGraph graph = graphComponent.getGraph();
 				mxICell cell = (mxICell) previewState.getCell();
 
@@ -83,36 +83,39 @@ public class ConnectionHandler extends mxConnectionHandler {
 
 				try {
 					int placeSize = WolfgangProperties.getInstance().getDefaultPlaceSize() / 2;
-					int transitionWidth = WolfgangProperties.getInstance().getDefaultTransitionWidth()/2;
-					int transitionHeight = WolfgangProperties.getInstance().getDefaultTransitionHeight()/2;
-					if(sourceState != null)
-					 if (sourceState.getCell() instanceof PNGraphCell) {
-						PNGraphCell pnCell = ((PNGraphCell) sourceState.getCell());
-						switch (pnCell.getType()) {
-						case ARC:
-							break;
-						case PLACE:
-							x = x < transitionWidth ? transitionWidth : x;
-							y = y < transitionHeight ? transitionHeight : y;
-							break;
-						case TRANSITION:
-							x = x < placeSize ? placeSize : x;
-							y = y < placeSize ? placeSize : y;
-							break;
-						default:
-							break;
+					int transitionWidth = WolfgangProperties.getInstance().getDefaultTransitionWidth() / 2;
+					int transitionHeight = WolfgangProperties.getInstance().getDefaultTransitionHeight() / 2;
+					if (sourceState != null)
+						if (sourceState.getCell() instanceof PNGraphCell) {
+							PNGraphCell pnCell = ((PNGraphCell) sourceState.getCell());
+							switch (pnCell.getType()) {
+							case ARC:
+								break;
+							case PLACE:
+								x = x < transitionWidth ? transitionWidth : x;
+								y = y < transitionHeight ? transitionHeight : y;
+								break;
+							case TRANSITION:
+								x = x < placeSize ? placeSize : x;
+								y = y < placeSize ? placeSize : y;
+								break;
+							default:
+								break;
+							}
 						}
-					}
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(getGraphComponent(), "Nodesizes could not be loaded from WolfgangProperties", "Wolfgang Property Exception", JOptionPane.ERROR_MESSAGE);
 				}
-				//set xPosition and yPosition for creation of Mousevent in mousereleased()
+				// set xPosition and yPosition for creation of Mousevent in
+				// mousereleased()
 				xPosition = (int) x;
 				yPosition = (int) y;
-				
-				geo.setTerminalPoint(transformScreenPoint(x, y), false);
 
-				revalidate(graph.getView().getState(graph.getDefaultParent()));
+				geo.setTerminalPoint(transformScreenPoint(x, y), false);
+				revalidate(previewState);
+				
+				// Neccesary?
+				// revalidate(graph.getView().getState(graph.getDefaultParent()));
 				fireEvent(new mxEventObject(mxEvent.CONTINUE, "event", e, "x", x, "y", y));
 
 				// Repaints the dirty region
