@@ -28,7 +28,16 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 
 public class GraphTransferHandler extends mxGraphTransferHandler {
 
+
 	private static final long serialVersionUID = -8521142091923475876L;
+
+	public GraphTransferHandler() {
+		super();
+		
+		//Workaround JVM 1.7/1.8 Bug regarding flavormap.properties (MacOS/Linux Problem)
+		//see  https://java.net/nonav/projects/macosx-port/lists/issues/archive/2011-11/message/524
+		mxGraphTransferable.enableImageSupport= false;
+	}
 
 	/**
 	 * Checks if the mxGraphTransferable data flavour is supported and calls
@@ -68,7 +77,7 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 		return result;
 	}
-	
+
 	/**
 	 * Gets a drop target using getDropTarget and imports the cells.<br>
 	 * <ul>
@@ -190,5 +199,6 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 		return cells;
 	}
+	
 
 }
