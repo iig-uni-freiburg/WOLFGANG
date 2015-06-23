@@ -131,12 +131,14 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 			((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph) graph, selectedCell.getId(), silent));
 			if (silent) {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000", selectedCellArray);
+				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "#00000", selectedCellArray);
 				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, "#00000", selectedCellArray);
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", selectedCellArray);
 				graph.setCellStyles(MXConstants.SILENT, "1", selectedCellArray);
 			} else {
 				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
 				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
+				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultLineColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
 				graph.setCellStyles(MXConstants.SILENT, "0", selectedCellArray);
 
