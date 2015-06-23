@@ -5,6 +5,7 @@ import java.io.File;
 import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
 import de.invation.code.toval.graphic.misc.AbstractStartup;
@@ -52,8 +53,10 @@ public class WolfgangStartup extends AbstractStartup {
 	}
 
 	private void tryToOpenNet() throws Exception {
+		setLookAndFeel();
 		JFileChooser fc;
 		fc = new JFileChooser(System.getProperty("user.home"));
+		fc.removeChoosableFileFilter(fc.getFileFilter());
 		fc.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
@@ -92,6 +95,20 @@ public class WolfgangStartup extends AbstractStartup {
 		}
 		else
 			startApplication();
+	}
+	
+	private void setLookAndFeel() {
+		if (System.getProperty("os.name").toLowerCase().contains("nux")) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			} catch (Exception e) {
+			}
+		} else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	public static void main(String[] args) {
