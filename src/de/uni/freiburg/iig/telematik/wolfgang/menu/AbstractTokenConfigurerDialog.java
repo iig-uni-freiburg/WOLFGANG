@@ -122,6 +122,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	private void createAddBtn() {
 		try {
 			addButton = new JButton(IconFactory.getIcon("maximize"));
+			addButton.setFocusable(false);
 			creaeAddBtnListener();
 			mainPanel().add(addButton);
 		} catch (Exception e) {
@@ -151,6 +152,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				}
 
 				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
+				
 			}
 
 			private void addColorItem(JPopupMenu popup, final String color) {
