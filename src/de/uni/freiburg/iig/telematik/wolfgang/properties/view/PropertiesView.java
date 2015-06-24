@@ -84,9 +84,9 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	public PropertiesView(PNProperties properties) {
 		Validate.notNull(properties);
 		this.properties = properties;
-//		setPreferredSize(new java.awt.Dimension(120, 600));
-//		setMaximumSize(new java.awt.Dimension(120, 600));
-//setMinimumSize(new java.awt.Dimension(120, 600));
+		// setPreferredSize(new java.awt.Dimension(120, 600));
+		// setMaximumSize(new java.awt.Dimension(120, 600));
+		// setMinimumSize(new java.awt.Dimension(120, 600));
 		// expand all nodes in the tree to be visible
 		for (int i = 0; i < getRowCount(); i++) {
 			expandRow(i);
@@ -309,7 +309,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		PNTreeNode child = (PNTreeNode) findTreeNodeByName((DefaultMutableTreeNode) getModel().getRoot(), name).getFirstChild();
 		int i = 0;
 		for (i = 0; i <= child.getTable().getRowCount(); i++) {
-			if (child.getTable().getValueAt(i, 0).toString().equals(property+":"))
+			if (child.getTable().getValueAt(i, 0).toString().equals(property + ":"))
 				break;
 		}
 		((JTextField) child.getTable().getValueAt(i, 1)).setText(oldValue);
@@ -369,7 +369,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-				g.drawImage(propertiesImage , 45, 2, null);
+			g.drawImage(propertiesImage, 45, 2, null);
 		}
 
 		@Override
@@ -423,15 +423,25 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	}
 
 	private void insertArcNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.ARC, PNTreeNodeType.ARC), arcsNode, arcsNode.getChildCount());
+		treeModel.insertNodeInto(createFields(name, PNComponent.ARC, PNTreeNodeType.ARC), arcsNode, getNextIndex(properties.getArcNames(),name));
 	}
 
 	private void insertTransitionNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.TRANSITION, PNTreeNodeType.TRANSITION), transitionsNode, transitionsNode.getChildCount());
+		treeModel.insertNodeInto(createFields(name, PNComponent.TRANSITION, PNTreeNodeType.TRANSITION), transitionsNode, getNextIndex(properties.getTransitionNames(),name));
 	}
 
 	private void insertPlaceNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.PLACE, PNTreeNodeType.PLACE), placesNode, placesNode.getChildCount());
+		treeModel.insertNodeInto(createFields(name, PNComponent.PLACE, PNTreeNodeType.PLACE), placesNode, getNextIndex(properties.getPlaceNames(),name));
+	}
+
+	private int getNextIndex(List<String> list, String name) {
+		int i=0;
+		for(String p:list){
+			if(list.get(i).equals(name))
+				return i;
+			i++;
+		}
+		return i;
 	}
 
 	@Override
@@ -462,18 +472,16 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			collapseRow(i);
 		}
 	}
+
 	@Override
-    protected void fireValueChanged(final TreeSelectionEvent e)
-    {
-        if (this.isValid())
-            super.fireValueChanged(e);
-        else
-        {
-            super.clearSelection();
-        }
+	protected void fireValueChanged(final TreeSelectionEvent e) {
+		if (this.isValid())
+			super.fireValueChanged(e);
+		else {
+			super.clearSelection();
+		}
 
-    }
-
+	}
 
 	private DefaultMutableTreeNode findTreeNodeByName(DefaultMutableTreeNode root, String name) {
 		@SuppressWarnings("unchecked")
