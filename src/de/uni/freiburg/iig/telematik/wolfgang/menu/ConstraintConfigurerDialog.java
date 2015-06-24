@@ -26,21 +26,6 @@ public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 	}
 
 	@Override
-	protected void okProcedure() {
-		if (((CPNGraph) graph).getNetContainer().getPetriNet().getFlowRelation(cellName).getConstraint().isEmpty()) {
-			int result = JOptionPane.showConfirmDialog(this, "There are currenlty no constraints for " + cellName + ". If you confirm, " + cellName
-					+ " will be deleted. \n To add new constraints press \"no\".", "Warning", JOptionPane.YES_NO_OPTION);
-			if (result != 1){
-				super.okProcedure();
-				PNGraphCell cell = graph.getNodeCell(cellName);
-				graph.removeCells(new Object[]{cell});
-			}
-		} else
-			super.okProcedure();
-
-	}
-
-	@Override
 	protected String getCellSpecificHeadline() {
 		return "Constraints";
 	}
@@ -53,8 +38,12 @@ public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected void createCellSpecificRemoveBtnAction(String tokenName) {
+		Multiset<String> clone = getMultiSet().clone();
+		clone.reduceToSet();
+		if(clone.size()>1){
 		getMultiSet().setMultiplicity(tokenName, 0);
 		((mxGraphModel) graph.getModel()).execute(new ConstraintChange((PNGraph) graph, cellName, getMultiSet()));
+	}
 	}
 
 	@Override
@@ -115,10 +104,20 @@ public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 		return dialog;
 	}
 
+
 	@Override
-	protected boolean isControlFlowRemoveable() {
+	protected int getMinimumCapacity() {
 		// TODO Auto-generated method stub
-		return false;
+		return 1;
 	}
+
+	@Override
+	protected boolean isRemoveBtnEnabled() {
+		Multiset<String> clone = getMultiSet().clone();
+		clone.reduceToSet();
+		return clone.size()>1;
+	}
+
+
 
 }

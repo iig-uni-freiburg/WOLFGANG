@@ -189,17 +189,19 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		}
 
 		
-		mainPanel().add(getRemoveButton(tokenLabel));
+		JButton rmv = getRemoveButton(tokenLabel);
+		mainPanel().add(rmv);
+		rmv.setEnabled(isRemoveBtnEnabled());
 	}
 
-	protected abstract boolean isControlFlowRemoveable();
+	protected abstract boolean isRemoveBtnEnabled();
 
 	protected abstract JSpinner get2ndSpinner(final String tokenLabel);
 
 	private TokenSpinner getTokenSpinner(final String tokenLabel) {
 		int size = getMultiSet().multiplicity(tokenLabel);
 		int cap = getSpinnerCapacity(tokenLabel);
-		int min = 0;
+		int min = getMinimumCapacity();
 		int step = 1;
 		SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
 		TokenSpinner spinner = new TokenSpinner(model, tokenLabel, cap);
@@ -229,6 +231,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		return spinner;
 	}
 
+	protected abstract int getMinimumCapacity();
+
 	protected abstract mxAtomicGraphModelChange createCellSpecificChange(PNGraph graph, String paName, Multiset<String> newMarking);
 
 	protected abstract int getSpinnerCapacity(String tokenLabel);
@@ -245,7 +249,6 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				((mxGraphModel) graph.getModel()).beginUpdate();
-				if (isControlFlowRemoveable())
 				createCellSpecificRemoveBtnAction(tokenName);
 				((mxGraphModel) graph.getModel()).endUpdate();
 				addButton.setEnabled(true);

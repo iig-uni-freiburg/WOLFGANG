@@ -217,10 +217,19 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 		return dialog;
 	}
 
+
 	@Override
-	protected boolean isControlFlowRemoveable() {
+	protected int getMinimumCapacity() {
 		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected boolean isRemoveBtnEnabled() {
 		return true;
 	}
+
+
+
 
 }
