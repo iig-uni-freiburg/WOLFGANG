@@ -10,20 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeListener;
 import java.util.Map;
-import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
@@ -42,7 +37,6 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
@@ -83,92 +77,36 @@ public class TokenColorToolBar extends JToolBar {
 	}
 
 	private void createTokenColorMap() {
-		AbstractCPNGraphics graphics = (AbstractCPNGraphics) this.editor.getNetContainer().getPetriNetGraphics();
-		mapColorsForToolBar = graphics.getColors();
+		mapColorsForToolBar = ((AbstractCPNGraphics) this.editor.getNetContainer().getPetriNetGraphics()).getColors();
 		mapColorsForToolBar.put("black", Color.BLACK);
 	}
 
 	public void setUpGui() {
-
-		AbstractCPNGraphics cpnGraphics = (AbstractCPNGraphics) this.editor.getNetContainer().getPetriNetGraphics();
-		mapColorsForToolBar = cpnGraphics.getColors();
+		mapColorsForToolBar = ((AbstractCPNGraphics) this.editor.getNetContainer().getPetriNetGraphics()).getColors();
 
 		pnlTokenColors.removeAll();
 
 		createAddBtn();
 
 		pnlTokenColors.add(new JLabel("Color"));
-
+		
+		//Undelying columns contain more elements
 		pnlTokenColors.add(Box.createGlue());
 		pnlTokenColors.add(Box.createGlue());
 		pnlTokenColors.add(Box.createGlue());
 		pnlTokenColors.add(Box.createGlue());
 
-		if (getTokenColors().contains("black"))
+		if (((AbstractCPN) this.editor.getNetContainer().getPetriNet()).getTokenColors().contains("black"))
 			mapColorsForToolBar.put("black", Color.BLACK);
 		addRow("black");
-		int size = 0;
+		
 		for (String color : mapColorsForToolBar.keySet()) {
 			if (!color.equals("black"))
 				addRow(color);
-			size++;
 		}
-
-		SpringUtilities.makeCompactGrid(pnlTokenColors, size + 1, 6, 6, 6, 6, 6);
+		makeCompactGrid();
 		add(pnlTokenColors);
 
-	}
-
-	private void createAddBtn() {
-		try {
-			addButton = new JButton(IconFactory.getIcon("maximize"));
-			creaeAddBtnListener();
-			pnlTokenColors.add(addButton);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
-		}
-	}
-
-	private void creaeAddBtnListener() {
-		addButton.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				try {
-					CirclePanel circle = new CirclePanel(Color.BLACK);
-					TokenColorChooserPanel newColorField = new TokenColorChooserPanel(ColorMode.HEX, null, circle);
-					for (MouseListener ml : newColorField.getLblColor().getMouseListeners()) {
-						ml.mouseClicked(e);
-					}
-
-					ChangeTokenColorNameField newName = new ChangeTokenColorNameField(InitialPlaceHolderTokenColorName, newColorField);
-
-					addNewRow(circle, newColorField, newName);
-				} catch (Exception e1) {
-				}
-			}
-		});
-	}
-
-	protected void addNewRow(CirclePanel circle, TokenColorChooserPanel newField, ChangeTokenColorNameField newName) {
-		pnlTokenColors.add(circle);
-		pnlTokenColors.add(newField);
-		pnlTokenColors.add(newName);
-
-		Component box1 = pnlTokenColors.add(Box.createGlue());
-
-		Component box2 = pnlTokenColors.add(Box.createGlue());
-
-		pnlTokenColors.add(getRemoveButton(newName.getText(), circle, newField, newName, box1, box2));
-		SpringUtilities.makeCompactGrid(pnlTokenColors, pnlTokenColors.getComponentCount() / 6, 6, 6, 6, 6, 6);
-		this.tokenAction.actionPerformed(null);
-		newName.requestFocus();
-	}
-
-	protected Set<String> getTokenColors() {
-		AbstractCPN net = (AbstractCPN) this.editor.getNetContainer().getPetriNet();
-		return net.getTokenColors();
 	}
 
 	protected void addRow(String tokenLabel) {
@@ -196,6 +134,45 @@ public class TokenColorToolBar extends JToolBar {
 			rmv.setEnabled(false);
 	}
 
+	private void createAddBtn() {
+		try {
+			addButton = new JButton(IconFactory.getIcon("maximize"));
+			addButton.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					try {
+						CirclePanel circle = new CirclePanel(Color.BLACK);
+						TokenColorChooserPanel newColorField = new TokenColorChooserPanel(ColorMode.HEX, null, circle);
+						for (MouseListener ml : newColorField.getLblColor().getMouseListeners()) {
+							ml.mouseClicked(e);
+						}
+						ChangeTokenColorNameField newName = new ChangeTokenColorNameField(InitialPlaceHolderTokenColorName, newColorField);
+
+						addBtnAddNewRow(circle, newColorField, newName);
+					} catch (Exception e1) {
+					}
+				}
+			});
+			pnlTokenColors.add(addButton);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
+		}
+	}
+
+	protected void addBtnAddNewRow(CirclePanel circle, TokenColorChooserPanel newField, ChangeTokenColorNameField newName) {
+		pnlTokenColors.add(circle);
+		pnlTokenColors.add(newField);
+		pnlTokenColors.add(newName);
+		Component box1 = pnlTokenColors.add(Box.createGlue());
+		Component box2 = pnlTokenColors.add(Box.createGlue());
+		pnlTokenColors.add(getRemoveButton(newName.getText(), circle, newField, newName, box1, box2));
+		makeCompactGrid();
+		this.tokenAction.actionPerformed(null);
+		newName.requestFocus();
+	}
+
 	private CirclePanel getTokenCircle(String tokenLabel) {
 		Color tokenColor = mapColorsForToolBar.get(tokenLabel);
 		CirclePanel circle = null;
@@ -207,12 +184,15 @@ public class TokenColorToolBar extends JToolBar {
 		return circle;
 	}
 
+	private Component getRemoveButton(String tokenLabel) {
+		return getRemoveButton(tokenLabel, null, null, null, null, null);
+	}
+
 	private JButton getRemoveButton(final String tokenName, final CirclePanel circle, final TokenColorChooserPanel newField, final ChangeTokenColorNameField newName, final Component box1,
 			final Component box2) {
 
 		try {
 			final JButton remove = new JButton(IconFactory.getIcon("minimize"));
-
 			remove.addActionListener(new ActionListener() {
 
 				@Override
@@ -225,11 +205,6 @@ public class TokenColorToolBar extends JToolBar {
 						PNGraph graph = editor.getGraphComponent().getGraph();
 						mxGraphModel model = ((mxGraphModel) graph.getModel());
 						CPN pn = (CPN) graph.getNetContainer().getPetriNet();
-
-						AbstractCPNGraphics pnGraphics = (AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics();
-						CPNMarking am = pn.getInitialMarking();
-						Map<String, Color> colorsMap = pnGraphics.getColors();
-						Color color = colorsMap.get(tokenLabel);
 
 						if (editor.getNetContainer().getPetriNet() instanceof CPN) {
 							for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
@@ -250,7 +225,6 @@ public class TokenColorToolBar extends JToolBar {
 										model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
 									}
 								}
-
 							}
 						}
 						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
@@ -263,13 +237,13 @@ public class TokenColorToolBar extends JToolBar {
 						pnlTokenColors.remove(remove);
 						pnlTokenColors.remove(box1);
 						pnlTokenColors.remove(box2);
-						SpringUtilities.makeCompactGrid(pnlTokenColors, pnlTokenColors.getComponentCount() / 6, 6, 6, 6, 6, 6);
+						makeCompactGrid();
 
 					}
-
 					tokenAction.actionPerformed(null);
-
 				}
+
+
 
 			});
 			return remove;
@@ -278,10 +252,9 @@ public class TokenColorToolBar extends JToolBar {
 		}
 		return null;
 	}
-
-	private Component getRemoveButton(String tokenLabel) {
-		// TODO Auto-generated method stub
-		return getRemoveButton(tokenLabel, null, null, null, null, null);
+	
+	private void makeCompactGrid() {
+		SpringUtilities.makeCompactGrid(pnlTokenColors, pnlTokenColors.getComponentCount() / 6, 6, 6, 6, 6, 6);
 	}
 
 	private class ChangeTokenColorNameField extends RestrictedTextField implements RestrictedTextFieldListener {
@@ -315,13 +288,13 @@ public class TokenColorToolBar extends JToolBar {
 
 				String newTokenName = getText();
 				String tokenLabel = oldValue;
+
 				PNGraph graph = editor.getGraphComponent().getGraph();
 				mxGraphModel model = ((mxGraphModel) graph.getModel());
 				CPN pn = (CPN) graph.getNetContainer().getPetriNet();
-				AbstractCPNGraphics pnGraphics = (AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics();
-				CPNMarking am = pn.getInitialMarking();
-				Map<String, Color> colorsMap = pnGraphics.getColors();
+				Map<String, Color> colorsMap = ((Map<String, Color>) ((AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics()).getColors());
 				Color color = colorsMap.get(tokenLabel);
+
 				if (newTokenName.length() <= 15 && !oldValue.equals(newTokenName) && !colorsMap.keySet().contains(newValue)) {
 					model.beginUpdate();
 					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
@@ -339,7 +312,7 @@ public class TokenColorToolBar extends JToolBar {
 						}
 
 						for (CPNPlace place : pn.getPlaces()) {
-							Multiset<String> multiSet = (Multiset<String>) am.get(place.getName());
+							Multiset<String> multiSet = (Multiset<String>) pn.getInitialMarking().get(place.getName());
 							if (multiSet != null) {
 								if (multiSet.contains(tokenLabel)) {
 									int multiplicity = multiSet.multiplicity(tokenLabel);
@@ -360,8 +333,10 @@ public class TokenColorToolBar extends JToolBar {
 							"Problem", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-			if (getParent() != null)
+			if (getParent() != null) {
 				getParent().requestFocus();
+			}
+
 			tokenAction.actionPerformed(null);
 		}
 

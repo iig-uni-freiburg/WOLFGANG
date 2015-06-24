@@ -22,11 +22,8 @@ public class CPNToolBar extends AbstractToolBar {
 	private static final long serialVersionUID = -8554639019766448073L;
 	
 	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
-	
 	private TokenColorToolBar tokenToolbar;
-	// private TokenlabelToolBar tokenlabelToolbar;
 	private PopUpToolBarAction tokenAction;
-	private PopUpToolBarAction editTokenlabelAction;
 	private JToggleButton tokenButton;
 
 	public CPNToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
