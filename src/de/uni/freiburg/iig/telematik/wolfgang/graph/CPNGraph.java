@@ -138,6 +138,7 @@ public class CPNGraph extends PNGraph {
 			colors.remove(name);
 		}
 		getNetContainer().getPetriNetGraphics().setColors(colors);
+		System.out.println(colors);
 
 	}
 

@@ -5,10 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -21,6 +24,16 @@ public class TokenColorChooserPanel extends JPanel {
 	
 	static final int PREFERRED_HEIGHT = 20;
 	
+	private Set<ColorChooserListener> listeners = new HashSet<ColorChooserListener>();
+
+	public void addListener(ColorChooserListener listener){
+		this.listeners.add(listener);
+	}
+	
+	public void removeListener(ColorChooserListener listener){
+		this.listeners.remove(listener);
+	}
+	
 	private ColorChooserLabel lblColor;
 	public ColorChooserLabel getLblColor() {
 		return lblColor;
@@ -31,6 +44,10 @@ public class TokenColorChooserPanel extends JPanel {
 	}
 
 	private Color chosenColor = null;
+	
+	protected boolean isColorUnique = true;
+
+
 
 	private CirclePanel circle;
 
@@ -63,9 +80,16 @@ public class TokenColorChooserPanel extends JPanel {
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					Color color = JColorChooser.showDialog(SwingUtilities.getWindowAncestor(TokenColorChooserPanel.this), "Choose Color", null);
-					if(color != null)
-						ColorChooserLabel.this.updateColor(color);
+					Color color = JColorChooser.showDialog(SwingUtilities.getWindowAncestor(TokenColorChooserPanel.this), "Choose Color", chosenColor);
+					for(ColorChooserListener listener: listeners){
+						listener.valueChanged(chosenColor, color);
+					}
+					if(color!=null && isColorUnique)
+					ColorChooserLabel.this.updateColor(color);
+					if(!isColorUnique)
+						JOptionPane.showMessageDialog(ColorChooserLabel.this, "Please choose a different color","Color already exists", JOptionPane.WARNING_MESSAGE);
+
+					
 				}
 			});
 		}
@@ -92,6 +116,7 @@ public class TokenColorChooserPanel extends JPanel {
 			} else {
 				setText("---");
 			}
+
 	
 		}
 		
@@ -106,6 +131,14 @@ public class TokenColorChooserPanel extends JPanel {
 	
 	public Color getChosenColor(){
 		return chosenColor;
+	}
+	
+	public boolean isColorUnique() {
+		return isColorUnique;
+	}
+
+	public void setColorUnique(boolean isColorUnique) {
+		this.isColorUnique = isColorUnique;
 	}
 	
 	public enum ColorMode {
