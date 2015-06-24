@@ -10,9 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -54,7 +55,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.TokenColorChooserPan
 
 public class TokenColorToolBar extends JToolBar {
 
-
 	private static final long serialVersionUID = -6491749112943066366L;
 	// Buttons
 
@@ -66,6 +66,8 @@ public class TokenColorToolBar extends JToolBar {
 	private Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
 	private PopUpToolBarAction tokenAction;
 	private static final String InitialPlaceHolderTokenColorName = "-type name-";
+
+	public static final int MaximalTokenCharachters = 15;
 
 	public TokenColorToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException {
 		super(orientation);
@@ -102,9 +104,7 @@ public class TokenColorToolBar extends JToolBar {
 		if (((AbstractCPN) this.editor.getNetContainer().getPetriNet()).getTokenColors().contains("black"))
 			mapColorsForToolBar.put("black", Color.BLACK);
 		addRow("black");
-//		TreeSet<String, Color> sortedMapColorsForToolBar = new TreeSet();
-//		Collections.sort(mapColorsForToolBar.keySet());
-		Map<String, Color> sortedMap = new TreeMap<String, Color>(mapColorsForToolBar); 
+		Map<String, Color> sortedMap = new TreeMap<String, Color>(mapColorsForToolBar);
 		for (String color : sortedMap.keySet()) {
 			if (!color.equals("black"))
 				addRow(color);
@@ -138,8 +138,8 @@ public class TokenColorToolBar extends JToolBar {
 		if (tokenLabel.equals("black"))
 			rmv.setEnabled(false);
 	}
-	
-	private class CPNTokenColorChooserPanel extends TokenColorChooserPanel implements ColorChooserListener{
+
+	private class CPNTokenColorChooserPanel extends TokenColorChooserPanel implements ColorChooserListener {
 
 		private String tokenLabel;
 
@@ -151,15 +151,14 @@ public class TokenColorToolBar extends JToolBar {
 
 		@Override
 		public void valueChanged(Color oldValue, Color newValue) {
-			 //Check if chosen color alreadyexists
+			// Check if chosen color alreadyexists
 			setColorUnique(!mapColorsForToolBar.values().contains(newValue));
-			
-			if(tokenLabel!= null){
-			if (!newValue.equals(mapColorsForToolBar.get(tokenLabel))) {
-				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, newValue));
-			}
-			}
 
+			if (tokenLabel != null) {
+				if (!newValue.equals(mapColorsForToolBar.get(tokenLabel))) {
+					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, newValue));
+				}
+			}
 
 		}
 
@@ -179,19 +178,18 @@ public class TokenColorToolBar extends JToolBar {
 						for (MouseListener ml : newColorField.getLblColor().getMouseListeners()) {
 							ml.mouseClicked(e);
 						}
-						if(newColorField.getChosenColor()!=null){
-						ChangeTokenColorNameField newName = new ChangeTokenColorNameField(InitialPlaceHolderTokenColorName, newColorField);
+						if (newColorField.getChosenColor() != null) {
+							ChangeTokenColorNameField newName = new ChangeTokenColorNameField(InitialPlaceHolderTokenColorName, newColorField);
 
-						addBtnAddNewRow(circle, newColorField, newName);
+							addBtnAddNewRow(circle, newColorField, newName);
 
-						// allowing only one unedited color name field
-						addButton.setEnabled(false);
+							// allowing only one unedited color name field
+							addButton.setEnabled(false);
 						}
 					} catch (Exception e1) {
-						System.out.println("yo2");
 
 					}
-					
+
 				}
 			});
 			pnlTokenColors.add(addButton);
@@ -329,59 +327,74 @@ public class TokenColorToolBar extends JToolBar {
 			CPN pn = (CPN) graph.getNetContainer().getPetriNet();
 			Map<String, Color> colorsMap = ((Map<String, Color>) ((AbstractCPNGraphics) graph.getNetContainer().getPetriNetGraphics()).getColors());
 			Color color = colorsMap.get(tokenLabel);
-			// new Name Case
-			if (oldValue.equals(InitialPlaceHolderTokenColorName) && !newValue.equals(InitialPlaceHolderTokenColorName) && !colorsMap.keySet().contains(newValue)) {
-				((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newValue, colorField.getChosenColor()));
-				// allowing only one unedited color name field: allow new color
-				// when edited
-				addButton.setEnabled(true);
-			} else if (newTokenName.length() <= 15 && !oldValue.equals(newTokenName) && !colorsMap.keySet().contains(newValue)) {
-					model.beginUpdate();
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
-					if (editor.getNetContainer().getPetriNet() instanceof CPN) {
-						for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
-							Multiset<String> constraint = flowrelation.getConstraint();
-							if (constraint != null) {
-								if (constraint.contains(tokenLabel)) {
-									int constraintMultiplicity = constraint.multiplicity(tokenLabel);
-									constraint.setMultiplicity(newTokenName, constraintMultiplicity);
-									constraint.setMultiplicity(tokenLabel, 0);
-									model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
-								}
-							}
-						}
+			Pattern pattern = Pattern.compile("\\s");
+			Matcher matcher = pattern.matcher(newValue);
+			if (!matcher.find()) {// Check for whitespaces
 
-						for (CPNPlace place : pn.getPlaces()) {
-							Multiset<String> multiSet = (Multiset<String>) pn.getInitialMarking().get(place.getName());
-							if (multiSet != null) {
-								if (multiSet.contains(tokenLabel)) {
-									int multiplicity = multiSet.multiplicity(tokenLabel);
-									multiSet.setMultiplicity(newTokenName, multiplicity);
-									multiSet.remove(tokenLabel);
-									model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+				if (newTokenName.length() <= MaximalTokenCharachters) {
+					// new Name Case
+					if (oldValue.equals(InitialPlaceHolderTokenColorName) && !newValue.equals(InitialPlaceHolderTokenColorName) && !colorsMap.keySet().contains(newValue)) {
+						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newValue, colorField.getChosenColor()));
+						// allowing only one unedited color name field: allow new color when edited
+						addButton.setEnabled(true);
+					} else if (!oldValue.equals(newTokenName) && !colorsMap.keySet().contains(newValue)) {// Rename
+																											// Case
+						model.beginUpdate();
+						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newTokenName, color));
+						if (editor.getNetContainer().getPetriNet() instanceof CPN) {
+							for (CPNFlowRelation flowrelation : pn.getFlowRelations()) {
+								Multiset<String> constraint = flowrelation.getConstraint();
+								if (constraint != null) {
+									if (constraint.contains(tokenLabel)) {
+										int constraintMultiplicity = constraint.multiplicity(tokenLabel);
+										constraint.setMultiplicity(newTokenName, constraintMultiplicity);
+										constraint.setMultiplicity(tokenLabel, 0);
+										model.execute(new ConstraintChange((PNGraph) graph, flowrelation.getName(), constraint));
+									}
 								}
 							}
 
+							for (CPNPlace place : pn.getPlaces()) {
+								Multiset<String> multiSet = (Multiset<String>) pn.getInitialMarking().get(place.getName());
+								if (multiSet != null) {
+									if (multiSet.contains(tokenLabel)) {
+										int multiplicity = multiSet.multiplicity(tokenLabel);
+										multiSet.setMultiplicity(newTokenName, multiplicity);
+										multiSet.remove(tokenLabel);
+										model.execute(new TokenChange((PNGraph) graph, place.getName(), multiSet));
+									}
+								}
+
+							}
 						}
+						// Remove Old Color From Colorset
+						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
+						model.endUpdate();
+					} else {
+						setText(oldValue);
+						JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Tokenname \"" + newValue + "\" already exists .", "Problem",
+								JOptionPane.ERROR_MESSAGE);
 					}
-					// Remove Old Color From Colorset
-					((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, tokenLabel, null));
-					model.endUpdate();
+
 				} else {
 					setText(oldValue);
-					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Tokenname \"" + newValue + "\" already exists or is too long (>15 Characters).",
-							"Problem", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Tokenname \"" + newValue + "\" is too long (>15 Characters).", "Problem",
+							JOptionPane.ERROR_MESSAGE);
 				}
-//			}
+			} else {
+				setText(oldValue);
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor.getGraphComponent()), "Tokenname \"" + newValue + "\" contains whitespaces.", "Problem",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			// }
 			if (getParent() != null) {
 				getParent().requestFocus();
 			}
 
 			tokenAction.actionPerformed(null);
-			if(getText().equals(InitialPlaceHolderTokenColorName))
-			requestFocus();
+			if (getText().equals(InitialPlaceHolderTokenColorName))
+				requestFocus();
 		}
-
 
 		@Override
 		public void setBorder(Border border) {

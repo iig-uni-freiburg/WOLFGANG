@@ -387,16 +387,10 @@ public class TokenConfigurerDialog extends JDialog {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					System.out.println("change");
 					JSpinner spinner = (Spinner) e.getSource();
 					Integer currentValue = (Integer) spinner.getValue();
-					System.out.println("current" + currentValue);
 					if (currentValue > MAX_CAPACITY)
 						spinner.setValue(MAX_CAPACITY);
-					// RestrictedTextField tf = (RestrictedTextField)
-					// spinner.getEditor();
-					// tf.setText("" + currentValue + "");
-
 					Multiset<String> newMarking = getMultiSet();
 					if (newMarking == null)
 						newMarking = new Multiset<String>();

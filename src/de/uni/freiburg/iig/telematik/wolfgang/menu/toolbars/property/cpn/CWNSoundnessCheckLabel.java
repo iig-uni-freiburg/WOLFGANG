@@ -47,7 +47,6 @@ public class CWNSoundnessCheckLabel extends AbstractWFCheckLabel<CWNProperties> 
 		CWNSoundnessCheckingCallableGenerator generator = new CWNSoundnessCheckingCallableGenerator((AbstractCPN<?,?,?,?>) editorComponent.getNetContainer().getPetriNet().clone());
 		generator.setCheckCWNStructure(isCheckCWNStructure());
 		if(getMarkingGraph() != null){
-			System.out.println(getMarkingGraph());
 			generator.setMarkingGraph(getMarkingGraph());}
 		return new ThreadedCWNSoundnessChecker(generator);
 	}

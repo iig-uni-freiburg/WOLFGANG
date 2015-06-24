@@ -30,7 +30,6 @@ public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 		if (((CPNGraph) graph).getNetContainer().getPetriNet().getFlowRelation(cellName).getConstraint().isEmpty()) {
 			int result = JOptionPane.showConfirmDialog(this, "There are currenlty no constraints for " + cellName + ". If you confirm, " + cellName
 					+ " will be deleted. \n To add new constraints press \"no\".", "Warning", JOptionPane.YES_NO_OPTION);
-			System.out.println(result);
 			if (result != 1){
 				super.okProcedure();
 				PNGraphCell cell = graph.getNodeCell(cellName);

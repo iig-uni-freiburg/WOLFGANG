@@ -213,10 +213,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				System.out.println("change");
 				JSpinner spinner = (TokenSpinner) e.getSource();
 				Integer currentValue = (Integer) spinner.getValue();
-				System.out.println("current" + currentValue);
 				if (currentValue > MAX_CAPACITY)
 					spinner.setValue(MAX_CAPACITY);
 
