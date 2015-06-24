@@ -41,6 +41,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
+import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -72,6 +73,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 	protected PNProperties properties = null;
 	private Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
+	Color bgcolor = UIManager.getColor("Panel.background");
 
 	// The Three basic ParentNodes of the tree
 	PNTreeNode placesNode = new PNTreeNode("Places", PNTreeNodeType.PLACES);
@@ -117,7 +119,6 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		setRootVisible(false);
-		Color bgcolor = UIManager.getColor("Panel.background");
 		// Color bgcolor = WolfgangProperties.getInstance().getGridColor();
 		this.setBackground(bgcolor);
 
@@ -178,9 +179,26 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		tableModel.setColumnCount(2);
 		for (PNProperty property : list) {
 			PropertiesField field = null;
+			if (!property.equals(PNProperty.PLACE_CAPACITY)) {
+				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property);
+				field.addListener(field);
+			} else {
+				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property) {
 
-			field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property);
-			field.addListener(field);
+					@Override
+					public void setText(String t) {
+						if (t.equals("-1"))
+							super.setText("\u221E");
+						else
+							super.setText(t);
+					}
+
+				};
+				field.addListener(field);
+				field.setEditable(false);
+				field.setBackground(bgcolor);
+
+			}
 
 			boolean showArcWeight = true;
 			switch (property) {
@@ -205,7 +223,6 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		// Order of Properties corresponds to Order of PropertiesClass
 
 		final JTable table = new JTable(tableModel);
-		Color bgcolor = UIManager.getColor("Panel.background");
 		// Color bgcolor = Color.LIGHT_GRAY;
 
 		table.setBackground(bgcolor);
@@ -327,11 +344,11 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			this.type = type;
 			this.property = property;
 			this.name = name;
-			Color bgcolor = UIManager.getColor("Panel.background");
+			setOpaque(true);
 			// Color bgcolor =
 			// WolfgangProperties.getInstance().getBackgroundColor();
 
-			this.setBackground(bgcolor);
+			setBackground(bgcolor);
 			this.addKeyListener(new KeyAdapter() {
 
 				@Override
@@ -369,7 +386,8 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			g.drawImage(propertiesImage, 45, 2, null);
+			if (isEditable())
+				g.drawImage(propertiesImage, 45, 2, null);
 		}
 
 		@Override
@@ -378,6 +396,31 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			super.paint(g);
 		}
 
+	}
+
+	public class CapacityField extends RestrictedTextField {
+
+		private static final long serialVersionUID = -2791152505686200734L;
+		private PNComponent type = null;
+		private PNProperty property = null;
+		private String name = null;
+
+		public CapacityField(PNComponent type, String name, String text, PNProperty property) {
+			super(Restriction.NOT_EMPTY, text);
+			this.type = type;
+			this.property = property;
+			this.name = name;
+			setBackground(bgcolor);
+		}
+
+		public PNProperty getPNProperty() {
+			return property;
+		}
+
+		@Override
+		public void setBorder(Border border) {
+			// Remove Border from Textfield
+		}
 	}
 
 	// CURRENTLY NOT IN USE
@@ -423,21 +466,21 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	}
 
 	private void insertArcNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.ARC, PNTreeNodeType.ARC), arcsNode, getNextIndex(properties.getArcNames(),name));
+		treeModel.insertNodeInto(createFields(name, PNComponent.ARC, PNTreeNodeType.ARC), arcsNode, getNextIndex(properties.getArcNames(), name));
 	}
 
 	private void insertTransitionNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.TRANSITION, PNTreeNodeType.TRANSITION), transitionsNode, getNextIndex(properties.getTransitionNames(),name));
+		treeModel.insertNodeInto(createFields(name, PNComponent.TRANSITION, PNTreeNodeType.TRANSITION), transitionsNode, getNextIndex(properties.getTransitionNames(), name));
 	}
 
 	private void insertPlaceNode(String name) throws PropertyException, IOException {
-		treeModel.insertNodeInto(createFields(name, PNComponent.PLACE, PNTreeNodeType.PLACE), placesNode, getNextIndex(properties.getPlaceNames(),name));
+		treeModel.insertNodeInto(createFields(name, PNComponent.PLACE, PNTreeNodeType.PLACE), placesNode, getNextIndex(properties.getPlaceNames(), name));
 	}
 
 	private int getNextIndex(List<String> list, String name) {
-		int i=0;
-		for(String p:list){
-			if(list.get(i).equals(name))
+		int i = 0;
+		for (String p : list) {
+			if (list.get(i).equals(name))
 				return i;
 			i++;
 		}

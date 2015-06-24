@@ -18,6 +18,7 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenMouseWheelChange;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.PTPlaceConfigurerDialog;
 
 public class PTGraphComponent extends PNGraphComponent {
 
@@ -61,28 +62,34 @@ public class PTGraphComponent extends PNGraphComponent {
 
 	@Override
 	protected boolean doubleClickOnPlace(PNGraphCell cell, MouseEvent e) {
-		String tokens = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new amount of tokens", cell.getId() + " Token Change", JOptionPane.QUESTION_MESSAGE);
-		if(tokens != null){
-		boolean input_correct = true;
-		try {
-			Validate.isInteger(tokens);
-			Validate.inclusiveBetween(0, 9999, Integer.parseInt(tokens));
-		} catch (ParameterException ex) {
-			input_correct = false;
-			JOptionPane.showMessageDialog(PTGraphComponent.this, "Input has to be between 0 and 9999.", "Invalid parameter", JOptionPane.ERROR_MESSAGE);
-		}
-		if (input_correct == true) {
-			try {
-				Multiset<String> multiSet = new Multiset<String>();
-				multiSet.setMultiplicity("black", new Integer(tokens));
-				((mxGraphModel) getGraph().getModel()).execute(new TokenChange((PNGraph) getGraph(), cell.getId(), multiSet));
-			} catch (ParameterException ex) {
-				JOptionPane.showMessageDialog(PTGraphComponent.this, "Input has to be smaller or equal than the capacity of the place", "Invalid parameter", JOptionPane.ERROR_MESSAGE);
-			}
-		}
+		PTPlaceConfigurerDialog.showDialog(SwingUtilities.getWindowAncestor(PTGraphComponent.this), cell.getId(), getGraph());
+
 		return true;
-		}
-		return false;
+//		}
+//		return false;
+//		
+//		String tokens = JOptionPane.showInputDialog(PTGraphComponent.this, "Input new amount of tokens", cell.getId() + " Token Change", JOptionPane.QUESTION_MESSAGE);
+//		if(tokens != null){
+//		boolean input_correct = true;
+//		try {
+//			Validate.isInteger(tokens);
+//			Validate.inclusiveBetween(0, 9999, Integer.parseInt(tokens));
+//		} catch (ParameterException ex) {
+//			input_correct = false;
+//			JOptionPane.showMessageDialog(PTGraphComponent.this, "Input has to be between 0 and 9999.", "Invalid parameter", JOptionPane.ERROR_MESSAGE);
+//		}
+//		if (input_correct == true) {
+//			try {
+//				Multiset<String> multiSet = new Multiset<String>();
+//				multiSet.setMultiplicity("black", new Integer(tokens));
+//				((mxGraphModel) getGraph().getModel()).execute(new TokenChange((PNGraph) getGraph(), cell.getId(), multiSet));
+//			} catch (ParameterException ex) {
+//				JOptionPane.showMessageDialog(PTGraphComponent.this, "Input has to be smaller or equal than the capacity of the place", "Invalid parameter", JOptionPane.ERROR_MESSAGE);
+//			}
+//		}
+//		return true;
+//		}
+//		return false;
 	}
 
 	@Override

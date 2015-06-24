@@ -25,22 +25,29 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraph;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenChange;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
-public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
+public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
-	public PlaceConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
+	public PTPlaceConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name, cpnGraph);
+		// TODO Auto-generated constructor stub
 	}
 
-	private AbstractCPNPlace getPlace() {
-		return (AbstractCPNPlace) graph.getNetContainer().getPetriNet().getPlace(cellName);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7810612055522860781L;
+
+
+	private AbstractPTPlace getPlace() {
+		return (AbstractPTPlace) graph.getNetContainer().getPetriNet().getPlace(cellName);
 	}
 
 	@Override
@@ -50,8 +57,8 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected int getSpinnerCapacity(String tokenName) {
-		return !(((AbstractCPNPlace) graph.getNetContainer().getPetriNet().getPlace(cellName)).getColorCapacity(tokenName) < 0) ? ((AbstractCPNPlace) graph.getNetContainer().getPetriNet()
-				.getPlace(cellName)).getColorCapacity(tokenName) : MAX_CAPACITY;
+		return !(((AbstractPTPlace) graph.getNetContainer().getPetriNet().getPlace(cellName)).getCapacity() < 0) ? ((AbstractPTPlace) graph.getNetContainer().getPetriNet()
+				.getPlace(cellName)).getCapacity() : MAX_CAPACITY;
 	}
 
 	@Override
@@ -67,7 +74,7 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 			SpinnerModel capacityModel = new SpinnerListModel(string);
 			capacitySpinner = new JSpinner(capacityModel);
 		} else {
-			int capacitiy = getPlace().getColorCapacity(tokenLabel);
+			int capacitiy = getPlace().getCapacity();
 			SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
 			capacitySpinner = new JSpinner(capacityModel);
 		}
@@ -88,7 +95,7 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected void createCellSpecificAddBtnAction(String color) {
-		if (((AbstractCPNPlace) graph.getNetContainer().getPetriNet().getPlace(cellName)).getColorCapacity(color) == 0)
+		if (((AbstractPTPlace) graph.getNetContainer().getPetriNet().getPlace(cellName)).getCapacity() == 0)
 			((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, color, 1));
 		getMultiSet().setMultiplicity(color, 1);
 		((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, cellName, getMultiSet()));
@@ -112,12 +119,17 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected Multiset<String> getCellSpecificMultiSet() {
-		return (Multiset<String>) graph.getNetContainer().getPetriNet().getInitialMarking().get(cellName);
+		int i = 0;
+		if(!graph.getNetContainer().getPetriNet().getInitialMarking().isEmpty())
+		i = (int) graph.getNetContainer().getPetriNet().getInitialMarking().get(cellName);
+		Multiset<String> ms = new Multiset<String>();
+		ms.setMultiplicity("black", i);
+		return ms;
 	}
 
 	@Override
 	protected boolean shouldAddRow(String color) {
-		return getPlace().getColorCapacity(color) > 0 || getMultiSet().contains(color);
+		return getPlace().getCapacity() > 0 || getMultiSet().contains(color);
 
 	}
 
@@ -190,6 +202,12 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 					int newCapacity = getMultiSet().multiplicity(color);
 					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, color, newCapacity));
 				}
+				
+				PTNet net = (PTNet)graph.getNetContainer().getPetriNet();
+				
+				if(net.getInitialMarking().isEmpty() || net.getInitialMarking().get(cellName).intValue()==0)
+					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, "black", 1));
+
 				((mxGraphModel) graph.getModel()).endUpdate();
 				updateTokenConfigurerView();
 
@@ -217,12 +235,10 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 	protected boolean isRemoveBtnEnabled() {
 		return true;
 	}
-
-	
-	public static PlaceConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
-		PlaceConfigurerDialog dialog = null;
+	public static PTPlaceConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
+		PTPlaceConfigurerDialog dialog = null;
 		try {
-			dialog  = new PlaceConfigurerDialog(window, string, cpnGraph);
+			dialog  = new PTPlaceConfigurerDialog(window, string, cpnGraph);
 			dialog.setUpGUI();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -230,8 +246,6 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 		}
 		return dialog;
 	}
-
-
 
 
 }

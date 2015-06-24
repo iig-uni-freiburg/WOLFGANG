@@ -19,6 +19,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
@@ -158,11 +159,17 @@ public class PTGraph extends PNGraph {
 	@Override
 	public int getCapacityforPlace(String name, String color) {
 		// TODO Auto-generated method stub
-		return 0;
+		return getNetContainer().getPetriNet().getPlace(name).getCapacity();
 	}
 
 	@Override
 	public void updatePlaceCapacity(String name, String color, int newCapacity) {
+		PTPlace place = getNetContainer().getPetriNet().getPlace(name);
+		if (newCapacity <= 0)
+			place.removeCapacity();
+		else
+			place.setCapacity(newCapacity);
+
 		graphListenerSupport.notifyPlaceCapacityChanged(name,color,newCapacity);		
 	}
 

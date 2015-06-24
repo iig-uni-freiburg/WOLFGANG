@@ -222,6 +222,8 @@ public class PTProperties extends PNProperties {
 	 *            <code>null</code> or the net does not contain an arc with the
 	 *            given name.
 	 */
+	
+	//only for diplay purposes in PropertiesView
 	public void setPlaceCapacity(Object sender, String placeName, Integer capacity) {
 		Validate.notNull(placeName);
 		Validate.notNull(capacity);
@@ -230,7 +232,6 @@ public class PTProperties extends PNProperties {
 			throw new ParameterException("Unknown Place");
 
 		Integer oldWeight = getPlaceCapacity(placeName);
-		getNetContainer().getPetriNet().getPlace(placeName).setCapacity(capacity);
 		PNPropertyChangeEvent event = new PNPropertyChangeEvent(sender, PNComponent.PLACE, placeName, PNProperty.PLACE_CAPACITY, oldWeight, capacity);
 		changeSupport.fireChangeEvent(this, event);
 	}

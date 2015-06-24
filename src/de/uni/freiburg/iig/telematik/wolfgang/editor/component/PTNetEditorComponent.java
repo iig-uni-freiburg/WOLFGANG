@@ -118,7 +118,8 @@ public class PTNetEditorComponent extends PNEditorComponent {
 
 	@Override
 	public void placeCapacityChanged(String placeName, String color, int newCapacity) {
-		resetPropertyCheckView();	
+		resetPropertyCheckView();
+		getPNProperties().setPlaceCapacity(this, placeName, newCapacity);
 	}
 
 	@Override

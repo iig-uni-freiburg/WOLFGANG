@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Window;
@@ -8,7 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -19,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
@@ -38,14 +37,10 @@ import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraph;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.IFNetGraph;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
@@ -70,10 +65,12 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	}
 
 	public void updateTokenConfigurerView() {
-
-		AbstractCPNGraphics cpnGraphics = (AbstractCPNGraphics) getNetContainer().getPetriNetGraphics();
-		colors = cpnGraphics.getColors();
-
+		if(getNetContainer() instanceof AbstractGraphicalCPN)
+		colors = ((AbstractCPNGraphics) getNetContainer().getPetriNetGraphics()).getColors();
+		if(getNetContainer() instanceof AbstractGraphicalPTNet){
+			colors = new HashMap<String, Color>();
+			colors.put("black", Color.BLACK);
+					}
 		mainPanel().removeAll();
 
 		createAddBtn();
@@ -294,13 +291,19 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected abstract Multiset<String> getCellSpecificMultiSet();
 
 	private AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {
-		AbstractGraphicalCPN graphicalNet = (AbstractGraphicalCPN) graph.getNetContainer();
+		AbstractGraphicalPN graphicalNet = (AbstractGraphicalPN) graph.getNetContainer();
 		return graphicalNet;
 	}
 
 	protected Set<String> getTokenColors() {
-		AbstractCPN net = (AbstractCPN) graph.getNetContainer().getPetriNet();
-		return net.getTokenColors();
+		if(graph.getNetContainer().getPetriNet() instanceof AbstractCPN)
+		return ((AbstractCPN) graph.getNetContainer().getPetriNet()).getTokenColors();
+		if(graph.getNetContainer().getPetriNet() instanceof AbstractPTNet){
+			HashSet<String> colorSet = new HashSet<String>();
+			colorSet.add("black");
+		return colorSet;
+		}
+		return null;
 	}
 
 	private class TokenSpinner extends JSpinner implements RestrictedTextFieldListener {
