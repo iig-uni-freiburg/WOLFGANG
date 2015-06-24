@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu;
 import java.awt.Window;
 
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
@@ -11,11 +10,7 @@ import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.ConstraintChange;
 
 public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {

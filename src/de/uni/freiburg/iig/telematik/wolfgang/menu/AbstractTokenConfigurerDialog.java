@@ -8,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -92,11 +94,15 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		if (getTokenColors().contains("black"))
 			colors.put("black", Color.BLACK);
 
-		int size = 0;
-		for (String color : colors.keySet()) {
+		addRow("black");
+		int size = 1;
+		TreeMap<String, Color> sortedColorMap = new TreeMap<String, Color>(colors);
+		for (String color : sortedColorMap.keySet()) {
 			if (shouldAddRow(color)) {
-				addRow(color);
-				size++;
+				if (!color.equals("black")) {
+					addRow(color);
+					size++;
+				}
 			}
 		}
 
@@ -139,35 +145,41 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				JPopupMenu popup = new JPopupMenu();
-				for (Entry<String, Color> c : colors.entrySet()) {
+				addColorItem(popup, "black");
+				TreeMap<String, Color> sortedColors = new TreeMap<String, Color>(colors);
+				for (Entry<String, Color> c : sortedColors.entrySet()) {
 					final String color = c.getKey();
-					if (!getMultiSet().contains(color)) {
-						JMenuItem item = new JMenuItem(color);
-						item.setName(color);
-
-						item.addActionListener(new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								((mxGraphModel) graph.getModel()).beginUpdate();
-								createCellSpecificAddBtnAction(color);
-								((mxGraphModel) graph.getModel()).endUpdate();
-
-								if (getMultiSet().contains(colors.keySet())) {
-									addButton.setEnabled(false);
-								}
-
-								updateTokenConfigurerView();
-								pack();
-							}
-
-						});
-						popup.add(item);
-					}
-
+					if(!color.equals("black"))
+					addColorItem(popup, color);
 				}
 
 				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
+			}
+
+			private void addColorItem(JPopupMenu popup, final String color) {
+				if (!getMultiSet().contains(color)) {
+					JMenuItem item = new JMenuItem(color);
+					item.setName(color);
+
+					item.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							((mxGraphModel) graph.getModel()).beginUpdate();
+							createCellSpecificAddBtnAction(color);
+							((mxGraphModel) graph.getModel()).endUpdate();
+
+							if (getMultiSet().contains(colors.keySet())) {
+								addButton.setEnabled(false);
+							}
+
+							updateTokenConfigurerView();
+							pack();
+						}
+
+					});
+					popup.add(item);
+				}
 			}
 		});
 	}
@@ -188,7 +200,6 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			mainPanel().add(Box.createGlue());
 		}
 
-		
 		JButton rmv = getRemoveButton(tokenLabel);
 		mainPanel().add(rmv);
 		rmv.setEnabled(isRemoveBtnEnabled());
@@ -256,7 +267,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				updateTokenConfigurerView();
 			}
 
-		});	
+		});
 		return remove;
 	}
 
@@ -324,5 +335,5 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected void addComponents() throws Exception {
 		updateTokenConfigurerView();
 	}
-	
+
 }
