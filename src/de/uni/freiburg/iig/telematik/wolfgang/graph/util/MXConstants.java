@@ -125,10 +125,12 @@ public abstract class MXConstants {
 		switch (type) {
 		case PLACE:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_ELLIPSE);
 			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultPlaceColor();
 			break;
 		case TRANSITION:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
+			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_RECTANGLE);
 			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultTransitionColor();
 			break;
 		}
@@ -209,9 +211,12 @@ public abstract class MXConstants {
 		switch (type) {
 		case PLACE:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_ELLIPSE);
 			break;
 		case TRANSITION:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
+			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_RECTANGLE);
+
 			break;
 		}
 		

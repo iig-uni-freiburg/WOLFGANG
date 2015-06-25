@@ -292,9 +292,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		addMouseWheelListener(new GCMouseWheelListener());
 		// addKeyListener(new GCKeyListener());
 		getConnectionHandler().setCreateTarget(true);
-		mxCodec codec = new mxCodec();
-		Document doc = mxUtils.loadDocument(GraphResource.class.getResource("default-style.xml").toString());
-		codec.decode(doc.getDocumentElement(), graph.getStylesheet());
 	}
 
 	private void addWGPropertiesListener() {
