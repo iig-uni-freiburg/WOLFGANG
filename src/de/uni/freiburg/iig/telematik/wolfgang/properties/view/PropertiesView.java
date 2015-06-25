@@ -56,7 +56,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Positi
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.PNEditingModeListener;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar.Mode;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.EditorForFirstColumn;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.EditorForPropertiesFieldColumn;
@@ -68,6 +73,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNodeRen
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNodeType;
 
 public class PropertiesView extends JTree implements PNPropertiesListener {
+
+
 
 	private static final long serialVersionUID = -23504178961013201L;
 
@@ -83,12 +90,19 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	private PNTreeNode root;
 	private DefaultTreeModel treeModel;
 
+	private AbstractToolBar editorToolbar;
+
+	public AbstractToolBar getEditorToolbar() {
+		return editorToolbar;
+	}
+
+	public void setEditorToolbar(AbstractToolBar editorToolbar) {
+		this.editorToolbar = editorToolbar;
+	}
+
 	public PropertiesView(PNProperties properties) {
 		Validate.notNull(properties);
 		this.properties = properties;
-		// setPreferredSize(new java.awt.Dimension(120, 600));
-		// setMaximumSize(new java.awt.Dimension(120, 600));
-		// setMinimumSize(new java.awt.Dimension(120, 600));
 		// expand all nodes in the tree to be visible
 		for (int i = 0; i < getRowCount(); i++) {
 			expandRow(i);
@@ -182,6 +196,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			if (!property.equals(PNProperty.PLACE_CAPACITY)) {
 				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property);
 				field.addListener(field);
+
 			} else {
 				field = new PropertiesField(pnProperty, nodeName, properties.getValue(pnProperty, nodeName, property), property) {
 
@@ -218,11 +233,14 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 			if (showArcWeight)
 				tableModel.addRow(new Object[] { property + ":", field });
+			
 		}
 
 		// Order of Properties corresponds to Order of PropertiesClass
 
-		final JTable table = new JTable(tableModel);
+		final PNPropertiesTable table = new PNPropertiesTable(tableModel);
+		editorToolbar.addEditingModeListener(table);
+
 		// Color bgcolor = Color.LIGHT_GRAY;
 
 		table.setBackground(bgcolor);
@@ -276,10 +294,34 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		table.setGridColor(bgcolor);
 
 		node.add(new PNTreeNode(table, PNTreeNodeType.LEAF));
-
 		return node;
 	}
 
+	
+	private class PNPropertiesTable extends JTable implements PNEditingModeListener {
+	
+
+		public PNPropertiesTable(DefaultTableModel tableModel) {
+			super(tableModel);
+		}
+
+		@Override
+		public void editingModeChanged(Mode mode) {
+			switch (mode) {
+			case EDIT:
+				setEnabled(true);
+				break;
+			case PLAY:
+				setEnabled(false);
+				break;
+			default:
+				break;
+
+			}
+			
+		}
+
+	}
 	/**
 	 * This method is called each time a value is changed within one of the
 	 * textfields.
@@ -332,7 +374,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		((JTextField) child.getTable().getValueAt(i, 1)).setText(oldValue);
 	}
 
-	public class PropertiesField extends RestrictedTextField implements RestrictedTextFieldListener {
+	public class PropertiesField extends RestrictedTextField implements RestrictedTextFieldListener, PNEditingModeListener {
 
 		private static final long serialVersionUID = -2791152505686200734L;
 		private PNComponent type = null;
@@ -349,6 +391,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			// WolfgangProperties.getInstance().getBackgroundColor();
 
 			setBackground(bgcolor);
+			editorToolbar.addEditingModeListener(this);
 			this.addKeyListener(new KeyAdapter() {
 
 				@Override
@@ -396,31 +439,25 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 			super.paint(g);
 		}
 
-	}
-
-	public class CapacityField extends RestrictedTextField {
-
-		private static final long serialVersionUID = -2791152505686200734L;
-		private PNComponent type = null;
-		private PNProperty property = null;
-		private String name = null;
-
-		public CapacityField(PNComponent type, String name, String text, PNProperty property) {
-			super(Restriction.NOT_EMPTY, text);
-			this.type = type;
-			this.property = property;
-			this.name = name;
-			setBackground(bgcolor);
-		}
-
-		public PNProperty getPNProperty() {
-			return property;
-		}
-
 		@Override
-		public void setBorder(Border border) {
-			// Remove Border from Textfield
+		public void editingModeChanged(Mode mode) {
+			switch (mode) {
+			case EDIT:
+				if(!this.property.equals(PNProperty.PLACE_CAPACITY))
+				setEditable(true);
+				break;
+			case PLAY:
+				setEditable(false);
+				break;
+			default:
+				break;
+				
+			}
+			setBackground(bgcolor);
+			
+
 		}
+
 	}
 
 	// CURRENTLY NOT IN USE
@@ -614,5 +651,6 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		setUI((TreeUI) new PNPropertiesTreeUI());
 
 	}
+
 
 }

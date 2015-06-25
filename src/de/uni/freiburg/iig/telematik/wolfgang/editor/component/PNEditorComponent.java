@@ -78,6 +78,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyC
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView.PropertiesField;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
@@ -99,6 +100,8 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	protected mxUndoManager undoManager;
 
 	private PNEditorListenerSupport editorListenerSupport = new PNEditorListenerSupport();
+	
+	
 
 	protected mxIEventListener undoHandler = new mxIEventListener() {
 		public void invoke(Object source, mxEventObject evt) {
@@ -205,6 +208,14 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		properties = createPNProperties();
 		propertiesView = new PropertiesView(properties);
 		propertiesView.addTreeSelectionListener(this);
+//		addEditorListener(new PNEditorListener() {
+//			
+//			@Override
+//			public void modificationStateChanged(boolean modified) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 		properties.addPNPropertiesListener(propertiesView);
 		properties.setPropertiesView(propertiesView);
 		
@@ -220,6 +231,10 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	
 	public void addEditorListener(PNEditorListener listener) {
 		editorListenerSupport.addEditorListener(listener);
+	}
+	
+	public void removeEditorListener(PNEditorListener listener) {
+		editorListenerSupport.removeEditorListener(listener);
 	}
 
 	// ------- Set Up GUI
@@ -651,6 +666,8 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		} catch (EditorToolbarException e) {
 			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "Cannot create Toolbar.\nReason: " + e.getMessage(), "Editor Toolbar Exception", JOptionPane.ERROR_MESSAGE);
 		}
+		propertiesView.setEditorToolbar(toolbar);
 	}
+
 
 }

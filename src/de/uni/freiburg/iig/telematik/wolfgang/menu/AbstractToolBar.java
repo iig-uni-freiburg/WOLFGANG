@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.Box.Filler;
@@ -26,12 +25,8 @@ import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.view.mxGraphView;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
@@ -41,9 +36,9 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ReloadExecutionAction
 import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ToggleModeAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.nodes.NodeToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ExportToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
@@ -67,7 +62,17 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	protected static final String NO_SELECTION_TIME = "no time context...";
 
-	private JComboBox comboTimeContextModel = null;
+	
+	private PNEditingModeListenerSupport editingModeListenerSupport = new PNEditingModeListenerSupport();
+	
+	
+	public void addEditingModeListener(PNEditingModeListener listener) {
+		editingModeListenerSupport.addEditorListener(listener);
+	}
+	
+	public void removeEditingModeListener(PNEditingModeListener listener) {
+		editingModeListenerSupport.removeEditorListener(listener);
+	}
 
 	// further variables
 	protected PNEditorComponent pnEditor = null;
@@ -418,6 +423,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	public void setExecutionMode() {
 		mode = Mode.PLAY;
+		editingModeListenerSupport.notifyEditingModeChange(mode);
 		pnEditor.getGraphComponent().getGraph().clearSelection();
 		pnEditor.getGraphComponent().getGraph().setExecution(true);
 		pnEditor.getGraphComponent().highlightEnabledTransitions();
@@ -460,6 +466,7 @@ public abstract class AbstractToolBar extends JToolBar {
 
 	public void setEditingMode() {
 		mode = Mode.EDIT;
+		editingModeListenerSupport.notifyEditingModeChange(mode);
 		pnEditor.getGraphComponent().removeCellOverlays();
 		pnEditor.getGraphComponent().getGraph().enterEditingMode();
 		toggleModeButton.setText("EDIT");
