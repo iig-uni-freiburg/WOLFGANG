@@ -1,14 +1,13 @@
 package de.uni.freiburg.iig.telematik.wolfgang;
 
+import de.invation.code.toval.graphic.misc.AbstractStartup;
 import java.io.File;
 
-import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
-import de.invation.code.toval.graphic.misc.AbstractStartup;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
@@ -116,4 +115,5 @@ public class WolfgangStartup extends AbstractStartup {
 			System.out.println(args[0]);
 		new WolfgangStartup();
 	}
+
 }

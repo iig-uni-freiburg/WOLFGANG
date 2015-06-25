@@ -26,7 +26,6 @@ import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
@@ -120,8 +119,8 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 	@Override
 	protected Multiset<String> getCellSpecificMultiSet() {
 		int i = 0;
-		if(!graph.getNetContainer().getPetriNet().getInitialMarking().isEmpty() &&graph.getNetContainer().getPetriNet().getInitialMarking().contains(cellName))
-		i = (int) graph.getNetContainer().getPetriNet().getInitialMarking().get(cellName);
+		if(!graph.getNetContainer().getPetriNet().getInitialMarking().isEmpty() && graph.getNetContainer().getPetriNet().getInitialMarking().contains(cellName))
+                i = (Integer) graph.getNetContainer().getPetriNet().getInitialMarking().get(cellName);
 		Multiset<String> ms = new Multiset<String>();
 		ms.setMultiplicity("black", i);
 		return ms;
