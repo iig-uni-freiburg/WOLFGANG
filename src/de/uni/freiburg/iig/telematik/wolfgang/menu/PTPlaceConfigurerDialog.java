@@ -120,7 +120,7 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 	@Override
 	protected Multiset<String> getCellSpecificMultiSet() {
 		int i = 0;
-		if(!graph.getNetContainer().getPetriNet().getInitialMarking().isEmpty())
+		if(!graph.getNetContainer().getPetriNet().getInitialMarking().isEmpty() &&graph.getNetContainer().getPetriNet().getInitialMarking().contains(cellName))
 		i = (int) graph.getNetContainer().getPetriNet().getInitialMarking().get(cellName);
 		Multiset<String> ms = new Multiset<String>();
 		ms.setMultiplicity("black", i);
@@ -205,7 +205,7 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 				
 				PTNet net = (PTNet)graph.getNetContainer().getPetriNet();
 				
-				if(net.getInitialMarking().isEmpty() || net.getInitialMarking().get(cellName).intValue()==0)
+				if(net.getInitialMarking().isEmpty() || (net.getInitialMarking().contains(cellName) &&net.getInitialMarking().get(cellName).intValue()==0))
 					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, "black", 1));
 
 				((mxGraphModel) graph.getModel()).endUpdate();

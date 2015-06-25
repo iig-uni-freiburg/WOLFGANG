@@ -25,17 +25,16 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
-import de.uni.freiburg.iig.telematik.wolfgang.graph.CPNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TokenChange;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
-public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
+public class CPNPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
-	public PlaceConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
+	public CPNPlaceConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name, cpnGraph);
 	}
 
@@ -188,8 +187,10 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 				((mxGraphModel) graph.getModel()).beginUpdate();
 				for (String color : tokencolors) {
 					int newCapacity = getMultiSet().multiplicity(color);
+					if(newCapacity==0) newCapacity = 1;
 					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, color, newCapacity));
 				}
+
 				((mxGraphModel) graph.getModel()).endUpdate();
 				updateTokenConfigurerView();
 
@@ -219,10 +220,10 @@ public class PlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 	}
 
 	
-	public static PlaceConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
-		PlaceConfigurerDialog dialog = null;
+	public static CPNPlaceConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
+		CPNPlaceConfigurerDialog dialog = null;
 		try {
-			dialog  = new PlaceConfigurerDialog(window, string, cpnGraph);
+			dialog  = new CPNPlaceConfigurerDialog(window, string, cpnGraph);
 			dialog.setUpGUI();
 		} catch (Exception e) {
 			e.printStackTrace();

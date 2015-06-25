@@ -31,8 +31,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurerDialog;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.ConstraintConfigurerDialog;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.PlaceConfigurerDialog;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNConstraintConfigurerDialog;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.CPNPlaceConfigurerDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.CPNProperties;
 
 /**
@@ -163,7 +163,7 @@ public class CPNGraph extends PNGraph {
 		case ARC:
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
 
-				tokenConfigurerWindows.put(cell.getId(), ConstraintConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getFlowRelation(cell.getId()).getName(), this));
+				tokenConfigurerWindows.put(cell.getId(), CPNConstraintConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getFlowRelation(cell.getId()).getName(), this));
 			} else {
 				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
 				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
@@ -171,7 +171,7 @@ public class CPNGraph extends PNGraph {
 			break;
 		case PLACE:
 			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				tokenConfigurerWindows.put(cell.getId(), PlaceConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getPlace(cell.getId()).getName(), this));
+				tokenConfigurerWindows.put(cell.getId(), CPNPlaceConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getPlace(cell.getId()).getName(), this));
 			} else {
 				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
 				tokenConfigurerWindows.get(cell.getId()).setVisible(true);

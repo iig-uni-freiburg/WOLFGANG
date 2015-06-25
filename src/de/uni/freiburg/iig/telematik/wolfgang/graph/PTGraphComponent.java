@@ -31,24 +31,6 @@ public class PTGraphComponent extends PNGraphComponent {
 
 	private boolean isExecution;
 
-	@Override
-	protected boolean singleClickOnTransition(PNGraphCell cell, MouseEvent e) {
-		isExecution = getGraph().isExecution();
-		if (isExecution) {
-
-			try {
-				getGraph().fireTransition(cell);
-			} catch (ParameterException e1) {
-				JOptionPane.showMessageDialog(null, "Parameter Exception \nReason: " + e1.getMessage(), "Parameter Exception", JOptionPane.ERROR_MESSAGE);
-			} catch (PNException e1) {
-				JOptionPane.showMessageDialog(null, "Petri Net Exception \nReason: " + e1.getMessage(), "Petri Net Exception", JOptionPane.ERROR_MESSAGE);
-			}
-			highlightEnabledTransitions();
-
-		}
-		return true;
-	}
-
 	private static final long serialVersionUID = -1698182711658593407L;
 
 	public PTGraphComponent(PTGraph graph) {

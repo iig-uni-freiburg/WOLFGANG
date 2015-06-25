@@ -13,9 +13,9 @@ import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.ConstraintChange;
 
-public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
+public class CPNConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 
-	public ConstraintConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
+	public CPNConstraintConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name, cpnGraph);
 		// TODO Auto-generated constructor stub
 	}
@@ -87,10 +87,10 @@ public class ConstraintConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	}
 
-	public static ConstraintConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
-		ConstraintConfigurerDialog dialog = null;
+	public static CPNConstraintConfigurerDialog showDialog(Window window, String string, PNGraph cpnGraph) {
+		CPNConstraintConfigurerDialog dialog = null;
 		try {
-			dialog = new ConstraintConfigurerDialog(window, string, cpnGraph);
+			dialog = new CPNConstraintConfigurerDialog(window, string, cpnGraph);
 			dialog.setUpGUI();
 		} catch (Exception e) {
 			e.printStackTrace();
