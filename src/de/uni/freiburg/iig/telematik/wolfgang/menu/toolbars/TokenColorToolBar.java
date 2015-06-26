@@ -171,6 +171,7 @@ public class TokenColorToolBar extends JToolBar {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					if(addButton.isEnabled()){
 					super.mouseClicked(e);
 					try {
 						CirclePanel circle = new CirclePanel(Color.BLACK);
@@ -189,7 +190,7 @@ public class TokenColorToolBar extends JToolBar {
 					} catch (Exception e1) {
 
 					}
-
+					}
 				}
 			});
 			pnlTokenColors.add(addButton);
