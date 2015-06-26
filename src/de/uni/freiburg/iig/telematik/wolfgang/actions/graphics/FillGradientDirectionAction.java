@@ -13,7 +13,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
@@ -53,7 +53,7 @@ public class FillGradientDirectionAction extends AbstractPNEditorGraphicsAction 
 
 	private Image getVerticalImage() throws PropertyException, IOException {
 		int size = 0;
-		IconSize iconSize = WolfgangProperties.getInstance().getIconSize();
+		IconSize iconSize = EditorProperties.getInstance().getIconSize();
 		size = iconSize.getSize();
 		Image image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB_PRE);
 		Graphics g = image.getGraphics();

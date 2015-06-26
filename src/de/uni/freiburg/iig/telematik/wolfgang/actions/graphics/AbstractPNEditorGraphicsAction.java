@@ -15,7 +15,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
@@ -64,7 +64,7 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 
 	public void setFillColor(Color fillColor, Color gradientColor, GradientRotation gradientRotation) throws PropertyException, IOException {
 		gradientColor = (gradientColor == null) ? fillColor : gradientColor;
-		Image image = Utils.createIconImage(fillColor, gradientColor, gradientRotation, WolfgangProperties.getInstance().getIconSize().getSize());
+		Image image = Utils.createIconImage(fillColor, gradientColor, gradientRotation, EditorProperties.getInstance().getIconSize().getSize());
 		setButtonFillColor(fillColor);
 		setButtonGradientColor(gradientColor);
 		setIconImage(image);
@@ -84,7 +84,7 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 	}
 
 	public void setLineColor(Color fillColor, Double defaultStrokewidth, Style defaultLinestyle, boolean isLineCurve) throws PropertyException, IOException {
-		Image image = Utils.createLIconImage(fillColor, WolfgangProperties.getInstance().getIconSize().getSize(), defaultStrokewidth, defaultLinestyle, isLineCurve);
+		Image image = Utils.createLIconImage(fillColor, EditorProperties.getInstance().getIconSize().getSize(), defaultStrokewidth, defaultLinestyle, isLineCurve);
 		setButtonFillColor(fillColor);
 		setIconImage(image);
 	}
@@ -94,7 +94,7 @@ public abstract class AbstractPNEditorGraphicsAction extends AbstractPNEditorAct
 	}
 
 	protected Image scaleButtonDown(Image image, int widthDenominator, int heightDenominator) throws PropertyException, IOException {
-		int size = WolfgangProperties.getInstance().getIconSize().getSize();
+		int size = EditorProperties.getInstance().getIconSize().getSize();
 		return image.getScaledInstance(size / widthDenominator, size / heightDenominator, java.awt.Image.SCALE_SMOOTH);
 	}
 	

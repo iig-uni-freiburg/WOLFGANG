@@ -66,7 +66,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.StyleChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
@@ -96,7 +96,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		addWGPropertiesListener();
 
 		try {
-			setGridSize(WolfgangProperties.getInstance().getGridSize());
+			setGridSize(EditorProperties.getInstance().getGridSize());
 		} catch (PropertyException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -139,12 +139,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	private void addWGPropertiesListener() {
 		try {
-			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
+			EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
 				@Override
 				public void gridSizeChanged(int gridSize) {
 					try {
-						setGridSize(WolfgangProperties.getInstance().getGridSize());
+						setGridSize(EditorProperties.getInstance().getGridSize());
 					} catch (PropertyException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -281,8 +281,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * @throws PropertyException
 	 */
 	public PNGraphCell addNewPlace(mxPoint point) throws PropertyException, IOException {
-		Offset offset = new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset());
-		Dimension dimension = new Dimension(WolfgangProperties.getInstance().getDefaultPlaceSize(), WolfgangProperties.getInstance().getDefaultPlaceSize());
+		Offset offset = new Offset(EditorProperties.getInstance().getDefaultHorizontalLabelOffset(), EditorProperties.getInstance().getDefaultVerticalLabelOffset());
+		Dimension dimension = new Dimension(EditorProperties.getInstance().getDefaultPlaceSize(), EditorProperties.getInstance().getDefaultPlaceSize());
 		return addNewPlace(point, MXConstants.getDefaultNodeStyle(PNComponent.PLACE), offset, dimension);
 	}
 
@@ -354,7 +354,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	public PNGraphCell addNewFlowRelation(PNGraphCell sourceCell, PNGraphCell targetCell) throws PropertyException, IOException {
-		Offset offset = new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset());
+		Offset offset = new Offset(EditorProperties.getInstance().getDefaultHorizontalLabelOffset(), EditorProperties.getInstance().getDefaultVerticalLabelOffset());
 		return addNewFlowRelation(sourceCell, targetCell, offset, null, null, MXConstants.getDefaultArcStyle());
 	}
 
@@ -416,8 +416,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Adds anew transition with default style.
 	 */
 	public PNGraphCell addNewTransition(mxPoint point) throws PropertyException, IOException {
-		Offset offset = new Offset(WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset(), WolfgangProperties.getInstance().getDefaultVerticalLabelOffset());
-		Dimension dimension = new Dimension(WolfgangProperties.getInstance().getDefaultTransitionWidth(), WolfgangProperties.getInstance().getDefaultTransitionHeight());
+		Offset offset = new Offset(EditorProperties.getInstance().getDefaultHorizontalLabelOffset(), EditorProperties.getInstance().getDefaultVerticalLabelOffset());
+		Dimension dimension = new Dimension(EditorProperties.getInstance().getDefaultTransitionWidth(), EditorProperties.getInstance().getDefaultTransitionHeight());
 		return addNewTransition(point, MXConstants.getDefaultNodeStyle(PNComponent.TRANSITION), offset, dimension);
 	}
 
@@ -763,8 +763,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		Rectangle temp = state.getRectangle();
 		PNGraphCell cell = (PNGraphCell) state.getCell();
 
-		int minDistance = (int) (WolfgangProperties.getInstance().getDefaultTokenDistance() * getView().getScale());
-		int pointDiameter = (int) (WolfgangProperties.getInstance().getDefaultTokenSize() * getView().getScale());
+		int minDistance = (int) (EditorProperties.getInstance().getDefaultTokenDistance() * getView().getScale());
+		int pointDiameter = (int) (EditorProperties.getInstance().getDefaultTokenSize() * getView().getScale());
 		CircularPointGroup circularPointGroup = new CircularPointGroup(minDistance, pointDiameter);
 
 		// TODO Making method more general to be able to handle colored marking
@@ -1452,7 +1452,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	protected double getDefaultTokenSize() {
 		// TODO Auto-generated method stub
 		try {
-			return WolfgangProperties.getInstance().getDefaultTokenSize();
+			return EditorProperties.getInstance().getDefaultTokenSize();
 		} catch (PropertyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1466,7 +1466,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	@Override
 	public double snap(double value) {
 		try {
-			if (WolfgangProperties.getInstance().getSnapToGrid()) {
+			if (EditorProperties.getInstance().getSnapToGrid()) {
 				return super.snap(value);
 			}
 		} catch (Exception e) {

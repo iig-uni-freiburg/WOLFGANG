@@ -13,7 +13,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
@@ -24,11 +24,11 @@ public class FillGradientColorAction extends AbstractPNEditorGraphicsAction {
 	public FillGradientColorAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "GradientColor", IconFactory.getIcon("fill"));
 		setButtonScale(3, 3);
-		Color gradientColor = WolfgangProperties.getInstance().getDefaultGradientColor();
+		Color gradientColor = EditorProperties.getInstance().getDefaultGradientColor();
 		if(gradientColor != null)
-		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), gradientColor, GradientRotation.HORIZONTAL);
+		setFillColor(EditorProperties.getInstance().getDefaultPlaceColor(), gradientColor, GradientRotation.HORIZONTAL);
 		else
-			setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), Color.BLACK, GradientRotation.HORIZONTAL);
+			setFillColor(EditorProperties.getInstance().getDefaultPlaceColor(), Color.BLACK, GradientRotation.HORIZONTAL);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class FillGradientColorAction extends AbstractPNEditorGraphicsAction {
 
 			String gradientColorString = fill.getGradientColor();
 			if (gradientColorString == null) {
-				gradientColorString = Utils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor());
+				gradientColorString = Utils.hexString(EditorProperties.getInstance().getDefaultGradientColor());
 
 				getGraph().setCellStyles(MXConstants.LABEL_GRADIENTCOLOR, gradientColorString);
 
@@ -95,7 +95,7 @@ public class FillGradientColorAction extends AbstractPNEditorGraphicsAction {
 
 			String gradientColorString = fill.getGradientColor();
 			if (gradientColorString == null) {
-				gradientColorString = Utils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor());
+				gradientColorString = Utils.hexString(EditorProperties.getInstance().getDefaultGradientColor());
 				getGraph().setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, gradientColorString);
 			}
 			GradientRotation rotation = fill.getGradientRotation();

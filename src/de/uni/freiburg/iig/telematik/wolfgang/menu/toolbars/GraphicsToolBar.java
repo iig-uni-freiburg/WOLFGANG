@@ -56,7 +56,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.LineSolidAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.LineStrokeColorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.LineStyleAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
@@ -256,7 +256,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	private void setUpFillPanel() {
 		int iconSize = 0;
 		try {
-			iconSize = WolfgangProperties.getInstance().getIconSize().getSize();
+			iconSize = EditorProperties.getInstance().getIconSize().getSize();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -331,7 +331,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	private void setUpLinePanel() {
 		int iconSize = 0;
 		try {
-			iconSize = WolfgangProperties.getInstance().getIconSize().getSize();
+			iconSize = EditorProperties.getInstance().getIconSize().getSize();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -509,7 +509,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	// fillColor = Utils.parseColor(colorString);
 	// containsFillColor = true;
 	// } else {
-	// fillColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
+	// fillColor = EditorProperties.getInstance().getDefaultPlaceColor();
 	// }
 	// }
 	//
@@ -521,7 +521,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	// }
 	// else {
 	// gradientColor =
-	// WolfgangProperties.getInstance().getDefaultGradientColor();
+	// EditorProperties.getInstance().getDefaultGradientColor();
 	// if(gradientColor == null)
 	// gradientColor = fillColor;
 	// }
@@ -530,7 +530,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	// containsGradientRotation = true;
 	// } else{
 	// gradientRotation =
-	// WolfgangProperties.getInstance().getDefaultGradientDirection();
+	// EditorProperties.getInstance().getDefaultGradientDirection();
 	// if(gradientRotation == null)
 	// gradientRotation = GradientRotation.VERTICAL;
 	// }
@@ -727,7 +727,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	// // gradientColorAction.setFillColor(gradientColor);
 	// } else {
 	// colorSelectionAction.setFillColor(fillColor,
-	// WolfgangProperties.getInstance().getDefaultGradientColor(),
+	// EditorProperties.getInstance().getDefaultGradientColor(),
 	// GradientRotation.VERTICAL);
 	// }
 	// // gradientColorButton.setSelected(true);
@@ -744,7 +744,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	// backgroundColorAction.setFillColor(fillColor);
 	// if (fillColor == gradientColor)
 	// gradientColor =
-	// WolfgangProperties.getInstance().getDefaultGradientColor();
+	// EditorProperties.getInstance().getDefaultGradientColor();
 	// if (fillColor != null && gradientColor != null)
 	// gradientColorAction.setFillColor(fillColor, gradientColor);
 	//

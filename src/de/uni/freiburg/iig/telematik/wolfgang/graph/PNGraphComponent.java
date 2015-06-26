@@ -50,7 +50,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.ConnectionHandler;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.handler.GraphHandler;
@@ -296,7 +296,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private void addWGPropertiesListener() {
 		try {
-			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
+			EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
 				@Override
 				public void backgroundColorChanged(Color backgroundColor) {
@@ -325,7 +325,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private void setBackgroundColor() {
 		try {
-			getViewport().setBackground(WolfgangProperties.getInstance().getBackgroundColor());
+			getViewport().setBackground(EditorProperties.getInstance().getBackgroundColor());
 		} catch (PropertyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -337,7 +337,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private void setGridColor() {
 		try {
-			setGridColor(WolfgangProperties.getInstance().getGridColor());
+			setGridColor(EditorProperties.getInstance().getGridColor());
 		} catch (PropertyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -349,7 +349,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private void setGridVisibility() {
 		try {
-			setGridVisible(WolfgangProperties.getInstance().getGridVisibility());
+			setGridVisible(EditorProperties.getInstance().getGridVisibility());
 		} catch (PropertyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

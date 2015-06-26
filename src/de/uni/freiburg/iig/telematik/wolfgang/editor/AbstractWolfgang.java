@@ -34,7 +34,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
@@ -219,7 +219,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 		if (content == null) {
 			content = new JPanel(new BorderLayout());
 			content.add(getCenterComponent(), BorderLayout.CENTER);
-			WolfgangProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
+			EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
 				@Override
 				public void iconSizeChanged(IconSize size) {

@@ -19,7 +19,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.PopUpToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
@@ -37,7 +37,7 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 	public static Image createIconImage() throws PropertyException, IOException {
 		Color defaultFillColor = Utils.parseColor(nodeColor);
 		IconSize iconsize = null;
-		iconsize = WolfgangProperties.getInstance().getIconSize();
+		iconsize = EditorProperties.getInstance().getIconSize();
 		int size = iconsize.getSize();
 
 		Image image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB_PRE);

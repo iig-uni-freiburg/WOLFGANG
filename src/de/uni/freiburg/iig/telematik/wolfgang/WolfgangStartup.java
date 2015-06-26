@@ -16,7 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.NetTypeChooserDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 
 public class WolfgangStartup extends AbstractStartup {
 
@@ -79,7 +79,7 @@ public class WolfgangStartup extends AbstractStartup {
 			}		
 			else {
 				@SuppressWarnings("rawtypes")
-				AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
+				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());
 				switch(net.getPetriNet().getNetType()){
 				case CPN:
 					new WolfgangCPN((GraphicalCPN) net).setUpGUI();

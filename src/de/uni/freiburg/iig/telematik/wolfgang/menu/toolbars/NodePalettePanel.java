@@ -24,7 +24,7 @@ import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxRectangle;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
@@ -44,7 +44,7 @@ public class NodePalettePanel extends JPanel {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			Color defaultColor;
 			try {
-				defaultColor = WolfgangProperties.getInstance().getDefaultTransitionColor();
+				defaultColor = EditorProperties.getInstance().getDefaultTransitionColor();
 				g2.setColor(defaultColor);
 			} catch (PropertyException e) {
 				// TODO Auto-generated catch block
@@ -69,7 +69,7 @@ public class NodePalettePanel extends JPanel {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			Color defaultColor;
 			try {
-				defaultColor = WolfgangProperties.getInstance().getDefaultPlaceColor();
+				defaultColor = EditorProperties.getInstance().getDefaultPlaceColor();
 				g2.setColor(defaultColor);
 			} catch (PropertyException e) {
 				e.printStackTrace();
@@ -109,7 +109,7 @@ public class NodePalettePanel extends JPanel {
 	 * @throws IOException
 	 */
 	public void addPlaceTemplate() throws PropertyException, IOException {
-		int size = WolfgangProperties.getInstance().getDefaultPlaceSize();
+		int size = EditorProperties.getInstance().getDefaultPlaceSize();
 		String style = MXConstants.getDefaultNodeStyle(PNComponent.PLACE);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, size, size), style, PNComponent.PLACE);
 		cell.setVertex(true);
@@ -123,8 +123,8 @@ public class NodePalettePanel extends JPanel {
 	 * @throws IOException
 	 */
 	public void addTransitionTemplate() throws PropertyException, IOException {
-		int width = WolfgangProperties.getInstance().getDefaultTransitionWidth();
-		int height = WolfgangProperties.getInstance().getDefaultTransitionHeight();
+		int width = EditorProperties.getInstance().getDefaultTransitionWidth();
+		int height = EditorProperties.getInstance().getDefaultTransitionHeight();
 		String style = MXConstants.getDefaultNodeStyle(PNComponent.TRANSITION);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, width, height), style, PNComponent.TRANSITION);
 		cell.setVertex(true);

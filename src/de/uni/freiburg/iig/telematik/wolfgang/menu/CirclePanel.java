@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 
 public class CirclePanel extends JPanel {
 
@@ -24,7 +24,7 @@ public class CirclePanel extends JPanel {
 	   color = tokenColor;
 	  
 
-		size = WolfgangProperties.getInstance().getIconSize().getSize()/3;
+		size = EditorProperties.getInstance().getIconSize().getSize()/3;
 
      
 	setPreferredSize(new Dimension(size, size));

@@ -115,37 +115,37 @@ public class WGPropertySettingPanel extends JPanel {
 	
 	protected void initialize() throws PropertyException, IOException {
 		comboIconSize = new EnumComboBox<IconSize>(IconSize.class);
-		comboIconSize.setSelectedItem(WolfgangProperties.getInstance().getIconSize());
-		txtDefPlaceSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultPlaceSize().toString());
-		txtDefTransitionWidth = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTransitionWidth().toString());
-		txtDefTransitionHeight = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTransitionHeight().toString());
-		txtDefTokenSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTokenSize().toString());
-		txtDefTokenDistance = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultTokenDistance().toString());
-		txtDefVertLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultVerticalLabelOffset().toString());
-		txtDefHorizLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultHorizontalLabelOffset().toString());
-		txtGridSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getGridSize().toString());
+		comboIconSize.setSelectedItem(EditorProperties.getInstance().getIconSize());
+		txtDefPlaceSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultPlaceSize().toString());
+		txtDefTransitionWidth = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultTransitionWidth().toString());
+		txtDefTransitionHeight = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultTransitionHeight().toString());
+		txtDefTokenSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultTokenSize().toString());
+		txtDefTokenDistance = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultTokenDistance().toString());
+		txtDefVertLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultVerticalLabelOffset().toString());
+		txtDefHorizLabelOffset = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultHorizontalLabelOffset().toString());
+		txtGridSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getGridSize().toString());
 
-		colDefLabelBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelBackgroundColor());
-		colDefLabelLineColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLabelLineColor());
-		colDefPlaceColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultPlaceColor());
-		colDefTransitionColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultTransitionColor());
-		colDefLineColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultLineColor());
-		colDefGradientColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getDefaultGradientColor());
-		colBGColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getBackgroundColor());
-		colGridColor = new ColorChooserPanel(ColorMode.HEX, WolfgangProperties.getInstance().getGridColor());
+		colDefLabelBGColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultLabelBackgroundColor());
+		colDefLabelLineColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultLabelLineColor());
+		colDefPlaceColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultPlaceColor());
+		colDefTransitionColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultTransitionColor());
+		colDefLineColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultLineColor());
+		colDefGradientColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getDefaultGradientColor());
+		colBGColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getBackgroundColor());
+		colGridColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getGridColor());
 
 		comboGradientRotation = new EnumComboBox<GradientRotation>(GradientRotation.class);
-		comboGradientRotation.setSelectedItem(WolfgangProperties.getInstance().getDefaultGradientDirection());
+		comboGradientRotation.setSelectedItem(EditorProperties.getInstance().getDefaultGradientDirection());
 
-		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
-		comboFontFamily.setSelectedItem(WolfgangProperties.getInstance().getDefaultFontFamily());
-		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, WolfgangProperties.getInstance().getDefaultFontSize().toString());
-		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, WolfgangProperties.getInstance().getDefaultZoomStep().toString());
+		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, EditorProperties.getInstance().getDefaultFontFamily());
+		comboFontFamily.setSelectedItem(EditorProperties.getInstance().getDefaultFontFamily());
+		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultFontSize().toString());
+		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, EditorProperties.getInstance().getDefaultZoomStep().toString());
 
 		chckGridVisibility = new JCheckBox();
-		chckGridVisibility.setSelected(WolfgangProperties.getInstance().getGridVisibility());
+		chckGridVisibility.setSelected(EditorProperties.getInstance().getGridVisibility());
 		chckSnapToGrid = new JCheckBox();
-		chckSnapToGrid.setSelected(WolfgangProperties.getInstance().getSnapToGrid());
+		chckSnapToGrid.setSelected(EditorProperties.getInstance().getSnapToGrid());
 	}
 	
 	public IconSize getIconSize(){

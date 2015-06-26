@@ -12,7 +12,7 @@ import com.mxgraph.util.mxUtils;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
@@ -25,7 +25,7 @@ public class LineColorSelectionAction extends AbstractPNEditorGraphicsAction {
 
 	public LineColorSelectionAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "FillColor", IconFactory.getIcon("fill"));
-		setLineColor(WolfgangProperties.getInstance().getDefaultLineColor(), MXConstants.DEFAULT_LINE_WIDTH, MXConstants.DEFAULT_LINE_STYLE, false);
+		setLineColor(EditorProperties.getInstance().getDefaultLineColor(), MXConstants.DEFAULT_LINE_WIDTH, MXConstants.DEFAULT_LINE_STYLE, false);
 	}
 
 	@Override

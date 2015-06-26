@@ -16,7 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class LoadAction extends AbstractWolfgangAction {
@@ -60,7 +60,7 @@ public class LoadAction extends AbstractWolfgangAction {
 			String filename = fc.getSelectedFile().getAbsolutePath();
 
 			if (filename.toLowerCase().endsWith(".pnml")) {
-				AbstractGraphicalPN net = new PNMLParser().parse(filename, WolfgangProperties.getInstance().getRequestNetType(), WolfgangProperties.getInstance().getPNValidation());
+				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());
 				switch (net.getPetriNet().getNetType()) {
 				case CPN:
 					wolfgang = new WolfgangCPN((GraphicalCPN) net);

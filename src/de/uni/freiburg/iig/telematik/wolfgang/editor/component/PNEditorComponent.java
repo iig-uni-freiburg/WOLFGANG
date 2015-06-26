@@ -61,7 +61,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.NewNodeAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListenerSupport;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
@@ -435,7 +435,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 				map.put("export", new ExportPDFAction(PNEditorComponent.this));
 
-				int offset = WolfgangProperties.getInstance().getDefaultPlaceSize() * 4;
+				int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
 				map.put("newNodeLeft", new NewNodeAction(PNEditorComponent.this, -offset, 0));
 				map.put("newNodeRight", new NewNodeAction(PNEditorComponent.this, offset, 0));
 				map.put("newNodeDown", new NewNodeAction(PNEditorComponent.this, 0, offset));

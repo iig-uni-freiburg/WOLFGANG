@@ -9,7 +9,7 @@ import com.mxgraph.util.mxUtils;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar.FillStyle;
@@ -23,7 +23,7 @@ public class FillBackgroundColorAction extends AbstractPNEditorGraphicsAction {
 	public FillBackgroundColorAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "BackgroundColor", IconFactory.getIcon("fill"));
 		setButtonScale(3, 3);
-		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor());
+		setFillColor(EditorProperties.getInstance().getDefaultPlaceColor());
 	}
 
 	@Override

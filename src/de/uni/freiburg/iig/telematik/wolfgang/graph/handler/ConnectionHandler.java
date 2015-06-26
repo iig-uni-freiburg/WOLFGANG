@@ -24,7 +24,7 @@ import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxGraph;
 
 import de.invation.code.toval.properties.PropertyException;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
@@ -82,9 +82,9 @@ public class ConnectionHandler extends mxConnectionHandler {
 				geo.setTerminalPoint(startPoint, true);
 
 				try {
-					int placeSize = WolfgangProperties.getInstance().getDefaultPlaceSize() / 2;
-					int transitionWidth = WolfgangProperties.getInstance().getDefaultTransitionWidth() / 2;
-					int transitionHeight = WolfgangProperties.getInstance().getDefaultTransitionHeight() / 2;
+					int placeSize = EditorProperties.getInstance().getDefaultPlaceSize() / 2;
+					int transitionWidth = EditorProperties.getInstance().getDefaultTransitionWidth() / 2;
+					int transitionHeight = EditorProperties.getInstance().getDefaultTransitionHeight() / 2;
 					if (sourceState != null)
 						if (sourceState.getCell() instanceof PNGraphCell) {
 							PNGraphCell pnCell = ((PNGraphCell) sourceState.getCell());

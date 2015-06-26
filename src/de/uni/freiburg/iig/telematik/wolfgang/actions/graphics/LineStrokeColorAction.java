@@ -12,7 +12,7 @@ import com.mxgraph.util.mxUtils;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 @SuppressWarnings("serial")
@@ -21,7 +21,7 @@ public class LineStrokeColorAction extends AbstractPNEditorGraphicsAction {
 
 	public LineStrokeColorAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "StokeColor", IconFactory.getIcon("border_color"));
-		setFillColor(WolfgangProperties.getInstance().getDefaultLineColor());
+		setFillColor(EditorProperties.getInstance().getDefaultLineColor());
 	}
 
 

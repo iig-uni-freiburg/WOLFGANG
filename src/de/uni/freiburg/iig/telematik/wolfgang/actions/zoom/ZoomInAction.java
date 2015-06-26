@@ -8,7 +8,7 @@ import com.mxgraph.view.mxGraphView;
 import de.invation.code.toval.properties.PropertyException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ZoomInAction extends AbstractPNEditorAction {
@@ -28,8 +28,8 @@ public class ZoomInAction extends AbstractPNEditorAction {
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		currentZoom = view.getScale();
 		currentZoom = Math.round(currentZoom*100)/100.0; 
-		if (currentZoom <= 4 - WolfgangProperties.getInstance().getDefaultZoomStep()) {
-			newZoom = currentZoom + WolfgangProperties.getInstance().getDefaultZoomStep();
+		if (currentZoom <= 4 - EditorProperties.getInstance().getDefaultZoomStep()) {
+			newZoom = currentZoom + EditorProperties.getInstance().getDefaultZoomStep();
 			newZoom = Math.round(newZoom*100)/100.0;
 			getEditor().getGraphComponent().zoomTo(newZoom, getEditor().getGraphComponent().isCenterZoom());
 		}

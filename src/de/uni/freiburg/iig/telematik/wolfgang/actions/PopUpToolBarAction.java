@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.ToolBarDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.PopupToolBar;
@@ -121,7 +121,7 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 			popupToolBar.add(newDialogButton);
 
 			int size = 0;
-			size = WolfgangProperties.getInstance().getIconSize().getSize();
+			size = EditorProperties.getInstance().getIconSize().getSize();
 			popupToolBar.show(getButton(), 0, size + size / 2);
 		}
 	}

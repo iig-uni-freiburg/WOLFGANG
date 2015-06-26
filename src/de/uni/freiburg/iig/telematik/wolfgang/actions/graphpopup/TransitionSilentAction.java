@@ -22,7 +22,7 @@ import com.mxgraph.view.mxGraph;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TransitionSilentChange;
@@ -136,9 +136,9 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", selectedCellArray);
 				graph.setCellStyles(MXConstants.SILENT, "1", selectedCellArray);
 			} else {
-				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
-				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultTransitionColor()));
-				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultLineColor()));
+				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
+				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
+				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultLineColor()));
 				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
 				graph.setCellStyles(MXConstants.SILENT, "0", selectedCellArray);
 

@@ -24,7 +24,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.A
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public abstract class MXConstants {
@@ -126,23 +126,23 @@ public abstract class MXConstants {
 		case PLACE:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
 			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_ELLIPSE);
-			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultPlaceColor();
+			fillColorPNDefault = EditorProperties.getInstance().getDefaultPlaceColor();
 			break;
 		case TRANSITION:
 			style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
 			style.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_RECTANGLE);
-			fillColorPNDefault = WolfgangProperties.getInstance().getDefaultTransitionColor();
+			fillColorPNDefault = EditorProperties.getInstance().getDefaultTransitionColor();
 			break;
 		}
 		style.put(mxConstants.STYLE_FILLCOLOR, getMXColor(fillColorPNDefault));
 		
 		// Set fill gradient rotation
-		GradientRotation gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
+		GradientRotation gradientRotation = EditorProperties.getInstance().getDefaultGradientDirection();
 		if (gradientRotation != null)
 			style.put(MXConstants.GRADIENT_ROTATION, gradientRotation);
 
 		// Set fill gradient color
-		Color gradientColorPNDefault = WolfgangProperties.getInstance().getDefaultGradientColor();
+		Color gradientColorPNDefault = EditorProperties.getInstance().getDefaultGradientColor();
 		style.put(mxConstants.STYLE_GRADIENTCOLOR, getMXColor(gradientColorPNDefault));
 		
 		addDefaultLineStyle(style);
@@ -154,7 +154,7 @@ public abstract class MXConstants {
 	
 	private static void addDefaultLineStyle(Hashtable<String, Object> style) throws PropertyException, IOException{
 		// Set line color
-		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLineColor();
+		Color lineColorPNDefault = EditorProperties.getInstance().getDefaultLineColor();
 		style.put(mxConstants.STYLE_STROKECOLOR, getMXColor(lineColorPNDefault));
 
 		// Set line style
@@ -193,7 +193,7 @@ public abstract class MXConstants {
 	/**
 	 * Defines the style of newly introduced (possibly copied!!!) PN nodes.<br>
 	 * In case of copied nodes, the annotation- and node-graphics might be non-empty.<br>
-	 * In case of new nodes without copy, all content must be obtained from WolfgangProperties.
+ In case of new nodes without copy, all content must be obtained from EditorProperties.
 	 * @param type
 	 * @param nodeGraphics
 	 * @param annotationGraphics
@@ -347,26 +347,26 @@ public abstract class MXConstants {
 		style.put(mxConstants.STYLE_NOLABEL, "0");
 		
 		// Set label background color
-		Color fillColorPNDefault = WolfgangProperties.getInstance().getDefaultLabelBackgroundColor();
+		Color fillColorPNDefault = EditorProperties.getInstance().getDefaultLabelBackgroundColor();
 		style.put(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, getMXColor(fillColorPNDefault));
 		
 		// Set label gradient rotation
-		GradientRotation gradientRotation = WolfgangProperties.getInstance().getDefaultGradientDirection();
+		GradientRotation gradientRotation = EditorProperties.getInstance().getDefaultGradientDirection();
 		if (gradientRotation != null)
 			style.put(MXConstants.LABEL_GRADIENT_ROTATION, gradientRotation);
 
 		// Set label gradient color
-		Color gradientColorPNDefault = WolfgangProperties.getInstance().getDefaultGradientColor();
+		Color gradientColorPNDefault = EditorProperties.getInstance().getDefaultGradientColor();
 		style.put(MXConstants.LABEL_GRADIENTCOLOR, getMXColor(gradientColorPNDefault));
 
 		// Set label font align
 		style.put(mxConstants.STYLE_ALIGN, DEFAULT_LABEL_FONT_ALIGN);
 
 		// Set label font family
-		style.put(mxConstants.STYLE_FONTFAMILY, WolfgangProperties.getInstance().getDefaultFontFamily());
+		style.put(mxConstants.STYLE_FONTFAMILY, EditorProperties.getInstance().getDefaultFontFamily());
 		
 		// Set label font size
-		style.put(mxConstants.STYLE_FONTSIZE, WolfgangProperties.getInstance().getDefaultFontSize().toString());
+		style.put(mxConstants.STYLE_FONTSIZE, EditorProperties.getInstance().getDefaultFontSize().toString());
 
 		// Set label font weight
 		style.put(MXConstants.FONT_WEIGHT, DEFAULT_LABEL_FONT_WEIGHT);
@@ -375,7 +375,7 @@ public abstract class MXConstants {
 		style.put(MXConstants.FONT_STYLE, DEFAULT_LABEL_FONT_STYLE);
 
 		// Set label line color
-		Color lineColorPNDefault = WolfgangProperties.getInstance().getDefaultLabelLineColor();
+		Color lineColorPNDefault = EditorProperties.getInstance().getDefaultLabelLineColor();
 		style.put(mxConstants.STYLE_LABEL_BORDERCOLOR, getMXColor(lineColorPNDefault));
 		
 		// Set label line style
@@ -497,7 +497,7 @@ public abstract class MXConstants {
 
 	private static String getSizeFromCSS(String size) throws PropertyException, IOException {
 		if (size.equals("medium"))
-			return WolfgangProperties.getInstance().getDefaultFontSize().toString();
+			return EditorProperties.getInstance().getDefaultFontSize().toString();
 		// if(size.equals("small"))
 		// return mxConstants.DEFAULT_FONTSIZE;...
 		// Other cases...

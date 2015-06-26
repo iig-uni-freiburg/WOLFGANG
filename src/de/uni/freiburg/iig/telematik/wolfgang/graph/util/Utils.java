@@ -37,7 +37,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
@@ -774,7 +774,7 @@ public class Utils extends mxUtils {
 		try {
 			graphics.setFill(new Fill("#000000", null, null, null));
 			graphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-			graphics.setFont(new Font(Font.Align.CENTER, null, WolfgangProperties.getInstance().getDefaultFontFamily().toString(), 0.0, WolfgangProperties.getInstance().getDefaultFontSize().toString(), "normal", "normal"));
+			graphics.setFont(new Font(Font.Align.CENTER, null, EditorProperties.getInstance().getDefaultFontFamily().toString(), 0.0, EditorProperties.getInstance().getDefaultFontSize().toString(), "normal", "normal"));
 
 			HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 			for (Entry<String, Object> s : styleMap.entrySet()) {

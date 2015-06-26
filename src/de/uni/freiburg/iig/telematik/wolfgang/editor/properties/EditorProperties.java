@@ -15,7 +15,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 
 
-public class WolfgangProperties extends AbstractProperties{
+public class EditorProperties extends AbstractProperties{
 	
 	public static final IconSize ICON_SIZE = IconSize.MEDIUM;
 
@@ -44,13 +44,13 @@ public class WolfgangProperties extends AbstractProperties{
 	
 	public static final boolean DEFAULT_SNAP_TO_GRID = true;
 	
-	protected static final String propertyFileName = "WolfgangProperties";
+	protected static final String propertyFileName = "EditorProperties";
 	
-	private static WolfgangProperties instance = null;
+	private static EditorProperties instance = null;
 	
 	private Set<WolfgangPropertyListener> listeners = new HashSet<WolfgangPropertyListener>();
 
-	public WolfgangProperties() throws IOException {
+	private EditorProperties() throws IOException {
 		try {
 			load(propertyFileName);
 		} catch (IOException e) {
@@ -60,9 +60,9 @@ public class WolfgangProperties extends AbstractProperties{
 		}
 	}
 	
-	public static WolfgangProperties getInstance() throws IOException {
+	public static EditorProperties getInstance() throws IOException {
 		if(instance == null){
-			instance = new WolfgangProperties();
+			instance = new EditorProperties();
 		}
 		return instance;
 	}

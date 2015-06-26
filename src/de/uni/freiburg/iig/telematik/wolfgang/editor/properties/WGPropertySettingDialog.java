@@ -56,30 +56,30 @@ public class WGPropertySettingDialog extends AbstractDialog {
 	}
 	
 	protected void transferProperties() throws ParameterException, PropertyException, IOException{
-		WolfgangProperties.getInstance().setIconSize(settingPanel.getIconSize());
-		WolfgangProperties.getInstance().setDefaultPlaceSize(settingPanel.getDefaultPlaceSize());
-		WolfgangProperties.getInstance().setDefaultTransitionWidth(settingPanel.getDefaultTransitionWidth());
-		WolfgangProperties.getInstance().setDefaultTransitionHeight(settingPanel.getDefaultTransitionHeight());
-		WolfgangProperties.getInstance().setDefaultTokenSize(settingPanel.getDefaultTokenSize());
-		WolfgangProperties.getInstance().setDefaultTokenDistance(settingPanel.getDefaultTokenDistance());
-		WolfgangProperties.getInstance().setDefaultVerticalLabelOffset(settingPanel.getDefaultVerticalLabelOffset());
-		WolfgangProperties.getInstance().setDefaultHorizontalLabelOffset(settingPanel.getDefaultHorizontalLabelOffset());
-		WolfgangProperties.getInstance().setDefaultLabelBackgroundColor(settingPanel.getDefaultLabelBackgroundColor());
-		WolfgangProperties.getInstance().setDefaultLabelLineColor(settingPanel.getDefaultLabelLineColor());
-		WolfgangProperties.getInstance().setDefaultPlaceColor(settingPanel.getDefaultPlaceColor());
-		WolfgangProperties.getInstance().setDefaultTransitionColor(settingPanel.getDefaultTransitionColor());
-		WolfgangProperties.getInstance().setDefaultLineColor(settingPanel.getDefaultLineColor());
-		WolfgangProperties.getInstance().setDefaultGradientColor(settingPanel.getDefaultGradientColor());
-		WolfgangProperties.getInstance().setDefaultGradientDirection(settingPanel.getDefaultGradientDirection());
-		WolfgangProperties.getInstance().setDefaultFontFamily(settingPanel.getDefaultFontFamily());
-		WolfgangProperties.getInstance().setDefaultFontSize(settingPanel.getDefaultFontSize());
-		WolfgangProperties.getInstance().setDefaultZoomStep(settingPanel.getDefaultZoomStep());
-		WolfgangProperties.getInstance().setBackgroundColor(settingPanel.getBackgroundColor());
-		WolfgangProperties.getInstance().setGridColor(settingPanel.getGridColor());
-		WolfgangProperties.getInstance().setGridSize(settingPanel.getGridSize());
-		WolfgangProperties.getInstance().setGridVisibility(settingPanel.getGridVisibility());
-		WolfgangProperties.getInstance().setSnapToGrid(settingPanel.getSnapToGrid());
-		WolfgangProperties.getInstance().store();
+		EditorProperties.getInstance().setIconSize(settingPanel.getIconSize());
+		EditorProperties.getInstance().setDefaultPlaceSize(settingPanel.getDefaultPlaceSize());
+		EditorProperties.getInstance().setDefaultTransitionWidth(settingPanel.getDefaultTransitionWidth());
+		EditorProperties.getInstance().setDefaultTransitionHeight(settingPanel.getDefaultTransitionHeight());
+		EditorProperties.getInstance().setDefaultTokenSize(settingPanel.getDefaultTokenSize());
+		EditorProperties.getInstance().setDefaultTokenDistance(settingPanel.getDefaultTokenDistance());
+		EditorProperties.getInstance().setDefaultVerticalLabelOffset(settingPanel.getDefaultVerticalLabelOffset());
+		EditorProperties.getInstance().setDefaultHorizontalLabelOffset(settingPanel.getDefaultHorizontalLabelOffset());
+		EditorProperties.getInstance().setDefaultLabelBackgroundColor(settingPanel.getDefaultLabelBackgroundColor());
+		EditorProperties.getInstance().setDefaultLabelLineColor(settingPanel.getDefaultLabelLineColor());
+		EditorProperties.getInstance().setDefaultPlaceColor(settingPanel.getDefaultPlaceColor());
+		EditorProperties.getInstance().setDefaultTransitionColor(settingPanel.getDefaultTransitionColor());
+		EditorProperties.getInstance().setDefaultLineColor(settingPanel.getDefaultLineColor());
+		EditorProperties.getInstance().setDefaultGradientColor(settingPanel.getDefaultGradientColor());
+		EditorProperties.getInstance().setDefaultGradientDirection(settingPanel.getDefaultGradientDirection());
+		EditorProperties.getInstance().setDefaultFontFamily(settingPanel.getDefaultFontFamily());
+		EditorProperties.getInstance().setDefaultFontSize(settingPanel.getDefaultFontSize());
+		EditorProperties.getInstance().setDefaultZoomStep(settingPanel.getDefaultZoomStep());
+		EditorProperties.getInstance().setBackgroundColor(settingPanel.getBackgroundColor());
+		EditorProperties.getInstance().setGridColor(settingPanel.getGridColor());
+		EditorProperties.getInstance().setGridSize(settingPanel.getGridSize());
+		EditorProperties.getInstance().setGridVisibility(settingPanel.getGridVisibility());
+		EditorProperties.getInstance().setSnapToGrid(settingPanel.getSnapToGrid());
+		EditorProperties.getInstance().store();
 	}
 
 	public static void showDialog(Window parent) throws Exception {

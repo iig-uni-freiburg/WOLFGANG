@@ -13,7 +13,7 @@ import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar.FillStyle;
@@ -24,7 +24,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 
 	public FillColorSelectionAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
 		super(editor, "FillColor", IconFactory.getIcon("fill"));
-		setFillColor(WolfgangProperties.getInstance().getDefaultPlaceColor(), WolfgangProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
+		setFillColor(EditorProperties.getInstance().getDefaultPlaceColor(), EditorProperties.getInstance().getDefaultGradientColor(), GradientRotation.VERTICAL);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 			if (newColor != null) {
 				getGraph().setCellStyles(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, mxUtils.hexString(newColor));
 				getGraph().setCellStyles(MXConstants.LABEL_GRADIENT_ROTATION, null);
-				getGraph().setCellStyles(MXConstants.LABEL_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor()));
+				getGraph().setCellStyles(MXConstants.LABEL_GRADIENTCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultGradientColor()));
 				getEditor().getEditorToolbar().getGraphicsToolbar().setFillStyle(FillStyle.SOLID);
 			}
 			break;
@@ -79,7 +79,7 @@ public class FillColorSelectionAction extends AbstractPNEditorGraphicsAction {
 			if (newColor != null) {
 				getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(newColor));
 				getGraph().setCellStyles(MXConstants.GRADIENT_ROTATION, null);
-				getGraph().setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(WolfgangProperties.getInstance().getDefaultGradientColor()));
+				getGraph().setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultGradientColor()));
 				getEditor().getEditorToolbar().getGraphicsToolbar().setFillStyle(FillStyle.SOLID);
 			}
 
