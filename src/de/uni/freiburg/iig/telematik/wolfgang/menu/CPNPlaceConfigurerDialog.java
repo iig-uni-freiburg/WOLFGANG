@@ -232,6 +232,11 @@ public class CPNPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 		return dialog;
 	}
 
+	@Override
+	protected boolean shouldAddAddBtn() {
+		return true;
+	}
+
 
 
 

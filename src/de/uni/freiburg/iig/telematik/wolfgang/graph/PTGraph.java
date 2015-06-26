@@ -173,12 +173,6 @@ public class PTGraph extends PNGraph {
 		graphListenerSupport.notifyPlaceCapacityChanged(name,color,newCapacity);		
 	}
 
-	@Override
-	public void updateViews() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	protected void drawAdditionalTransitionGrahpics(mxGraphics2DCanvas canvas, mxCellState state) {

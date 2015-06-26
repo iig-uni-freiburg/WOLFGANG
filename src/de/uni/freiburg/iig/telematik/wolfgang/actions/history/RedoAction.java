@@ -22,7 +22,6 @@ public class RedoAction extends AbstractPNEditorAction {
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (editor != null) {
 			editor.getUndoManager().redo();
-			editor.getGraphComponent().getGraph().updateViews();
 			editor.requestFocus();
 		}
 	}

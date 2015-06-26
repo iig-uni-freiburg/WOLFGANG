@@ -211,6 +211,7 @@ public class TokenColorToolBar extends JToolBar {
 		newName.requestFocus();
 		
 		//specific for win7
+		if(tokenAction.getDialog() != null)
 		this.tokenAction.getDialog().pack();
 	}
 
@@ -287,6 +288,7 @@ public class TokenColorToolBar extends JToolBar {
 					tokenAction.actionPerformed(null);
 					
 					//specific for win7
+					if(tokenAction.getDialog() != null)
 					tokenAction.getDialog().pack();
 					
 				}
@@ -405,6 +407,7 @@ public class TokenColorToolBar extends JToolBar {
 			tokenAction.actionPerformed(null);
 			
 			//specific for win7
+			if(tokenAction.getDialog()!= null)
 			tokenAction.getDialog().pack();
 			if (getText().equals(InitialPlaceHolderTokenColorName))
 				requestFocus();

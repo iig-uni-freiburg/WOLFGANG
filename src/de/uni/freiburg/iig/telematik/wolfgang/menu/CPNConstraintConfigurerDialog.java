@@ -113,6 +113,11 @@ public class CPNConstraintConfigurerDialog extends AbstractTokenConfigurerDialog
 		return clone.size()>1;
 	}
 
+	@Override
+	protected boolean shouldAddAddBtn() {
+		return true;
+	}
+
 
 
 }

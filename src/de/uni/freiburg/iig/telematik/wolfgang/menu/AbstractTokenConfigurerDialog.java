@@ -49,6 +49,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	private static final int SPINNER_DEFAULT_WIDTH = 63;
 
 	private JButton addButton;
+
 	protected PNGraph graph;
 	protected Map<String, Color> colors;
 	protected String cellName;
@@ -65,15 +66,18 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	}
 
 	public void updateTokenConfigurerView() {
-		if(getNetContainer() instanceof AbstractGraphicalCPN)
-		colors = ((AbstractCPNGraphics) getNetContainer().getPetriNetGraphics()).getColors();
-		if(getNetContainer() instanceof AbstractGraphicalPTNet){
+		if (getNetContainer() instanceof AbstractGraphicalCPN)
+			colors = ((AbstractCPNGraphics) getNetContainer().getPetriNetGraphics()).getColors();
+		if (getNetContainer() instanceof AbstractGraphicalPTNet) {
 			colors = new HashMap<String, Color>();
 			colors.put("black", Color.BLACK);
-					}
+		}
 		mainPanel().removeAll();
 
+		if(shouldAddAddBtn())
 		createAddBtn();
+		else 
+			mainPanel().add(Box.createHorizontalStrut(25));
 
 		mainPanel().add(new JLabel(getCellSpecificHeadline()));
 
@@ -87,12 +91,14 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			mainPanel().add(Box.createGlue());
 
 		mainPanel().add(Box.createGlue());
-
-		if (getTokenColors().contains("black"))
+		int size = 0;
+		if (getTokenColors().contains("black")) {
 			colors.put("black", Color.BLACK);
-
-		addRow("black");
-		int size = 1;
+			addRow("black");
+			size++;
+		}
+	
+		
 		TreeMap<String, Color> sortedColorMap = new TreeMap<String, Color>(colors);
 		for (String color : sortedColorMap.keySet()) {
 			if (shouldAddRow(color)) {
@@ -111,11 +117,13 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		createCellSpecificComponents();
 		mainPanel().add(Box.createGlue());
 
-		SpringUtilities.makeCompactGrid(mainPanel(), size + 2, 6, 6, 6, 6, 6);
+		SpringUtilities.makeCompactGrid(mainPanel(), mainPanel().getComponentCount()/6, 6, 6, 6, 6, 6);
 
 		pack();
 
 	}
+
+	protected abstract boolean shouldAddAddBtn();
 
 	protected abstract boolean shouldAddRow(String color);
 
@@ -147,12 +155,12 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				TreeMap<String, Color> sortedColors = new TreeMap<String, Color>(colors);
 				for (Entry<String, Color> c : sortedColors.entrySet()) {
 					final String color = c.getKey();
-					if(!color.equals("black"))
-					addColorItem(popup, color);
+					if (!color.equals("black"))
+						addColorItem(popup, color);
 				}
 
 				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
-				
+
 			}
 
 			private void addColorItem(JPopupMenu popup, final String color) {
@@ -169,6 +177,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 							((mxGraphModel) graph.getModel()).endUpdate();
 
 							if (getMultiSet().contains(colors.keySet())) {
+								if(addButton!=null)
 								addButton.setEnabled(false);
 							}
 
@@ -234,6 +243,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				if (newMarking == null)
 					newMarking = new Multiset<String>();
 				newMarking.setMultiplicity(tokenLabel, currentValue);
+
 				((mxGraphModel) graph.getModel()).execute(createCellSpecificChange((PNGraph) graph, cellName, newMarking));
 			}
 
@@ -261,6 +271,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				((mxGraphModel) graph.getModel()).beginUpdate();
 				createCellSpecificRemoveBtnAction(tokenName);
 				((mxGraphModel) graph.getModel()).endUpdate();
+				if(addButton!=null)
 				addButton.setEnabled(true);
 				pack();
 				updateTokenConfigurerView();
@@ -298,12 +309,12 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	}
 
 	protected Set<String> getTokenColors() {
-		if(graph.getNetContainer().getPetriNet() instanceof AbstractCPN)
-		return ((AbstractCPN) graph.getNetContainer().getPetriNet()).getTokenColors();
-		if(graph.getNetContainer().getPetriNet() instanceof AbstractPTNet){
+		if (graph.getNetContainer().getPetriNet() instanceof AbstractCPN)
+			return ((AbstractCPN) graph.getNetContainer().getPetriNet()).getTokenColors();
+		if (graph.getNetContainer().getPetriNet() instanceof AbstractPTNet) {
 			HashSet<String> colorSet = new HashSet<String>();
 			colorSet.add("black");
-		return colorSet;
+			return colorSet;
 		}
 		return null;
 	}
@@ -339,6 +350,10 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	@Override
 	protected void addComponents() throws Exception {
 		updateTokenConfigurerView();
+	}
+
+	public void resetMultiSet() {
+		multiSet = null;
 	}
 
 }

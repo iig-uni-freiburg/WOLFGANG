@@ -21,6 +21,8 @@ import de.invation.code.toval.graphic.misc.CircularPointGroup;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
@@ -41,7 +43,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.CPNProperties;
  */
 public class CPNGraph extends PNGraph {
 
-	private HashMap<String, AbstractTokenConfigurerDialog> tokenConfigurerWindows = new HashMap();
+//	private HashMap<String, AbstractTokenConfigurerDialog> tokenConfigurerWindows = new HashMap();
 
 	public CPNGraph(GraphicalCPN graphicalCPN, CPNProperties cpnProperties) throws ParameterException {
 		super(graphicalCPN, cpnProperties);
@@ -161,21 +163,25 @@ public class CPNGraph extends PNGraph {
 		Window window = SwingUtilities.getWindowAncestor(cpnGraphComponent);
 		switch (cell.getType()) {
 		case ARC:
-			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
+//			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
 
-				tokenConfigurerWindows.put(cell.getId(), CPNConstraintConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getFlowRelation(cell.getId()).getName(), this));
-			} else {
-				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
-				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
-			}
+//				tokenConfigurerWindows.put(cell.getId(), 
+						CPNConstraintConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getFlowRelation(cell.getId()).getName(), this);
+//						);
+//			} else {
+//				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
+//				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
+//			}
 			break;
 		case PLACE:
-			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				tokenConfigurerWindows.put(cell.getId(), CPNPlaceConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getPlace(cell.getId()).getName(), this));
-			} else {
-				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
-				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
-			}
+//			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
+//				tokenConfigurerWindows.put(cell.getId(), 
+						CPNPlaceConfigurerDialog.showDialog(window, getNetContainer().getPetriNet().getPlace(cell.getId()).getName(), this);
+//						);
+//			} else {
+//				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
+//				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
+//			}
 
 			break;
 		case TRANSITION:
@@ -203,10 +209,17 @@ public class CPNGraph extends PNGraph {
 		graphListenerSupport.notifyPlaceCapacityChanged(name, color, newCapacity);
 	}
 
+
 	@Override
-	public void updateViews() {
-		for (AbstractTokenConfigurerDialog w : tokenConfigurerWindows.values())
-			w.updateTokenConfigurerView();
+	public void placeRemoved(PlaceChangeEvent event) {
+//		tokenConfigurerWindows.remove(event.place.getName());
+		super.placeRemoved(event);
+	}
+
+	@Override
+	public void relationRemoved(RelationChangeEvent event) {
+		// TODO Auto-generated method stub
+		super.relationRemoved(event);
 	}
 
 	@Override

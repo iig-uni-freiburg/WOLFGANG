@@ -573,9 +573,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public abstract int getCapacityforPlace(String name, String color);
 
 
-
-	public abstract void updateViews();
-
 	/**
 	 * @param id
 	 * @param circularPointGroup
@@ -1531,6 +1528,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	@Override
 	public void structureChanged() {
+//		updateViews();
 	}
 
 	public PNGraphCell getNodeCell(String name) {

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -36,7 +38,6 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	public PTPlaceConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name, cpnGraph);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -94,11 +95,6 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected void createCellSpecificAddBtnAction(String color) {
-		if (((AbstractPTPlace) graph.getNetContainer().getPetriNet().getPlace(cellName)).getCapacity() == 0)
-			((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, cellName, color, 1));
-		getMultiSet().setMultiplicity(color, 1);
-		((mxGraphModel) graph.getModel()).execute(new TokenChange((PNGraph) graph, cellName, getMultiSet()));
-
 	}
 
 	@Override
@@ -128,7 +124,7 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected boolean shouldAddRow(String color) {
-		return getPlace().getCapacity() > 0 || getMultiSet().contains(color);
+		return true;
 
 	}
 
@@ -244,6 +240,11 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 			JOptionPane.showMessageDialog(window, "Cannot launch ExceptionDialog.\nReason: " + e.getMessage(), "Internal Exception", JOptionPane.ERROR_MESSAGE);
 		}
 		return dialog;
+	}
+
+	@Override
+	protected boolean shouldAddAddBtn() {
+		return false;
 	}
 
 

@@ -258,12 +258,6 @@ public class IFNetGraph extends PNGraph {
 	}
 
 	@Override
-	public void updateViews() {
-		for (TokenConfigurerDialog w : tokenConfigurerWindows.values())
-			w.updateTokenConfigurerView();
-	}
-
-	@Override
 	public void updateTokenConfigurer(String name) {
 		// TODO Auto-generated method stub
 
