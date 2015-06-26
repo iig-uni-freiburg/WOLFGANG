@@ -74,9 +74,9 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		}
 		mainPanel().removeAll();
 
-		if(shouldAddAddBtn())
-		createAddBtn();
-		else 
+		if (shouldAddAddBtn())
+			createAddBtn();
+		else
 			mainPanel().add(Box.createHorizontalStrut(25));
 
 		mainPanel().add(new JLabel(getCellSpecificHeadline()));
@@ -97,8 +97,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			addRow("black");
 			size++;
 		}
-	
-		
+
 		TreeMap<String, Color> sortedColorMap = new TreeMap<String, Color>(colors);
 		for (String color : sortedColorMap.keySet()) {
 			if (shouldAddRow(color)) {
@@ -117,7 +116,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		createCellSpecificComponents();
 		mainPanel().add(Box.createGlue());
 
-		SpringUtilities.makeCompactGrid(mainPanel(), mainPanel().getComponentCount()/6, 6, 6, 6, 6, 6);
+		SpringUtilities.makeCompactGrid(mainPanel(), mainPanel().getComponentCount() / 6, 6, 6, 6, 6, 6);
 
 		pack();
 
@@ -177,8 +176,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 							((mxGraphModel) graph.getModel()).endUpdate();
 
 							if (getMultiSet().contains(colors.keySet())) {
-								if(addButton!=null)
-								addButton.setEnabled(false);
+								if (addButton != null)
+									addButton.setEnabled(false);
 							}
 
 							updateTokenConfigurerView();
@@ -271,8 +270,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 				((mxGraphModel) graph.getModel()).beginUpdate();
 				createCellSpecificRemoveBtnAction(tokenName);
 				((mxGraphModel) graph.getModel()).endUpdate();
-				if(addButton!=null)
-				addButton.setEnabled(true);
+				if (addButton != null)
+					addButton.setEnabled(true);
 				pack();
 				updateTokenConfigurerView();
 			}

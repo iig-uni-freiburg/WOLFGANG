@@ -836,19 +836,23 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 
 				if (selectedComponents.size() >= 1) {
 					this.selectedCell = selectedComponents.iterator().next();
+					System.out.println(selectedCell + "#" + selectedComponents.size());
 					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
 					boolean isTransitionSilent = false;
 					if (isTransitionCell) {
-						if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId()))
+						if (pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().containsTransition(selectedCell.getId())){
 							isTransitionSilent = pnEditor.getGraphComponent().getGraph().getNetContainer().getPetriNet().getTransition(selectedCell.getId()).isSilent();
+							deactivate();			
+						}
 					}
-					boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
-					boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
 
-					NodeGraphics nodeGraphics = null;
-					AnnotationGraphics annotationGraphics = null;
-					ArcGraphics arcGraphics = null;
 					if (!isTransitionSilent) {
+						boolean isArcCell = selectedCell.getType() == PNComponent.ARC;
+						boolean labelSelected = pnEditor.getGraphComponent().getGraph().isLabelSelected();
+
+						NodeGraphics nodeGraphics = null;
+						AnnotationGraphics annotationGraphics = null;
+						ArcGraphics arcGraphics = null;
 						setLineEnabled(true);
 						setFillEnabled(true);
 						switch (selectedCell.getType()) {

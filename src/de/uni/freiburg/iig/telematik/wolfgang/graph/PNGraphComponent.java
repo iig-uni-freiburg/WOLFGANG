@@ -639,7 +639,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 					} else {
 						getGraph().setLabelSelected(false);
 					}
-					getGraph().invoke(PNGraphComponent.this, new mxEventObject(mxEvent.CHANGE));
+//					getGraph().invoke(PNGraphComponent.this, new mxEventObject(mxEvent.CHANGE));
 					getSelectionCellsHandler().refresh();
 				}
 			} else if (e.getClickCount() == 2 && !(e.getModifiers() == 4) && !getGraph().isExecution()) {

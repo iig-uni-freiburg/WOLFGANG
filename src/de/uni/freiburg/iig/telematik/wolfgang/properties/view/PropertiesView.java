@@ -92,6 +92,8 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 	private AbstractToolBar editorToolbar;
 
+	private boolean selectNodeCall;
+
 	public AbstractToolBar getEditorToolbar() {
 		return editorToolbar;
 	}
@@ -532,6 +534,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	}
 
 	public void selectNode(String name) {
+		selectNodeCall = true;
 		DefaultMutableTreeNode node = findTreeNodeByName((DefaultMutableTreeNode) getModel().getRoot(), name);
 
 		if (node != null) {
@@ -555,11 +558,12 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 	@Override
 	protected void fireValueChanged(final TreeSelectionEvent e) {
-		if (this.isValid())
+		if (this.isValid()&&!selectNodeCall)
 			super.fireValueChanged(e);
 		else {
 			super.clearSelection();
 		}
+		selectNodeCall = false;
 
 	}
 
