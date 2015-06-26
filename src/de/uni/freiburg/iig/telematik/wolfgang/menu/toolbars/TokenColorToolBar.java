@@ -209,6 +209,9 @@ public class TokenColorToolBar extends JToolBar {
 		makeCompactGrid();
 		this.tokenAction.actionPerformed(null);
 		newName.requestFocus();
+		
+		//specific for win7
+		this.tokenAction.getDialog().pack();
 	}
 
 	private CirclePanel getTokenCircle(String tokenLabel) {
