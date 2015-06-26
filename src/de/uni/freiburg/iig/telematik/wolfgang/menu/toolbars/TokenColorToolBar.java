@@ -272,6 +272,9 @@ public class TokenColorToolBar extends JToolBar {
 
 						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).endUpdate();
 					} else {
+						if(newName.getText().contains(InitialPlaceHolderTokenColorName))
+							addButton.setEnabled(true);
+
 						pnlTokenColors.remove(circle);
 						pnlTokenColors.remove(newField);
 						pnlTokenColors.remove(newName);
@@ -282,6 +285,10 @@ public class TokenColorToolBar extends JToolBar {
 
 					}
 					tokenAction.actionPerformed(null);
+					
+					//specific for win7
+					tokenAction.getDialog().pack();
+					
 				}
 
 			});
@@ -396,6 +403,9 @@ public class TokenColorToolBar extends JToolBar {
 			}
 
 			tokenAction.actionPerformed(null);
+			
+			//specific for win7
+			tokenAction.getDialog().pack();
 			if (getText().equals(InitialPlaceHolderTokenColorName))
 				requestFocus();
 		}
