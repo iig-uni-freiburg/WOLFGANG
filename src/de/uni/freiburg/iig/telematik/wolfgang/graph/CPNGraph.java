@@ -30,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractTokenConfigurerDialog;
@@ -99,12 +100,13 @@ public class CPNGraph extends PNGraph {
 	@Override
 	protected String getPlaceToolTip(PNGraphCell cell) {
 		CPNPlace ptPlace = getNetContainer().getPetriNet().getPlace(cell.getId());
-		return "Cap:" + ((ptPlace.getCapacity() == -1) ? "\u221e" : ptPlace.getCapacity());
+		return "Capacity:" + ((ptPlace.getCapacity() == -1) ? "\u221e" : ptPlace.getCapacity());
 	}
 
 	@Override
 	protected String getTransitionToolTip(PNGraphCell cell) {
-		return "";
+		 CPNTransition ptTransition = getNetContainer().getPetriNet().getTransition(cell.getId());
+		return (ptTransition.isEnabled())? "enabled": "not enabled";
 	}
 
 	@Override

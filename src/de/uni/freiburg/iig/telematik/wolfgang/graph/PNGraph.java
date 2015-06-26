@@ -256,13 +256,13 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	private Set<PNGraphCell> getSelectedGraphCells() {
-		Set<PNGraphCell> placeCells = new HashSet<PNGraphCell>();
+		Set<PNGraphCell> selectedCells = new HashSet<PNGraphCell>();
 		for (Object selectedObject : getSelectionCells()) {
 			if (selectedObject instanceof PNGraphCell) {
-				placeCells.add((PNGraphCell) selectedObject);
+				selectedCells.add((PNGraphCell) selectedObject);
 			}
 		}
-		return placeCells;
+		return selectedCells;
 	}
 
 	public AbstractGraphicalPN<?, ?, ?, ?, ?, ?, ?> getNetContainer() {

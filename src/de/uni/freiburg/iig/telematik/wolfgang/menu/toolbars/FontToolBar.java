@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -108,6 +109,8 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 	private String fontLabelText = "Font:";
 
 	private JLabel fontLabel;
+
+	protected boolean rememberSelectionFromGraph;
 
 	public FontToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
 		super(orientation);
@@ -225,7 +228,9 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 						String font = fontBox.getSelectedItem().toString();
 						PNGraph graph = FontToolBar.this.pnEditor.getGraphComponent().getGraph();
 						try {
-							graph.setFontOfSelectedCellLabel(font);
+							if(!rememberSelectionFromGraph)
+								graph.setFontOfSelectedCellLabel(font);
+							rememberSelectionFromGraph = false;
 						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(FontToolBar.this.pnEditor, "Cannot set cell-font: " + e1.getMessage(), "Graph Exception", JOptionPane.ERROR_MESSAGE);
 						}
@@ -249,7 +254,9 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 						String fontSize = fontSizeBox.getSelectedItem().toString().replace("pt", "");
 						PNGraph graph = FontToolBar.this.pnEditor.getGraphComponent().getGraph();
 						try {
-							graph.setFontSizeOfSelectedCellLabel(fontSize);
+							if(!rememberSelectionFromGraph)
+								graph.setFontSizeOfSelectedCellLabel(fontSize);
+							rememberSelectionFromGraph = false;
 						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(FontToolBar.this.pnEditor, "Cannot set cell-font size: " + e1.getMessage(), "Graph Exception", JOptionPane.ERROR_MESSAGE);
 						}
@@ -364,6 +371,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 
 	@Override
 	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
+		rememberSelectionFromGraph = true;
 		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
 			if (selectedComponents == null || selectedComponents.isEmpty()) {
 				setFontEnabled(false);
@@ -371,10 +379,14 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 				return;
 			}
 			if (!selectedComponents.isEmpty()) {
-
-				// addImageAction.setEnabled(true);
-
-				if (selectedComponents.size() >= 1) {
+				this.selectedCell = selectedComponents.iterator().next();
+				Map<String, Object> style = pnEditor.getGraphComponent().getGraph().getCellStyle(this.selectedCell);
+				if(style.containsKey("noLabel")){
+					if(style.get("noLabel").equals("1"))
+						setFontEnabled(false);
+		
+				} 
+				else if (selectedComponents.size() >= 1) {
 					// Enables Toolbar Buttons
 					this.selectedCell = selectedComponents.iterator().next();
 					boolean isPlaceCell = selectedCell.getType() == PNComponent.PLACE;
@@ -464,7 +476,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 				}
 			}
 		}
-		
+		rememberSelectionFromGraph = false;
 	}
 
 }

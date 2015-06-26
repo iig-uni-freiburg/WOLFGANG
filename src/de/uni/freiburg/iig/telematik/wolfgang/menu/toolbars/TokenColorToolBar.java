@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import com.itextpdf.text.xml.simpleparser.handler.NeverNewLineHandler;
 import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
@@ -151,7 +152,10 @@ public class TokenColorToolBar extends JToolBar {
 
 		@Override
 		public void valueChanged(Color oldValue, Color newValue) {
-			// Check if chosen color alreadyexists
+			// Check if chosen color is the same as before or alreadyexists 
+			if(newValue.equals(oldValue))
+				setColorUnique(true);
+			else
 			setColorUnique(!mapColorsForToolBar.values().contains(newValue));
 
 			if (tokenLabel != null) {

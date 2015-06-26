@@ -87,6 +87,7 @@ public class TokenColorChooserPanel extends JPanel {
 					if(color!=null && isColorUnique)
 					ColorChooserLabel.this.updateColor(color);
 					if(!isColorUnique)
+						
 						JOptionPane.showMessageDialog(ColorChooserLabel.this, "Please choose a different color","Color already exists", JOptionPane.WARNING_MESSAGE);
 
 					

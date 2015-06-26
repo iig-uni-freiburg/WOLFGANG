@@ -150,6 +150,8 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 	private JToggleButton lineColorSelectionButton;
 	private int strokeWeight = (int) Line.DEFAULT_WIDTH;
 
+	private boolean rememberSelectionFromGraph;
+
 	public GraphicsToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
 		super(orientation);
 		Validate.notNull(pnEditor);
@@ -441,7 +443,9 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 						if (selectedCell != null) {
 							String strokeWeight = strokeWeightBox.getSelectedItem().toString().replace("px", "");
 							PNGraph graph = GraphicsToolBar.this.pnEditor.getGraphComponent().getGraph();
+							if(!rememberSelectionFromGraph)
 							graph.setStrokeWeightOfSelectedCell(strokeWeight);
+							rememberSelectionFromGraph = false;
 						}
 					}
 				}
@@ -826,6 +830,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 
 	@Override
 	public void componentsSelected(Set<PNGraphCell> selectedComponents) {
+		rememberSelectionFromGraph = true;
 		if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
 			if (selectedComponents == null || selectedComponents.isEmpty()) {
 				deactivate();
@@ -909,7 +914,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 				}
 			}
 		}
-
+		rememberSelectionFromGraph = true;
 	}
 
 }
