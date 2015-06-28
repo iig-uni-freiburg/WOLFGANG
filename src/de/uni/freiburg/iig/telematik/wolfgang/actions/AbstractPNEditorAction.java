@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -78,8 +79,7 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 		try {
 			doFancyStuff(e);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor), ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(editor), "Error", ex);
 		}
 	}
 

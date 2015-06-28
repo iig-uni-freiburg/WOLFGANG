@@ -29,6 +29,7 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -39,6 +40,7 @@ import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
@@ -421,7 +423,7 @@ public class TokenConfigurerDialog extends JDialog {
 		try {
 			remove = new JButton(IconFactory.getIcon("minimize"));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
+			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(this), "Minimize-Button could not be added.",e);
 		}
 		remove.addActionListener(new ActionListener() {
 

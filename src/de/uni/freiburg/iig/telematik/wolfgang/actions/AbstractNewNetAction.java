@@ -2,9 +2,10 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.graphic.dialog.FileNameDialog;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 
@@ -26,7 +27,7 @@ public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extend
 				net = createNewGraphicalPN();
 				net.getPetriNet().setName(netName);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(wolfgang, "Could not add net.\nReason: " + ex.getMessage());
+				ExceptionDialog.showException(SwingUtilities.getWindowAncestor(wolfgang), "Could not add net.", ex);
 			}
 		}
 	}

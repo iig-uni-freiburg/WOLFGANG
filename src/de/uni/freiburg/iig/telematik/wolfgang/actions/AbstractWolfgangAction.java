@@ -6,7 +6,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 
@@ -57,7 +59,7 @@ public abstract class AbstractWolfgangAction extends AbstractAction {
 		try {
 			doFancyStuff(e);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(wolfgang, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(wolfgang), "Error", ex);
 		}
 	}
 

@@ -47,6 +47,7 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -137,7 +138,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		try {
 			propertiesView.setUpGUI();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getParent()), "Property Exception.\nReason: " + e.getMessage(), "Property Exception", JOptionPane.ERROR_MESSAGE);
+			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(getParent()), "Property Exception. ", e);
 		}
 
 		if (!graphComponent.getGraph().containedGraphics() && askForLayout) {
