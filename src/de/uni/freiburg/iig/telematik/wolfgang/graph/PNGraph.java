@@ -1328,6 +1328,10 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	public void addWayPoint(PNGraphCell cell, Point pt) {
+	double scale = this.getView().getScale();
+	int x = (int)(pt.getX()/scale);
+	int y = (int)(pt.getY()/scale);
+	pt = new Point(x,y);
 		if (cell.getType().equals(PNComponent.ARC)) {
 			List<mxPoint> points = cell.getGeometry().getPoints();
 			if (points != null) {
