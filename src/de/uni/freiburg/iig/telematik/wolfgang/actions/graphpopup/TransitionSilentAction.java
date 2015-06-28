@@ -27,6 +27,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.TransitionSilentChange;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.MXConstants;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class TransitionSilentAction extends AbstractPNEditorAction {
 	private boolean silent;
@@ -38,112 +39,36 @@ public class TransitionSilentAction extends AbstractPNEditorAction {
 
 	private static final long serialVersionUID = 1728027231812006823L;
 
-	/**
-	 * Creates an action that executes the specified layout.
-	 * 
-	 * @param key
-	 *            Key to be used for getting the label from mxResources and also
-	 *            to create the layout instance for the commercial graph editor
-	 *            example.
-	 * @return an action that executes the specified layout
-	 */
-
-	/**
-	 * Creates a layout instance for the given identifier.
-	 */
-	protected mxIGraphLayout createLayout(String ident, boolean animate) {
-		mxIGraphLayout layout = null;
-
-		if (ident != null) {
-			mxGraph graph = getEditor().getGraphComponent().getGraph();
-
-			if (ident.equals("verticalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph);
-			} else if (ident.equals("horizontalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph, JLabel.WEST);
-			} else if (ident.equals("verticalTree")) {
-				layout = new mxCompactTreeLayout(graph, false);
-			} else if (ident.equals("horizontalTree")) {
-				layout = new mxCompactTreeLayout(graph, true);
-			} else if (ident.equals("parallelEdges")) {
-				layout = new mxParallelEdgeLayout(graph);
-			} else if (ident.equals("placeEdgeLabels")) {
-				layout = new mxEdgeLabelLayout(graph);
-			} else if (ident.equals("organicLayout")) {
-				layout = new mxOrganicLayout(graph);
-			}
-			if (ident.equals("verticalPartition")) {
-				layout = new mxPartitionLayout(graph, false) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return getEditor().getGraphComponent().getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("horizontalPartition")) {
-				layout = new mxPartitionLayout(graph, true) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return getEditor().getGraphComponent().getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("verticalStack")) {
-				layout = new mxStackLayout(graph, false) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return getEditor().getGraphComponent().getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("horizontalStack")) {
-				layout = new mxStackLayout(graph, true) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return getEditor().getGraphComponent().getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("circleLayout")) {
-				layout = new mxCircleLayout(graph);
-			}
-		}
-
-		return layout;
-	}
-
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		PNGraph graph = getEditor().getGraphComponent().getGraph();
 		PNGraphCell selectedCell = (PNGraphCell) graph.getSelectionCell();
-		PNGraphCell[] selectedCellArray = new PNGraphCell[1];
-		selectedCellArray[0] = selectedCell;
-		if (selectedCell != null && selectedCell.getType().toString() == "TRANSITION") {
-			((mxGraphModel) graph.getModel()).beginUpdate();
-			((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph) graph, selectedCell.getId(), silent));
-			if (silent) {
-				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000", selectedCellArray);
-				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "#00000", selectedCellArray);
-				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, "#00000", selectedCellArray);
-				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", selectedCellArray);
-				graph.setCellStyles(MXConstants.SILENT, "1", selectedCellArray);
-			} else {
-				graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
-				graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
-				graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultLineColor()));
-				graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
-				graph.setCellStyles(MXConstants.SILENT, "0", selectedCellArray);
+		Object[] cells = graph.getSelectionCells();
+		for (Object cell : cells) {
+			if (cell instanceof PNGraphCell) {
+				if (((PNGraphCell) cell).getType().equals(PNComponent.TRANSITION)) {
+					selectedCell = (PNGraphCell) cell;
+					if (selectedCell != null && selectedCell.getType().toString() == "TRANSITION") {
+						((mxGraphModel) graph.getModel()).beginUpdate();
+						((mxGraphModel) graph.getModel()).execute(new TransitionSilentChange((PNGraph) graph, selectedCell.getId(), silent));
+						if (silent) {
+							graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00000", new Object[]{selectedCell});
+							graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, "#00000", new Object[]{selectedCell});
+							graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, "#00000", new Object[]{selectedCell});
+							graph.setCellStyles(mxConstants.STYLE_NOLABEL, "1", new Object[]{selectedCell});
+							graph.setCellStyles(MXConstants.SILENT, "1", new Object[]{selectedCell});
+						} else {
+							graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
+							graph.setCellStyles(mxConstants.STYLE_GRADIENTCOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultTransitionColor()));
+							graph.setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(EditorProperties.getInstance().getDefaultLineColor()));
+							graph.setCellStyles(mxConstants.STYLE_NOLABEL, "0");
+							graph.setCellStyles(MXConstants.SILENT, "0", new Object[]{selectedCell});
 
+						}
+						((mxGraphModel) graph.getModel()).endUpdate();
+					}
+				}
 			}
-			((mxGraphModel) graph.getModel()).endUpdate();
 		}
 
 	}

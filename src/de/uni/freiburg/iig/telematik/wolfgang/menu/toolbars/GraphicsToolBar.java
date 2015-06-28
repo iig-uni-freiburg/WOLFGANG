@@ -841,7 +841,6 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 
 				if (selectedComponents.size() >= 1) {
 					this.selectedCell = selectedComponents.iterator().next();
-					System.out.println(selectedCell + "#" + selectedComponents.size());
 					boolean isTransitionCell = selectedCell.getType() == PNComponent.TRANSITION;
 					boolean isTransitionSilent = false;
 					if (isTransitionCell) {
