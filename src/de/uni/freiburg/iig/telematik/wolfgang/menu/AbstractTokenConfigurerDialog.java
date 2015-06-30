@@ -33,6 +33,7 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.dialog.AbstractDialog;
+import de.invation.code.toval.graphic.dialog.AbstractDialog.ButtonPanelLayout;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
@@ -59,9 +60,12 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		super(window, name);
 		mainPanel().setLayout(new SpringLayout());
 		setIncludeCancelButton(false);
-		setOKButtonText("finished");
+		setOKButtonText("Finished");
 		cellName = name;
 		graph = cpnGraph;
+		setButtonPanelLayout(ButtonPanelLayout.CENTERED);
+		setMaximumSize(getPreferredSize());
+		setResizable(false);
 
 	}
 
