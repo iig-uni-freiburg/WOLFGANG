@@ -52,6 +52,9 @@
 	<property name="SEWOL.location" value="../SEWOL" />
 	<property name="SEPIA.location" value="../SEPIA" />
 
+        <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask"/>
+        <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask"/>
+
 	<path id="TOVAL.classpath">
 		<pathelement location="${TOVAL.location}/bin/classes-ant" />
 	</path>
