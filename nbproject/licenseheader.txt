@@ -1,0 +1,34 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, IIG Telematics, Uni Freiburg
+${licensePrefix}All rights reserved.
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}Redistribution and use in source and binary forms, with or without
+${licensePrefix}modification, are permitted (subject to the limitations in the disclaimer
+${licensePrefix}below) provided that the following conditions are met:
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}* Redistributions of source code must retain the above copyright notice, this
+${licensePrefix}  list of conditions and the following disclaimer.
+${licensePrefix}* Redistributions in binary form must reproduce the above copyright notice,
+${licensePrefix}  this list of conditions and the following disclaimer in the documentation
+${licensePrefix}  and/or other materials provided with the distribution.
+${licensePrefix}* Neither the name of IIG Telematics, Uni Freiburg nor the names of its
+${licensePrefix}  contributors may be used to endorse or promote products derived from this
+${licensePrefix}  software without specific prior written permission.
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
+${licensePrefix}THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+${licensePrefix}CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+${licensePrefix}NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+${licensePrefix}PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+${licensePrefix}CONTRIBUTORS BELIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+${licensePrefix}EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+${licensePrefix}PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+${licensePrefix}OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+${licensePrefix}WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+${licensePrefix}OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+${licensePrefix}ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<#if licenseLast??>
+${licenseLast}
+</#if>
