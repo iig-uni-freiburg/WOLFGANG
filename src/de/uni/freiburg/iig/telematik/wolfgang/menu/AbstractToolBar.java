@@ -36,6 +36,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ReloadExecutionAction
 import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ToggleModeAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.nodes.NodeToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
@@ -144,10 +145,6 @@ public abstract class AbstractToolBar extends JToolBar {
 		return executionTraceTextField;
 	}
 
-	public void setExecutionTrace(JTextField executionTrace) {
-		this.executionTraceTextField = executionTrace;
-	}
-
 	public AbstractToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
 		super(orientation);
 		Validate.notNull(pnEditor);
@@ -155,6 +152,10 @@ public abstract class AbstractToolBar extends JToolBar {
 		try {
 			createToolbarActions(pnEditor);
 			createAdditionalToolbarActions(pnEditor);
+			
+			executionTraceTextField = new JTextField();
+			executionTraceTextField.setMinimumSize(new Dimension(500,EditorProperties.getInstance().getIconSize().getSize()));
+			executionTraceTextField.setMaximumSize(new Dimension(500,EditorProperties.getInstance().getIconSize().getSize()));
 		} catch (ParameterException e) {
 			throw new EditorToolbarException("Invalid Parameter.\nReason: " + e.getMessage());
 		} catch (PropertyException e) {
@@ -163,9 +164,6 @@ public abstract class AbstractToolBar extends JToolBar {
 			throw new EditorToolbarException("Invalid File Path.\nReason: " + e.getMessage());
 		}
 		setFloatable(false);
-
-		// saveButton = add(saveAction);
-		// setButtonSettings(saveButton);
 
 		exportButton = (JToggleButton) add(exportAction, true);
 		exportAction.setButton(exportButton);
@@ -176,16 +174,12 @@ public abstract class AbstractToolBar extends JToolBar {
 		toggleModeButton.setBorderPainted(false);
 		toggleModeButton.setIconTextGap(0);
 		toggleModeButton.setText("EDIT");
-		// enterExecutionButton = add(enterExecutionAction);
-		// setButtonSettings(enterExecutionButton);
-
-		// enterEditingButton = add(enterEditingAction);
-		// setButtonSettings(enterEditingButton);
 
 		add(new Filler(new Dimension(0, 0), new Dimension(20, 0), new Dimension(30, 0)));
 		reloadExecutionButton = add(reloadExecutionAction);
 		setButtonSettings(reloadExecutionButton);
-		executionTraceTextField = new JTextField();
+
+
 		executionTraceLabel = new JLabel("    Execution Trace: ");
 
 		setExecutionButtonsVisible(false);
