@@ -2,6 +2,9 @@ package de.uni.freiburg.iig.telematik.wolfgang.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -9,13 +12,21 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.UIManager;
+
+import com.mxgraph.swing.util.mxGraphActions;
+import com.mxgraph.swing.util.mxGraphActions.DeleteAction;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -32,11 +43,20 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.export.ExportPDFAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.MoveAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.NewNodeAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent.LayoutOption;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangPropertyAdapter;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>, 
 										T extends AbstractTransition<F,S>, 
@@ -152,6 +172,11 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 			
 			
 			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
+			}
+
 			public void windowClosing(WindowEvent e) {
 				if(runningInstances.size() > 1){
 					int closeAllInstances = JOptionPane.showConfirmDialog(AbstractWolfgang.this, "Close all "+runningInstances.size()+" Wolfgang instanes?", "Multiple running instances", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -279,4 +304,187 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>,
 		return menuBar;
 	}
 
+	
+	protected class WolfgangKeyboardHandler  {
+
+		public WolfgangKeyboardHandler(PNGraphComponent pnGraphComponent) {
+			installKeyboardActions(pnGraphComponent);	
+			}
+
+		protected void installKeyboardActions(PNGraphComponent pnGraphComponent)
+		{
+			InputMap inputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			SwingUtilities.replaceUIInputMap(pnGraphComponent,
+					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, inputMap);
+
+			inputMap = getInputMap(JComponent.WHEN_FOCUSED);
+			SwingUtilities.replaceUIInputMap(pnGraphComponent,
+					JComponent.WHEN_FOCUSED, inputMap);
+			SwingUtilities.replaceUIActionMap(pnGraphComponent, createActionMap());
+		}
+
+		protected InputMap getInputMap(int condition) {
+			InputMap map = getBasicInputMap(condition);
+			if (condition == JComponent.WHEN_FOCUSED && map != null) {
+
+				int commandKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+				int commandAndShift = commandKey | InputEvent.SHIFT_DOWN_MASK;
+
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandKey), "save");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandAndShift), "saveAs");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "new");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, commandKey), "open");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandKey), "undo");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, commandKey), "redo");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandAndShift), "selectVertices");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandAndShift), "selectEdges");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, commandKey), "selectTransitions");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, commandKey), "selectArcs");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandKey), "selectArcs");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandKey), "selectAll");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, commandKey), "cut");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, commandKey), "copy");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandKey), "paste");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandAndShift), "printNet");
+				map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, commandKey), "export");
+
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, commandKey), "newNodeLeft");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, commandKey), "newNodeRight");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, commandKey), "newNodeDown");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, commandKey), "newNodeUp");
+
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK), "bigMoveLeft");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK), "bigMoveRight");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), "bigMoveDown");
+				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK), "bigMoveUp");
+
+			}
+			return map;
+		}
+
+		private InputMap getBasicInputMap(int condition)
+			{
+				InputMap map = null;
+
+				if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				{
+					map = (InputMap) UIManager.get("ScrollPane.ancestorInputMap");
+				}
+				else if (condition == JComponent.WHEN_FOCUSED)
+				{
+					map = new InputMap();
+
+					map.put(KeyStroke.getKeyStroke("F2"), "edit");
+					map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+					map.put(KeyStroke.getKeyStroke("UP"), "selectParent");
+					map.put(KeyStroke.getKeyStroke("DOWN"), "selectChild");
+					map.put(KeyStroke.getKeyStroke("RIGHT"), "selectNext");
+					map.put(KeyStroke.getKeyStroke("LEFT"), "selectPrevious");
+					map.put(KeyStroke.getKeyStroke("PAGE_DOWN"), "enterGroup");
+					map.put(KeyStroke.getKeyStroke("PAGE_UP"), "exitGroup");
+					map.put(KeyStroke.getKeyStroke("HOME"), "home");
+					map.put(KeyStroke.getKeyStroke("ENTER"), "expand");
+					map.put(KeyStroke.getKeyStroke("BACK_SPACE"), "collapse");
+					map.put(KeyStroke.getKeyStroke("control A"), "selectAll");
+					map.put(KeyStroke.getKeyStroke("control D"), "selectNone");
+					map.put(KeyStroke.getKeyStroke("control X"), "cut");
+					map.put(KeyStroke.getKeyStroke("CUT"), "cut");
+					map.put(KeyStroke.getKeyStroke("control C"), "copy");
+					map.put(KeyStroke.getKeyStroke("COPY"), "copy");
+					map.put(KeyStroke.getKeyStroke("control V"), "paste");
+					map.put(KeyStroke.getKeyStroke("PASTE"), "paste");
+					map.put(KeyStroke.getKeyStroke("control G"), "group");
+					map.put(KeyStroke.getKeyStroke("control U"), "ungroup");
+					map.put(KeyStroke.getKeyStroke("control ADD"), "zoomIn");
+					map.put(KeyStroke.getKeyStroke("control SUBTRACT"), "zoomOut");
+				}
+
+				return map;
+			}
+
+		protected ActionMap createActionMap() {
+			ActionMap map = createBasicActionMap();
+			try {
+				map.put("undo", new UndoAction(editorComponent));
+				map.put("redo", new RedoAction(editorComponent));
+				map.put("printNet", new PrintAction(editorComponent));
+
+				map.put("export", new ExportPDFAction(editorComponent));
+
+				int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
+				map.put("newNodeLeft", new NewNodeAction(editorComponent, -offset, 0));
+				map.put("newNodeRight", new NewNodeAction(editorComponent, offset, 0));
+				map.put("newNodeDown", new NewNodeAction(editorComponent, 0, offset));
+				map.put("newNodeUp", new NewNodeAction(editorComponent, 0, -offset));
+
+				map.put("moveLeft", new MoveAction(editorComponent, -1, 0));
+				map.put("moveRight", new MoveAction(editorComponent, 1, 0));
+				map.put("moveDown", new MoveAction(editorComponent, 0, 1));
+				map.put("moveUp", new MoveAction(editorComponent, 0, -1));
+
+				int movingGap = 5;
+				map.put("bigMoveLeft", new MoveAction(editorComponent, -movingGap, 0));
+				map.put("bigMoveRight", new MoveAction(editorComponent, movingGap, 0));
+				map.put("bigMoveDown", new MoveAction(editorComponent, 0, movingGap));
+				map.put("bigMoveUp", new MoveAction(editorComponent, 0, -movingGap));
+
+				map.put("selectPlaces", new SelectAction(editorComponent, PNComponent.PLACE));
+				map.put("selectTransitions", new SelectAction(editorComponent, PNComponent.TRANSITION));
+				map.put("selectArcs", new SelectAction(editorComponent, PNComponent.ARC));
+
+			} catch (Exception e) {
+				// Cannot happen, since this is not null
+				e.printStackTrace();
+			}
+
+			map.put("selectVertices", mxGraphActions.getSelectVerticesAction());
+			map.put("selectEdges", mxGraphActions.getSelectEdgesAction());
+			map.put("selectAll", mxGraphActions.getSelectAllAction());
+			map.put("selectAllEdges", mxGraphActions.getSelectEdgesAction());
+
+			map.put(("cut"), TransferHandler.getCutAction());
+			map.put(("copy"), TransferHandler.getCopyAction());
+			map.put(("paste"), TransferHandler.getPasteAction());
+			map.put("delete", new DeleteAction("delete"));
+			return map;
+		}
+
+		private ActionMap createBasicActionMap() 
+			{
+				ActionMap map = (ActionMap) UIManager.get("ScrollPane.actionMap");
+
+				map.put("edit", mxGraphActions.getEditAction());
+				map.put("delete", mxGraphActions.getDeleteAction());
+				map.put("home", mxGraphActions.getHomeAction());
+				map.put("enterGroup", mxGraphActions.getEnterGroupAction());
+				map.put("exitGroup", mxGraphActions.getExitGroupAction());
+				map.put("collapse", mxGraphActions.getCollapseAction());
+				map.put("expand", mxGraphActions.getExpandAction());
+				map.put("toBack", mxGraphActions.getToBackAction());
+				map.put("toFront", mxGraphActions.getToFrontAction());
+				map.put("selectNone", mxGraphActions.getSelectNoneAction());
+				map.put("selectAll", mxGraphActions.getSelectAllAction());
+				map.put("selectNext", mxGraphActions.getSelectNextAction());
+				map.put("selectPrevious", mxGraphActions.getSelectPreviousAction());
+				map.put("selectParent", mxGraphActions.getSelectParentAction());
+				map.put("selectChild", mxGraphActions.getSelectChildAction());
+				map.put("cut", TransferHandler.getCutAction());
+				map.put("copy", TransferHandler.getCopyAction());
+				map.put("paste", TransferHandler.getPasteAction());
+				map.put("group", mxGraphActions.getGroupAction());
+				map.put("ungroup", mxGraphActions.getUngroupAction());
+				map.put("zoomIn", mxGraphActions.getZoomInAction());
+				map.put("zoomOut", mxGraphActions.getZoomOutAction());
+
+				return map;
+			}
+	}
 }

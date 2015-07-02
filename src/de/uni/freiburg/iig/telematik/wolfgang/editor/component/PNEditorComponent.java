@@ -1,25 +1,18 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
@@ -32,11 +25,7 @@ import com.mxgraph.layout.mxParallelEdgeLayout;
 import com.mxgraph.layout.mxPartitionLayout;
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.swing.handler.mxKeyboardHandler;
 import com.mxgraph.swing.handler.mxRubberband;
-import com.mxgraph.swing.util.mxGraphActions;
-import com.mxgraph.swing.util.mxGraphActions.DeleteAction;
 import com.mxgraph.swing.util.mxMorphing;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
@@ -54,15 +43,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.export.ExportPDFAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.MoveAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.NewNodeAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.PrintAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.SelectAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListenerSupport;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
@@ -79,7 +60,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyC
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView.PropertiesField;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
@@ -97,7 +77,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	public AbstractGraphicalPN netContainer = null;
 	protected AbstractWolfgang wolfgang = null;
 	protected mxRubberband rubberband;
-	protected mxKeyboardHandler keyboardHandler;
 	protected mxUndoManager undoManager;
 
 	private PNEditorListenerSupport editorListenerSupport = new PNEditorListenerSupport();
@@ -248,8 +227,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		// add(getStatusPanel(), BorderLayout.SOUTH);
 
 		rubberband = new mxRubberband(graphComponent);
-		keyboardHandler = new KeyboardHandler(graphComponent);
-
 	}
 
 	protected abstract AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException;
@@ -372,108 +349,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		// TODO: Do something
 	}
 
-	protected class KeyboardHandler extends mxKeyboardHandler {
 
-		public KeyboardHandler(mxGraphComponent graphComponent) {
-			super(graphComponent);
-		}
-
-		@Override
-		protected InputMap getInputMap(int condition) {
-			InputMap map = super.getInputMap(condition);
-			if (condition == JComponent.WHEN_FOCUSED && map != null) {
-
-				int commandKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-				int commandAndShift = commandKey | InputEvent.SHIFT_DOWN_MASK;
-
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandKey), "save");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandAndShift), "saveAs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "new");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, commandKey), "open");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandKey), "undo");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, commandKey), "redo");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandAndShift), "selectVertices");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandAndShift), "selectEdges");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, commandKey), "selectTransitions");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, commandKey), "selectArcs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandKey), "selectArcs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandKey), "selectAll");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, commandKey), "cut");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, commandKey), "copy");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandKey), "paste");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandAndShift), "printNet");
-				map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, commandKey), "export");
-
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, commandKey), "newNodeLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, commandKey), "newNodeRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, commandKey), "newNodeDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, commandKey), "newNodeUp");
-
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
-
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK), "bigMoveLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK), "bigMoveRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), "bigMoveDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK), "bigMoveUp");
-
-			}
-			return map;
-		}
-
-		@Override
-		protected ActionMap createActionMap() {
-			ActionMap map = super.createActionMap();
-			try {
-				map.put("undo", new UndoAction(PNEditorComponent.this));
-				map.put("redo", new RedoAction(PNEditorComponent.this));
-				map.put("printNet", new PrintAction(PNEditorComponent.this));
-
-				map.put("export", new ExportPDFAction(PNEditorComponent.this));
-
-				int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
-				map.put("newNodeLeft", new NewNodeAction(PNEditorComponent.this, -offset, 0));
-				map.put("newNodeRight", new NewNodeAction(PNEditorComponent.this, offset, 0));
-				map.put("newNodeDown", new NewNodeAction(PNEditorComponent.this, 0, offset));
-				map.put("newNodeUp", new NewNodeAction(PNEditorComponent.this, 0, -offset));
-
-				map.put("moveLeft", new MoveAction(PNEditorComponent.this, -1, 0));
-				map.put("moveRight", new MoveAction(PNEditorComponent.this, 1, 0));
-				map.put("moveDown", new MoveAction(PNEditorComponent.this, 0, 1));
-				map.put("moveUp", new MoveAction(PNEditorComponent.this, 0, -1));
-
-				int movingGap = 5;
-				map.put("bigMoveLeft", new MoveAction(PNEditorComponent.this, -movingGap, 0));
-				map.put("bigMoveRight", new MoveAction(PNEditorComponent.this, movingGap, 0));
-				map.put("bigMoveDown", new MoveAction(PNEditorComponent.this, 0, movingGap));
-				map.put("bigMoveUp", new MoveAction(PNEditorComponent.this, 0, -movingGap));
-
-				map.put("selectPlaces", new SelectAction(PNEditorComponent.this, PNComponent.PLACE));
-				map.put("selectTransitions", new SelectAction(PNEditorComponent.this, PNComponent.TRANSITION));
-				map.put("selectArcs", new SelectAction(PNEditorComponent.this, PNComponent.ARC));
-
-			} catch (Exception e) {
-				// Cannot happen, since this is not null
-				e.printStackTrace();
-			}
-
-			map.put("selectVertices", mxGraphActions.getSelectVerticesAction());
-			map.put("selectEdges", mxGraphActions.getSelectEdgesAction());
-			map.put("selectAll", mxGraphActions.getSelectAllAction());
-			map.put("selectAllEdges", mxGraphActions.getSelectEdgesAction());
-
-			map.put(("cut"), TransferHandler.getCutAction());
-			map.put(("copy"), TransferHandler.getCopyAction());
-			map.put(("paste"), TransferHandler.getPasteAction());
-			map.put("delete", new DeleteAction("delete"));
-			return map;
-		}
-	}
 
 	/**
 	 * Creates a layout instance for the given identifier.
