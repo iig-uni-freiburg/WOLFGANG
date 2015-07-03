@@ -73,12 +73,15 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     private WGMenuBar menuBar = null;
     protected JPanel content = null;
     protected JPanel centerPanel = null;
-    private JSplitPane rightPanel;
+    private JPanel rightPanel;
 
     @SuppressWarnings("rawtypes")
     private static Set<AbstractWolfgang> runningInstances = new HashSet<AbstractWolfgang>();
     private JScrollPane editorScrollPane;
     private int FIX_SIZE_RIGHT_PANEL = 200;
+    private int DIVIDER_LOCATION_RIGHT_PANEL = 400;
+    private JScrollPane rightScrollPane;
+    private JScrollPane toolbarScrollPane;
 
     protected AbstractWolfgang() throws Exception {
         this(null, null);
@@ -267,8 +270,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
     protected JComponent getRightComponent() throws Exception {
         if (rightPanel == null) {
-            rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-            rightPanel.setDividerLocation(400);
+            rightPanel = new JPanel(new BorderLayout());
+
         }
         return rightPanel;
     }
@@ -278,23 +281,31 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     }
 
     protected void setEditorPanels() throws Exception {
-        content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+        content.add(getToolbarPanel(), BorderLayout.NORTH);
         centerPanel.add(getEditorPanel(), BorderLayout.CENTER);
-        centerPanel.add(getRightComponent(), BorderLayout.EAST);
-        rightPanel.add(editorComponent.getPropertiesView());
-        rightPanel.add(editorComponent.getPropertyCheckView());
-        
-        Dimension rightPanelDim = new Dimension(FIX_SIZE_RIGHT_PANEL, editorScrollPane.getSize().height);
-        rightPanel.setMinimumSize(rightPanelDim);
-        rightPanel.setPreferredSize(rightPanelDim);
-        rightPanel.setMaximumSize(rightPanelDim);
+        getRightComponent(); //generate rightPanel
+        rightPanel.add(editorComponent.getPropertiesView(), BorderLayout.NORTH);
+        rightPanel.add(editorComponent.getPropertyCheckView(), BorderLayout.SOUTH);
+        centerPanel.add(getRightPanel(),BorderLayout.EAST);
 
+    }
+    
+        protected JComponent getToolbarPanel() {
+        toolbarScrollPane = new JScrollPane(editorComponent.getEditorToolbar(), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        return toolbarScrollPane;
     }
 
     protected JComponent getEditorPanel() {
         editorScrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         editorScrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
         return editorScrollPane;
+    }
+    
+        protected JComponent getRightPanel() {
+        rightScrollPane = new JScrollPane(rightPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        Dimension rightPanelDim = new Dimension(FIX_SIZE_RIGHT_PANEL, MINIMUM_SIZE_EDITOR_PANEL.height);
+        rightScrollPane.setPreferredSize(rightPanelDim);
+        return rightScrollPane;
     }
 
     public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
