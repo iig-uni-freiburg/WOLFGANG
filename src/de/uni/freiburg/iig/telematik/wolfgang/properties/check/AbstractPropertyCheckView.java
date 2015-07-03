@@ -97,9 +97,7 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
 						updatePanelView(lblHeadline.isExpanded());
-					}
 				}
 			});
 		}

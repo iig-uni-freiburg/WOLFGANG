@@ -58,433 +58,426 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
-public abstract class AbstractWolfgang< P extends AbstractPlace<F,S>, 
-										T extends AbstractTransition<F,S>, 
-										F extends AbstractFlowRelation<P,T,S>,
-										M extends AbstractMarking<S>,
-										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>, 
-										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										N extends AbstractPetriNet<P,T,F,M,S>, 
-										G extends AbstractPNGraphics<P,T,F,M,S>,
-										NN extends AbstractGraphicalPN<P,T,F,M,S,N,G>> extends JFrame {
+public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>, NN extends AbstractGraphicalPN<P, T, F, M, S, N, G>> extends JFrame {
 
-	private static final long serialVersionUID = -7994645960400940612L;
-	private static final String titleFormat = "WOLFGANG | %s | %s";
-	
-	public static final Dimension PREFERRED_SIZE_WORKBENCH = new Dimension(1024, 768);
+    private static final long serialVersionUID = -7994645960400940612L;
+    private static final String titleFormat = "WOLFGANG | %s | %s";
+
+    public static final Dimension PREFERRED_SIZE_WORKBENCH = new Dimension(1024, 768);
 //	private static final Dimension PREFERRED_SIZE_PROPERTIES_PANEL = new Dimension(120, 768);
-	private static final Dimension MINIMUM_SIZE_EDITOR_PANEL = new Dimension(904, 768);
+    private static final Dimension MINIMUM_SIZE_EDITOR_PANEL = new Dimension(904, 768);
 
-	private File fileReference = null;
+    private File fileReference = null;
 
-	protected PNEditorComponent editorComponent = null;
-	private WGMenuBar menuBar = null;
-	protected JPanel content = null;
-	protected JSplitPane centerPanel = null;
-	private JSplitPane rightPanel;
+    protected PNEditorComponent editorComponent = null;
+    private WGMenuBar menuBar = null;
+    protected JPanel content = null;
+    protected JPanel centerPanel = null;
+    private JSplitPane rightPanel;
 
-	
-	@SuppressWarnings("rawtypes")
-	private static Set<AbstractWolfgang> runningInstances = new HashSet<AbstractWolfgang>();
+    @SuppressWarnings("rawtypes")
+    private static Set<AbstractWolfgang> runningInstances = new HashSet<AbstractWolfgang>();
+    private JScrollPane editorScrollPane;
+    private int FIX_SIZE_RIGHT_PANEL = 200;
 
-	protected AbstractWolfgang() throws Exception {
-		this(null, null);
-	}
+    protected AbstractWolfgang() throws Exception {
+        this(null, null);
+    }
 
-	protected AbstractWolfgang(NN net) throws Exception {
-		this(net, null);
-	}
+    protected AbstractWolfgang(NN net) throws Exception {
+        this(net, null);
+    }
 
-	protected AbstractWolfgang(NN net, LayoutOption layoutOption) throws Exception {
-		runningInstances.add(this);
-		setNet(net, layoutOption);
-	}
+    protected AbstractWolfgang(NN net, LayoutOption layoutOption) throws Exception {
+        runningInstances.add(this);
+        setNet(net, layoutOption);
+    }
 
-	protected AbstractWolfgang(NN net, boolean askForLayout) throws Exception {
-		this();
-		runningInstances.add(this);
-		setNet(net, askForLayout);
-	}
-	
-	protected abstract NN newNet();
-	
-	protected abstract PNEditorComponent newEditorComponent(NN net, LayoutOption layoutOption);
-	
-	protected abstract PNEditorComponent newEditorComponent(NN net, boolean askForLayout);
-	
-	protected abstract NetType getAcceptedNetType();
+    protected AbstractWolfgang(NN net, boolean askForLayout) throws Exception {
+        this();
+        runningInstances.add(this);
+        setNet(net, askForLayout);
+    }
 
-	public void setNet(NN net, LayoutOption layoutOption) {
-		if(net == null)
-			net = newNet();
-		prepareNetInsertion(net);
-		this.editorComponent = newEditorComponent(net, layoutOption);
-		setName(net.getPetriNet().getName());
-	}
-	
-	public void setNet(NN net, boolean askForLayout) {
-		prepareNetInsertion(net);
-		this.editorComponent = newEditorComponent(net, askForLayout);
-		setName(net.getPetriNet().getName());
-	}
+    protected abstract NN newNet();
 
-	private void prepareNetInsertion(NN net) {
-		Validate.notNull(net);
-		NetType netType = net.getPetriNet().getNetType();
-		if (!netType.equals(getAcceptedNetType()))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + netType);
+    protected abstract PNEditorComponent newEditorComponent(NN net, LayoutOption layoutOption);
 
-		if (editorComponent != null) {
-			centerPanel.remove(editorComponent);
-			centerPanel.remove(editorComponent.getPropertiesView());
-		}
-	}
+    protected abstract PNEditorComponent newEditorComponent(NN net, boolean askForLayout);
 
-	public PNEditorComponent getEditorComponent() {
-		return editorComponent;
-	}
+    protected abstract NetType getAcceptedNetType();
 
-	public File getFileReference() {
-		return fileReference;
-	}
+    public void setNet(NN net, LayoutOption layoutOption) {
+        if (net == null) {
+            net = newNet();
+        }
+        prepareNetInsertion(net);
+        this.editorComponent = newEditorComponent(net, layoutOption);
+        setName(net.getPetriNet().getName());
+    }
 
-	public void setFileReference(File fileReference) {
-		this.fileReference = fileReference;
-	}
-	
-	@Override
-	public void dispose(){
-		int saveNet = JOptionPane.showConfirmDialog(null, "Save edited net \"" + getEditorComponent().getNetContainer().getPetriNet().getName()+"\"?", "Save", JOptionPane.YES_NO_OPTION);
-		if (saveNet == JOptionPane.YES_OPTION) {
-			try {
-				SaveAction save = new SaveAction(AbstractWolfgang.this);
-				save.actionPerformed(null);
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while saving edited net.", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		super.dispose();
-	}
+    public void setNet(NN net, boolean askForLayout) {
+        prepareNetInsertion(net);
+        this.editorComponent = newEditorComponent(net, askForLayout);
+        setName(net.getPetriNet().getName());
+    }
 
-	public void setUpGUI() throws PropertyException, IOException, Exception {
-		addWindowListener(new WindowAdapter() {
-			
-			
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
-			}
+    private void prepareNetInsertion(NN net) {
+        Validate.notNull(net);
+        NetType netType = net.getPetriNet().getNetType();
+        if (!netType.equals(getAcceptedNetType())) {
+            throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unsupported net type: " + netType);
+        }
 
-			public void windowClosing(WindowEvent e) {
-				if(runningInstances.size() > 1){
-					int closeAllInstances = JOptionPane.showConfirmDialog(AbstractWolfgang.this, "Close all "+runningInstances.size()+" Wolfgang instanes?", "Multiple running instances", JOptionPane.YES_NO_CANCEL_OPTION);
-					if(closeAllInstances == JOptionPane.CANCEL_OPTION){
-						return;
-					}
-					if(closeAllInstances == JOptionPane.YES_OPTION){
-						for(@SuppressWarnings("rawtypes") AbstractWolfgang runningInstance: runningInstances){
-							runningInstance.dispose();
-						}
-						runningInstances.clear();
-						System.exit(0);
-					} else if(closeAllInstances == JOptionPane.NO_OPTION){
-						dispose();
-						runningInstances.remove(AbstractWolfgang.this);
-					}
-				} else {
-					dispose();
-					runningInstances.remove(AbstractWolfgang.this);
-					System.exit(0);
-				}
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setLookAndFeel();
-		setPreferredSize(PREFERRED_SIZE_WORKBENCH);
-		setResizable(true);
-		setContentPane(getContent());
-		setJMenuBar(getWGMenuBar());
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
-	}
+        if (editorComponent != null) {
+            centerPanel.remove(editorComponent);
+            centerPanel.remove(editorComponent.getPropertiesView());
+        }
+    }
 
-	@Override
-	public String getTitle() {
-		return String.format(titleFormat, getNetType(), getNetName());
-	}
-	
-	private NetType getNetType(){
-		return getEditorComponent().getNetContainer().getPetriNet().getNetType();
-	}
+    public PNEditorComponent getEditorComponent() {
+        return editorComponent;
+    }
 
-	private String getNetName() {
-		return getEditorComponent().getNetContainer().getPetriNet().getName();
-	}
+    public File getFileReference() {
+        return fileReference;
+    }
 
-	/** Changes Look and Feel if running on Linux **/
-	private void setLookAndFeel() {
-		if (System.getProperty("os.name").toLowerCase().contains("nux")) {
-			try {
-				setLocationByPlatform(true);
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			} catch (Exception e) {
-			}
-		} else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {
-			}
-		}
-	}
+    public void setFileReference(File fileReference) {
+        this.fileReference = fileReference;
+    }
 
-	private JComponent getContent() throws Exception {
-		if (content == null) {
-			content = new JPanel(new BorderLayout());
-			content.add(getCenterComponent(), BorderLayout.CENTER);
-			EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
+    @Override
+    public void dispose() {
+        int saveNet = JOptionPane.showConfirmDialog(null, "Save edited net \"" + getEditorComponent().getNetContainer().getPetriNet().getName() + "\"?", "Save", JOptionPane.YES_NO_OPTION);
+        if (saveNet == JOptionPane.YES_OPTION) {
+            try {
+                SaveAction save = new SaveAction(AbstractWolfgang.this);
+                save.actionPerformed(null);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while saving edited net.", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        super.dispose();
+    }
 
-				@Override
-				public void iconSizeChanged(IconSize size) {
-					content.remove(editorComponent.getEditorToolbar());
-					editorComponent.loadEditorToolbar();
-					content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
-					pack();
-				}
+    public void setUpGUI() throws PropertyException, IOException, Exception {
+        addWindowListener(new WindowAdapter() {
 
-			});
-			setEditorPanels();
-			JComponent bottomComponent = getBottomComponent();
-			if (bottomComponent != null)
-				content.add(bottomComponent, BorderLayout.PAGE_END);
-		}
-		return content;
-	}
+            @Override
+            public void windowActivated(WindowEvent e) {
+                new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
+            }
 
-	protected JComponent getCenterComponent() throws Exception {
-		if (centerPanel == null) {
-			centerPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-			centerPanel.setDividerLocation(835);
-		}
-		return centerPanel;
-	}
-	
-	protected JComponent getRightComponent() throws Exception {
-		if (rightPanel == null) {
-			rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-			rightPanel.setDividerLocation(450);
-		}
-		return rightPanel;
-	}
+            public void windowClosing(WindowEvent e) {
+                if (runningInstances.size() > 1) {
+                    int closeAllInstances = JOptionPane.showConfirmDialog(AbstractWolfgang.this, "Close all " + runningInstances.size() + " Wolfgang instanes?", "Multiple running instances", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (closeAllInstances == JOptionPane.CANCEL_OPTION) {
+                        return;
+                    }
+                    if (closeAllInstances == JOptionPane.YES_OPTION) {
+                        for (@SuppressWarnings("rawtypes") AbstractWolfgang runningInstance : runningInstances) {
+                            runningInstance.dispose();
+                        }
+                        runningInstances.clear();
+                        System.exit(0);
+                    } else if (closeAllInstances == JOptionPane.NO_OPTION) {
+                        dispose();
+                        runningInstances.remove(AbstractWolfgang.this);
+                    }
+                } else {
+                    dispose();
+                    runningInstances.remove(AbstractWolfgang.this);
+                    System.exit(0);
+                }
+            }
+        });
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setLookAndFeel();
+        setPreferredSize(PREFERRED_SIZE_WORKBENCH);
+        setResizable(true);
+        setContentPane(getContent());
+        setJMenuBar(getWGMenuBar());
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
 
-	protected JComponent getBottomComponent() throws Exception {
-		return null;
-	}
+    @Override
+    public String getTitle() {
+        return String.format(titleFormat, getNetType(), getNetName());
+    }
 
-	protected void setEditorPanels() throws Exception {
-		content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
-		centerPanel.add(getEditorPanel());
-		centerPanel.add(getRightComponent());
-		rightPanel.add(editorComponent.getPropertiesView());
-		rightPanel.add(editorComponent.getPropertyCheckView());
-	}
+    private NetType getNetType() {
+        return getEditorComponent().getNetContainer().getPetriNet().getNetType();
+    }
 
-	protected JComponent getEditorPanel() {
-		JScrollPane scrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
-		return scrollPane;
-	}
+    private String getNetName() {
+        return getEditorComponent().getNetContainer().getPetriNet().getName();
+    }
 
-	public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
-		if (menuBar == null) {
-			menuBar = new WGMenuBar(this);
-		}
-		return menuBar;
-	}
+    /**
+     * Changes Look and Feel if running on Linux *
+     */
+    private void setLookAndFeel() {
+        if (System.getProperty("os.name").toLowerCase().contains("nux")) {
+            try {
+                setLocationByPlatform(true);
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            } catch (Exception e) {
+            }
+        } else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+            }
+        }
+    }
 
-	
-	protected class WolfgangKeyboardHandler  {
+    private JComponent getContent() throws Exception {
+        if (content == null) {
+            content = new JPanel(new BorderLayout());
+            content.add(getCenterComponent(), BorderLayout.CENTER);
+            EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
-		public WolfgangKeyboardHandler(PNGraphComponent pnGraphComponent) {
-			installKeyboardActions(pnGraphComponent);	
-			}
+                @Override
+                public void iconSizeChanged(IconSize size) {
+                    content.remove(editorComponent.getEditorToolbar());
+                    editorComponent.loadEditorToolbar();
+                    content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+                    pack();
+                }
 
-		protected void installKeyboardActions(PNGraphComponent pnGraphComponent)
-		{
-			InputMap inputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			SwingUtilities.replaceUIInputMap(pnGraphComponent,
-					JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, inputMap);
+            });
+            setEditorPanels();
+            JComponent bottomComponent = getBottomComponent();
+            if (bottomComponent != null) {
+                content.add(bottomComponent, BorderLayout.PAGE_END);
+            }
+        }
+        return content;
+    }
 
-			inputMap = getInputMap(JComponent.WHEN_FOCUSED);
-			SwingUtilities.replaceUIInputMap(pnGraphComponent,
-					JComponent.WHEN_FOCUSED, inputMap);
-			SwingUtilities.replaceUIActionMap(pnGraphComponent, createActionMap());
-		}
+    protected JComponent getCenterComponent() throws Exception {
+        if (centerPanel == null) {
+            centerPanel = new JPanel(new BorderLayout());
+        }
+        return centerPanel;
+    }
 
-		protected InputMap getInputMap(int condition) {
-			InputMap map = getBasicInputMap(condition);
-			if (condition == JComponent.WHEN_FOCUSED && map != null) {
+    protected JComponent getRightComponent() throws Exception {
+        if (rightPanel == null) {
+            rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            rightPanel.setDividerLocation(450);
+        }
+        return rightPanel;
+    }
 
-				int commandKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-				int commandAndShift = commandKey | InputEvent.SHIFT_DOWN_MASK;
+    protected JComponent getBottomComponent() throws Exception {
+        return null;
+    }
 
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandKey), "save");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandAndShift), "saveAs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "new");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, commandKey), "open");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandKey), "undo");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, commandKey), "redo");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandAndShift), "selectVertices");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandAndShift), "selectEdges");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, commandKey), "selectTransitions");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, commandKey), "selectArcs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandKey), "selectArcs");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandKey), "selectAll");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, commandKey), "cut");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, commandKey), "copy");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandKey), "paste");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandAndShift), "printNet");
-				map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, commandKey), "export");
+    protected void setEditorPanels() throws Exception {
+        content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+        centerPanel.add(getEditorPanel(), BorderLayout.CENTER);
+        centerPanel.add(getRightComponent(), BorderLayout.EAST);
+        rightPanel.add(editorComponent.getPropertiesView());
+        rightPanel.add(editorComponent.getPropertyCheckView());
+        
+        Dimension rightPanelDim = new Dimension(FIX_SIZE_RIGHT_PANEL, editorScrollPane.getSize().height);
+        rightPanel.setMinimumSize(rightPanelDim);
+        rightPanel.setPreferredSize(rightPanelDim);
+        rightPanel.setMaximumSize(rightPanelDim);
 
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, commandKey), "newNodeLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, commandKey), "newNodeRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, commandKey), "newNodeDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, commandKey), "newNodeUp");
+    }
 
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+    protected JComponent getEditorPanel() {
+        editorScrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        editorScrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
+        return editorScrollPane;
+    }
 
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK), "bigMoveLeft");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK), "bigMoveRight");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), "bigMoveDown");
-				map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK), "bigMoveUp");
+    public WGMenuBar getWGMenuBar() throws PropertyException, IOException {
+        if (menuBar == null) {
+            menuBar = new WGMenuBar(this);
+        }
+        return menuBar;
+    }
 
-			}
-			return map;
-		}
+    protected class WolfgangKeyboardHandler {
 
-		private InputMap getBasicInputMap(int condition)
-			{
-				InputMap map = null;
+        public WolfgangKeyboardHandler(PNGraphComponent pnGraphComponent) {
+            installKeyboardActions(pnGraphComponent);
+        }
 
-				if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-				{
-					map = (InputMap) UIManager.get("ScrollPane.ancestorInputMap");
-				}
-				else if (condition == JComponent.WHEN_FOCUSED)
-				{
-					map = new InputMap();
+        protected void installKeyboardActions(PNGraphComponent pnGraphComponent) {
+            InputMap inputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            SwingUtilities.replaceUIInputMap(pnGraphComponent,
+                    JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, inputMap);
 
-					map.put(KeyStroke.getKeyStroke("F2"), "edit");
-					map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
-					map.put(KeyStroke.getKeyStroke("UP"), "selectParent");
-					map.put(KeyStroke.getKeyStroke("DOWN"), "selectChild");
-					map.put(KeyStroke.getKeyStroke("RIGHT"), "selectNext");
-					map.put(KeyStroke.getKeyStroke("LEFT"), "selectPrevious");
-					map.put(KeyStroke.getKeyStroke("PAGE_DOWN"), "enterGroup");
-					map.put(KeyStroke.getKeyStroke("PAGE_UP"), "exitGroup");
-					map.put(KeyStroke.getKeyStroke("HOME"), "home");
-					map.put(KeyStroke.getKeyStroke("ENTER"), "expand");
-					map.put(KeyStroke.getKeyStroke("BACK_SPACE"), "collapse");
-					map.put(KeyStroke.getKeyStroke("control A"), "selectAll");
-					map.put(KeyStroke.getKeyStroke("control D"), "selectNone");
-					map.put(KeyStroke.getKeyStroke("control X"), "cut");
-					map.put(KeyStroke.getKeyStroke("CUT"), "cut");
-					map.put(KeyStroke.getKeyStroke("control C"), "copy");
-					map.put(KeyStroke.getKeyStroke("COPY"), "copy");
-					map.put(KeyStroke.getKeyStroke("control V"), "paste");
-					map.put(KeyStroke.getKeyStroke("PASTE"), "paste");
-					map.put(KeyStroke.getKeyStroke("control G"), "group");
-					map.put(KeyStroke.getKeyStroke("control U"), "ungroup");
-					map.put(KeyStroke.getKeyStroke("control ADD"), "zoomIn");
-					map.put(KeyStroke.getKeyStroke("control SUBTRACT"), "zoomOut");
-				}
+            inputMap = getInputMap(JComponent.WHEN_FOCUSED);
+            SwingUtilities.replaceUIInputMap(pnGraphComponent,
+                    JComponent.WHEN_FOCUSED, inputMap);
+            SwingUtilities.replaceUIActionMap(pnGraphComponent, createActionMap());
+        }
 
-				return map;
-			}
+        protected InputMap getInputMap(int condition) {
+            InputMap map = getBasicInputMap(condition);
+            if (condition == JComponent.WHEN_FOCUSED && map != null) {
 
-		protected ActionMap createActionMap() {
-			ActionMap map = createBasicActionMap();
-			try {
-				map.put("undo", new UndoAction(editorComponent));
-				map.put("redo", new RedoAction(editorComponent));
-				map.put("printNet", new PrintAction(editorComponent));
+                int commandKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+                int commandAndShift = commandKey | InputEvent.SHIFT_DOWN_MASK;
 
-				map.put("export", new ExportPDFAction(editorComponent));
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandKey), "save");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandAndShift), "saveAs");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "new");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, commandKey), "open");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandKey), "undo");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, commandKey), "redo");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandAndShift), "selectVertices");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandAndShift), "selectEdges");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, commandKey), "selectTransitions");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, commandKey), "selectArcs");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandKey), "selectArcs");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandKey), "selectAll");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, commandKey), "cut");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, commandKey), "copy");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandKey), "paste");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandAndShift), "printNet");
+                map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_L, commandKey), "export");
 
-				int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
-				map.put("newNodeLeft", new NewNodeAction(editorComponent, -offset, 0));
-				map.put("newNodeRight", new NewNodeAction(editorComponent, offset, 0));
-				map.put("newNodeDown", new NewNodeAction(editorComponent, 0, offset));
-				map.put("newNodeUp", new NewNodeAction(editorComponent, 0, -offset));
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, commandKey), "newNodeLeft");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, commandKey), "newNodeRight");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, commandKey), "newNodeDown");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, commandKey), "newNodeUp");
 
-				map.put("moveLeft", new MoveAction(editorComponent, -1, 0));
-				map.put("moveRight", new MoveAction(editorComponent, 1, 0));
-				map.put("moveDown", new MoveAction(editorComponent, 0, 1));
-				map.put("moveUp", new MoveAction(editorComponent, 0, -1));
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
 
-				int movingGap = 5;
-				map.put("bigMoveLeft", new MoveAction(editorComponent, -movingGap, 0));
-				map.put("bigMoveRight", new MoveAction(editorComponent, movingGap, 0));
-				map.put("bigMoveDown", new MoveAction(editorComponent, 0, movingGap));
-				map.put("bigMoveUp", new MoveAction(editorComponent, 0, -movingGap));
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK), "bigMoveLeft");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK), "bigMoveRight");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), "bigMoveDown");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK), "bigMoveUp");
 
-				map.put("selectPlaces", new SelectAction(editorComponent, PNComponent.PLACE));
-				map.put("selectTransitions", new SelectAction(editorComponent, PNComponent.TRANSITION));
-				map.put("selectArcs", new SelectAction(editorComponent, PNComponent.ARC));
+            }
+            return map;
+        }
 
-			} catch (Exception e) {
-				// Cannot happen, since this is not null
-				e.printStackTrace();
-			}
+        private InputMap getBasicInputMap(int condition) {
+            InputMap map = null;
 
-			map.put("selectVertices", mxGraphActions.getSelectVerticesAction());
-			map.put("selectEdges", mxGraphActions.getSelectEdgesAction());
-			map.put("selectAll", mxGraphActions.getSelectAllAction());
-			map.put("selectAllEdges", mxGraphActions.getSelectEdgesAction());
+            if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
+                map = (InputMap) UIManager.get("ScrollPane.ancestorInputMap");
+            } else if (condition == JComponent.WHEN_FOCUSED) {
+                map = new InputMap();
 
-			map.put(("cut"), TransferHandler.getCutAction());
-			map.put(("copy"), TransferHandler.getCopyAction());
-			map.put(("paste"), TransferHandler.getPasteAction());
-			map.put("delete", new DeleteAction("delete"));
-			return map;
-		}
+                map.put(KeyStroke.getKeyStroke("F2"), "edit");
+                map.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+                map.put(KeyStroke.getKeyStroke("UP"), "selectParent");
+                map.put(KeyStroke.getKeyStroke("DOWN"), "selectChild");
+                map.put(KeyStroke.getKeyStroke("RIGHT"), "selectNext");
+                map.put(KeyStroke.getKeyStroke("LEFT"), "selectPrevious");
+                map.put(KeyStroke.getKeyStroke("PAGE_DOWN"), "enterGroup");
+                map.put(KeyStroke.getKeyStroke("PAGE_UP"), "exitGroup");
+                map.put(KeyStroke.getKeyStroke("HOME"), "home");
+                map.put(KeyStroke.getKeyStroke("ENTER"), "expand");
+                map.put(KeyStroke.getKeyStroke("BACK_SPACE"), "collapse");
+                map.put(KeyStroke.getKeyStroke("control A"), "selectAll");
+                map.put(KeyStroke.getKeyStroke("control D"), "selectNone");
+                map.put(KeyStroke.getKeyStroke("control X"), "cut");
+                map.put(KeyStroke.getKeyStroke("CUT"), "cut");
+                map.put(KeyStroke.getKeyStroke("control C"), "copy");
+                map.put(KeyStroke.getKeyStroke("COPY"), "copy");
+                map.put(KeyStroke.getKeyStroke("control V"), "paste");
+                map.put(KeyStroke.getKeyStroke("PASTE"), "paste");
+                map.put(KeyStroke.getKeyStroke("control G"), "group");
+                map.put(KeyStroke.getKeyStroke("control U"), "ungroup");
+                map.put(KeyStroke.getKeyStroke("control ADD"), "zoomIn");
+                map.put(KeyStroke.getKeyStroke("control SUBTRACT"), "zoomOut");
+            }
 
-		private ActionMap createBasicActionMap() 
-			{
-				ActionMap map = (ActionMap) UIManager.get("ScrollPane.actionMap");
+            return map;
+        }
 
-				map.put("edit", mxGraphActions.getEditAction());
-				map.put("delete", mxGraphActions.getDeleteAction());
-				map.put("home", mxGraphActions.getHomeAction());
-				map.put("enterGroup", mxGraphActions.getEnterGroupAction());
-				map.put("exitGroup", mxGraphActions.getExitGroupAction());
-				map.put("collapse", mxGraphActions.getCollapseAction());
-				map.put("expand", mxGraphActions.getExpandAction());
-				map.put("toBack", mxGraphActions.getToBackAction());
-				map.put("toFront", mxGraphActions.getToFrontAction());
-				map.put("selectNone", mxGraphActions.getSelectNoneAction());
-				map.put("selectAll", mxGraphActions.getSelectAllAction());
-				map.put("selectNext", mxGraphActions.getSelectNextAction());
-				map.put("selectPrevious", mxGraphActions.getSelectPreviousAction());
-				map.put("selectParent", mxGraphActions.getSelectParentAction());
-				map.put("selectChild", mxGraphActions.getSelectChildAction());
-				map.put("cut", TransferHandler.getCutAction());
-				map.put("copy", TransferHandler.getCopyAction());
-				map.put("paste", TransferHandler.getPasteAction());
-				map.put("group", mxGraphActions.getGroupAction());
-				map.put("ungroup", mxGraphActions.getUngroupAction());
-				map.put("zoomIn", mxGraphActions.getZoomInAction());
-				map.put("zoomOut", mxGraphActions.getZoomOutAction());
+        protected ActionMap createActionMap() {
+            ActionMap map = createBasicActionMap();
+            try {
+                map.put("undo", new UndoAction(editorComponent));
+                map.put("redo", new RedoAction(editorComponent));
+                map.put("printNet", new PrintAction(editorComponent));
 
-				return map;
-			}
-	}
+                map.put("export", new ExportPDFAction(editorComponent));
+
+                int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
+                map.put("newNodeLeft", new NewNodeAction(editorComponent, -offset, 0));
+                map.put("newNodeRight", new NewNodeAction(editorComponent, offset, 0));
+                map.put("newNodeDown", new NewNodeAction(editorComponent, 0, offset));
+                map.put("newNodeUp", new NewNodeAction(editorComponent, 0, -offset));
+
+                map.put("moveLeft", new MoveAction(editorComponent, -1, 0));
+                map.put("moveRight", new MoveAction(editorComponent, 1, 0));
+                map.put("moveDown", new MoveAction(editorComponent, 0, 1));
+                map.put("moveUp", new MoveAction(editorComponent, 0, -1));
+
+                int movingGap = 5;
+                map.put("bigMoveLeft", new MoveAction(editorComponent, -movingGap, 0));
+                map.put("bigMoveRight", new MoveAction(editorComponent, movingGap, 0));
+                map.put("bigMoveDown", new MoveAction(editorComponent, 0, movingGap));
+                map.put("bigMoveUp", new MoveAction(editorComponent, 0, -movingGap));
+
+                map.put("selectPlaces", new SelectAction(editorComponent, PNComponent.PLACE));
+                map.put("selectTransitions", new SelectAction(editorComponent, PNComponent.TRANSITION));
+                map.put("selectArcs", new SelectAction(editorComponent, PNComponent.ARC));
+
+            } catch (Exception e) {
+                // Cannot happen, since this is not null
+                e.printStackTrace();
+            }
+
+            map.put("selectVertices", mxGraphActions.getSelectVerticesAction());
+            map.put("selectEdges", mxGraphActions.getSelectEdgesAction());
+            map.put("selectAll", mxGraphActions.getSelectAllAction());
+            map.put("selectAllEdges", mxGraphActions.getSelectEdgesAction());
+
+            map.put(("cut"), TransferHandler.getCutAction());
+            map.put(("copy"), TransferHandler.getCopyAction());
+            map.put(("paste"), TransferHandler.getPasteAction());
+            map.put("delete", new DeleteAction("delete"));
+            return map;
+        }
+
+        private ActionMap createBasicActionMap() {
+            ActionMap map = (ActionMap) UIManager.get("ScrollPane.actionMap");
+
+            map.put("edit", mxGraphActions.getEditAction());
+            map.put("delete", mxGraphActions.getDeleteAction());
+            map.put("home", mxGraphActions.getHomeAction());
+            map.put("enterGroup", mxGraphActions.getEnterGroupAction());
+            map.put("exitGroup", mxGraphActions.getExitGroupAction());
+            map.put("collapse", mxGraphActions.getCollapseAction());
+            map.put("expand", mxGraphActions.getExpandAction());
+            map.put("toBack", mxGraphActions.getToBackAction());
+            map.put("toFront", mxGraphActions.getToFrontAction());
+            map.put("selectNone", mxGraphActions.getSelectNoneAction());
+            map.put("selectAll", mxGraphActions.getSelectAllAction());
+            map.put("selectNext", mxGraphActions.getSelectNextAction());
+            map.put("selectPrevious", mxGraphActions.getSelectPreviousAction());
+            map.put("selectParent", mxGraphActions.getSelectParentAction());
+            map.put("selectChild", mxGraphActions.getSelectChildAction());
+            map.put("cut", TransferHandler.getCutAction());
+            map.put("copy", TransferHandler.getCopyAction());
+            map.put("paste", TransferHandler.getPasteAction());
+            map.put("group", mxGraphActions.getGroupAction());
+            map.put("ungroup", mxGraphActions.getUngroupAction());
+            map.put("zoomIn", mxGraphActions.getZoomInAction());
+            map.put("zoomOut", mxGraphActions.getZoomOutAction());
+
+            return map;
+        }
+    }
 }
