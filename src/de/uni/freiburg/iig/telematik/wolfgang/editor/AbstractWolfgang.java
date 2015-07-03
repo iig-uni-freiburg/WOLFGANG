@@ -268,7 +268,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     protected JComponent getRightComponent() throws Exception {
         if (rightPanel == null) {
             rightPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-            rightPanel.setDividerLocation(450);
+            rightPanel.setDividerLocation(400);
         }
         return rightPanel;
     }

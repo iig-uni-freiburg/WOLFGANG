@@ -21,11 +21,11 @@ public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetPrope
 
 	@Override
 	protected void addSpecificFields(JPanel panel) {
-		lblStructure = new PropertyCheckResultLabel(" \u2022 WF Net Structure", PropertyCheckingResult.UNKNOWN);
+		lblStructure = new PropertyCheckResultLabel("\u2022 WF Net Structure", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblStructure);
-		lblInOutPlaces = new PropertyCheckResultLabel("		\u2022 Valid InOut Places", PropertyCheckingResult.UNKNOWN);
+		lblInOutPlaces = new PropertyCheckResultLabel("\u0009\u0009\u0009\u2022 Valid InOut Places", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblInOutPlaces);
-		lblConnectedness = new PropertyCheckResultLabel("		\u2022 Strong Connectedness", PropertyCheckingResult.UNKNOWN);
+		lblConnectedness = new PropertyCheckResultLabel("\u0009\u0009\u0009\u2022 Strong Connectedness", PropertyCheckingResult.UNKNOWN);
 		panel.add(lblConnectedness);
 	}
 
