@@ -54,6 +54,7 @@
 
         <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask"/>
         <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask"/>
+        <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" />
 
 	<path id="TOVAL.classpath">
 		<pathelement location="${TOVAL.location}/bin/classes-ant" />
@@ -298,10 +299,23 @@
 	</target>
 
 	<target name="bundle-macosx" depends="package" description="Creates a Mac OS X application bundle">
-		<bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" icon="res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
-			<classpath file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
-			<option value="-Dapple.laf.useScreenMenuBar=true" />
-		</bundleapp>
+            <bundleapp outputdirectory="${target.dir.jar}" name="WOLFGANG" displayname="WOLFGANG" identifier="${main-class}" icon="res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.icns" shortversion="${version.name}" applicationCategory="public.app-category.developer-tools" mainclassname="${main-class-uri}">
+                    <classpath file="${target.dir.jar}/${jar.file.name}-runnable.jar" />
+                    <option value="-Dapple.laf.useScreenMenuBar=true" />
+            </bundleapp>
 	</target>
+
+        <target name="bundle-win32" depends="package" description="Creates a Windows executable">
+            <launch4j>
+                <config headerType="gui" outfile="${target.dir.jar}/${jar.file.name}.exe" dontWrapJar="false" jarPath="${target.dir.jar}/${jar.file.name}-runnable.jar" icon="${basedir}/res/de/uni/freiburg/iig/telematik/wolfgang/icons/logo/wolfgang.ico">
+                    <var>SETTINGS="%HomeDrive%%HomePath%\\wolfgang-settings.ini"</var>
+                    <jre minVersion="1.8.0">
+                        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+                        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+                    </jre>
+                    <classPath mainClass="${main-class}" />
+                </config>
+            </launch4j>
+        </target>
 
 </project>

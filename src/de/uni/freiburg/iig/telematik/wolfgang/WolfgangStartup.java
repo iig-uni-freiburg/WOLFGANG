@@ -17,6 +17,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.NetTypeChooserDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class WolfgangStartup extends AbstractStartup {
 
@@ -34,8 +35,6 @@ public class WolfgangStartup extends AbstractStartup {
 		if(chosenNetType == null){
 			if(dialog.openNetOption()){
 				tryToOpenNet();
-			} else {
-				return;
 			}
 		} else {
 			switch (chosenNetType) {
@@ -46,7 +45,6 @@ public class WolfgangStartup extends AbstractStartup {
 				new WolfgangPT().setUpGUI();
 				break;
 			default:
-				return;
 			}
 		}
 	}
@@ -57,10 +55,12 @@ public class WolfgangStartup extends AbstractStartup {
 		fc = new JFileChooser(System.getProperty("user.home"));
 		fc.removeChoosableFileFilter(fc.getFileFilter());
 		fc.addChoosableFileFilter(new FileFilter() {
+                        @Override
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
 			}
 
+                        @Override
 			public boolean accept(File f) {
 				if (f.isDirectory()) {
 					return true;
@@ -100,12 +100,12 @@ public class WolfgangStartup extends AbstractStartup {
 		if (System.getProperty("os.name").toLowerCase().contains("nux")) {
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			} catch (Exception e) {
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			}
 		} else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			}
 		}
 	}
@@ -113,7 +113,7 @@ public class WolfgangStartup extends AbstractStartup {
 	public static void main(String[] args) {
 		if(args.length > 1)
 			System.out.println(args[0]);
-		new WolfgangStartup();
+            new WolfgangStartup();
 	}
 
 }
