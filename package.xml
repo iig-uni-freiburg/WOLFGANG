@@ -108,7 +108,7 @@
 	<mkdir dir="${target.dir.jar}"/>
 
 	<!-- Package JARs -->
-	<target name="package" depends="compile,package-consistent" description="Packages the project to JAR files">
+	<target name="package" depends="compile" description="Packages the project to JAR files">
 		<echo message="${ant.project.name}: ${ant.file}" />
 		<echo>Deleting old JARs...</echo>
 		<delete file="${target.dir.jar}/${jar.file.name}.jar" />
@@ -268,7 +268,7 @@
 		</copy>
 	</target>
 
-	<target name="bundle-deb" depends="package" description="Creates a Debian package">
+	<target name="bundle-deb" depends="package-consistent" description="Creates a Debian package">
 		<property name="deb.installpath" value="/usr/share/wolfgang" />
 		<property name="deb.execpath" value="/usr/local/bin" />
 		<!-- Copy control file -->
@@ -288,6 +288,17 @@
 				<filter token="filename" value="${jar.file.name}-runnable.jar" />
 			</filterset>
 		</copy>
+		<!-- Copy icon file -->
+		<copy file="${icons.path}/wg_icon_128.png" tofile="${classes.target.dir}/deb/wolfgang.png" />
+		<!-- Copy desktop link file -->
+		<copy todir="${classes.target.dir}/deb/desktop">
+			<fileset dir="${build.dir}/deb/desktop" />
+			<filterset begintoken="[[" endtoken="]]">
+				<filter token="installpath" value="${deb.installpath}" />
+				<filter token="execpath" value="${deb.execpath}" />
+				<filter token="filename" value="wolfgang.sh" />
+			</filterset>
+		</copy>
 		<!-- Create debian package -->
 		<deb destfile="${target.dir.jar}/${jar.file.name}.deb" control="${classes.target.dir}/deb/control" verbose="true">
 			<data src="${target.dir.jar}/${jar.file.name}-runnable.jar" type="file">
@@ -296,11 +307,17 @@
 			<data src="${classes.target.dir}/deb/starter/wolfgang.sh" type="file">
 				<mapper type="perm" prefix="${deb.installpath}" />
 			</data>
+			<data src="${classes.target.dir}/deb/wolfgang.png" type="file">
+				<mapper type="perm" prefix="${deb.installpath}" />
+			</data>
+			<data src="${classes.target.dir}/deb/desktop/wolfgang.desktop" type="file">
+				<mapper type="perm" prefix="/usr/share/applications" />
+			</data>
 			<link name="${deb.execpath}/wolfgang.sh" target="${deb.installpath}/wolfgang.sh" symbolic="true" mode="777" />
 		</deb>
 	</target>
 
-	<target name="bundle-macosx" depends="package" description="Creates a Mac OS X application bundle">
+	<target name="bundle-macosx" depends="package-consistent" description="Creates a Mac OS X application bundle">
             <bundleapp
                 outputdirectory="${target.dir.jar}"
                 name="WOLFGANG"
@@ -318,7 +335,7 @@
             </bundleapp>
 	</target>
 
-        <target name="bundle-win32" depends="package" description="Creates a Windows executable">
+        <target name="bundle-win32" depends="package-consistent" description="Creates a Windows executable">
             <launch4j>
                 <config headerType="gui" outfile="${target.dir.jar}/${jar.file.name}.exe" dontWrapJar="false" jarPath="${target.dir.jar}/${jar.file.name}-runnable.jar" icon="${icon.win.file}">
                     <var>SETTINGS="%HomeDrive%%HomePath%\\wolfgang-settings.ini"</var>
@@ -329,6 +346,9 @@
                     <classPath mainClass="${main-class}" />
                 </config>
             </launch4j>
+        </target>
+
+        <target name="bundle-all" depends="bundle-deb,bundle-macosx,bundle-win32" description="Creates all bundles">
         </target>
 
 </project>
