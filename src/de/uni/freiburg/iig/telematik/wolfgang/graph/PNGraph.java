@@ -1173,14 +1173,16 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	public void setFontOfSelectedCellLabel(String font) {
 		Validate.notNull(font);
-
 		if (font != null && !font.equals("-")) {
 			setCellStyles(mxConstants.STYLE_FONTFAMILY, font);
 		}
 	}
 
-	public void setFontSizeOfSelectedCellLabel(String font) {
-		setCellStyles(mxConstants.STYLE_FONTSIZE, font);
+	public void setFontSizeOfSelectedCellLabel(String size) {
+                		Validate.notNull(size);
+		if (size != null && !size.equals("-")) {
+		setCellStyles(mxConstants.STYLE_FONTSIZE, size);
+		}
 	}
 
 	public void setStrokeWeightOfSelectedCell(String strokeWeight) {

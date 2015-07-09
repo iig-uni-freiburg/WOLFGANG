@@ -11,22 +11,22 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class FontBoldStyleAction extends AbstractPNEditorAction {
 
-	private static final long serialVersionUID = 7450908146578160638L;
-	protected boolean bold = false;
+    private static final long serialVersionUID = 7450908146578160638L;
 
-	public FontBoldStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
-		super(editor, "Bold", IconFactory.getIcon("bold"));
-	}
+    public FontBoldStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
+        super(editor, "Bold", IconFactory.getIcon("bold"));
+    }
 
-	@Override
-	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if (!bold) {
-			getGraph().setCellStyles((String) MXConstants.FONT_WEIGHT, "bold");
-			bold = true;
-		} else {
-			getGraph().setCellStyles((String) MXConstants.FONT_WEIGHT, "normal");
-			bold = false;
-		}
-	}
+    @Override
+    protected void doFancyStuff(ActionEvent e) throws Exception {
+        if (!isSelected) {
+            getGraph().setCellStyles((String) MXConstants.FONT_WEIGHT, "bold");
+        } else {
+            getGraph().setCellStyles((String) MXConstants.FONT_WEIGHT, "normal");
+        }
+
+        getGraph().setSelectionCells(getEditor().getGraphComponent().getGraph().getSelectionCells());
+
+    }
 
 }

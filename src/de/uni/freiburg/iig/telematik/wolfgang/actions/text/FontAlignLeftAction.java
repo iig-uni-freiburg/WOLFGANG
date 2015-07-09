@@ -21,5 +21,7 @@ public class FontAlignLeftAction extends AbstractPNEditorAction {
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (getGraph() != null && !getGraph().isSelectionEmpty())
 			getGraph().setCellStyles(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_LEFT);
+                getGraph().setSelectionCells(getEditor().getGraphComponent().getGraph().getSelectionCells());
+
 	}
 }

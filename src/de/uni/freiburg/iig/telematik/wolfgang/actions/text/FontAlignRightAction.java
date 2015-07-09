@@ -20,6 +20,8 @@ public class FontAlignRightAction extends AbstractPNEditorAction {
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (getGraph() != null && !getGraph().isSelectionEmpty())
-			getGraph().setCellStyles(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_RIGHT);
+			getGraph().setCellStyles(mxConstants.STYLE_ALIGN, mxConstants.ALIGN_RIGHT);       
+                getGraph().setSelectionCells(getEditor().getGraphComponent().getGraph().getSelectionCells());
+
 	}
 }

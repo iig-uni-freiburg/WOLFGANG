@@ -1,22 +1,16 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 
@@ -27,6 +21,7 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 	protected PNEditorComponent editor = null;
 
 	private ImageIcon icon;
+    protected boolean isSelected = false;
 
 	public AbstractPNEditorAction(PNEditorComponent editor) throws ParameterException {
 		super();
@@ -84,5 +79,9 @@ public abstract class AbstractPNEditorAction extends AbstractAction {
 	}
 
 	protected abstract void doFancyStuff(ActionEvent e) throws Exception;
+
+    public void setSelectionState(boolean b) {
+        isSelected = b;
+    }
 
 }

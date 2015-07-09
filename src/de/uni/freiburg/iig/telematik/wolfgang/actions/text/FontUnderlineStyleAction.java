@@ -11,22 +11,20 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class FontUnderlineStyleAction extends AbstractPNEditorAction {
 
-	private static final long serialVersionUID = 7450908146578160638L;
-	protected boolean underline = false;
+    private static final long serialVersionUID = 7450908146578160638L;
 
-	public FontUnderlineStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
-		super(editor, "Underline", IconFactory.getIcon("underline"));
-	}
+    public FontUnderlineStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
+        super(editor, "Underline", IconFactory.getIcon("underline"));
+    }
 
-	@Override
-	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if (!underline) {
-			getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, "underline");
-			underline = true;
-		} else {
-			getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, null);
-			underline = false;
-		}
-	}
+    @Override
+    protected void doFancyStuff(ActionEvent e) throws Exception {
+        if (!isSelected) {
+            getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, "underline");
+        } else {
+            getGraph().setCellStyles((String) MXConstants.FONT_DECORATION, null);
+        }
+        getGraph().setSelectionCells(getEditor().getGraphComponent().getGraph().getSelectionCells());
+    }
 
 }

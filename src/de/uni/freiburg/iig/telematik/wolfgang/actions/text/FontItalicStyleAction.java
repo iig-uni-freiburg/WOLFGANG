@@ -11,22 +11,20 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class FontItalicStyleAction extends AbstractPNEditorAction {
 
-	private static final long serialVersionUID = 7450908146578160638L;
-	protected boolean italic = false;
+    private static final long serialVersionUID = 7450908146578160638L;
 
-	public FontItalicStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
-		super(editor, "Italic", IconFactory.getIcon("italic"));
-	}
+    public FontItalicStyleAction(PNEditorComponent editor) throws PropertyException, IOException {
+        super(editor, "Italic", IconFactory.getIcon("italic"));
+    }
 
-	@Override
-	protected void doFancyStuff(ActionEvent e) throws Exception {
-		if (!italic) {
-			getGraph().setCellStyles((String) MXConstants.FONT_STYLE, "italic");
-			italic = true;
-		} else {
-			getGraph().setCellStyles((String) MXConstants.FONT_STYLE, "normal");
-			italic = false;
-		}
-	}
+    @Override
+    protected void doFancyStuff(ActionEvent e) throws Exception {
+        if (!isSelected) {
+            getGraph().setCellStyles((String) MXConstants.FONT_STYLE, "italic");
+        } else {
+            getGraph().setCellStyles((String) MXConstants.FONT_STYLE, "normal");
+        }
+        getGraph().setSelectionCells(getEditor().getGraphComponent().getGraph().getSelectionCells());
+    }
 
 }

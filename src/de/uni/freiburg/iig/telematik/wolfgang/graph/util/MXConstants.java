@@ -111,7 +111,7 @@ public abstract class MXConstants {
 	// mxConstants.STYLE_ALIGN
 	// mxConstants.STYLE_FONTFAMILY
 	// mxConstants.STYLE_FONTSIZE
-	public static final String FONT_ROTATION_DEGREE = "180";
+	public static final String FONT_ROTATION_DEGREE = "labelFontRotationDegree";
 	public static final String FONT_DECORATION = "labelFontDecoration";
 	public static final String FONT_STYLE = "labelFontStyle";
 	public static final String FONT_WEIGHT = "labelFontWeight";
