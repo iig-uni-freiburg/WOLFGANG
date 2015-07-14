@@ -9,37 +9,36 @@ import com.mxgraph.util.mxUtils;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
-import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar.LineStyle;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class LineCurveAction extends AbstractPNEditorGraphicsAction {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5817890089224292792L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5817890089224292792L;
 
-	public LineCurveAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
-		super(editor, "Curve Color", IconFactory.getIcon("round"));
-		setButtonScale(3, 3);
-		setIconImage(getIcon().getImage());		
-	}
+    public LineCurveAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
+        super(editor, "Curve Color", IconFactory.getIcon("round"));
+        setButtonScale(3, 3);
+        setIconImage(getIcon().getImage());
+    }
 
-	@Override
-	protected void performLabelAction() {
-		getGraph().setCellStyles(mxConstants.STYLE_LABEL_BORDERCOLOR, mxUtils.hexString(getButtonFillColor()));
+    @Override
+    protected void performLabelAction() {
+    }
 
-	}
+    @Override
+    protected void performNoLabelAction() {
+    }
 
-	@Override
-	protected void performNoLabelAction() {
-		getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(getButtonFillColor()));
-		getGraph().setCellStyles(mxConstants.STYLE_ROUNDED, "true");
-		getGraph().setCellStyles(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION);
-	}
-
-	@Override
-	protected void doMoreFancyStuff(ActionEvent e) throws Exception {
-		getEditor().getEditorToolbar().getGraphicsToolbar().setLineStyle(LineStyle.NORMAL);
-	}
+    @Override
+    protected void doMoreFancyStuff(ActionEvent e) throws Exception {
+                getGraph().setCellStyles(mxConstants.STYLE_ROUNDED, "true");
+                getGraph().setCellStyles(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION);
+		getEditor().getEditorToolbar().getGraphicsToolbar().setLineStyle(GraphicsToolBar.LineStyle.CURVE);
+    }
 }

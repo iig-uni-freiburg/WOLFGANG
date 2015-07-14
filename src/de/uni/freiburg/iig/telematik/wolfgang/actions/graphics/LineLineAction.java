@@ -29,12 +29,12 @@ public class LineLineAction extends AbstractPNEditorGraphicsAction {
 
 	@Override
 	protected void performLabelAction() {
-		getGraph().setCellStyles(mxConstants.STYLE_LABEL_BORDERCOLOR, mxUtils.hexString(fillColor));
+//		getGraph().setCellStyles(mxConstants.STYLE_LABEL_BORDERCOLOR, mxUtils.hexString(fillColor));
 	}
 
 	@Override
 	protected void performNoLabelAction() {
-		getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(fillColor));
+//		getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, mxUtils.hexString(fillColor));
 	}
 
 	@Override

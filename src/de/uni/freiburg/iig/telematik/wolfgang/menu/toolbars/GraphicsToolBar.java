@@ -626,7 +626,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
 
     public enum LineStyle {
 
-        NORMAL, NOFILL
+        NORMAL,CURVE, NOFILL
     }
 
     public void setLineStyle(LineStyle nofill) {
@@ -771,6 +771,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
                 } else {
                     this.selectedCell = null;
                 }
+
             }
         }
         rememberSelectionFromGraph = true;
