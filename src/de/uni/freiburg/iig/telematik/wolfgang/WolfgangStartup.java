@@ -42,6 +42,7 @@ public class WolfgangStartup extends AbstractStartup {
                     tryToOpenNet();
                 }
             } else {
+            	setLookAndFeel();
                 switch (chosenNetType) {
                     case CPN:
                         new WolfgangCPN().setUpGUI();
