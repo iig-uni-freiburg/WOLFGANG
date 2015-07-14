@@ -98,8 +98,9 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		int size = 0;
 		if (getTokenColors().contains("black")) {
 			colors.put("black", Color.BLACK);
+			if(shouldAddRow("black")){
 			addRow("black");
-			size++;
+			size++;}
 		}
 
 		TreeMap<String, Color> sortedColorMap = new TreeMap<String, Color>(colors);
