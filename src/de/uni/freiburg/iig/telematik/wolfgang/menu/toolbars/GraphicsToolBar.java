@@ -444,9 +444,9 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener {
                         if (selectedCell != null) {
                             String strokeWeight = strokeWeightBox.getSelectedItem().toString().replace("px", "");
                             PNGraph graph = GraphicsToolBar.this.pnEditor.getGraphComponent().getGraph();
-                            if (!rememberSelectionFromGraph) {
+//                            if (!rememberSelectionFromGraph) {
                                 graph.setStrokeWeightOfSelectedCell(strokeWeight);
-                            }
+//                            }
                             rememberSelectionFromGraph = false;
                         }
                     }
