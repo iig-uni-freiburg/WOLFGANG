@@ -16,7 +16,11 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.NewPTAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAsAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.help.AboutAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.help.SendExceptionsAsEmail;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WGPropertySettingDialog;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WGMenuBar extends JMenuBar {
 
@@ -29,6 +33,7 @@ public class WGMenuBar extends JMenuBar {
 		this.wolfgang = wolfgang;
 		add(getFileMenu());
 		add(getSettingsMenu());
+        add(getHelpEntry());
 	}
 
 	private JMenu getFileMenu() throws PropertyException, IOException {
@@ -108,6 +113,19 @@ public class WGMenuBar extends JMenuBar {
 		});
 		settings.add(settingsItem);
 		return settings;
+	}
+        
+        private JMenu getHelpEntry() {
+		JMenu helpEntry = new JMenu("Help");
+            try {
+                helpEntry.add(new AboutAction(wolfgang));
+                helpEntry.add(new SendExceptionsAsEmail(wolfgang));
+            } catch (PropertyException ex) {
+                Logger.getLogger(WGMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(WGMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		return helpEntry;
 	}
 
 }
