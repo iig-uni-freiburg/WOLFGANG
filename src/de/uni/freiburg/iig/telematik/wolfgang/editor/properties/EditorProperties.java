@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.editor.properties;
 
+import de.invation.code.toval.os.OSUtils;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.HashSet;
@@ -44,11 +45,11 @@ public class EditorProperties extends AbstractProperties{
 	
 	public static final boolean DEFAULT_SNAP_TO_GRID = true;
 	
-	protected static final String propertyFileName = "EditorProperties";
+	protected static final String propertyFileName = ".editorProperties";
 	
 	private static EditorProperties instance = null;
 	
-	private Set<WolfgangPropertyListener> listeners = new HashSet<WolfgangPropertyListener>();
+	private Set<WolfgangPropertyListener> listeners = new HashSet<>();
 
 	private EditorProperties() throws IOException {
 		try {
@@ -777,9 +778,9 @@ public class EditorProperties extends AbstractProperties{
 	
 	public void store() throws IOException {
 		try {
-			store(propertyFileName);
+			store(OSUtils.getUserHomeDirectory() + "/" + propertyFileName);
 		} catch (IOException e) {
-			throw new IOException("Cannot create/store wolfgang properties file on disk.");
+			throw new IOException("Cannot create/store wolfgang properties file on disk.", e);
 		}
 	}
 

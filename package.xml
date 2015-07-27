@@ -271,6 +271,7 @@
 	<target name="bundle-deb" depends="package-consistent" description="Creates a Debian package">
 		<property name="deb.installpath" value="/usr/share/wolfgang" />
 		<property name="deb.execpath" value="/usr/local/bin" />
+		<property name="deb.mimepath" value="/usr/share/mime/packages" />
 		<!-- Copy control file -->
 		<copy todir="${classes.target.dir}/deb/control">
 			<fileset dir="${build.dir}/deb/control" />
@@ -285,7 +286,7 @@
 			<fileset dir="${build.dir}/deb/starter" />
 			<filterset begintoken="[[" endtoken="]]">
 				<filter token="path" value="${deb.installpath}" />
-				<filter token="filename" value="${jar.file.name}-runnable.jar" />
+				<filter token="filename" value="${artifact.name}.jar" />
 			</filterset>
 		</copy>
 		<!-- Copy icon file -->
@@ -296,24 +297,31 @@
 			<filterset begintoken="[[" endtoken="]]">
 				<filter token="installpath" value="${deb.installpath}" />
 				<filter token="execpath" value="${deb.execpath}" />
-				<filter token="filename" value="wolfgang.sh" />
+				<filter token="filename" value="${artifact.name}" />
 			</filterset>
 		</copy>
+                <chmod dir="${build.dir}/deb/starter" type="file" perm="755" >
+                    <filelist files="${build.dir}/deb/starter/${artifact.name}"/>
+                </chmod>
+                
 		<!-- Create debian package -->
 		<deb destfile="${target.dir.jar}/${jar.file.name}.deb" control="${classes.target.dir}/deb/control" verbose="true">
+                        <tarfileset file="${build.dir}/deb/mime/pnml.xml"
+                                    prefix="${deb.mimepath}"
+                                    filemode="755" />
 			<data src="${target.dir.jar}/${jar.file.name}-runnable.jar" type="file">
 				<mapper type="perm" prefix="${deb.installpath}" />
 			</data>
-			<data src="${classes.target.dir}/deb/starter/wolfgang.sh" type="file">
-				<mapper type="perm" prefix="${deb.installpath}" />
-			</data>
+                        <tarfileset file="${build.dir}/deb/starter/${artifact.name}"
+                                    prefix="${deb.execpath}"
+                                    filemode="755" />
 			<data src="${classes.target.dir}/deb/wolfgang.png" type="file">
 				<mapper type="perm" prefix="${deb.installpath}" />
 			</data>
 			<data src="${classes.target.dir}/deb/desktop/wolfgang.desktop" type="file">
 				<mapper type="perm" prefix="/usr/share/applications" />
 			</data>
-			<link name="${deb.execpath}/wolfgang.sh" target="${deb.installpath}/wolfgang.sh" symbolic="true" mode="777" />
+			<link name="${deb.installpath}/${artifact.name}.jar" target="${deb.installpath}/${jar.file.name}-runnable.jar" symbolic="true" mode="777" />
 		</deb>
 	</target>
 

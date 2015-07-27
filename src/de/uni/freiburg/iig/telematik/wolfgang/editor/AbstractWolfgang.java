@@ -19,7 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -27,6 +26,7 @@ import javax.swing.UIManager;
 
 import com.mxgraph.swing.util.mxGraphActions;
 import com.mxgraph.swing.util.mxGraphActions.DeleteAction;
+import de.invation.code.toval.os.WindowsUtils;
 
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -57,6 +57,9 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperty
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>, NN extends AbstractGraphicalPN<P, T, F, M, S, N, G>> extends JFrame {
 
@@ -76,12 +79,18 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     private JPanel rightPanel;
 
     @SuppressWarnings("rawtypes")
-    private static Set<AbstractWolfgang> runningInstances = new HashSet<AbstractWolfgang>();
+    private static Set<AbstractWolfgang> runningInstances = new HashSet<>();
     private JScrollPane editorScrollPane;
-    private int FIX_SIZE_RIGHT_PANEL = 200;
-    private int DIVIDER_LOCATION_RIGHT_PANEL = 400;
+    private final int FIX_SIZE_RIGHT_PANEL = 200;
+    private final int DIVIDER_LOCATION_RIGHT_PANEL = 400;
     private JScrollPane rightScrollPane;
     private JScrollPane toolbarScrollPane;
+
+    private static final Map<String, String> ASSOCIATED_FILE_EXTENSIONS = new HashMap<>();
+    static {
+        ASSOCIATED_FILE_EXTENSIONS.put("iig.pnml.v1", ".pnml");
+    }
+
 
     protected AbstractWolfgang() throws Exception {
         this(null, null);
@@ -157,7 +166,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             try {
                 SaveAction save = new SaveAction(AbstractWolfgang.this);
                 save.actionPerformed(null);
-            } catch (Exception ex) {
+            } catch (PropertyException | IOException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while saving edited net.", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -172,6 +181,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
             }
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 if (runningInstances.size() > 1) {
                     int closeAllInstances = JOptionPane.showConfirmDialog(AbstractWolfgang.this, "Close all " + runningInstances.size() + " Wolfgang instanes?", "Multiple running instances", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -179,7 +189,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                         return;
                     }
                     if (closeAllInstances == JOptionPane.YES_OPTION) {
-                        for (@SuppressWarnings("rawtypes") AbstractWolfgang runningInstance : runningInstances) {
+                        for (AbstractWolfgang runningInstance : runningInstances) {
                             runningInstance.dispose();
                         }
                         runningInstances.clear();
@@ -204,6 +214,34 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+
+        // file extension check
+        if (WindowsUtils.instance().isApplicable()) {
+            String applicationPathURI = WindowsUtils.getExecutionPath().getAbsolutePath();
+            String applicationPath = WindowsUtils.instance().toWindowsPath(applicationPathURI);
+            for (Map.Entry<String, String> fileExtension : ASSOCIATED_FILE_EXTENSIONS.entrySet()) {
+                boolean registerFileExtension = false;
+
+                // check if file extension is already registered
+                if (WindowsUtils.instance().isFileExtensionRegistered(fileExtension.getValue())) {
+                    String execCmd = WindowsUtils.instance().getFileExtension(fileExtension.getValue());
+                    if (execCmd == null || !execCmd.toLowerCase().contains(applicationPath.toLowerCase())) {
+                        registerFileExtension = true;
+                    }
+                } else {
+                    registerFileExtension = true;
+                }
+
+                // ask for file extension association
+                if (registerFileExtension) {
+                    // TODO create dialog
+                    int reg = JOptionPane.showConfirmDialog(this, "Register Wolfgang as default editor of files\nwith the extension \"" + fileExtension.getValue() + "\"?", "File Type Association", JOptionPane.YES_NO_OPTION);
+                    if (reg == JOptionPane.YES_OPTION) {
+                        WindowsUtils.instance().registerFileExtension(fileExtension.getKey(), fileExtension.getValue(), applicationPathURI);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -227,12 +265,12 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             try {
                 setLocationByPlatform(true);
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-            } catch (Exception e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             }
         } else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             }
         }
     }
@@ -393,8 +431,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 map.put(KeyStroke.getKeyStroke("DOWN"), "selectChild");
                 map.put(KeyStroke.getKeyStroke("RIGHT"), "selectNext");
                 map.put(KeyStroke.getKeyStroke("LEFT"), "selectPrevious");
-                map.put(KeyStroke.getKeyStroke("PAGE_DOWN"), "enterGroup");
-                map.put(KeyStroke.getKeyStroke("PAGE_UP"), "exitGroup");
+//                map.put(KeyStroke.getKeyStroke("PAGE_DOWN"), "enterGroup");
+//                map.put(KeyStroke.getKeyStroke("PAGE_UP"), "exitGroup");
                 map.put(KeyStroke.getKeyStroke("HOME"), "home");
                 map.put(KeyStroke.getKeyStroke("ENTER"), "expand");
                 map.put(KeyStroke.getKeyStroke("BACK_SPACE"), "collapse");
@@ -406,8 +444,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 map.put(KeyStroke.getKeyStroke("COPY"), "copy");
                 map.put(KeyStroke.getKeyStroke("control V"), "paste");
                 map.put(KeyStroke.getKeyStroke("PASTE"), "paste");
-                map.put(KeyStroke.getKeyStroke("control G"), "group");
-                map.put(KeyStroke.getKeyStroke("control U"), "ungroup");
+//                map.put(KeyStroke.getKeyStroke("control G"), "group");
+//                map.put(KeyStroke.getKeyStroke("control U"), "ungroup");
                 map.put(KeyStroke.getKeyStroke("control ADD"), "zoomIn");
                 map.put(KeyStroke.getKeyStroke("control SUBTRACT"), "zoomOut");
             }
@@ -445,7 +483,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 map.put("selectTransitions", new SelectAction(editorComponent, PNComponent.TRANSITION));
                 map.put("selectArcs", new SelectAction(editorComponent, PNComponent.ARC));
 
-            } catch (Exception e) {
+            } catch (PropertyException | IOException | ParameterException e) {
                 // Cannot happen, since this is not null
                 e.printStackTrace();
             }
@@ -468,8 +506,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             map.put("edit", mxGraphActions.getEditAction());
             map.put("delete", mxGraphActions.getDeleteAction());
             map.put("home", mxGraphActions.getHomeAction());
-            map.put("enterGroup", mxGraphActions.getEnterGroupAction());
-            map.put("exitGroup", mxGraphActions.getExitGroupAction());
+//            map.put("enterGroup", mxGraphActions.getEnterGroupAction());
+//            map.put("exitGroup", mxGraphActions.getExitGroupAction());
             map.put("collapse", mxGraphActions.getCollapseAction());
             map.put("expand", mxGraphActions.getExpandAction());
             map.put("toBack", mxGraphActions.getToBackAction());
@@ -483,8 +521,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             map.put("cut", TransferHandler.getCutAction());
             map.put("copy", TransferHandler.getCopyAction());
             map.put("paste", TransferHandler.getPasteAction());
-            map.put("group", mxGraphActions.getGroupAction());
-            map.put("ungroup", mxGraphActions.getUngroupAction());
+//            map.put("group", mxGraphActions.getGroupAction());
+//            map.put("ungroup", mxGraphActions.getUngroupAction());
             map.put("zoomIn", mxGraphActions.getZoomInAction());
             map.put("zoomOut", mxGraphActions.getZoomOutAction());
 

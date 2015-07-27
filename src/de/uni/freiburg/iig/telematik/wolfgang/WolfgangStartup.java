@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.wolfgang;
 
 import de.invation.code.toval.graphic.misc.AbstractStartup;
+import de.invation.code.toval.os.OSUtils;
+import de.invation.code.toval.os.OSType;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -17,15 +19,12 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.NetTypeChooserDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangCPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.WolfgangPT;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class WolfgangStartup extends AbstractStartup {
 
     private static final String TOOL_NAME = "Wolfgang";
     private static String[] filePaths;
-
 
     @Override
     protected String getToolName() {
@@ -62,13 +61,15 @@ public class WolfgangStartup extends AbstractStartup {
         if (filePaths == null) {
             setLookAndFeel();
             JFileChooser fc;
-            fc = new JFileChooser(System.getProperty("user.home"));
+            fc = new JFileChooser(OSUtils.getUserHomeDirectory());
             fc.removeChoosableFileFilter(fc.getFileFilter());
             fc.addChoosableFileFilter(new FileFilter() {
+                @Override
                 public String getDescription() {
                     return "PNML Documents (*.pnml)";
                 }
 
+                @Override
                 public boolean accept(File f) {
                     if (f.isDirectory()) {
                         return true;
@@ -115,12 +116,12 @@ public class WolfgangStartup extends AbstractStartup {
     }
 
     private void setLookAndFeel() {
-        if (System.getProperty("os.name").toLowerCase().contains("nux")) {
+        if (OSUtils.getCurrentOS() == OSType.OS_LINUX) {
             try {
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             }
-        } else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        } else if (OSUtils.getCurrentOS() == OSType.OS_WINDOWS) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
