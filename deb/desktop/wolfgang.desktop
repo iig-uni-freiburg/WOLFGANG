@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=WOLFGANG
+Comment=Petri Net Editor
+Exec=[[execpath]]/[[filename]]
+Icon=[[installpath]]/wolfgang.png
+Terminal=false
+Type=Application
+Categories=GNOME;Utility;Development;Application;Science;Education
+StartupNotify=true
+MimeType=application/pnml+xml

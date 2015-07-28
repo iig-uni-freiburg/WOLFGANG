@@ -37,8 +37,8 @@
 	<!-- Source and destination directories -->
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="res.dir" value="${basedir}/res" />
-	<property name="build.dir" value="${basedir}/build" />
 	<property name="target.dir" value="${basedir}/bin" />
+	<property name="deb.dir" value="${basedir}/deb" />
 	<property name="target.dir.jar" value="${target.dir}/${artifact.name}-${version.name}" />
 	<property name="libs.dir" value="${basedir}/lib" />
 	<property name="docs.temp.dir" value="${target.dir}/docs" />
@@ -274,7 +274,7 @@
 		<property name="deb.mimepath" value="/usr/share/mime/packages" />
 		<!-- Copy control file -->
 		<copy todir="${classes.target.dir}/deb/control">
-			<fileset dir="${build.dir}/deb/control" />
+			<fileset dir="${deb.dir}/control" />
 			<filterset begintoken="[[" endtoken="]]">
 				<filter token="version" value="${version.name}" />
 				<filter token="description" value="${project.description}" />
@@ -283,7 +283,7 @@
 		</copy>
 		<!-- Copy starter file -->
 		<copy todir="${classes.target.dir}/deb/starter">
-			<fileset dir="${build.dir}/deb/starter" />
+			<fileset dir="${deb.dir}/starter" />
 			<filterset begintoken="[[" endtoken="]]">
 				<filter token="path" value="${deb.installpath}" />
 				<filter token="filename" value="${artifact.name}.jar" />
@@ -293,26 +293,26 @@
 		<copy file="${icons.path}/wg_icon_128.png" tofile="${classes.target.dir}/deb/wolfgang.png" />
 		<!-- Copy desktop link file -->
 		<copy todir="${classes.target.dir}/deb/desktop">
-			<fileset dir="${build.dir}/deb/desktop" />
+			<fileset dir="${deb.dir}/desktop" />
 			<filterset begintoken="[[" endtoken="]]">
 				<filter token="installpath" value="${deb.installpath}" />
 				<filter token="execpath" value="${deb.execpath}" />
 				<filter token="filename" value="${artifact.name}" />
 			</filterset>
 		</copy>
-                <chmod dir="${build.dir}/deb/starter" type="file" perm="755" >
-                    <filelist files="${build.dir}/deb/starter/${artifact.name}"/>
+                <chmod dir="${deb.dir}/starter" type="file" perm="755" >
+                    <filelist files="${deb.dir}/starter/${artifact.name}"/>
                 </chmod>
                 
 		<!-- Create debian package -->
 		<deb destfile="${target.dir.jar}/${jar.file.name}.deb" control="${classes.target.dir}/deb/control" verbose="true">
-                        <tarfileset file="${build.dir}/deb/mime/pnml.xml"
+                        <tarfileset file="${deb.dir}/mime/pnml.xml"
                                     prefix="${deb.mimepath}"
                                     filemode="755" />
 			<data src="${target.dir.jar}/${jar.file.name}-runnable.jar" type="file">
 				<mapper type="perm" prefix="${deb.installpath}" />
 			</data>
-                        <tarfileset file="${build.dir}/deb/starter/${artifact.name}"
+                        <tarfileset file="${deb.dir}/starter/${artifact.name}"
                                     prefix="${deb.execpath}"
                                     filemode="755" />
 			<data src="${classes.target.dir}/deb/wolfgang.png" type="file">
