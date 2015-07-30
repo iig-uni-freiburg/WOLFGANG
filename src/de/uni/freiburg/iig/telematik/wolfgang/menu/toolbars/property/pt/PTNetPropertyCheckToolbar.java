@@ -55,7 +55,7 @@ public class PTNetPropertyCheckToolbar extends AbstractWFCheckToolbar<WFNetPrope
 
 	@Override
 	protected AbstractValidityCheckLabel createValidityCheckLabel() {
-		PTValidityCheckLabel ptValidityCheckLabel = new PTValidityCheckLabel(pnEditor, "Validity");
+		PTValidityCheckLabel ptValidityCheckLabel = new PTValidityCheckLabel(pnEditor, "P/T-Net\nValidity");
 		ptValidityCheckLabel.setEnabled(true);
 		return ptValidityCheckLabel;
 	}

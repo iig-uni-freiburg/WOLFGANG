@@ -11,6 +11,8 @@ import java.awt.RenderingHints;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.UIManager;
+
 import de.invation.code.toval.graphic.component.ExecutorLabel;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
@@ -18,7 +20,9 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 public abstract class AbstractPNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 
 	private static final long serialVersionUID = -2807606775313824173L;
-	private static final Dimension DEFAULT_SIZE = new Dimension(40,40);
+	private static final Dimension DEFAULT_SIZE = new Dimension(50,40);
+	private Color bgcolor = UIManager.getColor("Panel.background");
+
 
 
 	public static Color COLOR_PROPERTY_UNKNOWN = Color.GRAY;
@@ -32,6 +36,7 @@ public abstract class AbstractPNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 	protected boolean propertyHolds = false;
 	
 	protected Set<PNPropertyCheckLabelListener> labelListeners = new HashSet<PNPropertyCheckLabelListener>();
+	private Color notEnabledColor = new Color(100, 100, 100, 150 );
 
 	public AbstractPNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
@@ -88,11 +93,11 @@ public abstract class AbstractPNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 		g2.fillRect(0, 0, w - 1, h / 2);
 		g2.setPaint(Color.BLACK);
 		y = drawString(g2, s, w / 2, y);
-		g2.setColor(Color.WHITE);
+		g2.setColor(bgcolor);
 		g2.setStroke(new BasicStroke(1));
-		g2.drawRect(0, 0, h - 1, w - 1);
+		g2.drawRect(0, 0, w - 1, h - 1);
 		if(!isEnabled()){
-			g2.setColor(new Color(100, 100,200, 150 ));
+			g2.setColor(notEnabledColor );
 			g2.fillRect(0, 0, w, h);
 		}
 		g2.dispose();

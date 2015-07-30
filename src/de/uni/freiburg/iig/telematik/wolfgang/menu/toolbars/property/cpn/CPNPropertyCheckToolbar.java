@@ -67,7 +67,7 @@ public class CPNPropertyCheckToolbar extends AbstractWFCheckToolbar<CWNPropertie
 
 	@Override
 	protected AbstractValidityCheckLabel createValidityCheckLabel() {
-		CPNValidityCheckLabel validityCheckLabel = new CPNValidityCheckLabel(pnEditor, "Validity");
+		CPNValidityCheckLabel validityCheckLabel = new CPNValidityCheckLabel(pnEditor, "CPN\nValidity");
 		validityCheckLabel.setEnabled(true);
 		return validityCheckLabel;
 	}
