@@ -3,7 +3,7 @@ WOLFGANG - Petri Net Editor
 
 ### About
 
-Wolfgang is a lightweight tool that allows users to easily create and edit Petri nets and check them against general and workflow specific net properties. Specifically, Wolfgang supports full PNML conform editing functionality of Place-Transition Nets (P/T-Nets) and Colored Petri Nets (CPN) as they are defined in the [SEPIA](https://github.com/iig-uni-freiburg/SEPIA) library. Its simple and easy to use interface allows to quickly create Petri nets from scratch, edit them graphically in many ways, store and even export them as PDFs.Use Wolfgang to smoothly create the Petri net you want!
+<img align="right" width="120" src="http://iig-uni-freiburg.github.io/images/wolfgang/icon.png">Wolfgang is a lightweight tool that allows users to easily create and edit Petri nets and check them against general and workflow specific net properties. Specifically, Wolfgang supports full PNML conform editing functionality of Place-Transition Nets (P/T-Nets) and Colored Petri Nets (CPN) as they are defined in the [SEPIA](https://github.com/iig-uni-freiburg/SEPIA) library. Its simple and easy to use interface allows to quickly create Petri nets from scratch, edit them graphically in many ways, store and even export them as PDFs.Use Wolfgang to smoothly create the Petri net you want!
 
 ### Latest Release
 
