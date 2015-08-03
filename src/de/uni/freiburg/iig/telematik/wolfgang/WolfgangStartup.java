@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.wolfgang;
 
 import java.io.File;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
-import com.apple.eawt.AppEvent.OpenFilesEvent;
+//import com.apple.eawt.AppEvent.OpenFilesEvent;
 
 import de.invation.code.toval.graphic.misc.AbstractStartup;
 import de.invation.code.toval.os.OSType;
@@ -101,7 +101,9 @@ public class WolfgangStartup extends AbstractStartup {
 
 	private void openPNMLFile(String filename) throws Exception {
 		if (!filename.toLowerCase().endsWith(".pnml")) {
-			JOptionPane.showMessageDialog(null, "File is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+			if(!filename.startsWith("-psn_"))//Catching OS X specific argument on the very first startup
+			JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+			filePaths = null;
 			startApplication();
 		} else {
 			@SuppressWarnings("rawtypes")
@@ -135,30 +137,30 @@ public class WolfgangStartup extends AbstractStartup {
 
 	public static void main(String[] args) {
 
-		com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
-		app.setOpenFileHandler(new com.apple.eawt.OpenFilesHandler() {
-
-			@Override
-			public void openFiles(OpenFilesEvent ofe) {
-					if (args.length > 0) {
-						filePaths = args;
-					}
-					String[] localArgs = new String[ofe.getFiles().size()];
-					for (int i = 0; ofe.getFiles().size() > i; i++) {
-						localArgs[i] = ofe.getFiles().get(i).getAbsolutePath();
-					}
-
-					filePaths = localArgs;
-					if (wg != null) {
-						try {
-							wg.tryToOpenNet();
-						} catch (Exception e) {
-							JOptionPane.showMessageDialog(null, "Failed to open file");
-						}
-					}
-				}
-
-		});
+//		com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
+//		app.setOpenFileHandler(new com.apple.eawt.OpenFilesHandler() {
+//
+//			@Override
+//			public void openFiles(OpenFilesEvent ofe) {
+//					if (args.length > 0) {
+//						filePaths = args;
+//					}
+//					String[] localArgs = new String[ofe.getFiles().size()];
+//					for (int i = 0; ofe.getFiles().size() > i; i++) {
+//						localArgs[i] = ofe.getFiles().get(i).getAbsolutePath();
+//					}
+//
+//					filePaths = localArgs;
+//					if (wg != null) {
+//						try {
+//							wg.tryToOpenNet();
+//						} catch (Exception e) {
+//							JOptionPane.showMessageDialog(null, "Failed to open file");
+//						}
+//					}
+//				}
+//
+//		});
 
 		if (args.length > 0) {
 			filePaths = args;
