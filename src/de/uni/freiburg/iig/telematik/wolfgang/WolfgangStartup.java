@@ -135,13 +135,11 @@ public class WolfgangStartup extends AbstractStartup {
 
 	public static void main(String[] args) {
 
-		if (OSUtils.getCurrentOS() == OSType.OS_MACOSX) { //OSX File Handler
-			com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
-			app.setOpenFileHandler(new com.apple.eawt.OpenFilesHandler() {
+		com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
+		app.setOpenFileHandler(new com.apple.eawt.OpenFilesHandler() {
 
-				@Override
-				public void openFiles(OpenFilesEvent ofe) {
-
+			@Override
+			public void openFiles(OpenFilesEvent ofe) {
 					if (args.length > 0) {
 						filePaths = args;
 					}
@@ -160,8 +158,7 @@ public class WolfgangStartup extends AbstractStartup {
 					}
 				}
 
-			});
-		}
+		});
 
 		if (args.length > 0) {
 			filePaths = args;
