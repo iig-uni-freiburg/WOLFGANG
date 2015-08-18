@@ -42,8 +42,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.ExitAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.LoadAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.NewPTAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.SaveAsAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.SettingsAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.export.ExportPDFAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.help.AboutAction;
+import de.uni.freiburg.iig.telematik.wolfgang.actions.help.SendExceptionsAsEmail;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.RedoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.history.UndoAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.keycommands.MoveAction;
@@ -178,7 +186,12 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
             @Override
             public void windowActivated(WindowEvent e) {
-                new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
+                try {
+					new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
 
             @Override
@@ -281,6 +294,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             content.add(getCenterComponent(), BorderLayout.CENTER);
             EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
+            	// TODO Bugfix for repainting Toolbar when icon size changed
                 @Override
                 public void iconSizeChanged(IconSize size) {
                     content.remove(editorComponent.getEditorToolbar());
@@ -355,11 +369,11 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
     protected class WolfgangKeyboardHandler {
 
-        public WolfgangKeyboardHandler(PNGraphComponent pnGraphComponent) {
+        public WolfgangKeyboardHandler(PNGraphComponent pnGraphComponent) throws Exception {
             installKeyboardActions(pnGraphComponent);
         }
 
-        protected void installKeyboardActions(PNGraphComponent pnGraphComponent) {
+        protected void installKeyboardActions(PNGraphComponent pnGraphComponent) throws Exception {
             InputMap inputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
             SwingUtilities.replaceUIInputMap(pnGraphComponent,
                     JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, inputMap);
@@ -379,15 +393,19 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandKey), "save");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, commandAndShift), "saveAs");
-                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "new");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandKey), "newPT");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, commandAndShift), "newCP");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, commandKey), "open");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, commandKey), "quit");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, commandKey), "settings");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandAndShift), "about");
+                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, commandAndShift), "email");        
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandKey), "undo");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, commandKey), "redo");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, commandAndShift), "selectVertices");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandAndShift), "selectEdges");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, commandKey), "selectTransitions");
-                map.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, commandKey), "selectPlaces");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, commandKey), "selectArcs");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, commandKey), "selectArcs");
                 map.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, commandKey), "selectAll");
@@ -453,13 +471,21 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             return map;
         }
 
-        protected ActionMap createActionMap() {
+        protected ActionMap createActionMap() throws Exception {
             ActionMap map = createBasicActionMap();
             try {
                 map.put("undo", new UndoAction(editorComponent));
                 map.put("redo", new RedoAction(editorComponent));
                 map.put("printNet", new PrintAction(editorComponent));
-
+                map.put("newPT", new NewPTAction(AbstractWolfgang.this));
+                map.put("newCP", new NewCPNAction(AbstractWolfgang.this));
+                map.put("open", new LoadAction(AbstractWolfgang.this));
+                map.put("save", new SaveAction(AbstractWolfgang.this));
+                map.put("saveAs", new SaveAsAction(AbstractWolfgang.this));
+                map.put("quit", new ExitAction(AbstractWolfgang.this));
+                map.put("settings", new SettingsAction(AbstractWolfgang.this, AbstractWolfgang.this.getWGMenuBar()));
+                map.put("about", new AboutAction(AbstractWolfgang.this));
+                map.put("email", new SendExceptionsAsEmail(AbstractWolfgang.this));
                 map.put("export", new ExportPDFAction(editorComponent));
 
                 int offset = EditorProperties.getInstance().getDefaultPlaceSize() * 4;
