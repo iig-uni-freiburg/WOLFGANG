@@ -86,7 +86,6 @@ public class WolfgangStartup extends AbstractStartup {
 			int returnVal = fc.showDialog(null, "load PNML");
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				String filename = fc.getSelectedFile().getAbsolutePath();
-				System.out.println(filename);
 				openPNMLFile(filename);
 			} else {
 				startApplication();

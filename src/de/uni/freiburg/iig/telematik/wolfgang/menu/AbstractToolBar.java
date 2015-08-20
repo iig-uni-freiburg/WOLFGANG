@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
@@ -148,6 +149,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     public AbstractToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
         super(orientation);
         Validate.notNull(pnEditor);
+//        setLayout(new SpringLayout);
         this.pnEditor = pnEditor;
         this.pnEditor.getGraphComponent().getGraph().addPNGraphListener(this);
         try {

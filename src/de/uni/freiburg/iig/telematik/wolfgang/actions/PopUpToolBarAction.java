@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -33,12 +34,12 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	
 	private JDialog popupDialog;
 	private JToggleButton button;
-	private JToolBar toolbarContent;
+	private JComponent toolbarContent;
 	private JButton newDialogButton;
 	private PopupToolBar popupToolBar;
 	protected JDialog dialog;
 
-	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
+	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JComponent toolbar) throws ParameterException, PropertyException, IOException {
 		super(editor, name, icon);
 		popupToolBar = new PopupToolBar();
 		toolbarContent = toolbar;
@@ -64,17 +65,17 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 		this.button = addedButton;
 	}
 
-	private void newWindowButton(final PopupToolBar popupToolBar, final JToolBar toolbarContent, final JButton newDialogButton) {
+	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent toolbarContent2, final JButton newDialogButton) {
 		newDialogButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				popupToolBar.setButton(getButton(), true);
 				Window window = SwingUtilities.getWindowAncestor(getButton());
-				JDialog dialog = new ToolBarDialog(window, toolbarContent.getName(), false);
+				JDialog dialog = new ToolBarDialog(window, toolbarContent2.getName(), false);
 				if (newDialogButton.getName() != null)
 					dialog.setTitle(newDialogButton.getName());
 				dialog.setLocationRelativeTo(window);
-				dialog.add(toolbarContent);
+				dialog.add(toolbarContent2);
 				dialog.setModal(false);
 				dialog.setResizable(false);
 				getButton().addMouseListener(new MouseAdapter() {

@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -15,14 +16,18 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 
+import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
@@ -35,7 +40,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
-import de.uni.freiburg.iig.telematik.wolfgang.actions.graphics.FillBackgroundColorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontAlignCenterAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontAlignLeftAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontAlignRightAction;
@@ -47,12 +51,10 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.text.FontUnderlineStyleAct
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.ShowHideLabelsAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.text.ShowHideTokensOnArcsAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PTNetEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.UIManager;
 
 public class FontToolBar extends JToolBar implements PNGraphListener {
 
@@ -71,7 +73,6 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private FontAlignLeftAction alignLeftAction;
     private FontAlignCenterAction alignCenterAction;
     private FontAlignRightAction alignRightAction;
-    private FillBackgroundColorAction backgroundColorAction;
 
     // Buttons
     private JButton showHideTokensOnArcsButton;
@@ -107,8 +108,6 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private String fontLabelText = "Font:";
 
     private JLabel fontLabel;
-
-    protected boolean rememberSelectionFromGraph;
 
     public FontToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
         super(orientation);
@@ -388,16 +387,16 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 
     @Override
     public void componentsSelected(Set<PNGraphCell> selectedComponents) {
-        rememberSelectionFromGraph = true;
 
         if (!pnEditor.getGraphComponent().getGraph().isExecution()) {
             if (selectedComponents == null || selectedComponents.isEmpty()) {
                 setFontEnabled(false);
+                setVisible(false);
                 this.selectedCell = null;
                 return;
             }
             if (!selectedComponents.isEmpty()) {
-                selectedComponents.size();
+               setVisible(true);
 
                 String initialFontFamily = null;
                 int isSameFontCounter = 0;
@@ -610,5 +609,16 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
             action.setSelectionState(false);
         }
     }
+    
+    public static void main(String[] args) {
+        try {
+			JPanel pnl = new JPanel();
+			pnl.add(new FontToolBar(new PTNetEditorComponent(), JToolBar.HORIZONTAL));
+			new DisplayFrame(pnl, true);
+		} catch (ParameterException | PropertyException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -294,12 +294,11 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             content.add(getCenterComponent(), BorderLayout.CENTER);
             EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
-            	// TODO Bugfix for repainting Toolbar when icon size changed
                 @Override
                 public void iconSizeChanged(IconSize size) {
-                    content.remove(editorComponent.getEditorToolbar());
+                    content.remove(toolbarScrollPane); 
                     editorComponent.loadEditorToolbar();
-                    content.add(editorComponent.getEditorToolbar(), BorderLayout.NORTH);
+                    content.add(getToolbarPanel(), BorderLayout.NORTH);
                     pack();
                 }
 

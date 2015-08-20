@@ -639,8 +639,9 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 					} else {
 						getGraph().setLabelSelected(false);
 					}
+					getGraph().setSelectionCells(getGraph().getSelectionCells());
 //					getGraph().invoke(PNGraphComponent.this, new mxEventObject(mxEvent.CHANGE));
-					getSelectionCellsHandler().refresh();
+//					getSelectionCellsHandler().refresh();
 				}
 			} else if (e.getClickCount() == 2 && !(e.getModifiers() == 4) && !getGraph().isExecution()) {
 				// Double click on graph component.

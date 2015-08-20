@@ -33,7 +33,7 @@ public class EditorProperties extends AbstractProperties{
 	public static final Color DEFAULT_TRANSITION_COLOR = Color.decode("0xB6CAE4");
 	public static final Color DEFAULT_LINE_COLOR = Color.decode("0x000000");
 	public static final Color DEFAULT_GRADIENT_COLOR = null;
-	public static final GradientRotation DEFAULT_GRADIENT_DIRECTION = GradientRotation.HORIZONTAL;
+	public static final GradientRotation DEFAULT_GRADIENT_DIRECTION = null;
 	public static final String DEFAULT_FONT_FAMILY = "Dialog";
 	public static final int DEFAULT_FONT_SIZE = 11;
 	public static final double DEFAULT_ZOOM_STEP = 0.2;
@@ -482,7 +482,8 @@ public class EditorProperties extends AbstractProperties{
 	// ------- Default Gradient Direction ---------------------------------------------------
 	
 	public void setDefaultGradientDirection(GradientRotation gradientDirection) throws PropertyException {
-		Validate.notNull(gradientDirection);
+//		Validate.notNull(gradientDirection);
+		if(gradientDirection!=null)
 		if(!gradientDirection.equals(getDefaultGradientDirection())){
 			setProperty(WolfgangProperty.DEFAULT_GRADIENT_DIRECTION, gradientDirection.toString());
 			for (WolfgangPropertyListener listener : listeners) {
