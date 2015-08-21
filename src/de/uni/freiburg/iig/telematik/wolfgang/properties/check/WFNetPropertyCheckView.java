@@ -36,6 +36,7 @@ public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetPrope
 
     @Override
     public void resetFieldContent() {
+    	super.updateFieldContent(null, null);
         lblStructure.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
         lblInOutPlaces.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
         lblConnectedness.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);

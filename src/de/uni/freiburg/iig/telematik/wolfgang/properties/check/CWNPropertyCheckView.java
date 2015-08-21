@@ -63,6 +63,7 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
 
     @Override
     public void resetFieldContent() {
+    	super.updateFieldContent(null, null);
         lblStructure.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
         lblInOutPlaces.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
         lblConnectedness.updatePropertyCheckingResult(PropertyCheckingResult.UNKNOWN);
