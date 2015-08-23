@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -80,11 +81,11 @@ public class GraphicsFillColorChooserPanel extends JPanel {
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if(isEnabled()){
 					Color color = JColorChooser.showDialog(SwingUtilities.getWindowAncestor(GraphicsFillColorChooserPanel.this), "Choose Color", null);
 					if (color != null)
+					{
 						GraphicsColorChooserLabel.this.updateColor(color);
-					labelColorChanged(color);
+						labelColorChanged(color);
 					}
 				}
 
