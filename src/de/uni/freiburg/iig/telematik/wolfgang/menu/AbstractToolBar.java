@@ -12,7 +12,6 @@ import javax.swing.Box.Filler;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -276,7 +275,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         redoAction = new RedoAction(pnEditor);
 
         nodeToolbar = new NodeToolBar(pnEditor, JToolBar.HORIZONTAL);
-        nodeAction = new NodeToolBarAction(pnEditor, "Node", new JToolBar());
+        nodeAction = new NodeToolBarAction(pnEditor, "Node", nodeToolbar);
 
         fontToolbar = new FontToolBar(pnEditor, JToolBar.HORIZONTAL);
         fontAction = new PopUpToolBarAction(pnEditor, "Font", IconFactory.getIcon("text"), fontToolbar);

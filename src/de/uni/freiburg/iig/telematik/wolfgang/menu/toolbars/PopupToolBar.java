@@ -32,9 +32,13 @@ public class PopupToolBar {
 		}
 
 		public void windowLostFocus(WindowEvent e) {
+
 			if (windows == null || windows.length == 0) {
 				return;
 			}
+			
+			if((e.getOppositeWindow() == null) && !(e.getOppositeWindow()instanceof ToolBarDialog)) // in case other application window is selected
+			disposeAllWindows();
 
 			if (!Arrays.asList(windows).contains(e.getOppositeWindow())) {
 				//Reacting only if mouse is clicked outside opened toolbar OR if a ToolbarDialog is created
