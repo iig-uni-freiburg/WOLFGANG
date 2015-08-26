@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import de.invation.code.toval.properties.PropertyException;

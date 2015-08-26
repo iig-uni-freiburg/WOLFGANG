@@ -303,6 +303,7 @@ public class GraphicsToolBar extends JToolBar implements PNGraphListener, LineLi
 				int lineWeight = -1;
 
 				if (selectedComponents.size() == isSameLineColorCounter && initialLineColor != null) {
+					if(!initialLineColor.equals("transparent"))
 					lineColor = Utils.parseColor(initialLineColor);
 				}
 				else{
