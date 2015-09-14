@@ -516,6 +516,9 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 				propertiesView.deselect();
 			} else {
 				PNGraphCell selectedCell = selectedComponents.iterator().next();
+				if(!getNetContainer().getPetriNet().getFlowRelations().isEmpty()) // Fixing wrong display of arc count >9 of (...) in PropertiesView
+				propertiesView.selectNode(getNetContainer().getPetriNet().getFlowRelations().iterator().next().getName());
+				
 				propertiesView.selectNode(selectedCell.getId());
 			}
 		}

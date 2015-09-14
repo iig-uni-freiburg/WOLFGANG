@@ -1,31 +1,42 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Box.Filler;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+//import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.view.mxGraphView;
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
 
+import de.invation.code.toval.graphic.dialog.StringDialog;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
@@ -50,6 +61,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodeToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import java.util.Set;
 
@@ -136,13 +148,28 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     private String undoTooltip = "undo";
     private String redoTooltip = "redo";
 
-    public JTextField executionTraceTextField;
+    public JTextField executionTraceTextField = null;
 
     private JLabel executionTraceLabel;
 
     private JToolBar propertyCheckToolbar;
 
+	private JScrollPane scrollPane = new JScrollPane();
+
+	private String executionTrace = "";
+
+	private JButton btnFullTrace;;
+
+
     public JTextField getExecutionTrace() {
+    	if(executionTraceTextField == null){
+            executionTraceTextField = new JTextField();
+            executionTraceTextField.setEditable(false);            
+    	}
+    	Dimension d = new Dimension(150, 20);
+		executionTraceTextField.setMinimumSize(d);
+		executionTraceTextField.setPreferredSize(d);
+		executionTraceTextField.setMaximumSize(d);
         return executionTraceTextField;
     }
 
@@ -156,9 +183,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
             createToolbarActions(pnEditor);
             createAdditionalToolbarActions(pnEditor);
 
-            executionTraceTextField = new JTextField();
-            executionTraceTextField.setMinimumSize(new Dimension(500, EditorProperties.getInstance().getIconSize().getSize()));
-            executionTraceTextField.setMaximumSize(new Dimension(500, EditorProperties.getInstance().getIconSize().getSize()));
+
         } catch (ParameterException e) {
             throw new EditorToolbarException("Invalid Parameter.\nReason: " + e.getMessage());
         } catch (PropertyException e) {
@@ -201,12 +226,18 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         graphicsAction.setButton(graphicsButton);
         graphicsAction.setEnabled(false);
 
+
+
+        add(executionTraceLabel);	
+		scrollPane.setViewportView(getExecutionTrace());
+		add(scrollPane);
+		
+		add(getButtonFullExecution());
+		
+		
+
         zoomButton = (JToggleButton) add(zoomAction, true);
         zoomButtonSettings();
-
-        add(executionTraceLabel);
-        add(executionTraceTextField);
-
         zoomAction.setButton(zoomButton);
 
 		// if
@@ -293,6 +324,29 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         }
         return propertyCheckToolbar;
     }
+    
+	private JButton getButtonFullExecution(){
+		if(btnFullTrace == null){
+			btnFullTrace = new JButton("Show Full Trace");
+			btnFullTrace.setEnabled(executionTrace != null);
+			btnFullTrace.setBorderPainted(true);
+			btnFullTrace.setRolloverEnabled(true);
+			btnFullTrace.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(executionTrace == null)
+						return;
+					try {
+						StringDialog.showDialog(SwingUtilities.getWindowAncestor(AbstractToolBar.this), "Execution Trace", executionTrace);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
+		}
+		return btnFullTrace;
+	}
 
     private void zoomButtonSettings() {
         final mxGraphView view = pnEditor.getGraphComponent().getGraph().getView();
@@ -384,7 +438,8 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         toggleModeButton.setText("PLAY");
         setExecutionButtonsVisible(true);
         setEditButtonsVisible(false);
-        getExecutionTrace().setText("");
+        executionTrace = "";
+        getExecutionTrace().setText(executionTrace);
 
     }
 
@@ -413,11 +468,13 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         // enterExecutionButton.setVisible(b);
         reloadExecutionButton.setVisible(b);
         setExecutionTraceVisible(b);
+        getButtonFullExecution().setVisible(b);
     }
 
     private void setExecutionTraceVisible(boolean b) {
         executionTraceLabel.setVisible(b);
-        executionTraceTextField.setVisible(b);
+        getExecutionTrace().setVisible(b);
+        scrollPane.setVisible(b);
 
     }
 
@@ -445,11 +502,15 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         if (cell.getType().equals(PNComponent.TRANSITION) && cell.getId().equals(lastFiredTransistion)) {
             String label = pnEditor.getNetContainer().getPetriNet().getTransition(cell.getId()).getLabel();
             if (getExecutionTrace().getText().length() > 0) {
-                getExecutionTrace().setText(getExecutionTrace().getText() + " -> " + label);
+                
+                executionTrace = getExecutionTrace().getText() + " -> " + label;
+                getExecutionTrace().setText(executionTrace);
             } else {
-                getExecutionTrace().setText(label);
+            	executionTrace = label;
+                getExecutionTrace().setText(executionTrace);
             }
         }
+        
     }
 
     @Override
