@@ -7,12 +7,12 @@ WOLFGANG - Petri Net Editor
 
 ### Latest Release
 
-The most recent release is WOLFGANG 1.0.0, released July 30, 2015.
+The most recent release is WOLFGANG 1.0.1, released September 10, 2015.
 
-* Windows: [wolfgang-1.0.0.exe](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.0/wolfgang-1.0.0.exe)
-* Mac OS X: [wolfgang-1.0.0.dmg](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.0/wolfgang-1.0.0.dmg)
-* Debian/Ubuntu: [wolfgang-1.0.0.deb](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.0/wolfgang-1.0.0.deb)
-* Runnable JAR: [wolfgang-1.0.0.jar](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.0/wolfgang-1.0.0.jar)
+* Windows: [wolfgang-1.0.1.exe](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.1/wolfgang-1.0.1.exe)
+* Mac OS X: [wolfgang-1.0.1.dmg](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.1/wolfgang-1.0.1.dmg)
+* Debian/Ubuntu: [wolfgang-1.0.1.deb](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.1/wolfgang-1.0.1.deb)
+* Runnable JAR: [wolfgang-1.0.1.jar](https://github.com/iig-uni-freiburg/WOLFGANG/releases/download/v1.0.1/wolfgang-1.0.1.jar)
 
 Wolfgang needs a JRE 1.8 installation to run.
 

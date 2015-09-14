@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.menu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -11,18 +10,14 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.Box.Filler;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-//import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -31,12 +26,10 @@ import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.view.mxGraphView;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
 
 import de.invation.code.toval.graphic.dialog.StringDialog;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
@@ -51,7 +44,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ReloadExecutionAction
 import de.uni.freiburg.iig.telematik.wolfgang.actions.mode.ToggleModeAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.nodes.NodeToolBarAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphListener;
@@ -61,7 +53,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.GraphicsToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.NodeToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.ZoomToolBar;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import java.util.Set;
 

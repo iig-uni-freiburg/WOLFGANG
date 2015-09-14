@@ -44,8 +44,8 @@ public class AboutAction extends AbstractWolfgangAction {
 	 * 
 	 */
 	private static final long serialVersionUID = -4904945549599021867L;
-	private static String copyright = "WOLFGANG - Petri Net Editor\n"
-			+ "Version: 1.0.0"
+	private static final String copyright = "WOLFGANG - Petri Net Editor\n"
+			+ "Version: 1.0.1"
 			+ "\nCopyright (c) 2015, IIG Telematics, Uni Freiburg\n"
             + "All rights reserved (see detailed licence header below).\n\n"			
 			+ "WOLFGANG is licensed under the BSD 3-Clause license.\n"
