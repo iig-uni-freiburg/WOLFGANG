@@ -53,7 +53,7 @@ public class EditorProperties extends AbstractProperties{
 
 	private EditorProperties() throws IOException {
 		try {
-			load(propertyFileName);
+			load(OSUtils.getUserHomeDirectory() + "/" + propertyFileName);
 		} catch (IOException e) {
 			// Create new property file.
 			loadDefaultProperties();
