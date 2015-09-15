@@ -1,15 +1,12 @@
 package de.uni.freiburg.iig.telematik.wolfgang;
 
 import java.io.File;
-//import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
-
-//import com.apple.eawt.AppEvent.OpenFilesEvent;
 
 import de.invation.code.toval.graphic.misc.AbstractStartup;
 import de.invation.code.toval.os.OSType;
@@ -26,7 +23,10 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties
 
 public class WolfgangStartup extends AbstractStartup {
 
-	private static final String TOOL_NAME = "Wolfgang";
+        public final static String VERSION_NUMBER = "1.0.1";
+        public final static String VERSION_NAME = "v" + VERSION_NUMBER;
+	public final static String TOOL_NAME = "Wolfgang";
+
 	private static String[] filePaths;
 	private static WolfgangStartup wg;
 
