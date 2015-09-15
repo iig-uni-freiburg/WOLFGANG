@@ -23,7 +23,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties
 
 public class WolfgangStartup extends AbstractStartup {
 
-        public final static String VERSION_NUMBER = "1.0.1";
+        public final static String VERSION_NUMBER = "1.0.2";
         public final static String VERSION_NAME = "v" + VERSION_NUMBER;
 	public final static String TOOL_NAME = "Wolfgang";
 
@@ -101,7 +101,7 @@ public class WolfgangStartup extends AbstractStartup {
 	private void openPNMLFile(String filename) throws Exception {
 		if (!filename.toLowerCase().endsWith(".pnml")) {
 			if(!filename.startsWith("-psn_"))//Catching OS X specific argument on the very first startup
-			JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+                        	JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
 			filePaths = null;
 			startApplication();
 		} else {
