@@ -48,7 +48,7 @@ public class WGPropertySettingDialog extends AbstractDialog {
 	protected void okProcedure() {
 		try {
 			transferProperties();
-		} catch (Exception e) {
+		} catch (ParameterException | PropertyException | IOException e) {
 			JOptionPane.showMessageDialog(WGPropertySettingDialog.this, "Cannot store all properties:\nReason: " + e.getMessage(), "Exception during property change", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -79,6 +79,8 @@ public class WGPropertySettingDialog extends AbstractDialog {
 		EditorProperties.getInstance().setGridSize(settingPanel.getGridSize());
 		EditorProperties.getInstance().setGridVisibility(settingPanel.getGridVisibility());
 		EditorProperties.getInstance().setSnapToGrid(settingPanel.getSnapToGrid());
+		EditorProperties.getInstance().setShowUpdateNotification(settingPanel.getShowUpdateNotification());
+		EditorProperties.getInstance().setShowFileExtensionAssociation(settingPanel.getShowFileExtensionAssociation());
 		EditorProperties.getInstance().store();
 	}
 

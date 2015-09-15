@@ -103,6 +103,7 @@
 		<path refid="SEWOL.classpath" />
 		<path refid="SEPIA.classpath" />
 		<pathelement location="${libs.dir}/itextpdf-5.5.0.jar" />
+		<pathelement location="${libs.dir}/gson-2.3.1.jar" />
 	</path>
 
 	<mkdir dir="${target.dir.jar}"/>
@@ -232,6 +233,7 @@
 			<zipfileset excludes="META-INF/*.SF" src="${SEPIA.location}/lib/xsom/xsom-20110101-SNAPSHOT.jar" />
 
 			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/itextpdf-5.5.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/gson-2.3.1.jar" />
 		</jar>
 	</target>
 

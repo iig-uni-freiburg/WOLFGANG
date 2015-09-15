@@ -46,6 +46,9 @@ public class WGPropertySettingPanel extends JPanel {
 	private JCheckBox chckGridVisibility;
 	private JCheckBox chckSnapToGrid;
 
+	private JCheckBox chckUpdateNotification;
+	private JCheckBox chckFileExtAssociation;
+
 	private EnumComboBox<GradientRotation> comboGradientRotation;
 	private FontComboBox comboFontFamily;
 	private RestrictedTextField txtDefFontSize;
@@ -107,14 +110,19 @@ public class WGPropertySettingPanel extends JPanel {
 		add(chckGridVisibility);
 		add(new JLabel("Snap To Grid:", JLabel.RIGHT));
 		add(chckSnapToGrid);
+
+		add(new JLabel("Check for updates:", JLabel.RIGHT));
+		add(chckUpdateNotification);
+		add(new JLabel("Ask for file extension association:", JLabel.RIGHT));
+		add(chckFileExtAssociation);
 	}
 	
 	protected void generateGrid(){
-		SpringUtilities.makeCompactGrid(this, 22, 2, 5, 5, 5, 5);
+		SpringUtilities.makeCompactGrid(this, 24, 2, 5, 5, 5, 5);
 	}
 	
 	protected void initialize() throws PropertyException, IOException {
-		comboIconSize = new EnumComboBox<IconSize>(IconSize.class);
+		comboIconSize = new EnumComboBox<>(IconSize.class);
 		comboIconSize.setSelectedItem(EditorProperties.getInstance().getIconSize());
 		txtDefPlaceSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultPlaceSize().toString());
 		txtDefTransitionWidth = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultTransitionWidth().toString());
@@ -134,7 +142,7 @@ public class WGPropertySettingPanel extends JPanel {
 		colBGColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getBackgroundColor());
 		colGridColor = new ColorChooserPanel(ColorMode.HEX, EditorProperties.getInstance().getGridColor());
 
-		comboGradientRotation = new EnumComboBox<GradientRotation>(GradientRotation.class);
+		comboGradientRotation = new EnumComboBox<>(GradientRotation.class);
 		comboGradientRotation.setSelectedItem(EditorProperties.getInstance().getDefaultGradientDirection());
 
 		comboFontFamily = new FontComboBox(DisplayMode.FONT_FAMILY, EditorProperties.getInstance().getDefaultFontFamily());
@@ -146,6 +154,11 @@ public class WGPropertySettingPanel extends JPanel {
 		chckGridVisibility.setSelected(EditorProperties.getInstance().getGridVisibility());
 		chckSnapToGrid = new JCheckBox();
 		chckSnapToGrid.setSelected(EditorProperties.getInstance().getSnapToGrid());
+
+                chckUpdateNotification = new JCheckBox();
+                chckUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
+                chckFileExtAssociation = new JCheckBox();
+                chckFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
 	}
 	
 	public IconSize getIconSize(){
@@ -238,5 +251,13 @@ public class WGPropertySettingPanel extends JPanel {
 	
 	public boolean getSnapToGrid(){
 		return chckSnapToGrid.isSelected();
+	}
+	
+	public boolean getShowUpdateNotification(){
+		return chckUpdateNotification.isSelected();
+	}
+	
+	public boolean getShowFileExtensionAssociation(){
+		return chckFileExtAssociation.isSelected();
 	}
 }

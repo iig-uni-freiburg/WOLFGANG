@@ -76,4 +76,10 @@ public class WolfgangPropertyAdapter implements WolfgangPropertyListener {
 	@Override
 	public void snapToGridChanged(boolean snapToGrid) {}
 
+	@Override
+	public void showUpdateNotification(boolean showUpdateNotification) {}
+
+	@Override
+	public void showFileExtensionAssociation(boolean showFileExtensionAssociation) {}
+
 }

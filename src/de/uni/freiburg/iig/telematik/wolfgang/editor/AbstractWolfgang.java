@@ -26,6 +26,8 @@ import javax.swing.UIManager;
 
 import com.mxgraph.swing.util.mxGraphActions;
 import com.mxgraph.swing.util.mxGraphActions.DeleteAction;
+import de.invation.code.toval.os.OSType;
+import de.invation.code.toval.os.OSUtils;
 import de.invation.code.toval.os.WindowsUtils;
 
 import de.invation.code.toval.properties.PropertyException;
@@ -42,6 +44,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.wolfgang.WolfgangStartup;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.ExitAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.LoadAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
@@ -65,6 +68,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperty
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.util.ReleaseUtils;
+import java.awt.Desktop;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -86,7 +91,6 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     protected JPanel centerPanel = null;
     private JPanel rightPanel;
 
-    @SuppressWarnings("rawtypes")
     private static Set<AbstractWolfgang> runningInstances = new HashSet<>();
     private JScrollPane editorScrollPane;
     private final int FIX_SIZE_RIGHT_PANEL = 200;
@@ -189,8 +193,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 try {
 					new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					throw new RuntimeException(e1);
 				}
             }
 
@@ -246,13 +249,23 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                 }
 
                 // ask for file extension association
-                if (registerFileExtension) {
-                    // TODO create dialog
+                if (registerFileExtension && EditorProperties.getInstance().getShowFileExtensionAssociation()) {
+                    // create dialog
                     int reg = JOptionPane.showConfirmDialog(this, "Register Wolfgang as default editor of files\nwith the extension \"" + fileExtension.getValue() + "\"?", "File Type Association", JOptionPane.YES_NO_OPTION);
                     if (reg == JOptionPane.YES_OPTION) {
                         WindowsUtils.instance().registerFileExtension(fileExtension.getKey(), fileExtension.getValue(), applicationPathURI);
                     }
                 }
+            }
+        }
+
+        // check for updates
+        ReleaseUtils release = new ReleaseUtils("iig-uni-freiburg", "WOLFGANG");
+        if (!release.getLatestVersion().equals(WolfgangStartup.VERSION_NAME) && EditorProperties.getInstance().getShowUpdateNotification()) {
+            Object[] releaseOptions = {"Yes, please", "No, thanks"};
+            int upd = JOptionPane.showOptionDialog(this, "A new version of WOLFGANG is available.\nDo you want to visit GitHub to download the latest release?", "Update Notification", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, releaseOptions, releaseOptions[0]);
+            if (upd == 0) {
+                Desktop.getDesktop().browse(release.getLatestVersionURI());
             }
         }
     }
@@ -274,13 +287,13 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
      * Changes Look and Feel if running on Linux *
      */
     private void setLookAndFeel() {
-        if (System.getProperty("os.name").toLowerCase().contains("nux")) {
+        if (OSUtils.getCurrentOS() == OSType.OS_LINUX || OSUtils.getCurrentOS() == OSType.OS_SOLARIS) {
             try {
                 setLocationByPlatform(true);
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             }
-        } else if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        } else if (OSUtils.getCurrentOS() == OSType.OS_WINDOWS) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
@@ -510,7 +523,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
             } catch (PropertyException | IOException | ParameterException e) {
                 // Cannot happen, since this is not null
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
 
             map.put("selectVertices", mxGraphActions.getSelectVerticesAction());
