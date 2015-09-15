@@ -44,7 +44,10 @@ public class EditorProperties extends AbstractProperties{
 	public static final boolean DEFAULT_GRID_VISIBILITY = true;
 	
 	public static final boolean DEFAULT_SNAP_TO_GRID = true;
-	
+
+	public static final boolean DEFAULT_SHOW_UPDATE_NOTIFICATION = true;
+	public static final boolean DEFAULT_SHOW_FILE_EXTENSION_ASSOCIATION = true;
+
 	protected static final String propertyFileName = ".editorProperties";
 	
 	private static EditorProperties instance = null;
@@ -734,11 +737,67 @@ public class EditorProperties extends AbstractProperties{
 		try {
 			snapToGrid = Boolean.parseBoolean(propertyValue);
 		} catch(Exception e){
-			throw new PropertyException(WolfgangProperty.BACKGROUD_COLOR, propertyValue, "Cannot boolean object from property value");
+			throw new PropertyException(WolfgangProperty.SNAP_TO_GRID, propertyValue, "Cannot read boolean object from property value");
 		}
 		return snapToGrid;
 	}
 	
+	// ------- Show update notification -----------------------------------------------------------------
+
+	public void setShowUpdateNotification(Boolean showUpdateNotification) throws PropertyException {
+		Validate.notNull(showUpdateNotification);
+                
+		if(showUpdateNotification != getShowUpdateNotification()){
+			setProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, showUpdateNotification);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.snapToGridChanged(showUpdateNotification);
+			}
+		}
+	}
+
+	public boolean getShowUpdateNotification() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION);
+		if(propertyValue == null) {
+			throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Invalid property value");
+                }
+
+		Boolean showUpdateNotification = null;
+		try {
+			showUpdateNotification = Boolean.parseBoolean(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Cannot boolean object from property value");
+		}
+		return showUpdateNotification;
+	}
+	
+	// ------- Ask for file extension association -----------------------------------------------------------------
+
+	public void setShowFileExtensionAssociation(Boolean showFileExtensionAssociation) throws PropertyException {
+		Validate.notNull(showFileExtensionAssociation);
+                
+		if(showFileExtensionAssociation != getShowFileExtensionAssociation()){
+			setProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, showFileExtensionAssociation);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.snapToGridChanged(showFileExtensionAssociation);
+			}
+		}
+	}
+
+	public boolean getShowFileExtensionAssociation() throws PropertyException{
+		String propertyValue = getProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION);
+		if(propertyValue == null) {
+			throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Invalid property value");
+                }
+
+		Boolean showFileExtensionAssociation = null;
+		try {
+			showFileExtensionAssociation = Boolean.parseBoolean(propertyValue);
+		} catch(Exception e){
+			throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Cannot boolean object from property value");
+		}
+		return showFileExtensionAssociation;
+	}
+
 	// ------- Default Properties -----------------------------------------------------------
 	
 	@Override
@@ -771,13 +830,16 @@ public class EditorProperties extends AbstractProperties{
 		defaultProperties.setProperty(WolfgangProperty.GRID_COLOR.toString(), DEFAULT_GRID_COLOR == null ? "" : String.valueOf(DEFAULT_GRID_COLOR.getRGB()));
 		defaultProperties.setProperty(WolfgangProperty.GRID_VISIBILITY.toString(), String.valueOf(DEFAULT_GRID_VISIBILITY));
 		defaultProperties.setProperty(WolfgangProperty.SNAP_TO_GRID.toString(), String.valueOf(DEFAULT_SNAP_TO_GRID));
+                
+		defaultProperties.setProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION.toString(), String.valueOf(DEFAULT_SHOW_UPDATE_NOTIFICATION));
+		defaultProperties.setProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION.toString(), String.valueOf(DEFAULT_SHOW_FILE_EXTENSION_ASSOCIATION));
 		
 		return defaultProperties;
 	}
 	
 	//--------------------------------------------------------------------------------------
 	
-	public void store() throws IOException {
+	public final void store() throws IOException {
 		try {
 			store(OSUtils.getUserHomeDirectory() + "/" + propertyFileName);
 		} catch (IOException e) {
