@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -139,7 +141,7 @@ public class ReleaseUtils {
      *
      * @return Version URL.
      */
-    public URL getLatestVersionURL() {
+    public URI getLatestVersionURI() {
         if (latestObj == null) {
             try {
                 getLatestReleaseObject();
@@ -148,8 +150,8 @@ public class ReleaseUtils {
             }
         }
         try {
-            return new URL(latestObj.get("html_url").getAsString());
-        } catch (MalformedURLException ex) {
+            return new URI(latestObj.get("html_url").getAsString());
+        } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
     }

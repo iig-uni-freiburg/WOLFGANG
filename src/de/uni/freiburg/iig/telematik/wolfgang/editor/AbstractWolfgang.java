@@ -44,6 +44,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.wolfgang.WolfgangStartup;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.ExitAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.LoadAction;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.NewCPNAction;
@@ -67,6 +68,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.WolfgangProperty
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory.IconSize;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.util.ReleaseUtils;
+import java.awt.Desktop;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -253,6 +256,16 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
                         WindowsUtils.instance().registerFileExtension(fileExtension.getKey(), fileExtension.getValue(), applicationPathURI);
                     }
                 }
+            }
+        }
+
+        // check for updates
+        ReleaseUtils release = new ReleaseUtils("iig-uni-freiburg", "WOLFGANG");
+        if (!release.getLatestVersion().equals(WolfgangStartup.VERSION_NAME) && EditorProperties.getInstance().getShowUpdateNotification()) {
+            Object[] releaseOptions = {"Yes, please", "No, thanks"};
+            int upd = JOptionPane.showOptionDialog(this, "A new version of WOLFGANG is available.\nDo you want to visit GitHub to download the latest release?", "Update Notification", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, releaseOptions, releaseOptions[0]);
+            if (upd == 0) {
+                Desktop.getDesktop().browse(release.getLatestVersionURI());
             }
         }
     }
