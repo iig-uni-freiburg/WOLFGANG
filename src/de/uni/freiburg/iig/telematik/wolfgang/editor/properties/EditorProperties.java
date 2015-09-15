@@ -711,7 +711,7 @@ public class EditorProperties extends AbstractProperties{
 		try {
 			snapToGrid = Boolean.parseBoolean(propertyValue);
 		} catch(Exception e){
-			throw new PropertyException(WolfgangProperty.GRID_VISIBILITY, propertyValue, "Cannot boolean object from property value");
+			throw new PropertyException(WolfgangProperty.GRID_VISIBILITY, propertyValue, "Cannot read boolean object from property value");
 		}
 		return snapToGrid;
 	}
@@ -758,14 +758,15 @@ public class EditorProperties extends AbstractProperties{
 	public boolean getShowUpdateNotification() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION);
 		if(propertyValue == null) {
-			throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Invalid property value");
+                    propertyValue = String.valueOf(DEFAULT_SHOW_UPDATE_NOTIFICATION);
+                    // throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Invalid property value");
                 }
 
 		Boolean showUpdateNotification = null;
 		try {
 			showUpdateNotification = Boolean.parseBoolean(propertyValue);
 		} catch(Exception e){
-			throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Cannot boolean object from property value");
+			throw new PropertyException(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, propertyValue, "Cannot read boolean object from property value");
 		}
 		return showUpdateNotification;
 	}
@@ -786,14 +787,15 @@ public class EditorProperties extends AbstractProperties{
 	public boolean getShowFileExtensionAssociation() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION);
 		if(propertyValue == null) {
-			throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Invalid property value");
+                    propertyValue = String.valueOf(DEFAULT_SHOW_FILE_EXTENSION_ASSOCIATION);
+                    // throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Invalid property value");
                 }
 
 		Boolean showFileExtensionAssociation = null;
 		try {
 			showFileExtensionAssociation = Boolean.parseBoolean(propertyValue);
 		} catch(Exception e){
-			throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Cannot boolean object from property value");
+			throw new PropertyException(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, propertyValue, "Cannot read boolean object from property value");
 		}
 		return showFileExtensionAssociation;
 	}
