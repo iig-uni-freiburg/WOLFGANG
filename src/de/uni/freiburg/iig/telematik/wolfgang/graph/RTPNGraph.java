@@ -155,7 +155,6 @@ public class RTPNGraph extends PNGraph {
 
 	@Override
 	public int getCapacityforPlace(String name, String color) {
-		// TODO Auto-generated method stub
 		return getNetContainer().getPetriNet().getPlace(name).getCapacity();
 	}
 
@@ -227,6 +226,7 @@ public class RTPNGraph extends PNGraph {
 
 	@Override
 	protected void drawAdditionalContextToTransition(mxGraphics2DCanvas canvas, mxCellState state) throws PropertyException, IOException {
+		//nothing here in wolfgang
 	}
 
 }
