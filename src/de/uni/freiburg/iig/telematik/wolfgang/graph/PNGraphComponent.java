@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -244,6 +245,18 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 			marker.setVisible(true);
 
 		}
+	}
+	
+	public void markPath(List<String> path, Color color) {
+		mxCellMarker marker = new mxCellMarker(getGraphComponent());
+		for (String s:path){
+			getCellMarker(getGraph().getNodeCell(s)).highlight(getGraph().getView().getState(getGraph().getNodeCell(s)), color);
+			getCellMarker(getGraph().getNodeCell(s)).setVisible(true);
+			//PNGraphCell cell = getGraph().getNodeCell(s);
+			//marker.highlight(getGraph().getView().getState(cell), color);
+			//marker.setVisible(true);
+		}
+		
 	}
 
 	private mxCellMarker getCellMarker(PNGraphCell cell) {
