@@ -117,7 +117,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		getGraph().setCellsSelectable(false);
 		for (final String n : nameSet) {
 			final PNGraphCell cell = getGraph().getNodeCell(n);
-			Rectangle geo = cell.getGeometry().getRectangle();
 			mxCellOverlay overlay = null;
 
 			try {
