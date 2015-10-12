@@ -162,6 +162,12 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     public PNEditorComponent getEditorComponent() {
         return editorComponent;
     }
+    
+    
+    public void setEditorComponent(PNEditorComponent eComponent) {
+        editorComponent = eComponent;
+    }
+    
 
     public File getFileReference() {
         return fileReference;
@@ -184,17 +190,22 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         }
         super.dispose();
     }
+    
+    public void installShortcuts(PNGraphComponent pnGraphComponent) {
+    	try {
+    		new WolfgangKeyboardHandler(pnGraphComponent);
+        } catch (Exception e1) {
+        	throw new RuntimeException(e1);
+        }
+    }
+    
 
     public void setUpGUI() throws PropertyException, IOException, Exception {
         addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowActivated(WindowEvent e) {
-                try {
-					new WolfgangKeyboardHandler(editorComponent.getGraphComponent());
-				} catch (Exception e1) {
-					throw new RuntimeException(e1);
-				}
+            	installShortcuts(editorComponent.getGraphComponent());
             }
 
             @Override
