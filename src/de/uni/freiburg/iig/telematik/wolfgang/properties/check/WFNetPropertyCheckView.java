@@ -22,16 +22,16 @@ public class WFNetPropertyCheckView extends AbstractPropertyCheckView<WFNetPrope
     }
 
     @Override
-    protected void addSpecificFields(JPanel panel) {
+    protected void addSpecificFields(JPanel pnl) {
         lblStructure = new PropertyCheckResultLabel("\u2022 WF Net Structure", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblStructure);
-        JPanel structureSubPanel = new JPanel(new SpringLayout());
-        panel.add(structureSubPanel);
+        pnl.add(lblStructure);
+        JPanel pnlStructureSub = new JPanel(new SpringLayout());
+        pnl.add(pnlStructureSub);
         lblInOutPlaces = new PropertyCheckResultLabel("\u2022 Valid InOut Places", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblInOutPlaces);
+        pnlStructureSub.add(lblInOutPlaces);
         lblConnectedness = new PropertyCheckResultLabel("\u2022 Strong Connectedness", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblConnectedness);
-        SpringUtilities.makeCompactGrid(structureSubPanel, structureSubPanel.getComponentCount(), 1, 15,0,0,0);
+        pnlStructureSub.add(lblConnectedness);
+        SpringUtilities.makeCompactGrid(pnlStructureSub, pnlStructureSub.getComponentCount(), 1, 15,0,0,0);
     }
 
     @Override

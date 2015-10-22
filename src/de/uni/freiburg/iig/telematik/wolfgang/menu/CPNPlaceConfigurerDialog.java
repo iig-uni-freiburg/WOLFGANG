@@ -127,9 +127,9 @@ public class CPNPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 			JToggleButton infiniteButton = getInfiniteButton(dim2);
 			JToggleButton boundButton = getBoundButon(dim2);
 
-			JPanel boundOrInfinite = new JPanel(new SpringLayout());
-			boundOrInfinite.add(infiniteButton);
-			boundOrInfinite.add(boundButton);
+			JPanel pnlBoundOrInfinite = new JPanel(new SpringLayout());
+			pnlBoundOrInfinite.add(infiniteButton);
+			pnlBoundOrInfinite.add(boundButton);
 			if (getPlace().isBounded()) {
 				boundButton.setEnabled(false);
 				infiniteButton.setEnabled(true);
@@ -138,8 +138,8 @@ public class CPNPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 				boundButton.setEnabled(true);
 				infiniteButton.setEnabled(false);
 			}
-			SpringUtilities.makeCompactGrid(boundOrInfinite, 1, 2, 1, 1, 1, 1);
-			mainPanel().add(boundOrInfinite);
+			SpringUtilities.makeCompactGrid(pnlBoundOrInfinite, 1, 2, 1, 1, 1, 1);
+			mainPanel().add(pnlBoundOrInfinite);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}

@@ -17,12 +17,12 @@ public class WGPropertySettingDialog extends AbstractDialog {
 
 	private static final Dimension PREFERED_SIZE = new Dimension(400,400);
 	private static final long serialVersionUID = 1855588446219004779L;
-	private WGPropertySettingPanel settingPanel = null;
+	private WGPropertySettingPanel pnlSetting = null;
 	
 	public WGPropertySettingDialog(Window parent) throws PropertyException, IOException {
 		super(parent, ButtonPanelLayout.CENTERED);
 		setIncludeCancelButton(false);
-		settingPanel = new WGPropertySettingPanel();
+		pnlSetting = new WGPropertySettingPanel();
 		setPreferredSize(PREFERED_SIZE);
 	}
 	
@@ -36,7 +36,7 @@ public class WGPropertySettingDialog extends AbstractDialog {
 	}
 
 	protected JPanel getPropertySettingPanel(){
-		return settingPanel;
+		return pnlSetting;
 	}
 
 	@Override
@@ -56,31 +56,31 @@ public class WGPropertySettingDialog extends AbstractDialog {
 	}
 	
 	protected void transferProperties() throws ParameterException, PropertyException, IOException{
-		EditorProperties.getInstance().setIconSize(settingPanel.getIconSize());
-		EditorProperties.getInstance().setDefaultPlaceSize(settingPanel.getDefaultPlaceSize());
-		EditorProperties.getInstance().setDefaultTransitionWidth(settingPanel.getDefaultTransitionWidth());
-		EditorProperties.getInstance().setDefaultTransitionHeight(settingPanel.getDefaultTransitionHeight());
-		EditorProperties.getInstance().setDefaultTokenSize(settingPanel.getDefaultTokenSize());
-		EditorProperties.getInstance().setDefaultTokenDistance(settingPanel.getDefaultTokenDistance());
-		EditorProperties.getInstance().setDefaultVerticalLabelOffset(settingPanel.getDefaultVerticalLabelOffset());
-		EditorProperties.getInstance().setDefaultHorizontalLabelOffset(settingPanel.getDefaultHorizontalLabelOffset());
-		EditorProperties.getInstance().setDefaultLabelBackgroundColor(settingPanel.getDefaultLabelBackgroundColor());
-		EditorProperties.getInstance().setDefaultLabelLineColor(settingPanel.getDefaultLabelLineColor());
-		EditorProperties.getInstance().setDefaultPlaceColor(settingPanel.getDefaultPlaceColor());
-		EditorProperties.getInstance().setDefaultTransitionColor(settingPanel.getDefaultTransitionColor());
-		EditorProperties.getInstance().setDefaultLineColor(settingPanel.getDefaultLineColor());
-		EditorProperties.getInstance().setDefaultGradientColor(settingPanel.getDefaultGradientColor());
-		EditorProperties.getInstance().setDefaultGradientDirection(settingPanel.getDefaultGradientDirection());
-		EditorProperties.getInstance().setDefaultFontFamily(settingPanel.getDefaultFontFamily());
-		EditorProperties.getInstance().setDefaultFontSize(settingPanel.getDefaultFontSize());
-		EditorProperties.getInstance().setDefaultZoomStep(settingPanel.getDefaultZoomStep());
-		EditorProperties.getInstance().setBackgroundColor(settingPanel.getBackgroundColor());
-		EditorProperties.getInstance().setGridColor(settingPanel.getGridColor());
-		EditorProperties.getInstance().setGridSize(settingPanel.getGridSize());
-		EditorProperties.getInstance().setGridVisibility(settingPanel.getGridVisibility());
-		EditorProperties.getInstance().setSnapToGrid(settingPanel.getSnapToGrid());
-		EditorProperties.getInstance().setShowUpdateNotification(settingPanel.getShowUpdateNotification());
-		EditorProperties.getInstance().setShowFileExtensionAssociation(settingPanel.getShowFileExtensionAssociation());
+		EditorProperties.getInstance().setIconSize(pnlSetting.getIconSize());
+		EditorProperties.getInstance().setDefaultPlaceSize(pnlSetting.getDefaultPlaceSize());
+		EditorProperties.getInstance().setDefaultTransitionWidth(pnlSetting.getDefaultTransitionWidth());
+		EditorProperties.getInstance().setDefaultTransitionHeight(pnlSetting.getDefaultTransitionHeight());
+		EditorProperties.getInstance().setDefaultTokenSize(pnlSetting.getDefaultTokenSize());
+		EditorProperties.getInstance().setDefaultTokenDistance(pnlSetting.getDefaultTokenDistance());
+		EditorProperties.getInstance().setDefaultVerticalLabelOffset(pnlSetting.getDefaultVerticalLabelOffset());
+		EditorProperties.getInstance().setDefaultHorizontalLabelOffset(pnlSetting.getDefaultHorizontalLabelOffset());
+		EditorProperties.getInstance().setDefaultLabelBackgroundColor(pnlSetting.getDefaultLabelBackgroundColor());
+		EditorProperties.getInstance().setDefaultLabelLineColor(pnlSetting.getDefaultLabelLineColor());
+		EditorProperties.getInstance().setDefaultPlaceColor(pnlSetting.getDefaultPlaceColor());
+		EditorProperties.getInstance().setDefaultTransitionColor(pnlSetting.getDefaultTransitionColor());
+		EditorProperties.getInstance().setDefaultLineColor(pnlSetting.getDefaultLineColor());
+		EditorProperties.getInstance().setDefaultGradientColor(pnlSetting.getDefaultGradientColor());
+		EditorProperties.getInstance().setDefaultGradientDirection(pnlSetting.getDefaultGradientDirection());
+		EditorProperties.getInstance().setDefaultFontFamily(pnlSetting.getDefaultFontFamily());
+		EditorProperties.getInstance().setDefaultFontSize(pnlSetting.getDefaultFontSize());
+		EditorProperties.getInstance().setDefaultZoomStep(pnlSetting.getDefaultZoomStep());
+		EditorProperties.getInstance().setBackgroundColor(pnlSetting.getBackgroundColor());
+		EditorProperties.getInstance().setGridColor(pnlSetting.getGridColor());
+		EditorProperties.getInstance().setGridSize(pnlSetting.getGridSize());
+		EditorProperties.getInstance().setGridVisibility(pnlSetting.getGridVisibility());
+		EditorProperties.getInstance().setSnapToGrid(pnlSetting.getSnapToGrid());
+		EditorProperties.getInstance().setShowUpdateNotification(pnlSetting.getShowUpdateNotification());
+		EditorProperties.getInstance().setShowFileExtensionAssociation(pnlSetting.getShowFileExtensionAssociation());
 		EditorProperties.getInstance().store();
 	}
 

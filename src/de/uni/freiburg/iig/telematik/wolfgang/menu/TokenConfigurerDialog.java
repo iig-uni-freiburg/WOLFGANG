@@ -65,7 +65,7 @@ public class TokenConfigurerDialog extends JDialog {
 	private static final int MAX_CAPACITY = 99;
 	private static final int SPINNER_DEFAULT_WIDTH = 63;
 
-	private JButton addButton;
+	private JButton btnAdd;
 	private PNGraph graph;
 	private AbstractCPNPlace place;
 	private JToggleButton boundButton;
@@ -73,7 +73,7 @@ public class TokenConfigurerDialog extends JDialog {
 	private Multiset<String> multisetPA;
 	private Map<String, Color> colors;
 	private String paName;
-	private JPanel panel;
+	private JPanel pnl;
 	private boolean isPlace;
 	private boolean isTransition = false;
 	private Map<String, Set<AccessMode>> accessMode;
@@ -81,9 +81,9 @@ public class TokenConfigurerDialog extends JDialog {
 	public TokenConfigurerDialog(Window window, AbstractCPNPlace place2, PNGraph cpnGraph) {
 		super(window, place2.getName());
 		isPlace = true;
-		panel = new JPanel();
-		panel.setLayout(new SpringLayout());
-		add(panel);
+		pnl = new JPanel();
+		pnl.setLayout(new SpringLayout());
+		add(pnl);
 		paName = place2.getName();
 		graph = cpnGraph;
 		updateTokenConfigurerView();
@@ -93,9 +93,9 @@ public class TokenConfigurerDialog extends JDialog {
 	public TokenConfigurerDialog(Window window, AbstractCPNFlowRelation flowRelation, PNGraph cpnGraph) {
 		super(window, flowRelation.getName());
 		isPlace = false;
-		panel = new JPanel();
-		panel.setLayout(new SpringLayout());
-		add(panel);
+		pnl = new JPanel();
+		pnl.setLayout(new SpringLayout());
+		add(pnl);
 		paName = flowRelation.getName();
 		graph = cpnGraph;
 		updateTokenConfigurerView();
@@ -105,9 +105,9 @@ public class TokenConfigurerDialog extends JDialog {
 		super(window, transition.getName());
 		isPlace = false;
 		isTransition = true;
-		panel = new JPanel();
-		panel.setLayout(new SpringLayout());
-		add(panel);
+		pnl = new JPanel();
+		pnl.setLayout(new SpringLayout());
+		add(pnl);
 		paName = transition.getName();
 		graph = cpnGraph;
 
@@ -115,34 +115,33 @@ public class TokenConfigurerDialog extends JDialog {
 	}
 
 	public void updateTokenConfigurerView() {
-		panel.removeAll();
+		pnl.removeAll();
 
 		try {
-			addButton = new JButton(IconFactory.getIcon("maximize"));
+			btnAdd = new JButton(IconFactory.getIcon("maximize"));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
 		creaeAddBtnListener();
 
-		panel.add(addButton);
+		pnl.add(btnAdd);
 		if (isPlace) {
 			creaePlaceSpecificComponents();
-			panel.add(new JLabel("Tokens"));
+			pnl.add(new JLabel("Tokens"));
 			
 		} else if (isTransition)
-			panel.add(new JLabel("Data Usage"));
+			pnl.add(new JLabel("Data Usage"));
 		else
-			panel.add(new JLabel("Constraints"));
-
-		panel.add(Box.createGlue());
-		panel.add(Box.createGlue());
+			pnl.add(new JLabel("Constraints"));
+		pnl.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 
 		if (isPlace)
-			panel.add(new JLabel("Capacity"));
+			pnl.add(new JLabel("Capacity"));
 		else {
-			panel.add(Box.createGlue());
+			pnl.add(Box.createGlue());
 		}
-		panel.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 		int size = 0;
 
 		AbstractCPNGraphics cpnGraphics = (AbstractCPNGraphics) getNetContainer().getPetriNetGraphics();
@@ -184,17 +183,17 @@ public class TokenConfigurerDialog extends JDialog {
 		double width = TOKEN_ROW_WIDTH;
 		double height = TOKEN_ROW_HEIGHT;
 		dim.setSize(width, height);
-		panel.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 
-		panel.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 		// C capPanel = new JPanel();
-		panel.add(Box.createGlue());
-		panel.add(Box.createGlue());
+		pnl.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 
 		if (isPlace) {
-			JPanel boundOrInfinite = new JPanel(new SpringLayout());
-			boundOrInfinite.add(infiniteButton);
-			boundOrInfinite.add(boundButton);
+			JPanel pnlBoundOrInfinite = new JPanel(new SpringLayout());
+			pnlBoundOrInfinite.add(infiniteButton);
+			pnlBoundOrInfinite.add(boundButton);
 			if (place.isBounded()) {
 				boundButton.setEnabled(false);
 				infiniteButton.setEnabled(true);
@@ -203,19 +202,19 @@ public class TokenConfigurerDialog extends JDialog {
 				boundButton.setEnabled(true);
 				infiniteButton.setEnabled(false);
 			}
-			SpringUtilities.makeCompactGrid(boundOrInfinite, 1, 2, 1, 1, 1, 1);
-			panel.add(boundOrInfinite);
+			SpringUtilities.makeCompactGrid(pnlBoundOrInfinite, 1, 2, 1, 1, 1, 1);
+			pnl.add(pnlBoundOrInfinite);
 
 		} else {
 			Component glue = Box.createGlue();
-			panel.add(Box.createGlue());
-			panel.add(Box.createGlue());
-			panel.add(Box.createGlue());
+			pnl.add(Box.createGlue());
+			pnl.add(Box.createGlue());
+			pnl.add(Box.createGlue());
 		}
 
-		panel.add(Box.createGlue());
+		pnl.add(Box.createGlue());
 
-		SpringUtilities.makeCompactGrid(panel, size + 2, 6, 6, 6, 6, 6);
+		SpringUtilities.makeCompactGrid(pnl, size + 2, 6, 6, 6, 6, 6);
 		pack();
 
 	}
@@ -279,7 +278,7 @@ public class TokenConfigurerDialog extends JDialog {
 	}
 
 	private void creaeAddBtnListener() {
-		addButton.addMouseListener(new MouseAdapter() {
+		btnAdd.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -309,7 +308,7 @@ public class TokenConfigurerDialog extends JDialog {
 								}
 								((mxGraphModel) graph.getModel()).endUpdate();
 								if (!isTransition && multisetPA.contains(colors.keySet())) {
-									addButton.setEnabled(false);
+									btnAdd.setEnabled(false);
 								}
 								updateTokenConfigurerView();
 								pack();
@@ -334,7 +333,7 @@ public class TokenConfigurerDialog extends JDialog {
 									((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, color, amChange));
 
 									if (!isTransition && accessMode.keySet().contains(colors.keySet())) {
-										addButton.setEnabled(false);
+										btnAdd.setEnabled(false);
 									}
 								}
 								((mxGraphModel) graph.getModel()).endUpdate();
@@ -347,7 +346,7 @@ public class TokenConfigurerDialog extends JDialog {
 
 				}
 
-				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
+				popup.show(btnAdd, btnAdd.getWidth() * 4 / 5, btnAdd.getHeight() * 4 / 5);
 			}
 		});
 	}
@@ -361,7 +360,7 @@ public class TokenConfigurerDialog extends JDialog {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Circle-Panel could not be generated. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
-		panel.add(circle);
+		pnl.add(circle);
 
 		final String tokenName = tokenLabel;
 		if (!isTransition) {
@@ -403,29 +402,29 @@ public class TokenConfigurerDialog extends JDialog {
 						((mxGraphModel) graph.getModel()).execute(new ConstraintChange((PNGraph) graph, paName, newMarking));
 				}
 			});
-			panel.add(spinner);
+			pnl.add(spinner);
 		}
 		if (isTransition) {
 
-			JPanel amPanel = new JPanel();
-			amPanel.add(createAccessModeCheckBox(tokenName, AccessMode.READ, "r"));
-			amPanel.add(createAccessModeCheckBox(tokenName, AccessMode.WRITE, "w"));
-			amPanel.add(createAccessModeCheckBox(tokenName, AccessMode.DELETE, "d"));
-			amPanel.add(createAccessModeCheckBox(tokenName, AccessMode.CREATE, "c"));
+			JPanel pnlAm = new JPanel();
+			pnlAm.add(createAccessModeCheckBox(tokenName, AccessMode.READ, "r"));
+			pnlAm.add(createAccessModeCheckBox(tokenName, AccessMode.WRITE, "w"));
+			pnlAm.add(createAccessModeCheckBox(tokenName, AccessMode.DELETE, "d"));
+			pnlAm.add(createAccessModeCheckBox(tokenName, AccessMode.CREATE, "c"));
 
-			panel.add(amPanel);
+			pnl.add(pnlAm);
 
 		}
 
-		panel.add(new JLabel(tokenName));
-		// panel.add(firstElement);
-		JButton remove = null;
+		pnl.add(new JLabel(tokenName));
+		// pnl.add(firstElement);
+		JButton btnRemove = null;
 		try {
-			remove = new JButton(IconFactory.getIcon("minimize"));
+			btnRemove = new JButton(IconFactory.getIcon("minimize"));
 		} catch (Exception e) {
 			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(this), "Minimize-Button could not be added.",e);
 		}
-		remove.addActionListener(new ActionListener() {
+		btnRemove.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -451,7 +450,7 @@ public class TokenConfigurerDialog extends JDialog {
 						((AbstractRegularIFNetTransition) transition).removeAccessModes(tokenName);
 				}
 
-				addButton.setEnabled(true);
+				btnAdd.setEnabled(true);
 				pack();
 				updateTokenConfigurerView();
 			}
@@ -459,7 +458,7 @@ public class TokenConfigurerDialog extends JDialog {
 
 		if (isPlace && place != null) {
 
-			panel.add(Box.createGlue());
+			pnl.add(Box.createGlue());
 			JSpinner capacitySpinner;
 			if (!place.isBounded()) {
 				String[] string = { "\u221e" };
@@ -482,12 +481,12 @@ public class TokenConfigurerDialog extends JDialog {
 					updateTokenConfigurerView();
 				}
 			});
-			panel.add(capacitySpinner);
+			pnl.add(capacitySpinner);
 		} else {
-			panel.add(Box.createGlue());
-			panel.add(Box.createGlue());
+			pnl.add(Box.createGlue());
+			pnl.add(Box.createGlue());
 		}
-		panel.add(remove);
+		pnl.add(btnRemove);
 
 	}
 

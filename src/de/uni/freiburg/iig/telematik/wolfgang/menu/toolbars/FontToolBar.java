@@ -75,9 +75,9 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private FontAlignRightAction alignRightAction;
 
     // Buttons
-    private JButton showHideTokensOnArcsButton;
-    private JButton showHideLabelsButton;
-    private JButton textRotationButton;
+    private JButton btnShowHideTokensOnArcs;
+    private JButton btnShowHideLabels;
+    private JButton btnTextRotation;
     private JToggleButton boldFontButton = null;
     private JToggleButton alignCenterButton = null;
     private JToggleButton alignRightButton = null;
@@ -125,10 +125,10 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     }
 
     private void addFontButtons() {
-        showHideTokensOnArcsButton = (JButton) add(showHideTokensOnArcsAction, false);
-        setButtonSettings(showHideTokensOnArcsButton);
-        showHideLabelsButton = (JButton) add(showHideLabelsAction, false);
-        setButtonSettings(showHideLabelsButton);
+        btnShowHideTokensOnArcs = (JButton) add(showHideTokensOnArcsAction, false);
+        setButtonSettings(btnShowHideTokensOnArcs);
+        btnShowHideLabels = (JButton) add(showHideLabelsAction, false);
+        setButtonSettings(btnShowHideLabels);
         fontLabel = new JLabel(fontLabelText);
         add(fontLabel);
         add(getFontBox());
@@ -151,7 +151,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 
         addSeparator();
 
-        textRotationButton = add(textRotationAction);
+        btnTextRotation = add(textRotationAction);
 
         addSeparator();
     }
@@ -172,7 +172,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     }
 
     private void setTooltips() {
-        showHideLabelsButton.setToolTipText(showHideLabelsTooltip);
+        btnShowHideLabels.setToolTipText(showHideLabelsTooltip);
         fontBox.setToolTipText(fontTooltip);
         fontSizeBox.setToolTipText(fontSizeTooltip);
         boldFontButton.setToolTipText(boldFontTooltip);
@@ -181,7 +181,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         alignLeftButton.setToolTipText(alignLeftTooltip);
         alignCenterButton.setToolTipText(alingCenterTooltip);
         alignRightButton.setToolTipText(alignRightTooltip);
-        textRotationButton.setToolTipText(textRotationTooltip);
+        btnTextRotation.setToolTipText(textRotationTooltip);
     }
 
     private void setButtonSelected(JToggleButton button) {
@@ -302,19 +302,19 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         }
     }
 
-    private void setButtonSettings(final JButton button) {
-        button.setBorderPainted(false);
-        button.addMouseListener(new MouseAdapter() {
+    private void setButtonSettings(final JButton btnButton) {
+    	btnButton.setBorderPainted(false);
+    	btnButton.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                button.setBorderPainted(false);
+            	btnButton.setBorderPainted(false);
                 super.mouseReleased(e);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                button.setBorderPainted(true);
+            	btnButton.setBorderPainted(true);
                 super.mousePressed(e);
             }
 
@@ -496,12 +496,12 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
                 {
                     setFontEnabled(false);
                     showHideLabelsAction.setHideIconImage();
-                    showHideLabelsButton.repaint();
+                    btnShowHideLabels.repaint();
 
                 } else {
                     setFontEnabled(true);
                     showHideLabelsAction.setShowIconImage();
-                    showHideLabelsButton.repaint();
+                    btnShowHideLabels.repaint();
 
                     if (selectedComponents.size() == isSameFontCounter) //componentSize must be >0
                     {
@@ -524,17 +524,17 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
                     setAlignButtonSelection(selectedComponents, initialAlignCounter, initialAlign);
                     if (selectedComponents.size() == initialRotationCounter && initialRotation > 0.0) //componentSize must be >0
                     {
-                        textRotationButton.setOpaque(true);
-                        textRotationButton.setBackground(Color.LIGHT_GRAY);
-                        textRotationButton.setBorder(BorderFactory.createLineBorder(bgcolor));
-                        textRotationButton.setBorderPainted(true);
+                        btnTextRotation.setOpaque(true);
+                        btnTextRotation.setBackground(Color.LIGHT_GRAY);
+                        btnTextRotation.setBorder(BorderFactory.createLineBorder(bgcolor));
+                        btnTextRotation.setBorderPainted(true);
                         textRotationAction.setSelectionState(true);
                         textRotationAction.setDegree(initialRotation);
                     } else {
-                        textRotationButton.setOpaque(true);
-                        textRotationButton.setBackground(bgcolor);
-                        textRotationButton.setBorder(BorderFactory.createLineBorder(bgcolor));
-                        textRotationButton.setBorderPainted(true);
+                        btnTextRotation.setOpaque(true);
+                        btnTextRotation.setBackground(bgcolor);
+                        btnTextRotation.setBorder(BorderFactory.createLineBorder(bgcolor));
+                        btnTextRotation.setBorderPainted(true);
                         textRotationAction.setSelectionState(false);
                         textRotationAction.setDegree(0.0);
 

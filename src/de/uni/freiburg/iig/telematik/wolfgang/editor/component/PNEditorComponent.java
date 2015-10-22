@@ -67,7 +67,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	public static final boolean DEFAULT_ASK_FOR_LAYOUT = false;
 
 	private static final long serialVersionUID = 1023415244830760771L;
-	protected JPanel statusPanel = null;
+	protected JPanel pnlStatus = null;
 	protected NodePalettePanel palettePanel = null;
 	protected PNGraphComponent graphComponent;
 	protected AbstractToolBar toolbar = null;
@@ -224,7 +224,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		setLayout(new BorderLayout());
 		loadEditorToolbar();
 		add(getGraphComponent(), BorderLayout.CENTER);
-		// add(getStatusPanel(), BorderLayout.SOUTH);
+		// add(getpnlStatus(), BorderLayout.SOUTH);
 
 		rubberband = new mxRubberband(graphComponent);
 	}

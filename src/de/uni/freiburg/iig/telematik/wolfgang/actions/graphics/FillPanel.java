@@ -211,9 +211,9 @@ public class FillPanel extends JToolBar {
 	public static void main(String[] args) {
 		FillPanel fp = new FillPanel();
 		fp.updatePanel(Color.RED, false, GradientRotation.HORIZONTAL, false, Color.BLUE, false);
-		JPanel panel = new JPanel();
-		panel.add(fp);
-		new DisplayFrame(panel, true);
+		JPanel pnl = new JPanel();
+		pnl.add(fp);
+		new DisplayFrame(pnl, true);
 
 	}
 

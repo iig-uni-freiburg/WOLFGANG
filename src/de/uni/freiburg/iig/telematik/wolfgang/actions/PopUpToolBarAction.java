@@ -34,7 +34,7 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	private JDialog popupDialog;
 	private JToggleButton button;
 	private JComponent toolbarContent;
-	private JButton newDialogButton;
+	private JButton btnNewDialog;
 	private PopupToolBar popupToolBar;
 	protected JDialog dialog;
 
@@ -42,9 +42,9 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 		super(editor, name, icon);
 		popupToolBar = new PopupToolBar();
 		toolbarContent = toolbar;
-		newDialogButton = new JButton(IconFactory.getIcon("maximize"));
-		newDialogButton.setBorderPainted(false);
-		newWindowButton(popupToolBar, toolbarContent, newDialogButton);
+		btnNewDialog = new JButton(IconFactory.getIcon("maximize"));
+		btnNewDialog.setBorderPainted(false);
+		newWindowButton(popupToolBar, toolbarContent, btnNewDialog);
 	}
 
 	protected JDialog getPopupFrame() {
@@ -64,15 +64,15 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 		this.button = addedButton;
 	}
 
-	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent toolbarContent2, final JButton newDialogButton) {
-		newDialogButton.addActionListener(new ActionListener() {
+	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent toolbarContent2, final JButton btnNewDialog) {
+		btnNewDialog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				popupToolBar.setButton(getButton(), true);
 				Window window = SwingUtilities.getWindowAncestor(getButton());
 				JDialog dialog = new ToolBarDialog(window, toolbarContent2.getName(), false);
-				if (newDialogButton.getName() != null)
-					dialog.setTitle(newDialogButton.getName());
+				if (btnNewDialog.getName() != null)
+					dialog.setTitle(btnNewDialog.getName());
 				dialog.setLocationRelativeTo(window);
 				dialog.add(toolbarContent2);
 				dialog.setModal(false);
@@ -118,7 +118,7 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 			popupToolBar.setButton(getButton(), false);
 
 			popupToolBar.add(toolbarContent);
-			popupToolBar.add(newDialogButton);
+			popupToolBar.add(btnNewDialog);
 
 			int size = 0;
 			size = EditorProperties.getInstance().getIconSize().getSize();

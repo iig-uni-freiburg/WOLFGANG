@@ -36,7 +36,7 @@ public class NodePalettePanel extends JPanel {
 	private final int PREFERRED_ICON_SIZE = 30;
 	private final Dimension PREFERRED_PALETTE_COMPONENT_SIZE = new Dimension(70, 60);
 
-	private JPanel transitionPanel = new JPanel() {
+	private JPanel pnlTransition = new JPanel() {
 
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -62,7 +62,7 @@ public class NodePalettePanel extends JPanel {
 		}
 	};
 
-	private JPanel placePanel = new JPanel() {
+	private JPanel pnlPlace = new JPanel() {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
@@ -85,20 +85,20 @@ public class NodePalettePanel extends JPanel {
 		}
 	};
 
-	protected JPanel selectedEntry = null;
+	protected JPanel pnlSelectedEntry = null;
 
-	private JPanel panel;
+	private JPanel pnl;
 
 	public NodePalettePanel() throws PropertyException, IOException {
 		setLayout(new BorderLayout());
-		panel = new JPanel();
-		BoxLayout layout = new BoxLayout(panel, BoxLayout.LINE_AXIS);
-		panel.setLayout(layout);
+		pnl = new JPanel();
+		BoxLayout layout = new BoxLayout(pnl, BoxLayout.LINE_AXIS);
+		pnl.setLayout(layout);
 		addHowToDescription();
 		addPlaceTemplate();
 		addTransitionTemplate();
 
-		add(panel, BorderLayout.PAGE_START);
+		add(pnl, BorderLayout.PAGE_START);
 
 	}
 
@@ -113,7 +113,7 @@ public class NodePalettePanel extends JPanel {
 		String style = MXConstants.getDefaultNodeStyle(PNComponent.PLACE);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, size, size), style, PNComponent.PLACE);
 		cell.setVertex(true);
-		addTemplate("Place", placePanel, cell);
+		addTemplate("Place", pnlPlace, cell);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class NodePalettePanel extends JPanel {
 		String style = MXConstants.getDefaultNodeStyle(PNComponent.TRANSITION);
 		PNGraphCell cell = new PNGraphCell(null, new mxGeometry(0, 0, width, height), style, PNComponent.TRANSITION);
 		cell.setVertex(true);
-		addTemplate("Transition", transitionPanel, cell);
+		addTemplate("Transition", pnlTransition, cell);
 	}
 
 	private void addHowToDescription() {
@@ -143,27 +143,27 @@ public class NodePalettePanel extends JPanel {
 
 	}
 
-	public void addTemplate(final String name, JPanel nodepanel, mxCell cell) {
+	public void addTemplate(final String name, JPanel pnlNode, mxCell cell) {
 		mxRectangle bounds = (mxGeometry) cell.getGeometry().clone();
 		final mxGraphTransferable t = new mxGraphTransferable(new Object[] { cell }, bounds);
 
-		JPanel paletteComponent = new JPanel(new BorderLayout());
-		paletteComponent.setPreferredSize(PREFERRED_PALETTE_COMPONENT_SIZE);
-		paletteComponent.setMaximumSize(PREFERRED_PALETTE_COMPONENT_SIZE);
-		paletteComponent.setMinimumSize(PREFERRED_PALETTE_COMPONENT_SIZE);
+		JPanel pnlPaletteComponent = new JPanel(new BorderLayout());
+		pnlPaletteComponent.setPreferredSize(PREFERRED_PALETTE_COMPONENT_SIZE);
+		pnlPaletteComponent.setMaximumSize(PREFERRED_PALETTE_COMPONENT_SIZE);
+		pnlPaletteComponent.setMinimumSize(PREFERRED_PALETTE_COMPONENT_SIZE);
 
-		final JPanel iconPanel = new JPanel(new BorderLayout());
-		iconPanel.setPreferredSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
-		iconPanel.setMaximumSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
-		iconPanel.setMinimumSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
-		nodepanel.setBackground(iconPanel.getBackground());
+		final JPanel pnlIcon = new JPanel(new BorderLayout());
+		pnlIcon.setPreferredSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
+		pnlIcon.setMaximumSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
+		pnlIcon.setMinimumSize(new Dimension(PREFERRED_ICON_SIZE, PREFERRED_ICON_SIZE));
+		pnlNode.setBackground(pnlIcon.getBackground());
 
-		paletteComponent.add(new JLabel(name, JLabel.CENTER), BorderLayout.PAGE_START);
-		paletteComponent.add(nodepanel, BorderLayout.CENTER);
+		pnlPaletteComponent.add(new JLabel(name, JLabel.CENTER), BorderLayout.PAGE_START);
+		pnlPaletteComponent.add(pnlNode, BorderLayout.CENTER);
 
 		DragGestureListener dragGestureListener = new DragGestureListener() {
 			public void dragGestureRecognized(DragGestureEvent e) {
-				if (!iconPanel.isEnabled()) {
+				if (!pnlIcon.isEnabled()) {
 					return;
 				}
 				e.startDrag(null, MXConstants.EMPTY_IMAGE, new Point(), t, null);
@@ -171,9 +171,9 @@ public class NodePalettePanel extends JPanel {
 		};
 
 		DragSource dragSource = new DragSource();
-		dragSource.createDefaultDragGestureRecognizer(nodepanel, DnDConstants.ACTION_COPY, dragGestureListener);
+		dragSource.createDefaultDragGestureRecognizer(pnlNode, DnDConstants.ACTION_COPY, dragGestureListener);
 
-		panel.add(paletteComponent);
+		pnl.add(pnlPaletteComponent);
 	}
 
 }

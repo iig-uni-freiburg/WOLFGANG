@@ -22,7 +22,7 @@ public class ExportToolBar extends JToolBar {
 	private ExportPDFAction pdfAction;
 
 	// Buttons
-	private JButton pdfButton;
+	private JButton btnPdf;
 
 	// Tooltips
 	private String pdfButtonTooltip = "Export to PDF";
@@ -33,24 +33,24 @@ public class ExportToolBar extends JToolBar {
 
 		pdfAction = new ExportPDFAction(pnEditor);
 		setFloatable(false);
-		pdfButton = add(pdfAction);
-		setButtonSettings(pdfButton);
-		pdfButton.setToolTipText(pdfButtonTooltip);
+		btnPdf = add(pdfAction);
+		setButtonSettings(btnPdf);
+		btnPdf.setToolTipText(pdfButtonTooltip);
 	}
 
-	private void setButtonSettings(final JButton button) {
-		button.setBorderPainted(false);
-		button.addMouseListener(new MouseAdapter() {
+	private void setButtonSettings(final JButton btn) {
+		btn.setBorderPainted(false);
+		btn.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				button.setBorderPainted(false);
+				btn.setBorderPainted(false);
 				super.mouseReleased(e);
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				button.setBorderPainted(true);
+				btn.setBorderPainted(true);
 				super.mousePressed(e);
 			}
 

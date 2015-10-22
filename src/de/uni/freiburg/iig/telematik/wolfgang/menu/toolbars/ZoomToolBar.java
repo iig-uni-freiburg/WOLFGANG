@@ -25,7 +25,7 @@ public class ZoomToolBar extends JToolBar {
 	private ZoomInAction zoomInAction;
 	
 	// Buttons
-	private JButton zoomInButton;
+	private JButton btnZoomIn;
 
 	// Tooltips
 	private String zoomInTooltip = "zoom in";
@@ -38,7 +38,7 @@ public class ZoomToolBar extends JToolBar {
 
 	private ZoomOutAction zoomOutAction;
 
-	private JButton zoomOutButton;
+	private JButton btnZoomOut;
 
 
 	public ZoomToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
@@ -51,13 +51,13 @@ public class ZoomToolBar extends JToolBar {
 
 		setFloatable(false);
 
-		zoomInButton = add(zoomInAction);
-		setButtonSettings(zoomInButton);	
-		zoomOutButton = add(zoomOutAction);
-		setButtonSettings(zoomOutButton);
+		btnZoomIn = add(zoomInAction);
+		setButtonSettings(btnZoomIn);	
+		btnZoomOut = add(zoomOutAction);
+		setButtonSettings(btnZoomOut);
 	
-		zoomInButton.setToolTipText(zoomInTooltip);
-		zoomOutButton.setToolTipText(zoomOutTooltip);
+		btnZoomIn.setToolTipText(zoomInTooltip);
+		btnZoomOut.setToolTipText(zoomOutTooltip);
 		
 		
 	}
@@ -66,19 +66,19 @@ public class ZoomToolBar extends JToolBar {
 	
 
 
-	private void setButtonSettings(final JButton button) {
-		button.setBorderPainted(false);
-		button.addMouseListener(new MouseAdapter() {
+	private void setButtonSettings(final JButton btn) {
+		btn.setBorderPainted(false);
+		btn.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				button.setBorderPainted(false);
+				btn.setBorderPainted(false);
 				super.mouseReleased(e);
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				button.setBorderPainted(true);
+				btn.setBorderPainted(true);
 				super.mousePressed(e);
 			}
 

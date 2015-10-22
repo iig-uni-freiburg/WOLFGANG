@@ -87,9 +87,9 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
     protected PNEditorComponent editorComponent = null;
     private WGMenuBar menuBar = null;
-    protected JPanel content = null;
-    protected JPanel centerPanel = null;
-    private JPanel rightPanel;
+    protected JPanel pnlContent = null;
+    protected JPanel pnlCenter = null;
+    private JPanel pnlRight;
 
     private static Set<AbstractWolfgang> runningInstances = new HashSet<>();
     private JScrollPane editorScrollPane;
@@ -154,8 +154,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         }
 
         if (editorComponent != null) {
-            centerPanel.remove(editorComponent);
-            centerPanel.remove(editorComponent.getPropertiesView());
+            pnlCenter.remove(editorComponent);
+            pnlCenter.remove(editorComponent.getPropertiesView());
         }
     }
 
@@ -236,7 +236,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         setLookAndFeel();
         setPreferredSize(PREFERRED_SIZE_WORKBENCH);
         setResizable(true);
-        setContentPane(getContent());
+        setContentPane(getpnlContent());
         setJMenuBar(getWGMenuBar());
         pack();
         setLocationRelativeTo(null);
@@ -312,17 +312,17 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         }
     }
 
-    private JComponent getContent() throws Exception {
-        if (content == null) {
-            content = new JPanel(new BorderLayout());
-            content.add(getCenterComponent(), BorderLayout.CENTER);
+    private JComponent getpnlContent() throws Exception {
+        if (pnlContent == null) {
+            pnlContent = new JPanel(new BorderLayout());
+            pnlContent.add(getCenterComponent(), BorderLayout.CENTER);
             EditorProperties.getInstance().addListener(new WolfgangPropertyAdapter() {
 
                 @Override
                 public void iconSizeChanged(IconSize size) {
-                    content.remove(toolbarScrollPane); 
+                    pnlContent.remove(toolbarScrollPane); 
                     editorComponent.loadEditorToolbar();
-                    content.add(getToolbarPanel(), BorderLayout.NORTH);
+                    pnlContent.add(getToolbarPanel(), BorderLayout.NORTH);
                     pack();
                 }
 
@@ -330,25 +330,25 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
             setEditorPanels();
             JComponent bottomComponent = getBottomComponent();
             if (bottomComponent != null) {
-                content.add(bottomComponent, BorderLayout.PAGE_END);
+                pnlContent.add(bottomComponent, BorderLayout.PAGE_END);
             }
         }
-        return content;
+        return pnlContent;
     }
 
     protected JComponent getCenterComponent() throws Exception {
-        if (centerPanel == null) {
-            centerPanel = new JPanel(new BorderLayout());
+        if (pnlCenter == null) {
+            pnlCenter = new JPanel(new BorderLayout());
         }
-        return centerPanel;
+        return pnlCenter;
     }
 
     protected JComponent getRightComponent() throws Exception {
-        if (rightPanel == null) {
-            rightPanel = new JPanel(new BorderLayout());
+        if (pnlRight == null) {
+            pnlRight = new JPanel(new BorderLayout());
 
         }
-        return rightPanel;
+        return pnlRight;
     }
 
     protected JComponent getBottomComponent() throws Exception {
@@ -356,12 +356,12 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     }
 
     protected void setEditorPanels() throws Exception {
-        content.add(getToolbarPanel(), BorderLayout.NORTH);
-        centerPanel.add(getEditorPanel(), BorderLayout.CENTER);
-        getRightComponent(); //generate rightPanel
-        rightPanel.add(editorComponent.getPropertiesView(), BorderLayout.NORTH);
-        rightPanel.add(editorComponent.getPropertyCheckView(), BorderLayout.SOUTH);
-        centerPanel.add(getRightPanel(),BorderLayout.EAST);
+        pnlContent.add(getToolbarPanel(), BorderLayout.NORTH);
+        pnlCenter.add(getEditorPanel(), BorderLayout.CENTER);
+        getRightComponent(); //generate pnlRight
+        pnlRight.add(editorComponent.getPropertiesView(), BorderLayout.NORTH);
+        pnlRight.add(editorComponent.getPropertyCheckView(), BorderLayout.SOUTH);
+        pnlCenter.add(getpnlRight(),BorderLayout.EAST);
 
     }
     
@@ -376,10 +376,10 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
         return editorScrollPane;
     }
     
-        protected JComponent getRightPanel() {
-        rightScrollPane = new JScrollPane(rightPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        Dimension rightPanelDim = new Dimension(FIX_SIZE_RIGHT_PANEL, MINIMUM_SIZE_EDITOR_PANEL.height);
-        rightScrollPane.setPreferredSize(rightPanelDim);
+        protected JComponent getpnlRight() {
+        rightScrollPane = new JScrollPane(pnlRight, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        Dimension pnlRightDim = new Dimension(FIX_SIZE_RIGHT_PANEL, MINIMUM_SIZE_EDITOR_PANEL.height);
+        rightScrollPane.setPreferredSize(pnlRightDim);
         return rightScrollPane;
     }
 

@@ -245,9 +245,9 @@ public class LinePanel extends JToolBar {
 	public static void main(String[] args) {
 		LinePanel fp = new LinePanel();
 		fp.updatePanel(Color.BLACK,false, Line.Shape.LINE, Line.Style.SOLID, 5);
-		JPanel panel = new JPanel();
-		panel.add(fp);
-		new DisplayFrame(panel, true);
+		JPanel pnl = new JPanel();
+		pnl.add(fp);
+		new DisplayFrame(pnl, true);
 
 	}
 

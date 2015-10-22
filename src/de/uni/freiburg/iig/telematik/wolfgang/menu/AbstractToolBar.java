@@ -111,17 +111,17 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     private ReloadExecutionAction reloadExecutionAction;
 	// Buttons
     // private JButton saveButton;
-    private JToggleButton undoButton;
-    private JToggleButton redoButton;
-    private JToggleButton fontButton = null;
-    private JToggleButton graphicsButton = null;
+    private JToggleButton tglUndo;
+    private JToggleButton tglRedo;
+    private JToggleButton tglFont = null;
+    private JToggleButton tglGraphics = null;
     // private JButton enterExecutionButton;
-    private JButton reloadExecutionButton;
+    private JButton btnReloadExecution;
     // private JButton enterEditingButton;
-    private JToggleButton zoomButton;
-    private JToggleButton nodeButton;
-    private JToggleButton exportButton;
-    private JButton toggleModeButton;
+    private JToggleButton tglZoom;
+    private JToggleButton tglNode;
+    private JToggleButton tglExport;
+    private JButton btnToggleMode;
 
     // Sub-Toolbars
     private FontToolBar fontToolbar;
@@ -135,7 +135,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     // private String editingButtonTooltip = " editing mode";
     private String fontTooltip = "font";
     private String saveButtonTooltip = "save";
-    private String exportButtonTooltip = "export to pdf";
+    private String tglExportTooltip = "export to pdf";
     private String undoTooltip = "undo";
     private String redoTooltip = "redo";
 
@@ -184,37 +184,37 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         }
         setFloatable(false);
 
-        exportButton = (JToggleButton) add(exportAction, true);
-        exportAction.setButton(exportButton);
+        tglExport = (JToggleButton) add(exportAction, true);
+        exportAction.setButton(tglExport);
 
         addSeparator();
 
-        toggleModeButton = add(toggleModeAction);
-        toggleModeButton.setBorderPainted(false);
-        toggleModeButton.setIconTextGap(0);
-        toggleModeButton.setText("EDIT");
+        btnToggleMode = add(toggleModeAction);
+        btnToggleMode.setBorderPainted(false);
+        btnToggleMode.setIconTextGap(0);
+        btnToggleMode.setText("EDIT");
 
         add(new Filler(new Dimension(0, 0), new Dimension(20, 0), new Dimension(30, 0)));
-        reloadExecutionButton = add(reloadExecutionAction);
-        setButtonSettings(reloadExecutionButton);
+        btnReloadExecution = add(reloadExecutionAction);
+        setButtonSettings(btnReloadExecution);
 
         executionTraceLabel = new JLabel("    Execution Trace: ");
 
         setExecutionButtonsVisible(false);
 
-        undoButton = (JToggleButton) add(undoAction, true);
-        redoButton = (JToggleButton) add(redoAction, true);
+        tglUndo = (JToggleButton) add(undoAction, true);
+        tglRedo = (JToggleButton) add(redoAction, true);
 
-        nodeButton = (JToggleButton) add(nodeAction, true);
+        tglNode = (JToggleButton) add(nodeAction, true);
 
-        nodeAction.setButton(nodeButton);
+        nodeAction.setButton(tglNode);
 
-        fontButton = (JToggleButton) add(fontAction, true);
-        fontAction.setButton(fontButton);
+        tglFont = (JToggleButton) add(fontAction, true);
+        fontAction.setButton(tglFont);
         fontAction.setEnabled(false);
 
-        graphicsButton = (JToggleButton) add(graphicsAction, true);
-        graphicsAction.setButton(graphicsButton);
+        tglGraphics = (JToggleButton) add(graphicsAction, true);
+        graphicsAction.setButton(tglGraphics);
         graphicsAction.setEnabled(false);
 
 
@@ -227,9 +227,9 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 		
 		
 
-        zoomButton = (JToggleButton) add(zoomAction, true);
-        zoomButtonSettings();
-        zoomAction.setButton(zoomButton);
+        tglZoom = (JToggleButton) add(zoomAction, true);
+        tglZoomSettings();
+        zoomAction.setButton(tglZoom);
 
 		// if
         // (!SwatComponents.getInstance().getTimeContexts(this.pnEditor.getNetContainer().getPetriNet().getName()).isEmpty())
@@ -255,26 +255,26 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
         doLayout();
 
-        exportButton.setToolTipText(exportButtonTooltip);
+        tglExport.setToolTipText(tglExportTooltip);
 		// enterExecutionButton.setToolTipText(executionButtonTooltip);
         // enterEditingButton.setToolTipText(editingButtonTooltip);
 
-        undoButton.setToolTipText(undoTooltip);
-        redoButton.setToolTipText(redoTooltip);
-        fontButton.setToolTipText(fontTooltip);
+        tglUndo.setToolTipText(undoTooltip);
+        tglRedo.setToolTipText(redoTooltip);
+        tglFont.setToolTipText(fontTooltip);
 
         // setting background colour for toolbar and buttons
 //		setBackground(DEFAULT_BG_COLOR);
-        exportButton.setBackground(DEFAULT_BG_COLOR);
-        undoButton.setBackground(DEFAULT_BG_COLOR);
-        redoButton.setBackground(DEFAULT_BG_COLOR);
-        fontButton.setBackground(DEFAULT_BG_COLOR);
-        graphicsButton.setBackground(DEFAULT_BG_COLOR);
-        reloadExecutionButton.setBackground(DEFAULT_BG_COLOR);
-        zoomButton.setBackground(DEFAULT_BG_COLOR);
-        nodeButton.setBackground(DEFAULT_BG_COLOR);
-        exportButton.setBackground(DEFAULT_BG_COLOR);
-        toggleModeButton.setBackground(DEFAULT_BG_COLOR);
+        tglExport.setBackground(DEFAULT_BG_COLOR);
+        tglUndo.setBackground(DEFAULT_BG_COLOR);
+        tglRedo.setBackground(DEFAULT_BG_COLOR);
+        tglFont.setBackground(DEFAULT_BG_COLOR);
+        tglGraphics.setBackground(DEFAULT_BG_COLOR);
+        btnReloadExecution.setBackground(DEFAULT_BG_COLOR);
+        tglZoom.setBackground(DEFAULT_BG_COLOR);
+        tglNode.setBackground(DEFAULT_BG_COLOR);
+        tglExport.setBackground(DEFAULT_BG_COLOR);
+        btnToggleMode.setBackground(DEFAULT_BG_COLOR);
 
     }
 
@@ -339,13 +339,13 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 		return btnFullTrace;
 	}
 
-    private void zoomButtonSettings() {
+    private void tglZoomSettings() {
         final mxGraphView view = pnEditor.getGraphComponent().getGraph().getView();
         double scale = view.getScale();
         int scaleInt = (int) (scale * 100);
-        zoomButton.setVerticalAlignment(SwingConstants.CENTER);
-        zoomButton.setText(scaleInt + "%  ");
-        zoomButton.setIconTextGap(-5);
+        tglZoom.setVerticalAlignment(SwingConstants.CENTER);
+        tglZoom.setText(scaleInt + "%  ");
+        tglZoom.setIconTextGap(-5);
 
         // Sets the zoom in the zoom combo the current value
         mxIEventListener scaleTracker = new mxIEventListener() {
@@ -359,8 +359,8 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
                 if (!ignoreZoomChange) {
                     double scale = view.getScale();
                     int scaleInt = (int) (scale * 100);
-                    zoomButton.setText(scaleInt + "%");
-                    zoomButton.setIconTextGap(-5);
+                    tglZoom.setText(scaleInt + "%");
+                    tglZoom.setIconTextGap(-5);
                 }
             }
         };
@@ -374,19 +374,19 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         scaleTracker.invoke(null, null);
     }
 
-    private void setButtonSettings(final JButton button) {
-        button.setBorderPainted(false);
-        button.addMouseListener(new MouseAdapter() {
+    private void setButtonSettings(final JButton btn) {
+    	btn.setBorderPainted(false);
+    	btn.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                button.setBorderPainted(false);
+            	btn.setBorderPainted(false);
                 super.mouseReleased(e);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                button.setBorderPainted(true);
+            	btn.setBorderPainted(true);
                 super.mousePressed(e);
             }
 
@@ -426,7 +426,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         pnEditor.getGraphComponent().getGraph().clearSelection();
         pnEditor.getGraphComponent().getGraph().setExecution(true);
         pnEditor.getGraphComponent().highlightEnabledTransitions();
-        toggleModeButton.setText("PLAY");
+        btnToggleMode.setText("PLAY");
         setExecutionButtonsVisible(true);
         setEditButtonsVisible(false);
         executionTrace = "";
@@ -436,18 +436,18 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
     private void setEditButtonsVisible(boolean b) {
         // enterEditingButton.setVisible(b);
-        undoButton.setVisible(b);
-        redoButton.setVisible(b);
-        nodeButton.setVisible(b);
-        fontButton.setVisible(b);
-        graphicsButton.setVisible(b);
-        if (nodeAction.getDialog() != null && nodeButton.isSelected()) {
+        tglUndo.setVisible(b);
+        tglRedo.setVisible(b);
+        tglNode.setVisible(b);
+        tglFont.setVisible(b);
+        tglGraphics.setVisible(b);
+        if (nodeAction.getDialog() != null && tglNode.isSelected()) {
             nodeAction.getDialog().setVisible(b);
         }
-        if (fontAction.getDialog() != null && fontButton.isSelected()) {
+        if (fontAction.getDialog() != null && tglFont.isSelected()) {
             fontAction.getDialog().setVisible(b);
         }
-        if (graphicsAction.getDialog() != null && graphicsButton.isSelected()) {
+        if (graphicsAction.getDialog() != null && tglGraphics.isSelected()) {
             graphicsAction.getDialog().setVisible(b);
         }
         setNetSpecificButtonsVisible(b);
@@ -457,7 +457,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
     private void setExecutionButtonsVisible(boolean b) {
         // enterExecutionButton.setVisible(b);
-        reloadExecutionButton.setVisible(b);
+        btnReloadExecution.setVisible(b);
         setExecutionTraceVisible(b);
         getButtonFullExecution().setVisible(b);
     }
@@ -474,7 +474,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         editingModeListenerSupport.notifyEditingModeChange(mode);
         pnEditor.getGraphComponent().removeCellOverlays();
         pnEditor.getGraphComponent().getGraph().enterEditingMode();
-        toggleModeButton.setText("EDIT");
+        btnToggleMode.setText("EDIT");
         setEditButtonsVisible(true);
         setExecutionButtonsVisible(false);
     }

@@ -584,11 +584,11 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		PTNet ptNet = createPTNet();
 		PTGraphics ptNetGraphics = createPTNetGraphics(ptNet);
 		GraphicalPTNet netContainer = new GraphicalPTNet(ptNet, ptNetGraphics);
-		JPanel pvPanel = new JPanel();
+		JPanel pnlPv = new JPanel();
 		PropertiesView propertiesView = new PropertiesView(new PTProperties(netContainer));
 		propertiesView.setUpGUI();
-		pvPanel.add(propertiesView);
-		new DisplayFrame(pvPanel, true);
+		pnlPv.add(propertiesView);
+		new DisplayFrame(pnlPv, true);
 
 	}
 

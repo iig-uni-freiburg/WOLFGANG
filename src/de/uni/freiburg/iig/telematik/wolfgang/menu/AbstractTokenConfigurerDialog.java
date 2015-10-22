@@ -49,7 +49,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected static final int MAX_CAPACITY = 99;
 	private static final int SPINNER_DEFAULT_WIDTH = 63;
 
-	private JButton addButton;
+	private JButton btnAdd;
 
 	protected PNGraph graph;
 	protected Map<String, Color> colors;
@@ -133,10 +133,10 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 	private void createAddBtn() {
 		try {
-			addButton = new JButton(IconFactory.getIcon("maximize"));
-			addButton.setFocusable(false);
+			btnAdd = new JButton(IconFactory.getIcon("maximize"));
+			btnAdd.setFocusable(false);
 			creaeAddBtnListener();
-			mainPanel().add(addButton);
+			mainPanel().add(btnAdd);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -149,7 +149,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected abstract String getCellSpecific2ndHeadline();
 
 	private void creaeAddBtnListener() {
-		addButton.addMouseListener(new MouseAdapter() {
+		btnAdd.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -163,7 +163,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 						addColorItem(popup, color);
 				}
 
-				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
+				popup.show(btnAdd, btnAdd.getWidth() * 4 / 5, btnAdd.getHeight() * 4 / 5);
 
 			}
 
@@ -181,8 +181,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 							((mxGraphModel) graph.getModel()).endUpdate();
 
 							if (getMultiSet().contains(colors.keySet())) {
-								if (addButton != null)
-									addButton.setEnabled(false);
+								if (btnAdd != null)
+									btnAdd.setEnabled(false);
 							}
 
 							updateTokenConfigurerView();
@@ -212,9 +212,9 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 			mainPanel().add(Box.createGlue());
 		}
 
-		JButton rmv = getRemoveButton(tokenLabel);
-		mainPanel().add(rmv);
-		rmv.setEnabled(isRemoveBtnEnabled());
+		JButton btnRmv = getRemoveButton(tokenLabel);
+		mainPanel().add(btnRmv);
+		btnRmv.setEnabled(isRemoveBtnEnabled());
 	}
 
 	protected abstract boolean isRemoveBtnEnabled();
@@ -262,27 +262,27 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected abstract int getSpinnerCapacity(String tokenLabel);
 
 	private JButton getRemoveButton(final String tokenName) {
-		JButton remove = null;
+		JButton btnRemove = null;
 		try {
-			remove = new JButton(IconFactory.getIcon("minimize"));
+			btnRemove = new JButton(IconFactory.getIcon("minimize"));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
-		remove.addActionListener(new ActionListener() {
+		btnRemove.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				((mxGraphModel) graph.getModel()).beginUpdate();
 				createCellSpecificRemoveBtnAction(tokenName);
 				((mxGraphModel) graph.getModel()).endUpdate();
-				if (addButton != null)
-					addButton.setEnabled(true);
+				if (btnAdd != null)
+					btnAdd.setEnabled(true);
 				pack();
 				updateTokenConfigurerView();
 			}
 
 		});
-		return remove;
+		return btnRemove;
 	}
 
 	protected abstract void createCellSpecificRemoveBtnAction(String tokenName);
