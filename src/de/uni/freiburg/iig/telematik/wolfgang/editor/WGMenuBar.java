@@ -41,7 +41,7 @@ public class WGMenuBar extends JMenuBar {
 
 	private JMenu getFileMenu() throws PropertyException, IOException {
         
-		JMenu fileMenu = new JMenu("File");
+		JMenu mnuFile = new JMenu("File");
 		
 		JMenuItem mniNewSubMenu = new JMenu("New");
 	
@@ -55,18 +55,18 @@ public class WGMenuBar extends JMenuBar {
 		mniCreateCPN.addActionListener(new NewCPNAction(wolfgang));
 		mniCreateCPN.setAccelerator(KeyStroke.getKeyStroke('N', commandAndShift));
 		mniNewSubMenu.add(mniCreateCPN);
-		fileMenu.add(mniNewSubMenu);
+		mnuFile.add(mniNewSubMenu);
 		
 		
 		JMenuItem mniLoad = new JMenuItem("Open .pnml in new Window");
 		mniLoad.setAccelerator(KeyStroke.getKeyStroke('O', commandKey));
 		mniLoad.addActionListener(new LoadAction(wolfgang));
-		fileMenu.add(mniLoad);
+		mnuFile.add(mniLoad);
 		
 		JMenuItem mniSave = new JMenuItem("save");
 		mniSave.setAccelerator(KeyStroke.getKeyStroke('S', commandKey));
 		mniSave.addActionListener(new SaveAction(wolfgang));
-		fileMenu.add(mniSave);
+		mnuFile.add(mniSave);
 //		if(wolfgang.getFileReference() == null)
 //			save.setEnabled(false);
 //		else
@@ -76,29 +76,29 @@ public class WGMenuBar extends JMenuBar {
 		//save.setRolloverEnabled(true);
 		mniSaveAS.addActionListener(new SaveAsAction(wolfgang));
 		mniSaveAS.setAccelerator(KeyStroke.getKeyStroke('S', commandAndShift));
-		fileMenu.add(mniSaveAS);
+		mnuFile.add(mniSaveAS);
 		
 		JMenuItem mniQuit = new JMenuItem("Quit");
 		mniQuit.addActionListener(new ExitAction(wolfgang));
 		mniQuit.setAccelerator(KeyStroke.getKeyStroke('Q', commandKey));
-		fileMenu.add(mniQuit);
-		return fileMenu;
+		mnuFile.add(mniQuit);
+		return mnuFile;
 	}
 
 
 
 
 	private JMenu getSettingsMenu() throws PropertyException, IOException {
-		JMenu settings = new JMenu("Settings");
+		JMenu mnuSettings = new JMenu("Settings");
 		JMenuItem mniSettings = new JMenuItem("Edit Wolfgang properties...");
 		mniSettings.setAccelerator(KeyStroke.getKeyStroke('M', commandKey));
 		mniSettings.addActionListener(new SettingsAction(wolfgang, WGMenuBar.this));
-		settings.add(mniSettings);
-		return settings;
+		mnuSettings.add(mniSettings);
+		return mnuSettings;
 	}
         
         private JMenu getHelpEntry() {
-		JMenu helpEntry = new JMenu("Help");
+		JMenu mnuHelp = new JMenu("Help");
             try {
             	JMenuItem mniAbout = new JMenuItem("About");
             	mniAbout.addActionListener(new AboutAction(wolfgang));
@@ -108,15 +108,15 @@ public class WGMenuBar extends JMenuBar {
             	mniError.addActionListener(new SendExceptionsAsEmail(wolfgang));
             	mniError.setAccelerator(KeyStroke.getKeyStroke('M', commandAndShift));
             	
-            	helpEntry.add(mniAbout);
-            	helpEntry.add(mniError);
+            	mnuHelp.add(mniAbout);
+            	mnuHelp.add(mniError);
 
             } catch (PropertyException ex) {
                 Logger.getLogger(WGMenuBar.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(WGMenuBar.class.getName()).log(Level.SEVERE, null, ex);
             }
-		return helpEntry;
+		return mnuHelp;
 	}
 
 }

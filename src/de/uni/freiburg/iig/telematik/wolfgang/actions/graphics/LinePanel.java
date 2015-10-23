@@ -31,7 +31,7 @@ public class LinePanel extends JToolBar {
 	 */
 	private static final long serialVersionUID = -9066508120886312900L;
 	private GraphicsFillColorChooserPanel lineColor;
-	private ButtonGroup btnShapeGroup;
+	private ButtonGroup btngrpShape;
 	private JButton btnLine;
 	private JButton btnRound;
 	private JButton btnLineSolid;
@@ -140,9 +140,9 @@ public class LinePanel extends JToolBar {
 			btnLineDash.setFocusable(false);	
 			btnLineDot.setFocusable(false);
 
-			btnShapeGroup = new ButtonGroup();
-			btnShapeGroup.add(btnLine);
-			btnShapeGroup.add(btnRound);
+			btngrpShape = new ButtonGroup();
+			btngrpShape.add(btnLine);
+			btngrpShape.add(btnRound);
 			
 			btnStyleGroup = new ButtonGroup();
 			btnStyleGroup.add(btnLineSolid);
@@ -207,14 +207,14 @@ public class LinePanel extends JToolBar {
 	}
 
 	private void updateLineShape(Shape line) {
-		btnShapeGroup.clearSelection();
+		btngrpShape.clearSelection();
 		if (line != null)
 			switch (line) {
 			case CURVE:
-				btnShapeGroup.setSelected(btnRound.getModel(), true);
+				btngrpShape.setSelected(btnRound.getModel(), true);
 				break;
 			case LINE:
-				btnShapeGroup.setSelected(btnLine.getModel(), true);
+				btngrpShape.setSelected(btnLine.getModel(), true);
 				break;
 			default:
 				break;

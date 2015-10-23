@@ -6,7 +6,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalTimedNet;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 public class RTPNProperties extends PNProperties {
 

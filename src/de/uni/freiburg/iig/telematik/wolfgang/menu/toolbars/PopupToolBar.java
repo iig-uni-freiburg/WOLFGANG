@@ -255,12 +255,12 @@ public class PopupToolBar {
 		}
 	}
 
-	public void add(JComponent action) {
+	public void add(JComponent cmp) {
 
 		if (tlbHorizontal == null) {
 			tlbHorizontal = createToolBar(JToolBar.HORIZONTAL);
 		}
-		tlbHorizontal.add(action);
+		tlbHorizontal.add(cmp);
 
 	}
 

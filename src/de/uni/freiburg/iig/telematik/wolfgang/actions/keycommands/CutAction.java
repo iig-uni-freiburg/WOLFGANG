@@ -14,16 +14,16 @@ public class CutAction extends AbstractPNEditorAction {
 	
 	private static final long serialVersionUID = -7309816433378748227L;
 	
-	private Action transferAction = null;
+	private Action actTransfer = null;
 
-	public CutAction(PNEditorComponent editor, Action transferAction) throws PropertyException, IOException {
+	public CutAction(PNEditorComponent editor, Action actTransfer) throws PropertyException, IOException {
 		super(editor, "Cut", IconFactory.getIcon("cut"));
-		this.transferAction = transferAction;
+		this.actTransfer = actTransfer;
 	}
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		transferAction.actionPerformed(new ActionEvent(this.getEditor().getGraphComponent(), e.getID(), e.getActionCommand()));		
+		actTransfer.actionPerformed(new ActionEvent(this.getEditor().getGraphComponent(), e.getID(), e.getActionCommand()));		
 	}
 
 }

@@ -25,7 +25,6 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraph;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.change.CapacityChange;
@@ -63,12 +62,12 @@ public class CPNPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 		JSpinner spnCapacity;
 		if (!getPlace().isBounded()) {
 			String[] string = { "\u221e" };
-			SpinnerModel capacityModel = new SpinnerListModel(string);
-			spnCapacity = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerListModel(string);
+			spnCapacity = new JSpinner(spnmCapacity);
 		} else {
 			int capacitiy = getPlace().getColorCapacity(tokenLabel);
-			SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
-			spnCapacity = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
+			spnCapacity = new JSpinner(spnmCapacity);
 		}
 
 		spnCapacity.addChangeListener(new ChangeListener() {

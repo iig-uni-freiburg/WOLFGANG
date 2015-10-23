@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;

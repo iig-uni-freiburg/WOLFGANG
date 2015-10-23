@@ -33,7 +33,6 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.dialog.AbstractDialog;
-import de.invation.code.toval.graphic.dialog.AbstractDialog.ButtonPanelLayout;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
@@ -226,8 +225,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		int cap = getSpinnerCapacity(lblToken);
 		int min = getMinimumCapacity();
 		int step = 1;
-		SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
-		TokenSpinner spn = new TokenSpinner(model, lblToken, cap);
+		SpinnerModel spnm = new SpinnerNumberModel(size, min, cap, step);
+		TokenSpinner spn = new TokenSpinner(spnm, lblToken, cap);
 		int w = spn.getWidth();
 		int h = spn.getHeight();
 		Dimension d = new Dimension(SPINNER_DEFAULT_WIDTH, h);
@@ -328,8 +327,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		private String tokenName;
 		private int capacity;
 
-		public TokenSpinner(SpinnerModel model, String tokenName, int cap) {
-			super(model);
+		public TokenSpinner(SpinnerModel spnm, String tokenName, int cap) {
+			super(spnm);
 			this.tokenName = tokenName;
 			this.capacity = cap;
 		}

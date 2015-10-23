@@ -328,9 +328,9 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
             });
             setEditorPanels();
-            JComponent bottomComponent = getBottomComponent();
-            if (bottomComponent != null) {
-                pnlContent.add(bottomComponent, BorderLayout.PAGE_END);
+            JComponent cmpBottom = getBottomComponent();
+            if (cmpBottom != null) {
+                pnlContent.add(cmpBottom, BorderLayout.PAGE_END);
             }
         }
         return pnlContent;

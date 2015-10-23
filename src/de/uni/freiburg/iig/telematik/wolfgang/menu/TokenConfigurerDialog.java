@@ -36,7 +36,6 @@ import javax.swing.event.ChangeListener;
 import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.RestrictedTextField;
-import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;

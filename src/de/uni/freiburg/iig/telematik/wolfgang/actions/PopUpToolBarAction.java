@@ -33,18 +33,18 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	
 	private JDialog dlgPopup;
 	private JToggleButton tglButton;
-	private JComponent toolbarContent;
+	private JComponent cmpToolbarContent;
 	private JButton btnNewDialog;
 	private PopupToolBar popupToolBar;
 	protected JDialog dlg;
 
-	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JComponent toolbar) throws ParameterException, PropertyException, IOException {
+	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JComponent cmpToolbar) throws ParameterException, PropertyException, IOException {
 		super(editor, name, icon);
 		popupToolBar = new PopupToolBar();
-		toolbarContent = toolbar;
+		cmpToolbarContent = cmpToolbar;
 		btnNewDialog = new JButton(IconFactory.getIcon("maximize"));
 		btnNewDialog.setBorderPainted(false);
-		newWindowButton(popupToolBar, toolbarContent, btnNewDialog);
+		newWindowButton(popupToolBar, cmpToolbarContent, btnNewDialog);
 	}
 
 	protected JDialog getPopupFrame() {
@@ -64,17 +64,17 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 		this.tglButton = tglAdded;
 	}
 
-	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent toolbarContent2, final JButton btnNewDialog) {
+	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent cmpToolbarContent2, final JButton btnNewDialog) {
 		btnNewDialog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				popupToolBar.setButton(getButton(), true);
 				Window window = SwingUtilities.getWindowAncestor(getButton());
-				JDialog dlg = new ToolBarDialog(window, toolbarContent2.getName(), false);
+				JDialog dlg = new ToolBarDialog(window, cmpToolbarContent2.getName(), false);
 				if (btnNewDialog.getName() != null)
 					dlg.setTitle(btnNewDialog.getName());
 				dlg.setLocationRelativeTo(window);
-				dlg.add(toolbarContent2);
+				dlg.add(cmpToolbarContent2);
 				dlg.setModal(false);
 				dlg.setResizable(false);
 				getButton().addMouseListener(new MouseAdapter() {
@@ -117,7 +117,7 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 		if (getPopupFrame() == null) {
 			popupToolBar.setButton(getButton(), false);
 
-			popupToolBar.add(toolbarContent);
+			popupToolBar.add(cmpToolbarContent);
 			popupToolBar.add(btnNewDialog);
 
 			int size = 0;

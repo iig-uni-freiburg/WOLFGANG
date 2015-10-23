@@ -69,12 +69,12 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 		JSpinner spnCapacity;
 		if (!getPlace().isBounded()) {
 			String[] string = { "\u221e" };
-			SpinnerModel capacityModel = new SpinnerListModel(string);
-			spnCapacity = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerListModel(string);
+			spnCapacity = new JSpinner(spnmCapacity);
 		} else {
 			int capacitiy = getPlace().getCapacity();
-			SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
-			spnCapacity = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
+			spnCapacity = new JSpinner(spnmCapacity);
 		}
 
 		spnCapacity.addChangeListener(new ChangeListener() {

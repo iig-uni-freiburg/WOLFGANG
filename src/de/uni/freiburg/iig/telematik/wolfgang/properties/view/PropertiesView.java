@@ -41,7 +41,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
-import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -56,8 +55,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Positi
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.PNEditingModeListener;
