@@ -24,7 +24,7 @@ public class CPNToolBar extends AbstractToolBar {
 	private static final Color DEFAULT_BG_COLOR = UIManager.getColor("Panel.background");
 	private TokenColorToolBar tokenToolbar;
 	private PopUpToolBarAction tokenAction;
-	private JToggleButton tokenButton;
+	private JToggleButton tglToken;
 
 	public CPNToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
 		super(pnEditor, orientation);
@@ -32,9 +32,9 @@ public class CPNToolBar extends AbstractToolBar {
 
 	@Override
 	protected void addNetSpecificToolbarButtons() {
-		tokenButton = (JToggleButton) add(tokenAction, true);
-		tokenButton.setBackground(DEFAULT_BG_COLOR);
-		tokenAction.setButton(tokenButton);
+		tglToken = (JToggleButton) add(tokenAction, true);
+		tglToken.setBackground(DEFAULT_BG_COLOR);
+		tokenAction.setButton(tglToken);
 		tokenToolbar.setPopUpToolBarAction(tokenAction);
 	}
 
@@ -55,8 +55,8 @@ public class CPNToolBar extends AbstractToolBar {
 
 	@Override
 	protected void setNetSpecificButtonsVisible(boolean b) {
-		tokenButton.setVisible(b);
-		if (tokenAction.getDialog() != null && tokenButton.isSelected())
+		tglToken.setVisible(b);
+		if (tokenAction.getDialog() != null && tglToken.isSelected())
 			tokenAction.getDialog().setVisible(b);
 	}
 

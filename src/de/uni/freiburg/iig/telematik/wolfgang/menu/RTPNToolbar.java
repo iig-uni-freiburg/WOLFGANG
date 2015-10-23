@@ -22,24 +22,24 @@ public class RTPNToolbar extends PTNetToolBar {
 	}
 	
 	private JComboBox<ResourceContext> getResourceContextDropBox(){
-		JComboBox<ResourceContext> result = new JComboBox<>();
-		result.setSize(150, 30);
-		result.setPreferredSize(new Dimension(130, 30));
-		return result;
+		JComboBox<ResourceContext> cmbResult = new JComboBox<>();
+		cmbResult.setSize(150, 30);
+		cmbResult.setPreferredSize(new Dimension(130, 30));
+		return cmbResult;
 	}
 	
 	private JComboBox<ResourceContext> getTimeContextDropBox(){
-		JComboBox<ResourceContext> result = new JComboBox<>();
-		result.setSize(150, 30);
-		result.setPreferredSize(new Dimension(130, 30));
-		return result;
+		JComboBox<ResourceContext> cmbResult = new JComboBox<>();
+		cmbResult.setSize(150, 30);
+		cmbResult.setPreferredSize(new Dimension(130, 30));
+		return cmbResult;
 	}
 	
 	private JComboBox<ResourceContext> getAccessContextDropBox(){
-		JComboBox<ResourceContext> result = new JComboBox<>();
-		result.setSize(150, 30);
-		result.setPreferredSize(new Dimension(130, 30));
-		return result;
+		JComboBox<ResourceContext> cmbResult = new JComboBox<>();
+		cmbResult.setSize(150, 30);
+		cmbResult.setPreferredSize(new Dimension(130, 30));
+		return cmbResult;
 	}
 
 	private static final long serialVersionUID = -7375088484674702613L;

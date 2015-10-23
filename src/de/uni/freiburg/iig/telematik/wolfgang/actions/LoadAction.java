@@ -36,11 +36,11 @@ public class LoadAction extends AbstractWolfgangAction {
 		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
-		JFileChooser fc;
+		JFileChooser fch;
 
-		fc = new JFileChooser(System.getProperty("user.home"));
-		fc.removeChoosableFileFilter(fc.getFileFilter());
-		fc.addChoosableFileFilter(new FileFilter() {
+		fch = new JFileChooser(System.getProperty("user.home"));
+		fch.removeChoosableFileFilter(fch.getFileFilter());
+		fch.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
 			}
@@ -53,11 +53,11 @@ public class LoadAction extends AbstractWolfgangAction {
 				}
 			}
 		});
-		fc.setDialogTitle("Load PNML");
-		int returnVal = fc.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "load PNML");
+		fch.setDialogTitle("Load PNML");
+		int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "load PNML");
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fc.getSelectedFile().getAbsolutePath();
+			String filename = fch.getSelectedFile().getAbsolutePath();
 
 			if (filename.toLowerCase().endsWith(".pnml")) {
 				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());

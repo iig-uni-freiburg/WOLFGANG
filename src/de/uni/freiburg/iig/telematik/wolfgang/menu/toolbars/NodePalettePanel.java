@@ -132,14 +132,14 @@ public class NodePalettePanel extends JPanel {
 	}
 
 	private void addHowToDescription() {
-		JLabel howtoLabel = new JLabel("Drag 'n Drop Nodes to Editor  ");
-		JLabel howtoLabelArc = new JLabel("OR Arcs from Node Centers.");
+		JLabel lblHowto = new JLabel("Drag 'n Drop Nodes to Editor  ");
+		JLabel lblHowtoArc = new JLabel("OR Arcs from Node Centers.");
 
 		Font fontStyle = new Font(Font.DIALOG, Font.ITALIC, 10);
-		howtoLabel.setFont(fontStyle);
-		howtoLabelArc.setFont(fontStyle);
-		add(howtoLabel, BorderLayout.CENTER);
-		add(howtoLabelArc, BorderLayout.PAGE_END);
+		lblHowto.setFont(fontStyle);
+		lblHowtoArc.setFont(fontStyle);
+		add(lblHowto, BorderLayout.CENTER);
+		add(lblHowtoArc, BorderLayout.PAGE_END);
 
 	}
 

@@ -95,7 +95,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private EditorPopupMenu popupMenu = null;
 
-	private JPopupMenu transitionPopupMenu;
+	private JPopupMenu pmnTransition;
 
 	private Map<String, mxCellMarker> markerReference = new HashMap<String, mxCellMarker>();
 
@@ -407,12 +407,12 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		return popupMenu;
 	}
 
-	public void setTransitionPopupMenu(JPopupMenu jPopupMenu) {
-		this.transitionPopupMenu = jPopupMenu;
+	public void setTransitionPopupMenu(JPopupMenu pmn) {
+		this.pmnTransition = pmn;
 	}
 
 	public JPopupMenu getTransitionPopupMenu() {
-		return transitionPopupMenu;
+		return pmnTransition;
 	}
 
 	// ------- MouseListener support

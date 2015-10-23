@@ -45,20 +45,20 @@ public class PopupToolBar {
 				if (e.getOppositeWindow() != null && e.getComponent().getParent() != null && e.getOppositeWindow().equals(e.getComponent().getParent()) || (e.getOppositeWindow()instanceof ToolBarDialog))
 					disposeAllWindows();
 				if (!dialogOpen)
-					tglButton.setSelected(false);
+					tgl.setSelected(false);
 			}
 		}
 	}
 
-	private JToolBar verticalToolBar;
+	private JToolBar tlbVertical;
 
-	protected JToolBar horizontalToolBar;
+	protected JToolBar tlbHorizontal;
 
 	private Window[] windows;
 
 	private DialogFocusListener focusListener;
 
-	private JToggleButton tglButton;
+	private JToggleButton tgl;
 
 	private boolean dialogOpen;
 
@@ -66,7 +66,7 @@ public class PopupToolBar {
 	}
 
 	protected JToolBar createToolBar(int alignment) {
-		JToolBar toolBar = new JToolBar(alignment) {
+		JToolBar tlb = new JToolBar(alignment) {
 			@Override
 			protected JButton createActionComponent(Action a) {
 				final JButton btn = super.createActionComponent(a);
@@ -78,8 +78,8 @@ public class PopupToolBar {
 				return btn;
 			}
 		};
-		toolBar.setFloatable(false);
-		return toolBar;
+		tlb.setFloatable(false);
+		return tlb;
 	}
 
 	// private Action encapsulateAction(final AbstractAction action) {
@@ -118,16 +118,16 @@ public class PopupToolBar {
 		JButton btn;
 		switch (alignment) {
 		case JToolBar.VERTICAL:
-			if (verticalToolBar == null) {
-				verticalToolBar = createToolBar(alignment);
+			if (tlbVertical == null) {
+				tlbVertical = createToolBar(alignment);
 			}
-			btn = verticalToolBar.add(action);
+			btn = tlbVertical.add(action);
 			break;
 		case JToolBar.HORIZONTAL:
-			if (horizontalToolBar == null) {
-				horizontalToolBar = createToolBar(alignment);
+			if (tlbHorizontal == null) {
+				tlbHorizontal = createToolBar(alignment);
 			}
-			btn = horizontalToolBar.add(action);
+			btn = tlbHorizontal.add(action);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown alignment " + alignment);
@@ -144,9 +144,9 @@ public class PopupToolBar {
 	private JToolBar getToolBar(int alignment) {
 		switch (alignment) {
 		case JToolBar.VERTICAL:
-			return verticalToolBar;
+			return tlbVertical;
 		case JToolBar.HORIZONTAL:
-			return horizontalToolBar;
+			return tlbHorizontal;
 		default:
 			throw new IllegalArgumentException("Unknown alignment " + alignment);
 		}
@@ -184,28 +184,28 @@ public class PopupToolBar {
 	 * @return the created window
 	 */
 	protected Window createWindow(Component comp, int alignment, Point point) {
-		JToolBar bar = getToolBar(alignment);
-		if (bar == null) {
+		JToolBar tlb = getToolBar(alignment);
+		if (tlb == null) {
 			return null;
 		}
-		final JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(comp));
-		dialog.addMouseMotionListener(new MouseMotionAdapter() {
+		final JDialog dlg = new JDialog(JOptionPane.getFrameForComponent(comp));
+		dlg.addMouseMotionListener(new MouseMotionAdapter() {
 
 			public void mouseMoved(MouseEvent e) {
-				if (!dialog.hasFocus())
-					dialog.requestFocusInWindow();
+				if (!dlg.hasFocus())
+					dlg.requestFocusInWindow();
 			}
 
 		});
-		dialog.setUndecorated(true);
-		dialog.setLayout(new BorderLayout());
-		dialog.add(bar);
-		dialog.pack();
+		dlg.setUndecorated(true);
+		dlg.setLayout(new BorderLayout());
+		dlg.add(tlb);
+		dlg.pack();
 
 		Point loc = adujstPoint(point);
 		SwingUtilities.convertPointToScreen(loc, comp);
-		dialog.setLocation(loc);
-		return dialog;
+		dlg.setLocation(loc);
+		return dlg;
 	}
 
 	/**
@@ -257,15 +257,15 @@ public class PopupToolBar {
 
 	public void add(JComponent action) {
 
-		if (horizontalToolBar == null) {
-			horizontalToolBar = createToolBar(JToolBar.HORIZONTAL);
+		if (tlbHorizontal == null) {
+			tlbHorizontal = createToolBar(JToolBar.HORIZONTAL);
 		}
-		horizontalToolBar.add(action);
+		tlbHorizontal.add(action);
 
 	}
 
-	public void setButton(JToggleButton jToggleButton, boolean dialogOpen) {
-		this.tglButton = jToggleButton;
+	public void setButton(JToggleButton tgl, boolean dialogOpen) {
+		this.tgl = tgl;
 		this.dialogOpen = dialogOpen;
 
 	}

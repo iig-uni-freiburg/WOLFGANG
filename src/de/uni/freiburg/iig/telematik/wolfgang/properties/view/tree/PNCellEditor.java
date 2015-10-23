@@ -53,8 +53,8 @@ public class PNCellEditor extends DefaultCellEditor {
 		return result;
 	}
 
-	public PNCellEditor(JTextField name) {
-		super(name);
+	public PNCellEditor(JTextField txtName) {
+		super(txtName);
 		// TODO Auto-generated constructor stub
 	}
 

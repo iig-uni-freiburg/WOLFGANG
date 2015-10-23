@@ -1,23 +1,9 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.graphpopup;
 
 import java.awt.event.ActionEvent;
-
-import javax.swing.JLabel;
-
-import com.mxgraph.layout.mxCircleLayout;
-import com.mxgraph.layout.mxCompactTreeLayout;
-import com.mxgraph.layout.mxEdgeLabelLayout;
-import com.mxgraph.layout.mxIGraphLayout;
-import com.mxgraph.layout.mxOrganicLayout;
-import com.mxgraph.layout.mxParallelEdgeLayout;
-import com.mxgraph.layout.mxPartitionLayout;
-import com.mxgraph.layout.mxStackLayout;
-import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxRectangle;
 import com.mxgraph.util.mxUtils;
-import com.mxgraph.view.mxGraph;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;

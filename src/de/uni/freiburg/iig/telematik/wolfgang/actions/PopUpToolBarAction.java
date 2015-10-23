@@ -31,12 +31,12 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 
 	private static final long serialVersionUID = 3097560664208606500L;
 	
-	private JDialog popupDialog;
-	private JToggleButton button;
+	private JDialog dlgPopup;
+	private JToggleButton tglButton;
 	private JComponent toolbarContent;
 	private JButton btnNewDialog;
 	private PopupToolBar popupToolBar;
-	protected JDialog dialog;
+	protected JDialog dlg;
 
 	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JComponent toolbar) throws ParameterException, PropertyException, IOException {
 		super(editor, name, icon);
@@ -48,20 +48,20 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	}
 
 	protected JDialog getPopupFrame() {
-		return popupDialog;
+		return dlgPopup;
 	}
 
-	public void setPopupFrame(JDialog dialog) {
-		this.popupDialog = dialog;
+	public void setPopupFrame(JDialog dlg) {
+		this.dlgPopup = dlg;
 	}
 
 	protected JToggleButton getButton() {
 		// TODO Auto-generated method stub
-		return button;
+		return tglButton;
 	}
 
-	public void setButton(JToggleButton addedButton) {
-		this.button = addedButton;
+	public void setButton(JToggleButton tglAdded) {
+		this.tglButton = tglAdded;
 	}
 
 	private void newWindowButton(final PopupToolBar popupToolBar, final JComponent toolbarContent2, final JButton btnNewDialog) {
@@ -70,13 +70,13 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 			public void actionPerformed(ActionEvent e) {
 				popupToolBar.setButton(getButton(), true);
 				Window window = SwingUtilities.getWindowAncestor(getButton());
-				JDialog dialog = new ToolBarDialog(window, toolbarContent2.getName(), false);
+				JDialog dlg = new ToolBarDialog(window, toolbarContent2.getName(), false);
 				if (btnNewDialog.getName() != null)
-					dialog.setTitle(btnNewDialog.getName());
-				dialog.setLocationRelativeTo(window);
-				dialog.add(toolbarContent2);
-				dialog.setModal(false);
-				dialog.setResizable(false);
+					dlg.setTitle(btnNewDialog.getName());
+				dlg.setLocationRelativeTo(window);
+				dlg.add(toolbarContent2);
+				dlg.setModal(false);
+				dlg.setResizable(false);
 				getButton().addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -86,7 +86,7 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 					}
 				});
 
-				dialog.addWindowListener(new WindowAdapter() {
+				dlg.addWindowListener(new WindowAdapter() {
 
 					@Override
 					public void windowClosing(WindowEvent e) {
@@ -95,21 +95,21 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 
 					}
 				});
-				setPopupFrame(dialog);
-				dialog.pack();
-				dialog.setVisible(true);
-				setDialog(dialog);
+				setPopupFrame(dlg);
+				dlg.pack();
+				dlg.setVisible(true);
+				setDialog(dlg);
 			}
 
 		});
 	}
 
-	protected void setDialog(JDialog dialog) {
-		this.dialog = dialog;
+	protected void setDialog(JDialog dlg) {
+		this.dlg = dlg;
 	}
 
 	public JDialog getDialog() {
-		return dialog;
+		return dlg;
 	}
 
 	@Override

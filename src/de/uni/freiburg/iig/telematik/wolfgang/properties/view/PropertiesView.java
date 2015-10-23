@@ -139,9 +139,9 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		this.setBackground(bgcolor);
 
 		// Set Editor for Property Fields
-		JTextField textField = new JTextField();
-		textField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		PNCellEditor editor = new PNCellEditor(textField);
+		JTextField txt = new JTextField();
+		txt.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		PNCellEditor editor = new PNCellEditor(txt);
 		setCellEditor(editor);
 		setEditable(true);
 		setRowHeight(0);

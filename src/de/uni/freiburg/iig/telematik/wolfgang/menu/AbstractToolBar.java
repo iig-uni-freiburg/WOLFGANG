@@ -139,13 +139,13 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     private String undoTooltip = "undo";
     private String redoTooltip = "redo";
 
-    public JTextField executionTraceTextField = null;
+    public JTextField txtExecutionTrace = null;
 
-    private JLabel executionTraceLabel;
+    private JLabel lblExecutionTrace;
 
-    private JToolBar propertyCheckToolbar;
+    private JToolBar tlbPropertyCheck;
 
-	private JScrollPane scrollPane = new JScrollPane();
+	private JScrollPane scp = new JScrollPane();
 
 	private String executionTrace = "";
 
@@ -153,15 +153,15 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
 
     public JTextField getExecutionTrace() {
-    	if(executionTraceTextField == null){
-            executionTraceTextField = new JTextField();
-            executionTraceTextField.setEditable(false);            
+    	if(txtExecutionTrace == null){
+            txtExecutionTrace = new JTextField();
+            txtExecutionTrace.setEditable(false);            
     	}
     	Dimension d = new Dimension(150, 20);
-		executionTraceTextField.setMinimumSize(d);
-		executionTraceTextField.setPreferredSize(d);
-		executionTraceTextField.setMaximumSize(d);
-        return executionTraceTextField;
+		txtExecutionTrace.setMinimumSize(d);
+		txtExecutionTrace.setPreferredSize(d);
+		txtExecutionTrace.setMaximumSize(d);
+        return txtExecutionTrace;
     }
 
     public AbstractToolBar(final PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
@@ -198,7 +198,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         btnReloadExecution = add(reloadExecutionAction);
         setButtonSettings(btnReloadExecution);
 
-        executionTraceLabel = new JLabel("    Execution Trace: ");
+        lblExecutionTrace = new JLabel("    Execution Trace: ");
 
         setExecutionButtonsVisible(false);
 
@@ -219,9 +219,9 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
 
 
-        add(executionTraceLabel);	
-		scrollPane.setViewportView(getExecutionTrace());
-		add(scrollPane);
+        add(lblExecutionTrace);	
+		scp.setViewportView(getExecutionTrace());
+		add(scp);
 		
 		add(getButtonFullExecution());
 		
@@ -241,7 +241,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         addNetSpecificToolbarButtons();
 
         try {
-            add(getPropertyCheckToolbar());
+            add(gettlbPropertyCheck());
         } catch (ParameterException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -309,11 +309,11 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         zoomAction = new PopUpToolBarAction(pnEditor, "Zoom", IconFactory.getIcon("zoom_in"), zoomToolbar);
     }
 
-    protected JToolBar getPropertyCheckToolbar() throws ParameterException, PropertyException, IOException {
-        if (propertyCheckToolbar == null) {
-            propertyCheckToolbar = createPropertyCheckToolbar();
+    protected JToolBar gettlbPropertyCheck() throws ParameterException, PropertyException, IOException {
+        if (tlbPropertyCheck == null) {
+            tlbPropertyCheck = createPropertyCheckToolbar();
         }
-        return propertyCheckToolbar;
+        return tlbPropertyCheck;
     }
     
 	private JButton getButtonFullExecution(){
@@ -397,14 +397,14 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         if (!asToggleButton) {
             return super.add(action);
         }
-        JToggleButton b = createToggleActionComponent(action);
-        b.setAction(action);
-        add(b);
-        return b;
+        JToggleButton tgl = createToggleActionComponent(action);
+        tgl.setAction(action);
+        add(tgl);
+        return tgl;
     }
 
     protected JToggleButton createToggleActionComponent(Action a) {
-        JToggleButton b = new JToggleButton() {
+        JToggleButton tgl = new JToggleButton() {
             private static final long serialVersionUID = -3143341784881719155L;
 
             protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
@@ -412,12 +412,12 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
             }
         };
         if (a != null && (a.getValue(Action.SMALL_ICON) != null || a.getValue(Action.LARGE_ICON_KEY) != null)) {
-            b.setHideActionText(true);
+        	tgl.setHideActionText(true);
         }
-        b.setHorizontalTextPosition(JButton.CENTER);
-        b.setVerticalTextPosition(JButton.BOTTOM);
-        b.setBorderPainted(false);
-        return b;
+        tgl.setHorizontalTextPosition(JButton.CENTER);
+        tgl.setVerticalTextPosition(JButton.BOTTOM);
+        tgl.setBorderPainted(false);
+        return tgl;
     }
 
     public void setExecutionMode() {
@@ -463,9 +463,9 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     }
 
     private void setExecutionTraceVisible(boolean b) {
-        executionTraceLabel.setVisible(b);
+        lblExecutionTrace.setVisible(b);
         getExecutionTrace().setVisible(b);
-        scrollPane.setVisible(b);
+        scp.setVisible(b);
 
     }
 
