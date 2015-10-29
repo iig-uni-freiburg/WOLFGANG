@@ -36,7 +36,6 @@ import javax.swing.event.ChangeListener;
 import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.RestrictedTextField;
-import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
@@ -68,8 +67,8 @@ public class TokenConfigurerDialog extends JDialog {
 	private JButton btnAdd;
 	private PNGraph graph;
 	private AbstractCPNPlace place;
-	private JToggleButton boundButton;
-	private JToggleButton infiniteButton;
+	private JToggleButton tglBound;
+	private JToggleButton tglInfinite;
 	private Multiset<String> multisetPA;
 	private Map<String, Color> colors;
 	private String paName;
@@ -192,15 +191,15 @@ public class TokenConfigurerDialog extends JDialog {
 
 		if (isPlace) {
 			JPanel pnlBoundOrInfinite = new JPanel(new SpringLayout());
-			pnlBoundOrInfinite.add(infiniteButton);
-			pnlBoundOrInfinite.add(boundButton);
+			pnlBoundOrInfinite.add(tglInfinite);
+			pnlBoundOrInfinite.add(tglBound);
 			if (place.isBounded()) {
-				boundButton.setEnabled(false);
-				infiniteButton.setEnabled(true);
+				tglBound.setEnabled(false);
+				tglInfinite.setEnabled(true);
 			}
 			if (!place.isBounded()) {
-				boundButton.setEnabled(true);
-				infiniteButton.setEnabled(false);
+				tglBound.setEnabled(true);
+				tglInfinite.setEnabled(false);
 			}
 			SpringUtilities.makeCompactGrid(pnlBoundOrInfinite, 1, 2, 1, 1, 1, 1);
 			pnl.add(pnlBoundOrInfinite);
@@ -221,23 +220,23 @@ public class TokenConfigurerDialog extends JDialog {
 
 	private void creaePlaceSpecificComponents() {
 		try {
-			infiniteButton = new JToggleButton(IconFactory.getIcon("infinite"));
-			boundButton = new JToggleButton(IconFactory.getIcon("bounded"));
+			tglInfinite = new JToggleButton(IconFactory.getIcon("infinite"));
+			tglBound = new JToggleButton(IconFactory.getIcon("bounded"));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
-		infiniteButton.setBorder(BorderFactory.createEmptyBorder());
-		boundButton.setBorder(BorderFactory.createEmptyBorder());
+		tglInfinite.setBorder(BorderFactory.createEmptyBorder());
+		tglBound.setBorder(BorderFactory.createEmptyBorder());
 
 		Dimension dim2 = new Dimension();
 		double width2 = 35;
 		double height2 = 35;
 		dim2.setSize(width2, height2);
-		infiniteButton.setPreferredSize(dim2);
-		infiniteButton.setMinimumSize(dim2);
-		infiniteButton.setMaximumSize(dim2);
-		infiniteButton.setSize(dim2);
-		infiniteButton.addActionListener(new ActionListener() {
+		tglInfinite.setPreferredSize(dim2);
+		tglInfinite.setMinimumSize(dim2);
+		tglInfinite.setMaximumSize(dim2);
+		tglInfinite.setSize(dim2);
+		tglInfinite.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -253,11 +252,11 @@ public class TokenConfigurerDialog extends JDialog {
 
 		});
 
-		boundButton.setPreferredSize(dim2);
-		boundButton.setMinimumSize(dim2);
-		boundButton.setMaximumSize(dim2);
-		boundButton.setSize(dim2);
-		boundButton.addActionListener(new ActionListener() {
+		tglBound.setPreferredSize(dim2);
+		tglBound.setMinimumSize(dim2);
+		tglBound.setMaximumSize(dim2);
+		tglBound.setSize(dim2);
+		tglBound.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -283,16 +282,16 @@ public class TokenConfigurerDialog extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				JPopupMenu popup = new JPopupMenu();
+				JPopupMenu pmn = new JPopupMenu();
 				if (multisetPA == null)
 					multisetPA = new Multiset<String>();
 				for (Entry<String, Color> c : colors.entrySet()) {
 					final String color = c.getKey();
 					if (!isTransition && !multisetPA.contains(color)) {
-						JMenuItem item = new JMenuItem(color);
-						item.setName(color);
+						JMenuItem mniItem = new JMenuItem(color);
+						mniItem.setName(color);
 
-						item.addActionListener(new ActionListener() {
+						mniItem.addActionListener(new ActionListener() {
 
 							@Override
 							public void actionPerformed(ActionEvent arg0) {
@@ -314,7 +313,7 @@ public class TokenConfigurerDialog extends JDialog {
 								pack();
 							}
 						});
-						popup.add(item);
+						pmn.add(mniItem);
 					}
 
 					if (isTransition && !accessMode.keySet().contains(color) && !color.contains("black")) {
@@ -341,12 +340,12 @@ public class TokenConfigurerDialog extends JDialog {
 								pack();
 							}
 						});
-						popup.add(item);
+						pmn.add(item);
 					}
 
 				}
 
-				popup.show(btnAdd, btnAdd.getWidth() * 4 / 5, btnAdd.getHeight() * 4 / 5);
+				pmn.show(btnAdd, btnAdd.getWidth() * 4 / 5, btnAdd.getHeight() * 4 / 5);
 			}
 		});
 	}
@@ -371,27 +370,27 @@ public class TokenConfigurerDialog extends JDialog {
 			int min = 0;
 			int step = 1;
 			SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
-			Spinner spinner = new Spinner(model, tokenName, cap);
+			Spinner spn = new Spinner(model, tokenName, cap);
 			// RestrictedTextField textfield = new
 			// RestrictedTextField(Restriction.ZERO_OR_POSITIVE_INTEGER, "" +
 			// size + "");
 			// textfield.addListener(spinner);
 			// textfield.setValidateOnTyping(true);
 			// spinner.setEditor(textfield);
-			int w = spinner.getWidth();
-			int h = spinner.getHeight();
+			int w = spn.getWidth();
+			int h = spn.getHeight();
 			Dimension d = new Dimension(SPINNER_DEFAULT_WIDTH, h);
-			spinner.setPreferredSize(d);
-			spinner.setMinimumSize(d);
+			spn.setPreferredSize(d);
+			spn.setMinimumSize(d);
 
-			spinner.addChangeListener(new ChangeListener() {
+			spn.addChangeListener(new ChangeListener() {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					JSpinner spinner = (Spinner) e.getSource();
-					Integer currentValue = (Integer) spinner.getValue();
+					JSpinner spn = (Spinner) e.getSource();
+					Integer currentValue = (Integer) spn.getValue();
 					if (currentValue > MAX_CAPACITY)
-						spinner.setValue(MAX_CAPACITY);
+						spn.setValue(MAX_CAPACITY);
 					Multiset<String> newMarking = getMultiSet();
 					if (newMarking == null)
 						newMarking = new Multiset<String>();
@@ -402,7 +401,7 @@ public class TokenConfigurerDialog extends JDialog {
 						((mxGraphModel) graph.getModel()).execute(new ConstraintChange((PNGraph) graph, paName, newMarking));
 				}
 			});
-			pnl.add(spinner);
+			pnl.add(spn);
 		}
 		if (isTransition) {
 
@@ -459,29 +458,29 @@ public class TokenConfigurerDialog extends JDialog {
 		if (isPlace && place != null) {
 
 			pnl.add(Box.createGlue());
-			JSpinner capacitySpinner;
+			JSpinner spnCapacity;
 			if (!place.isBounded()) {
 				String[] string = { "\u221e" };
 				SpinnerModel capacityModel = new SpinnerListModel(string);
-				capacitySpinner = new JSpinner(capacityModel);
+				spnCapacity = new JSpinner(capacityModel);
 			} else {
 				int capacitiy = place.getColorCapacity(tokenName);
 				SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, multisetPA.multiplicity(tokenName), MAX_CAPACITY, 1);
-				capacitySpinner = new JSpinner(capacityModel);
+				spnCapacity = new JSpinner(capacityModel);
 			}
 
-			capacitySpinner.addChangeListener(new ChangeListener() {
+			spnCapacity.addChangeListener(new ChangeListener() {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					JSpinner capacitySpinner = (JSpinner) e.getSource();
-					Integer currentValue = (Integer) capacitySpinner.getValue();
+					JSpinner spnCapacity = (JSpinner) e.getSource();
+					Integer currentValue = (Integer) spnCapacity.getValue();
 
 					((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, place.getName(), tokenName, currentValue));
 					updateTokenConfigurerView();
 				}
 			});
-			pnl.add(capacitySpinner);
+			pnl.add(spnCapacity);
 		} else {
 			pnl.add(Box.createGlue());
 			pnl.add(Box.createGlue());
@@ -522,31 +521,31 @@ public class TokenConfigurerDialog extends JDialog {
 	}
 
 	private JCheckBox createAccessModeCheckBox(final String tokenName, final AccessMode accessModi, String accessModeName) {
-		JCheckBox read = new JCheckBox(accessModeName);
-		read.setSelected(accessMode.get(tokenName).contains(accessModi));
-		read.addActionListener(new ActionListener() {
+		JCheckBox chkRead = new JCheckBox(accessModeName);
+		chkRead.setSelected(accessMode.get(tokenName).contains(accessModi));
+		chkRead.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JCheckBox cb = (JCheckBox) e.getSource();
+				JCheckBox chk = (JCheckBox) e.getSource();
 				Set am = accessMode.get(tokenName);
 				if (!(am.contains(AccessMode.CREATE) && accessModi.equals(AccessMode.DELETE)) && !(am.contains(AccessMode.DELETE) && accessModi.equals(AccessMode.CREATE))) {
 					Set amChange = ((Set) ((HashSet) am).clone());
-					if (cb.isSelected()) {
+					if (chk.isSelected()) {
 						amChange.add(accessModi);
 					} else {
 						amChange.remove(accessModi);
 					}
 					((mxGraphModel) graph.getModel()).execute(new AccessModeChange(graph, paName, tokenName, amChange));
 				} else {
-					cb.setSelected(false);
+					chk.setSelected(false);
 					JOptionPane.showMessageDialog(null, "First deselect Create/Delete to select this access mode", "Create/Delete exclude each other", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 
 		});
-		read.setToolTipText(accessModi.toString());
-		return read;
+		chkRead.setToolTipText(accessModi.toString());
+		return chkRead;
 	}
 
 	protected Multiset<String> getMultiSet() {

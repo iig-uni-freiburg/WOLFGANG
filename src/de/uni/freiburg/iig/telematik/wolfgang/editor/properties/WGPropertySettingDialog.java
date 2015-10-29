@@ -29,10 +29,10 @@ public class WGPropertySettingDialog extends AbstractDialog {
 	@Override
 	protected void addComponents() throws Exception {
 		mainPanel().setLayout(new BorderLayout());
-		JScrollPane scrollPane = new JScrollPane(getPropertySettingPanel());
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		mainPanel().add(scrollPane, BorderLayout.CENTER);
+		JScrollPane scp = new JScrollPane(getPropertySettingPanel());
+		scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scp.getVerticalScrollBar().setUnitIncrement(16);
+		mainPanel().add(scp, BorderLayout.CENTER);
 	}
 
 	protected JPanel getPropertySettingPanel(){

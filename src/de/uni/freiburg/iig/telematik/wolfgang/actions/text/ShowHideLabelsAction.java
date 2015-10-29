@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions.text;
 
-import de.invation.code.toval.misc.ArrayUtils;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;

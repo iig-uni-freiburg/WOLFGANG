@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import com.itextpdf.text.xml.simpleparser.handler.NeverNewLineHandler;
 import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
@@ -122,12 +121,12 @@ public class TokenColorToolBar extends JToolBar {
 			pnlTokenColors.add(new CPNTokenColorChooserPanel(ColorMode.HEX, tokenLabel, circle));
 			pnlTokenColors.add(new ChangeTokenColorNameField(tokenLabel, null));
 		} else {
-			JLabel blackLabel = new JLabel();
-			blackLabel.setPreferredSize(new Dimension(CPNTokenColorChooserPanel.PREFERRED_HEIGHT * 3, 30));
-			blackLabel.setOpaque(true);
-			blackLabel.setBackground(Color.black);
-			blackLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-			pnlTokenColors.add(blackLabel);
+			JLabel lblBlack = new JLabel();
+			lblBlack.setPreferredSize(new Dimension(CPNTokenColorChooserPanel.PREFERRED_HEIGHT * 3, 30));
+			lblBlack.setOpaque(true);
+			lblBlack.setBackground(Color.black);
+			lblBlack.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+			pnlTokenColors.add(lblBlack);
 			pnlTokenColors.add(new JLabel(tokenLabel));
 		}
 

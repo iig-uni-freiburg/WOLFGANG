@@ -17,16 +17,16 @@ public class PNTreeNode extends DefaultMutableTreeNode {
 	 */
 	private static final long serialVersionUID = 6517382720076787324L;
 
-	private PropertiesField textfield;
+	private PropertiesField txt;
 
 	private PNTreeNodeType fieldType;
 
 	private Map<PNProperty, PropertiesField> fieldMap;
 
-	private JTable table;
+	private JTable tbl;
     
     public PNProperty getPropertyType() {
-		return textfield.getPNProperty();
+		return txt.getPNProperty();
 	}
 
 	public PNTreeNode(String title, PNTreeNodeType type) {
@@ -37,7 +37,7 @@ public class PNTreeNode extends DefaultMutableTreeNode {
     public PNTreeNode(String title, PNTreeNodeType type, PropertiesField field) {
     	super(title);
     	this.fieldType = type;
-        this.textfield  = field;
+        this.txt  = field;
     }
 
     public PNTreeNode(HashMap<PNProperty, PropertiesField> fieldMap, PNTreeNodeType type) {
@@ -48,20 +48,20 @@ public class PNTreeNode extends DefaultMutableTreeNode {
 
 	public PNTreeNode(JTable table, PNTreeNodeType type) {
     	super("leaf");
-    	this.table = table;
+    	this.tbl = table;
     	this.fieldType = type;
 	}
 
 	public JTable getTable() {
-		return table;
+		return tbl;
 	}
 
-	public void setTable(JTable table) {
-		this.table = table;
+	public void setTable(JTable tbl) {
+		this.tbl = tbl;
 	}
 
 	public JTextField getTextfield() {
-		return textfield;
+		return txt;
 	}
 	
 	public PNTreeNodeType getFieldType() {
@@ -69,7 +69,7 @@ public class PNTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public void setTextField(PropertiesField field) {
-		this.textfield = field;
+		this.txt = field;
 		
 	}
 

@@ -18,15 +18,15 @@ public class EditorPopupMenu extends JPopupMenu {
 	public EditorPopupMenu(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException {
 		Validate.notNull(pnEditor);
 
-		JMenu submenu = (JMenu) add(new JMenu("Layout"));
+		JMenu mnuSub = (JMenu) add(new JMenu("Layout"));
 
-		submenu.add(new LayoutAction(pnEditor, "verticalHierarchical", false));
-		submenu.add(new LayoutAction(pnEditor, "horizontalHierarchical", false));
+		mnuSub.add(new LayoutAction(pnEditor, "verticalHierarchical", false));
+		mnuSub.add(new LayoutAction(pnEditor, "horizontalHierarchical", false));
 
-		submenu.addSeparator();
+		mnuSub.addSeparator();
 
-		submenu.add(new LayoutAction(pnEditor, "organicLayout", true));
-		submenu.add(new LayoutAction(pnEditor, "circleLayout", true));
+		mnuSub.add(new LayoutAction(pnEditor, "organicLayout", true));
+		mnuSub.add(new LayoutAction(pnEditor, "circleLayout", true));
 
 	}
 }

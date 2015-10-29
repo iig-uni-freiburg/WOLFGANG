@@ -92,11 +92,11 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     private JPanel pnlRight;
 
     private static Set<AbstractWolfgang> runningInstances = new HashSet<>();
-    private JScrollPane editorScrollPane;
+    private JScrollPane scpEditor;
     private final int FIX_SIZE_RIGHT_PANEL = 200;
     private final int DIVIDER_LOCATION_RIGHT_PANEL = 400;
-    private JScrollPane rightScrollPane;
-    private JScrollPane toolbarScrollPane;
+    private JScrollPane scpRight;
+    private JScrollPane scpToolbar;
 
     private static final Map<String, String> ASSOCIATED_FILE_EXTENSIONS = new HashMap<>();
     static {
@@ -321,7 +321,7 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
                 @Override
                 public void iconSizeChanged(IconSize size) {
-                    pnlContent.remove(toolbarScrollPane); 
+                    pnlContent.remove(scpToolbar); 
                     editorComponent.loadEditorToolbar();
                     pnlContent.add(getToolbarPanel(), BorderLayout.NORTH);
                     pack();
@@ -329,9 +329,9 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
             });
             setEditorPanels();
-            JComponent bottomComponent = getBottomComponent();
-            if (bottomComponent != null) {
-                pnlContent.add(bottomComponent, BorderLayout.PAGE_END);
+            JComponent cmpBottom = getBottomComponent();
+            if (cmpBottom != null) {
+                pnlContent.add(cmpBottom, BorderLayout.PAGE_END);
             }
         }
         return pnlContent;
@@ -367,21 +367,21 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
     }
     
         protected JComponent getToolbarPanel() {
-        toolbarScrollPane = new JScrollPane(editorComponent.getEditorToolbar(), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        return toolbarScrollPane;
+        scpToolbar = new JScrollPane(editorComponent.getEditorToolbar(), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        return scpToolbar;
     }
 
     protected JComponent getEditorPanel() {
-        editorScrollPane = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        editorScrollPane.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
-        return editorScrollPane;
+        scpEditor = new JScrollPane(editorComponent, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scpEditor.setPreferredSize(MINIMUM_SIZE_EDITOR_PANEL);
+        return scpEditor;
     }
     
         protected JComponent getpnlRight() {
-        rightScrollPane = new JScrollPane(pnlRight, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scpRight = new JScrollPane(pnlRight, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         Dimension pnlRightDim = new Dimension(FIX_SIZE_RIGHT_PANEL, MINIMUM_SIZE_EDITOR_PANEL.height);
-        rightScrollPane.setPreferredSize(pnlRightDim);
-        return rightScrollPane;
+        scpRight.setPreferredSize(pnlRightDim);
+        return scpRight;
     }
 
     public WGMenuBar getWGMenuBar() throws PropertyException, IOException {

@@ -22,7 +22,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.EditorPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.popup.TransitionPopupMenu;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.CWNPropertyCheckView;
-import de.uni.freiburg.iig.telematik.wolfgang.properties.check.WFNetPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.CPNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 

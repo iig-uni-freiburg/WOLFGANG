@@ -29,8 +29,8 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 	private static final long serialVersionUID = -381740152242776391L;
 	private static String nodeColor = "#333333";
 
-	public NodeToolBarAction(PNEditorComponent editor, String name, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
-		super(editor, name, IconFactory.getIcon("plus"), toolbar);
+	public NodeToolBarAction(PNEditorComponent editor, String name, JToolBar tlb) throws ParameterException, PropertyException, IOException {
+		super(editor, name, IconFactory.getIcon("plus"), tlb);
 		getIcon().setImage(createIconImage());
 	}
 

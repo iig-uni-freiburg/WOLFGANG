@@ -43,11 +43,11 @@ public class WGPropertySettingPanel extends JPanel {
 	private ColorChooserPanel colBGColor;
 	private ColorChooserPanel colGridColor;
 
-	private JCheckBox chckGridVisibility;
-	private JCheckBox chckSnapToGrid;
+	private JCheckBox chkGridVisibility;
+	private JCheckBox chkSnapToGrid;
 
-	private JCheckBox chckUpdateNotification;
-	private JCheckBox chckFileExtAssociation;
+	private JCheckBox chkUpdateNotification;
+	private JCheckBox chkFileExtAssociation;
 
 	private EnumComboBox<GradientRotation> comboGradientRotation;
 	private FontComboBox comboFontFamily;
@@ -107,14 +107,14 @@ public class WGPropertySettingPanel extends JPanel {
 		add(new JLabel("Grid Color:", JLabel.RIGHT));
 		add(colGridColor);
 		add(new JLabel("Grid Visibility:", JLabel.RIGHT));
-		add(chckGridVisibility);
+		add(chkGridVisibility);
 		add(new JLabel("Snap To Grid:", JLabel.RIGHT));
-		add(chckSnapToGrid);
+		add(chkSnapToGrid);
 
 		add(new JLabel("Check for updates:", JLabel.RIGHT));
-		add(chckUpdateNotification);
+		add(chkUpdateNotification);
 		add(new JLabel("Ask for file extension association:", JLabel.RIGHT));
-		add(chckFileExtAssociation);
+		add(chkFileExtAssociation);
 	}
 	
 	protected void generateGrid(){
@@ -150,15 +150,15 @@ public class WGPropertySettingPanel extends JPanel {
 		txtDefFontSize = new RestrictedTextField(Restriction.POSITIVE_INTEGER, EditorProperties.getInstance().getDefaultFontSize().toString());
 		txtDefZoomStep = new RestrictedTextField(Restriction.POSITIVE_DOUBLE, EditorProperties.getInstance().getDefaultZoomStep().toString());
 
-		chckGridVisibility = new JCheckBox();
-		chckGridVisibility.setSelected(EditorProperties.getInstance().getGridVisibility());
-		chckSnapToGrid = new JCheckBox();
-		chckSnapToGrid.setSelected(EditorProperties.getInstance().getSnapToGrid());
+		chkGridVisibility = new JCheckBox();
+		chkGridVisibility.setSelected(EditorProperties.getInstance().getGridVisibility());
+		chkSnapToGrid = new JCheckBox();
+		chkSnapToGrid.setSelected(EditorProperties.getInstance().getSnapToGrid());
 
-                chckUpdateNotification = new JCheckBox();
-                chckUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
-                chckFileExtAssociation = new JCheckBox();
-                chckFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
+                chkUpdateNotification = new JCheckBox();
+                chkUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
+                chkFileExtAssociation = new JCheckBox();
+                chkFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
 	}
 	
 	public IconSize getIconSize(){
@@ -246,18 +246,18 @@ public class WGPropertySettingPanel extends JPanel {
 	}
 	
 	public boolean getGridVisibility(){
-		return chckGridVisibility.isSelected();
+		return chkGridVisibility.isSelected();
 	}
 	
 	public boolean getSnapToGrid(){
-		return chckSnapToGrid.isSelected();
+		return chkSnapToGrid.isSelected();
 	}
 	
 	public boolean getShowUpdateNotification(){
-		return chckUpdateNotification.isSelected();
+		return chkUpdateNotification.isSelected();
 	}
 	
 	public boolean getShowFileExtensionAssociation(){
-		return chckFileExtAssociation.isSelected();
+		return chkFileExtAssociation.isSelected();
 	}
 }

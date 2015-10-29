@@ -52,7 +52,7 @@ public class EditorForFirstColumn implements TableCellEditor {
 	}
 
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	public Component getTableCellEditorComponent(JTable tbl, Object value, boolean isSelected, int row, int column) {
 		// TODO Auto-generated method stub
 		return null;
 	}

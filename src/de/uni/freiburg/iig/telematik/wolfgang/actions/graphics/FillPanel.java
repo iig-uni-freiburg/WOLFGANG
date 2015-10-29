@@ -29,7 +29,7 @@ public class FillPanel extends JToolBar {
 	private static final long serialVersionUID = 33191267623680973L;
 	private GraphicsFillColorChooserPanel fillColor;
 	private GraphicsFillColorChooserPanel gradientColor;
-	private ButtonGroup btnGroup;
+	private ButtonGroup btnGrp;
 	private JButton btnOnlyFillColor;
 	private JButton btnGradientHorizontal;
 	private JButton btnGradientVertical;
@@ -136,11 +136,11 @@ public class FillPanel extends JToolBar {
 		btnGradientVertical.setFocusable(false);
 		btnGradientDiagonal.setFocusable(false);
 
-		btnGroup = new ButtonGroup();
-		btnGroup.add(btnOnlyFillColor);
-		btnGroup.add(btnGradientHorizontal);
-		btnGroup.add(btnGradientVertical);
-		btnGroup.add(btnGradientDiagonal);
+		btnGrp = new ButtonGroup();
+		btnGrp.add(btnOnlyFillColor);
+		btnGrp.add(btnGradientHorizontal);
+		btnGrp.add(btnGradientVertical);
+		btnGrp.add(btnGradientDiagonal);
 
 		pnlChooseColorMode.add(btnOnlyFillColor);
 		pnlChooseColorMode.add(btnGradientHorizontal);
@@ -185,25 +185,25 @@ public class FillPanel extends JToolBar {
 	}
 
 	private void updateGradientRotation(GradientRotation rotation, boolean clearSelection) {
-		btnGroup.clearSelection();
+		btnGrp.clearSelection();
 		if (!clearSelection) {
 			if (rotation != null)
 				switch (rotation) {
 				case DIAGONAL:
-					btnGroup.setSelected(btnGradientDiagonal.getModel(), true);
+					btnGrp.setSelected(btnGradientDiagonal.getModel(), true);
 					break;
 				case HORIZONTAL:
-					btnGroup.setSelected(btnGradientHorizontal.getModel(), true);
+					btnGrp.setSelected(btnGradientHorizontal.getModel(), true);
 					break;
 				case VERTICAL:
-					btnGroup.setSelected(btnGradientVertical.getModel(), true);
+					btnGrp.setSelected(btnGradientVertical.getModel(), true);
 					break;
 				default:
 					break;
 
 				}
 			else {
-				btnGroup.setSelected(btnOnlyFillColor.getModel(), true);
+				btnGrp.setSelected(btnOnlyFillColor.getModel(), true);
 			}
 		}
 	}

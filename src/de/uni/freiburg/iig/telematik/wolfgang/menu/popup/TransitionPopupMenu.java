@@ -21,9 +21,9 @@ public class TransitionPopupMenu extends JPopupMenu {
 	
 	public TransitionPopupMenu(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException {
 		Validate.notNull(pnEditor);
-		JMenu submenu = (JMenu) add(new JMenu("Transition"));
-		submenu.add(new TransitionSilentAction(pnEditor, "silent", true));
-		submenu.add(new TransitionSilentAction(pnEditor, "not silent", false));
+		JMenu mnuSub = (JMenu) add(new JMenu("Transition"));
+		mnuSub.add(new TransitionSilentAction(pnEditor, "silent", true));
+		mnuSub.add(new TransitionSilentAction(pnEditor, "not silent", false));
 
 	}
 
