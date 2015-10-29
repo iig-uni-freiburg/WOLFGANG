@@ -101,7 +101,7 @@ public class WolfgangStartup extends AbstractStartup {
 	private void openPNMLFile(String filename) throws Exception {
 		if (!filename.toLowerCase().endsWith(".pnml")) {
 			if(!filename.startsWith("-psn_"))//Catching OS X specific argument on the very first startup
-			JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
 			filePaths = null;
 			startApplication();
 		} else {
