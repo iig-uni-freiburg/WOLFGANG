@@ -272,7 +272,8 @@ public abstract class AbstractWolfgang< P extends AbstractPlace<F, S>, T extends
 
         // check for updates
         ReleaseUtils release = new ReleaseUtils("iig-uni-freiburg", "WOLFGANG");
-        if (release.getLatestVersion().compareTo(WolfgangStartup.VERSION_NAME) > 0 && EditorProperties.getInstance().getShowUpdateNotification()) {
+        final String latestVersion = release.getLatestVersion();
+        if (latestVersion != null && !latestVersion.isEmpty() && latestVersion.compareTo(WolfgangStartup.VERSION_NAME) > 0 && EditorProperties.getInstance().getShowUpdateNotification()) {
             Object[] releaseOptions = {"Yes, please", "No, thanks"};
             int upd = JOptionPane.showOptionDialog(this, "A new version of WOLFGANG is available.\nDo you want to visit GitHub to download the latest release?", "Update Notification", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, releaseOptions, releaseOptions[0]);
             if (upd == 0) {
