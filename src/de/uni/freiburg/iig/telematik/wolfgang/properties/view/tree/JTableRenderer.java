@@ -13,8 +13,12 @@ public class JTableRenderer implements TableCellRenderer {
 	JTextField txt;
 
 	public JTableRenderer() {
+		setUpGui();
+	}
+
+	private void setUpGui() {
 		txt = new JTextField();
-		scp = new JScrollPane(txt);
+		scp = new JScrollPane(txt);	
 	}
 
 	@Override

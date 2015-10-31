@@ -34,9 +34,14 @@ public class WGMenuBar extends JMenuBar {
 	public WGMenuBar(AbstractWolfgang wolfgang) throws PropertyException, IOException {
 		super();
 		this.wolfgang = wolfgang;
+		setUpGui();
+	}
+
+	private void setUpGui() throws PropertyException, IOException {
 		add(getFileMenu());
 		add(getSettingsMenu());
         add(getHelpEntry());
+		
 	}
 
 	private JMenu getFileMenu() throws PropertyException, IOException {

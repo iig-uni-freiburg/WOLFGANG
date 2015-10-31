@@ -19,8 +19,12 @@ public class EditorForPropertiesFieldColumn implements TableCellEditor {
 	JScrollPane scp;
 
 	public EditorForPropertiesFieldColumn() {
+		setUpGui();
+	}
+
+	private void setUpGui() {
 		txt = new JTextField();
-		scp = new JScrollPane(txt);
+		scp = new JScrollPane(txt);	
 	}
 
 	public Component getTableCellEditorComponent(final JTable tbl, Object value, boolean isSelected, final int row, int column) {

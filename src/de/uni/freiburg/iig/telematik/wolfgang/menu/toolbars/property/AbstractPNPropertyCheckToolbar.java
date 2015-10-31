@@ -38,8 +38,11 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 		this.pnEditor = pnEditor;
 		pnEditor.getNetContainer().getPetriNet().addStructureListener(this);
 		pnEditor.getNetContainer().getPetriNet().addMarkingListener(this);
+		setUpGui();
 		
+	}
 
+	private void setUpGui() {
 		validityCheckLabel = createValidityCheckLabel();
 		validityCheckLabel.addListener(this);
 		add(validityCheckLabel);
@@ -49,6 +52,7 @@ public abstract class AbstractPNPropertyCheckToolbar extends JToolBar implements
 		add(boundednessCheckLabel);
 		addNetSpecificCheckLabels(pnEditor);
 		setBackground(DEFAULT_BG_COLOR);
+		
 	}
 
 	protected abstract void addNetSpecificCheckLabels(PNEditorComponent pnEditor);

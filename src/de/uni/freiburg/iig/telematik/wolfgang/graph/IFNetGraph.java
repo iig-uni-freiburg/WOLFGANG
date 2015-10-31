@@ -44,6 +44,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.TokenConfigurerDialog;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.IFNetProperties;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 
 
 public class IFNetGraph extends PNGraph {
@@ -159,90 +160,58 @@ public class IFNetGraph extends PNGraph {
 	}
 
 	public void newTokenConfigurer(PNGraphCell cell, IFNetGraphComponent IFNetGraphComponent) {
+		if (!tokenConfigurerWindows.containsKey(cell.getId()))
+				setUpGui(cell, IFNetGraphComponent, cell.getType());
+		else {
+			tokenConfigurerWindows.get(cell.getId()).setVisible(false);
+			tokenConfigurerWindows.get(cell.getId()).setVisible(true);
+		}
+
+	}
+
+	public void setUpGui(PNGraphCell cell, IFNetGraphComponent IFNetGraphComponent,PNComponent type) {
 		Window window = SwingUtilities.getWindowAncestor(IFNetGraphComponent);
 		double x;
 		double y;
 		double height = 0;
 		double deltaY = 0;
 		int spacing;
-		switch (cell.getType()) {
-		case ARC:
-			IFNetFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cell.getId());
-			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, flowRelation, this);
-				spacing = (int) (window.getBounds().getY() + 120);
-				if (lastTokenConfigurer != null) {
-					height = lastTokenConfigurer.getBounds().getHeight();
-					deltaY = lastTokenConfigurer.getBounds().getY();
-					spacing = (int) (height + deltaY);
-				}
-
-				x = window.getBounds().getX();
-				y = spacing;
-				tc.setLocation((int) x, (int) y);
-				tc.setVisible(true);
-				tc.pack();
-				tokenConfigurerWindows.put(cell.getId(), tc);
-				lastTokenConfigurer = tc;
-			} else {
-				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
-				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
-			}
+		TokenConfigurerDialog tc = null;
+		
+		switch (type) {
+		case ARC:	
+			AbstractIFNetTransition<IFNetFlowRelation> transition = getNetContainer().getPetriNet().getTransition(cell.getId());
+			tc = new TokenConfigurerDialog(window, transition, this);
 			break;
-		case PLACE:
+		case PLACE:			
 			IFNetPlace place = getNetContainer().getPetriNet().getPlace(cell.getId());
-			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, place, this);
-				spacing = (int) (window.getBounds().getY() + 120);
-				if (lastTokenConfigurer != null) {
-					height = lastTokenConfigurer.getBounds().getHeight();
-					deltaY = lastTokenConfigurer.getBounds().getY();
-					spacing = (int) (height + deltaY);
-				}
-
-				x = window.getBounds().getX();
-				y = spacing;
-				tc.setLocation((int) x, (int) y);
-				tc.setVisible(true);
-				tc.pack();
-				tokenConfigurerWindows.put(cell.getId(), tc);
-				lastTokenConfigurer = tc;
-			} else {
-				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
-				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
-			}
-
+			tc = new TokenConfigurerDialog(window, place, this);
 			break;
 		case TRANSITION:
-			AbstractIFNetTransition<IFNetFlowRelation> transition = getNetContainer().getPetriNet().getTransition(cell.getId());
-			if (!tokenConfigurerWindows.containsKey(cell.getId())) {
-				TokenConfigurerDialog tc = new TokenConfigurerDialog(window, transition, this);
-				spacing = (int) (window.getBounds().getY() + 120);
-				if (lastTokenConfigurer != null) {
-					height = lastTokenConfigurer.getBounds().getHeight();
-					deltaY = lastTokenConfigurer.getBounds().getY();
-					spacing = (int) (height + deltaY);
-				}
-
-				x = window.getBounds().getX();
-				y = spacing;
-				tc.setLocation((int) x, (int) y);
-				tc.setVisible(true);
-				tc.pack();
-				tokenConfigurerWindows.put(cell.getId(), tc);
-				lastTokenConfigurer = tc;
-			} else {
-				tokenConfigurerWindows.get(cell.getId()).setVisible(false);
-				tokenConfigurerWindows.get(cell.getId()).setVisible(true);
-			}
+			IFNetFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cell.getId());
+			tc = new TokenConfigurerDialog(window, flowRelation, this);
 			break;
 		default:
 			break;
 
 		}
 
-	}
+		spacing = (int) (window.getBounds().getY() + 120);
+		if (lastTokenConfigurer != null) {
+			height = lastTokenConfigurer.getBounds().getHeight();
+			deltaY = lastTokenConfigurer.getBounds().getY();
+			spacing = (int) (height + deltaY);
+		}
 
+		x = window.getBounds().getX();
+		y = spacing;
+		tc.setLocation((int) x, (int) y);
+		tc.setVisible(true);
+		tc.pack();
+		tokenConfigurerWindows.put(cell.getId(), tc);
+		lastTokenConfigurer = tc;
+	}
+	
 	@Override
 	public int getCapacityforPlace(String name, String color) {
 		return getNetContainer().getPetriNet().getPlace(name).getColorCapacity(color);

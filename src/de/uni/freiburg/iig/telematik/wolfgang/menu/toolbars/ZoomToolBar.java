@@ -44,11 +44,18 @@ public class ZoomToolBar extends JToolBar {
 	public ZoomToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
 		super(orientation);
 		Validate.notNull(pnEditor);
+		setUpGui(pnEditor);
+
+	}
 
 
-			zoomInAction = new ZoomInAction(pnEditor);	
-			zoomOutAction = new ZoomOutAction(pnEditor);
+	
 
+
+	private void setUpGui(PNEditorComponent pnEditor) throws PropertyException, IOException {
+		zoomInAction = new ZoomInAction(pnEditor);	
+		zoomOutAction = new ZoomOutAction(pnEditor);
+		
 		setFloatable(false);
 
 		btnZoomIn = add(zoomInAction);
@@ -59,11 +66,10 @@ public class ZoomToolBar extends JToolBar {
 		btnZoomIn.setToolTipText(zoomInTooltip);
 		btnZoomOut.setToolTipText(zoomOutTooltip);
 		
-		
 	}
 
 
-	
+
 
 
 	private void setButtonSettings(final JButton btn) {

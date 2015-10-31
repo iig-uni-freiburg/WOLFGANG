@@ -16,7 +16,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 public class SaveAction extends AbstractWolfgangAction {
 
 	private static final long serialVersionUID = 7716993627349722001L;
-
+	
+	private JFileChooser fch = null;
 	protected boolean success = false;
 	protected String errorMessage = null;
 
@@ -38,24 +39,9 @@ public class SaveAction extends AbstractWolfgangAction {
 		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
-		JFileChooser fch;
 		if (wolfgang.getFileReference() == null) {
-			fch = new JFileChooser(System.getProperty("user.home"));
-
-			fch.addChoosableFileFilter(new FileFilter() {
-				public String getDescription() {
-					return "PNML Documents (*.pnml)";
-				}
-
-				public boolean accept(File f) {
-					if (f.isDirectory()) {
-						return true;
-					} else {
-						return f.getName().toLowerCase().endsWith(".pnml");
-					}
-				}
-			});
-			fch.setDialogTitle("Save PNML");
+			setUpGui();
+			
 			int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -74,5 +60,25 @@ public class SaveAction extends AbstractWolfgangAction {
 			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, wolfgang.getFileReference().getAbsolutePath());
 		}
 
+	}
+
+	private void setUpGui() {
+		fch = new JFileChooser(System.getProperty("user.home"));
+
+		fch.addChoosableFileFilter(new FileFilter() {
+			public String getDescription() {
+				return "PNML Documents (*.pnml)";
+			}
+
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				} else {
+					return f.getName().toLowerCase().endsWith(".pnml");
+				}
+			}
+		});
+		fch.setDialogTitle("Save PNML");
+		
 	}
 }

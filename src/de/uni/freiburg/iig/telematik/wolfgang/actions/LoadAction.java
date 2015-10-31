@@ -24,6 +24,8 @@ public class LoadAction extends AbstractWolfgangAction {
 
 	protected boolean success = false;
 	protected String errorMessage = null;
+	
+	private JFileChooser fch = null;
 
 	@SuppressWarnings("rawtypes")
 	public LoadAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
@@ -35,24 +37,8 @@ public class LoadAction extends AbstractWolfgangAction {
 		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
-		JFileChooser fch;
+		setUpGui();
 
-		fch = new JFileChooser(System.getProperty("user.home"));
-		fch.removeChoosableFileFilter(fch.getFileFilter());
-		fch.addChoosableFileFilter(new FileFilter() {
-			public String getDescription() {
-				return "PNML Documents (*.pnml)";
-			}
-
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-					return true;
-				} else {
-					return f.getName().toLowerCase().endsWith(".pnml");
-				}
-			}
-		});
-		fch.setDialogTitle("Load PNML");
 		int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "load PNML");
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -75,5 +61,25 @@ public class LoadAction extends AbstractWolfgangAction {
 				throw new Exception("File is not in .pnml format");
 		}
 
+	}
+
+	private void setUpGui() {
+		fch = new JFileChooser(System.getProperty("user.home"));
+		fch.removeChoosableFileFilter(fch.getFileFilter());
+		fch.addChoosableFileFilter(new FileFilter() {
+			public String getDescription() {
+				return "PNML Documents (*.pnml)";
+			}
+
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				} else {
+					return f.getName().toLowerCase().endsWith(".pnml");
+				}
+			}
+		});
+		fch.setDialogTitle("Load PNML");
+		
 	}
 }

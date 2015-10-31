@@ -35,11 +35,15 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 	}
 
 	public static Image createIconImage() throws PropertyException, IOException {
+		return setUpGui();
+	}
+
+	private static Image setUpGui() throws PropertyException, IOException {
 		Color defaultFillColor = Utils.parseColor(nodeColor);
 		IconSize iconsize = null;
 		iconsize = EditorProperties.getInstance().getIconSize();
 		int size = iconsize.getSize();
-
+		
 		Image image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB_PRE);
 		Graphics g = image.getGraphics();
 		Graphics2D g2 = (Graphics2D) g;
@@ -71,7 +75,7 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 
 		g2.dispose();
 		return image;
-
+		
 	}
 
 }

@@ -22,12 +22,15 @@ public class ShowHideLabelsAction extends AbstractPNEditorAction {
 
     public ShowHideLabelsAction(PNEditorComponent editor) throws PropertyException, IOException {
         super(editor, "visible", IconFactory.getIcon("visible"));
-        visible = getIcon().getImage();
-        invisible = IconFactory.getIcon("invisible").getImage();
-
+        setUpGui();
     }
 
-    public void setHideIconImage() {
+    private void setUpGui() throws PropertyException, IOException {
+    	visible = getIcon().getImage();
+        invisible = IconFactory.getIcon("invisible").getImage();
+	}
+
+	public void setHideIconImage() {
         getIcon().setImage(invisible);
 
     }

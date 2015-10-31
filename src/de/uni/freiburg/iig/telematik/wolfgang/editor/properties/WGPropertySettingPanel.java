@@ -56,11 +56,15 @@ public class WGPropertySettingPanel extends JPanel {
 
 	public WGPropertySettingPanel() throws PropertyException, IOException {
 		super(new SpringLayout());
+		setUpGui();
+	}
+	
+	private void setUpGui() throws PropertyException, IOException {
 		initialize();
 		addSettingComponents();
 		generateGrid();
 	}
-	
+
 	protected void addSettingComponents(){
 		add(new JLabel("Icon Size:", JLabel.RIGHT));
 		add(comboIconSize);

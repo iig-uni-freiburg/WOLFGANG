@@ -40,12 +40,17 @@ public abstract class AbstractPNPropertyCheckLabel<Z> extends ExecutorLabel<Z> {
 
 	public AbstractPNPropertyCheckLabel(PNEditorComponent editorComponent) {
 		super();
+		setUpGui();
+		this.editorComponent = editorComponent;
+	}
+
+	private void setUpGui() {
 		setPreferredSize(DEFAULT_SIZE);
 		setMinimumSize(DEFAULT_SIZE);
 		setMaximumSize(DEFAULT_SIZE);
 		setOpaque(true);
 		setBackground(getColorInitial());
-		this.editorComponent = editorComponent;
+		
 	}
 
 	public AbstractPNPropertyCheckLabel(PNEditorComponent editorComponent, String propertyName) {

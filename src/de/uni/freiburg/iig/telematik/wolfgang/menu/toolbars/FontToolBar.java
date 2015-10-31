@@ -117,15 +117,11 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         setFloatable(false);
 
         createFontActions(pnEditor);
-
-        addFontButtons();
-
-        setTooltips();
-
+        setUpGui();
     }
 
-    private void addFontButtons() {
-        btnShowHideTokensOnArcs = (JButton) add(showHideTokensOnArcsAction, false);
+    private void setUpGui() {
+    	btnShowHideTokensOnArcs = (JButton) add(showHideTokensOnArcsAction, false);
         setButtonSettings(btnShowHideTokensOnArcs);
         btnShowHideLabels = (JButton) add(showHideLabelsAction, false);
         setButtonSettings(btnShowHideLabels);
@@ -154,7 +150,9 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         btnTextRotation = add(textRotationAction);
 
         addSeparator();
-    }
+        setTooltips();
+		
+	}
 
     private void createFontActions(final PNEditorComponent pnEditor1) throws IOException, PropertyException {
         showHideTokensOnArcsAction = new ShowHideTokensOnArcsAction(pnEditor1);

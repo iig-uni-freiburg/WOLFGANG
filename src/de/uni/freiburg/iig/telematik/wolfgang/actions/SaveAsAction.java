@@ -17,6 +17,7 @@ public class SaveAsAction extends AbstractWolfgangAction {
 
 	private static final long serialVersionUID = 7716993627349722001L;
 
+	private JFileChooser fch = null;
 	protected boolean success = false;
 	protected String errorMessage = null;
 
@@ -37,8 +38,23 @@ public class SaveAsAction extends AbstractWolfgangAction {
 	protected void doFancyStuff(ActionEvent e) throws Exception {
 		if (wolfgang.getEditorComponent() == null)
 			return;
-		success = true;
-		JFileChooser fch;
+		success = true;	
+		setUpGui();
+		int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
+
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			String filename = fch.getSelectedFile().getAbsolutePath();
+			if (!filename.toLowerCase().endsWith(".pnml"))
+				filename += ".pnml";
+			String netName = fch.getName(fch.getSelectedFile());
+			if (netName != null)
+				wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
+			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
+			wolfgang.getEditorComponent().setModified(false);
+		}
+	}
+
+	private void setUpGui() {
 		fch = new JFileChooser(System.getProperty("user.home"));
 
 		fch.addChoosableFileFilter(new FileFilter() {
@@ -55,18 +71,7 @@ public class SaveAsAction extends AbstractWolfgangAction {
 			}
 		});
 		fch.setDialogTitle("Save PNML");
-		int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "save PNML");
-
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fch.getSelectedFile().getAbsolutePath();
-			if (!filename.toLowerCase().endsWith(".pnml"))
-				filename += ".pnml";
-			String netName = fch.getName(fch.getSelectedFile());
-			if (netName != null)
-				wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
-			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
-			wolfgang.getEditorComponent().setModified(false);
-		}
+		
 	}
 
 }

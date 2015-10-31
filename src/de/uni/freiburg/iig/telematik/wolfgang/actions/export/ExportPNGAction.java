@@ -31,6 +31,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ExportPNGAction extends AbstractPNEditorAction {
 
+	private JFileChooser fch = null;
+	
 	private static final long serialVersionUID = -7363037525687308541L;
 
 	public ExportPNGAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
@@ -39,12 +41,7 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		JFileChooser fch = null;
-		if(editor.getWolfgang() != null){
-			fch = new JFileChooser(editor.getWolfgang().getFileReference());
-		} else {
-			fch = new JFileChooser(System.getProperty("user.home"));
-		}
+		setUpGui();
 		fch.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "Portable Network Graphics (*.png)";
@@ -115,6 +112,14 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 				document.close();
 
 		}		
+	}
+
+	private void setUpGui() {
+		if(editor.getWolfgang() != null){
+			fch = new JFileChooser(editor.getWolfgang().getFileReference());
+		} else {
+			fch = new JFileChooser(System.getProperty("user.home"));
+		}	
 	}
 
 }

@@ -24,12 +24,17 @@ public abstract class AbstractNewNetAction<N extends AbstractGraphicalPN> extend
 		String netName = requestFileName("Please choose a name for the new net:", "New Petri-Net");
 		if (netName != null) {
 			try {
-				net = createNewGraphicalPN();
-				net.getPetriNet().setName(netName);
+				setUpGui(netName);
 			} catch (Exception ex) {
 				ExceptionDialog.showException(SwingUtilities.getWindowAncestor(wolfgang), "Could not add net.", ex);
 			}
 		}
+	}
+
+	private void setUpGui(String netName) {
+		net = createNewGraphicalPN();
+		net.getPetriNet().setName(netName);
+		
 	}
 
 	public N getNet() {

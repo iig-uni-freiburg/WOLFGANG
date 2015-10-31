@@ -57,6 +57,11 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 	public AbstractTokenConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name);
+		setUpGui(name, cpnGraph);
+
+	}
+
+	private void setUpGui(String name, PNGraph cpnGraph) {
 		mainPanel().setLayout(new SpringLayout());
 		setIncludeCancelButton(false);
 		setOKButtonText("Finished");
@@ -65,7 +70,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		setButtonPanelLayout(ButtonPanelLayout.CENTERED);
 		setMaximumSize(getPreferredSize());
 		setResizable(false);
-
+		
 	}
 
 	public void updateTokenConfigurerView() {

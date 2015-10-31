@@ -40,11 +40,15 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 
 	public PopUpToolBarAction(PNEditorComponent editor, String name, ImageIcon icon, JComponent cmpToolbar) throws ParameterException, PropertyException, IOException {
 		super(editor, name, icon);
+		setUpGui(cmpToolbar);
+	}
+
+	private void setUpGui(JComponent cmpToolbar) throws PropertyException, IOException {
 		popupToolBar = new PopupToolBar();
 		cmpToolbarContent = cmpToolbar;
 		btnNewDialog = new JButton(IconFactory.getIcon("maximize"));
 		btnNewDialog.setBorderPainted(false);
-		newWindowButton(popupToolBar, cmpToolbarContent, btnNewDialog);
+		newWindowButton(popupToolBar, cmpToolbarContent, btnNewDialog);	
 	}
 
 	protected JDialog getPopupFrame() {

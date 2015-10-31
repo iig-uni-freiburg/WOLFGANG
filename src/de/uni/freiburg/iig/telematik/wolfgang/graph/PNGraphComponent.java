@@ -96,7 +96,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	public PNGraphComponent(PNGraph graph) {
 		super(graph);
-		initialize();
+		setUpGui();
 		getCanvas().putShape(mxConstants.SHAPE_RECTANGLE, new RectangleShape());
 		getCanvas().putShape(mxConstants.SHAPE_ELLIPSE, new EllipseShape());
 		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_DEFAULT, new DefaultTextShape());
@@ -286,7 +286,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		return new GraphTransferHandler();
 	}
 
-	private void initialize() {
+	private void setUpGui() {
 		getViewport().setOpaque(true);
 		setGridStyle(mxGraphComponent.GRID_STYLE_LINE);
 		setBackgroundColor();

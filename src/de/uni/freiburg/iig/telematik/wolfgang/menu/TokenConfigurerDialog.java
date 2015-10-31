@@ -80,37 +80,32 @@ public class TokenConfigurerDialog extends JDialog {
 	public TokenConfigurerDialog(Window window, AbstractCPNPlace place2, PNGraph cpnGraph) {
 		super(window, place2.getName());
 		isPlace = true;
-		pnl = new JPanel();
-		pnl.setLayout(new SpringLayout());
-		add(pnl);
-		paName = place2.getName();
 		graph = cpnGraph;
-		updateTokenConfigurerView();
-
+		paName = place2.getName();
+		setUpGui();	
 	}
 
 	public TokenConfigurerDialog(Window window, AbstractCPNFlowRelation flowRelation, PNGraph cpnGraph) {
 		super(window, flowRelation.getName());
 		isPlace = false;
-		pnl = new JPanel();
-		pnl.setLayout(new SpringLayout());
-		add(pnl);
 		paName = flowRelation.getName();
 		graph = cpnGraph;
-		updateTokenConfigurerView();
+		setUpGui();
 	}
 
 	public TokenConfigurerDialog(Window window, AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetGraph cpnGraph) {
 		super(window, transition.getName());
 		isPlace = false;
 		isTransition = true;
+		paName = transition.getName();
+		graph = cpnGraph;
+	}
+
+	private void setUpGui() {
 		pnl = new JPanel();
 		pnl.setLayout(new SpringLayout());
 		add(pnl);
-		paName = transition.getName();
-		graph = cpnGraph;
-
-		updateTokenConfigurerView();
+		updateTokenConfigurerView();		
 	}
 
 	public void updateTokenConfigurerView() {

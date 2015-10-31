@@ -12,6 +12,10 @@ public class RTPNToolbar extends PTNetToolBar {
 
 	public RTPNToolbar(PNEditorComponent pnEditor, int orientation) throws EditorToolbarException {
 		super(pnEditor, orientation);
+		setUpGui();
+	}
+	
+	private void setUpGui() {
 		add(getResourceContextDropBox());
 		addSeparator();
 		add(getTimeContextDropBox());

@@ -32,10 +32,12 @@ public class NetTypeChooserDialog extends JDialog {
 		this.setResizable(false);
 		this.setModal(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		
+		setUpGui(owner);
+	}
+	
+	private void setUpGui(Window owner) {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(getLabelWolfgang(), BorderLayout.CENTER);
-		
 		JPanel pnlChooseNet = new JPanel();
 		pnlChooseNet.add(getButtonPTNet());
 		pnlChooseNet.add(getButtonCPN());
@@ -46,7 +48,7 @@ public class NetTypeChooserDialog extends JDialog {
 		this.setLocationRelativeTo(owner);
 		this.setVisible(true);
 	}
-	
+
 	public NetType getChosenNetType(){
 		return chosenNetType;
 	}

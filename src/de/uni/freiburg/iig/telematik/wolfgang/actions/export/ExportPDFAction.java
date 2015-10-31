@@ -32,6 +32,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ExportPDFAction extends AbstractPNEditorAction {
 
+	private JFileChooser fch = null;
+	
 	private static final long serialVersionUID = 3610566131463622898L;
 
 	public ExportPDFAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
@@ -40,12 +42,7 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		JFileChooser fch = null;
-		if(editor.getWolfgang() != null){
-			fch = new JFileChooser(editor.getWolfgang().getFileReference());
-		} else {
-			fch = new JFileChooser(System.getProperty("user.home"));
-		}
+		setUpGui();
 		
 		fch.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
@@ -77,6 +74,14 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 			else
 				createPDFFile(filename);
 		}
+	}
+
+	private void setUpGui() {
+		if(editor.getWolfgang() != null){
+			fch = new JFileChooser(editor.getWolfgang().getFileReference());
+		} else {
+			fch = new JFileChooser(System.getProperty("user.home"));
+		}		
 	}
 
 	private void createPDFFile(String filename) throws FileNotFoundException, DocumentException {

@@ -18,11 +18,16 @@ public class NodeToolBar extends JToolBar {
 	public NodeToolBar(final PNEditorComponent pnEditor, int orientation) throws PropertyException, IOException {
 		super(orientation);
 		Validate.notNull(pnEditor);
+		setUpGui();	
+		
+	}
+	
+	private void setUpGui() throws ParameterException, PropertyException, IOException {
 		setFloatable(false);
 		add(getpnlPalette());
 		
 	}
-	
+
 	private JPanel getpnlPalette() throws ParameterException, PropertyException, IOException {
 		if (pnlPalette == null) {
 			pnlPalette = new NodePalettePanel();

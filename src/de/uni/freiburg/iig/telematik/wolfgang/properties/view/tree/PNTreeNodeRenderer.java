@@ -28,6 +28,10 @@ public class PNTreeNodeRenderer extends DefaultTreeCellRenderer {
 
 	public PNTreeNodeRenderer() throws PropertyException, IOException {
 		super();
+		setUpGui();
+	}
+
+	private void setUpGui() throws PropertyException, IOException {
 		this.placeImage = createNodeImage(PNComponent.PLACE);
 		this.transitionImage = createNodeImage(PNComponent.TRANSITION);
 		this.arcIcon = createNodeImage(PNComponent.ARC);

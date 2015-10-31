@@ -182,7 +182,13 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         } catch (IOException e) {
             throw new EditorToolbarException("Invalid File Path.\nReason: " + e.getMessage());
         }
-        setFloatable(false);
+        
+        setUpGui();
+
+    }
+
+    private void setUpGui() {
+    	setFloatable(false);
 
         tglExport = (JToggleButton) add(exportAction, true);
         exportAction.setButton(tglExport);
@@ -275,10 +281,10 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         tglNode.setBackground(DEFAULT_BG_COLOR);
         tglExport.setBackground(DEFAULT_BG_COLOR);
         btnToggleMode.setBackground(DEFAULT_BG_COLOR);
+		
+	}
 
-    }
-
-    protected abstract JToolBar createPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;
+	protected abstract JToolBar createPropertyCheckToolbar() throws ParameterException, PropertyException, IOException;
 
     protected abstract void createAdditionalToolbarActions(PNEditorComponent pnEditor) throws ParameterException, PropertyException, IOException;
 

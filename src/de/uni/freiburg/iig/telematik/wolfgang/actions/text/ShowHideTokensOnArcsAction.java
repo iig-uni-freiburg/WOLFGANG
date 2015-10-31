@@ -19,9 +19,14 @@ public class ShowHideTokensOnArcsAction extends AbstractPNEditorAction {
 
 	public ShowHideTokensOnArcsAction(PNEditorComponent editor) throws PropertyException, IOException {
 		super(editor, "visible", IconFactory.getIcon("constraintsinvisible"));
+		setUpGui();
+		
+	}
+
+	private void setUpGui() throws PropertyException, IOException {
 		visible = getIcon().getImage();
 		invisible = IconFactory.getIcon("constraintsvisible").getImage();
-
+		
 	}
 
 	public void setHideIconImage() {

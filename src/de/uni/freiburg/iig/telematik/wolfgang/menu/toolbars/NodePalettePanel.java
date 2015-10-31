@@ -90,6 +90,10 @@ public class NodePalettePanel extends JPanel {
 	private JPanel pnl;
 
 	public NodePalettePanel() throws PropertyException, IOException {
+		setUpGui();
+	}
+
+	private void setUpGui() throws PropertyException, IOException {
 		setLayout(new BorderLayout());
 		pnl = new JPanel();
 		BoxLayout layout = new BoxLayout(pnl, BoxLayout.LINE_AXIS);
@@ -99,7 +103,7 @@ public class NodePalettePanel extends JPanel {
 		addTransitionTemplate();
 
 		add(pnl, BorderLayout.PAGE_START);
-
+		
 	}
 
 	/**
