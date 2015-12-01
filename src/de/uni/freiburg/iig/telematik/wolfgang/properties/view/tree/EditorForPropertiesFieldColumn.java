@@ -15,34 +15,38 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView.Pro
 
 public class EditorForPropertiesFieldColumn implements TableCellEditor {
 
-	JTextField textField;
-	JScrollPane scrollPane;
+	JTextField txt;
+	JScrollPane scp;
 
 	public EditorForPropertiesFieldColumn() {
-		textField = new JTextField();
-		scrollPane = new JScrollPane(textField);
+		setUpGui();
 	}
 
-	public Component getTableCellEditorComponent(final JTable table, Object value, boolean isSelected, final int row, int column) {
+	private void setUpGui() {
+		txt = new JTextField();
+		scp = new JScrollPane(txt);	
+	}
+
+	public Component getTableCellEditorComponent(final JTable tbl, Object value, boolean isSelected, final int row, int column) {
 		if (value instanceof JTextField)
-			textField = (PropertiesField) value;
+			txt = (PropertiesField) value;
 		else
-			textField.setText((String) value);
+			txt.setText((String) value);
 		// table.clearSelection();
-		textField.addFocusListener(new FocusListener() {
+		txt.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				table.removeRowSelectionInterval(row, row);
+				tbl.removeRowSelectionInterval(row, row);
 
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				table.setRowSelectionInterval(row, row);
+				tbl.setRowSelectionInterval(row, row);
 			}
 		});
-		return textField;
+		return txt;
 	}
 
 	public void addCellEditorListener(CellEditorListener l) {
@@ -52,7 +56,7 @@ public class EditorForPropertiesFieldColumn implements TableCellEditor {
 	}
 
 	public Object getCellEditorValue() {
-		return textField.getText();
+		return txt.getText();
 	}
 
 	public boolean isCellEditable(EventObject anEvent) {

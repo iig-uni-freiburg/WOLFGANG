@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -68,29 +66,29 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 	@Override
 	protected JSpinner get2ndSpinner(final String tokenLabel) {
-		JSpinner capacitySpinner;
+		JSpinner spnCapacity;
 		if (!getPlace().isBounded()) {
 			String[] string = { "\u221e" };
-			SpinnerModel capacityModel = new SpinnerListModel(string);
-			capacitySpinner = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerListModel(string);
+			spnCapacity = new JSpinner(spnmCapacity);
 		} else {
 			int capacitiy = getPlace().getCapacity();
-			SpinnerModel capacityModel = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
-			capacitySpinner = new JSpinner(capacityModel);
+			SpinnerModel spnmCapacity = new SpinnerNumberModel(capacitiy, getMultiSet().multiplicity(tokenLabel), MAX_CAPACITY, 1);
+			spnCapacity = new JSpinner(spnmCapacity);
 		}
 
-		capacitySpinner.addChangeListener(new ChangeListener() {
+		spnCapacity.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				JSpinner capacitySpinner = (JSpinner) e.getSource();
-				Integer currentValue = (Integer) capacitySpinner.getValue();
+				JSpinner spnCapacity = (JSpinner) e.getSource();
+				Integer currentValue = (Integer) spnCapacity.getValue();
 
 				((mxGraphModel) graph.getModel()).execute(new CapacityChange((PNGraph) graph, getPlace().getName(), tokenLabel, currentValue));
 				updateTokenConfigurerView();
 			}
 		});
-		return capacitySpinner;
+		return spnCapacity;
 	}
 
 	@Override
@@ -132,36 +130,36 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 	protected void createCellSpecificComponents() {
 		try {
 			Dimension dim2 = new Dimension(35, 35);
-			JToggleButton infiniteButton = getInfiniteButton(dim2);
-			JToggleButton boundButton = getBoundButon(dim2);
+			JToggleButton tglInfinite = gettglInfinite(dim2);
+			JToggleButton tglBound = getBoundButon(dim2);
 
-			JPanel boundOrInfinite = new JPanel(new SpringLayout());
-			boundOrInfinite.add(infiniteButton);
-			boundOrInfinite.add(boundButton);
+			JPanel pnlBoundOrInfinite = new JPanel(new SpringLayout());
+			pnlBoundOrInfinite.add(tglInfinite);
+			pnlBoundOrInfinite.add(tglBound);
 			if (getPlace().isBounded()) {
-				boundButton.setEnabled(false);
-				infiniteButton.setEnabled(true);
+				tglBound.setEnabled(false);
+				tglInfinite.setEnabled(true);
 			}
 			if (!getPlace().isBounded()) {
-				boundButton.setEnabled(true);
-				infiniteButton.setEnabled(false);
+				tglBound.setEnabled(true);
+				tglInfinite.setEnabled(false);
 			}
-			SpringUtilities.makeCompactGrid(boundOrInfinite, 1, 2, 1, 1, 1, 1);
-			mainPanel().add(boundOrInfinite);
+			SpringUtilities.makeCompactGrid(pnlBoundOrInfinite, 1, 2, 1, 1, 1, 1);
+			mainPanel().add(pnlBoundOrInfinite);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
 	}
 
-	private JToggleButton getInfiniteButton(Dimension dim2) throws PropertyException, IOException {
-		JToggleButton infiniteButton = new JToggleButton(IconFactory.getIcon("infinite"));
-		infiniteButton.setBorder(BorderFactory.createEmptyBorder());
+	private JToggleButton gettglInfinite(Dimension dim2) throws PropertyException, IOException {
+		JToggleButton tglInfinite = new JToggleButton(IconFactory.getIcon("infinite"));
+		tglInfinite.setBorder(BorderFactory.createEmptyBorder());
 
-		infiniteButton.setPreferredSize(dim2);
-		infiniteButton.setMinimumSize(dim2);
-		infiniteButton.setMaximumSize(dim2);
-		infiniteButton.setSize(dim2);
-		infiniteButton.addActionListener(new ActionListener() {
+		tglInfinite.setPreferredSize(dim2);
+		tglInfinite.setMinimumSize(dim2);
+		tglInfinite.setMaximumSize(dim2);
+		tglInfinite.setSize(dim2);
+		tglInfinite.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -176,17 +174,17 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 			}
 
 		});
-		return infiniteButton;
+		return tglInfinite;
 	}
 
 	private JToggleButton getBoundButon(Dimension dim2) throws PropertyException, IOException {
-		JToggleButton boundButton = new JToggleButton(IconFactory.getIcon("bounded"));
-		boundButton.setBorder(BorderFactory.createEmptyBorder());
-		boundButton.setPreferredSize(dim2);
-		boundButton.setMinimumSize(dim2);
-		boundButton.setMaximumSize(dim2);
-		boundButton.setSize(dim2);
-		boundButton.addActionListener(new ActionListener() {
+		JToggleButton tglBound = new JToggleButton(IconFactory.getIcon("bounded"));
+		tglBound.setBorder(BorderFactory.createEmptyBorder());
+		tglBound.setPreferredSize(dim2);
+		tglBound.setMinimumSize(dim2);
+		tglBound.setMaximumSize(dim2);
+		tglBound.setSize(dim2);
+		tglBound.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -208,7 +206,7 @@ public class PTPlaceConfigurerDialog extends AbstractTokenConfigurerDialog {
 
 			}
 		});
-		return boundButton;
+		return tglBound;
 	}
 
 	@Override

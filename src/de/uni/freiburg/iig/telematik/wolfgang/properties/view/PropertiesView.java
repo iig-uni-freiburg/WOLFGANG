@@ -41,7 +41,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
-import de.invation.code.toval.graphic.component.RestrictedTextField.Restriction;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.properties.PropertyException;
 import de.invation.code.toval.validate.ParameterException;
@@ -56,8 +55,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Positi
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPNNode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
-import de.uni.freiburg.iig.telematik.wolfgang.event.PNEditorListener;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.PNEditingModeListener;
@@ -139,9 +136,9 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		this.setBackground(bgcolor);
 
 		// Set Editor for Property Fields
-		JTextField textField = new JTextField();
-		textField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		PNCellEditor editor = new PNCellEditor(textField);
+		JTextField txt = new JTextField();
+		txt.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		PNCellEditor editor = new PNCellEditor(txt);
 		setCellEditor(editor);
 		setEditable(true);
 		setRowHeight(0);
@@ -584,11 +581,11 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		PTNet ptNet = createPTNet();
 		PTGraphics ptNetGraphics = createPTNetGraphics(ptNet);
 		GraphicalPTNet netContainer = new GraphicalPTNet(ptNet, ptNetGraphics);
-		JPanel pvPanel = new JPanel();
+		JPanel pnlPv = new JPanel();
 		PropertiesView propertiesView = new PropertiesView(new PTProperties(netContainer));
 		propertiesView.setUpGUI();
-		pvPanel.add(propertiesView);
-		new DisplayFrame(pvPanel, true);
+		pnlPv.add(propertiesView);
+		new DisplayFrame(pnlPv, true);
 
 	}
 

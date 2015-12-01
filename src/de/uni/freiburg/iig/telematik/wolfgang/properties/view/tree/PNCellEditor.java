@@ -41,11 +41,11 @@ public class PNCellEditor extends DefaultCellEditor {
 
 		switch (node.getFieldType()) {
 		case LEAF:
-			JPanel tablePanel = new JPanel();
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.add(node.getTable(), BorderLayout.NORTH);
-			tablePanel.add(new JPopupMenu.Separator(), BorderLayout.SOUTH);
-			result = tablePanel;
+			JPanel pnlTable = new JPanel();
+			pnlTable.setLayout(new BorderLayout());
+			pnlTable.add(node.getTable(), BorderLayout.NORTH);
+			pnlTable.add(new JPopupMenu.Separator(), BorderLayout.SOUTH);
+			result = pnlTable;
 			break;
 
 		}
@@ -53,8 +53,8 @@ public class PNCellEditor extends DefaultCellEditor {
 		return result;
 	}
 
-	public PNCellEditor(JTextField name) {
-		super(name);
+	public PNCellEditor(JTextField txtName) {
+		super(txtName);
 		// TODO Auto-generated constructor stub
 	}
 

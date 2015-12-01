@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import com.itextpdf.text.xml.simpleparser.handler.NeverNewLineHandler;
 import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.DisplayFrame;
@@ -63,7 +62,7 @@ public class TokenColorToolBar extends JToolBar {
 	private Map<String, Color> mapColorsForToolBar;
 	private PNEditorComponent editor;
 	private JPanel pnlTokenColors;
-	private JButton addButton;
+	private JButton btnAdd;
 	private Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
 	private PopUpToolBarAction tokenAction;
 	private static final String InitialPlaceHolderTokenColorName = "-type name-";
@@ -122,12 +121,12 @@ public class TokenColorToolBar extends JToolBar {
 			pnlTokenColors.add(new CPNTokenColorChooserPanel(ColorMode.HEX, tokenLabel, circle));
 			pnlTokenColors.add(new ChangeTokenColorNameField(tokenLabel, null));
 		} else {
-			JLabel blackLabel = new JLabel();
-			blackLabel.setPreferredSize(new Dimension(CPNTokenColorChooserPanel.PREFERRED_HEIGHT * 3, 30));
-			blackLabel.setOpaque(true);
-			blackLabel.setBackground(Color.black);
-			blackLabel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-			pnlTokenColors.add(blackLabel);
+			JLabel lblBlack = new JLabel();
+			lblBlack.setPreferredSize(new Dimension(CPNTokenColorChooserPanel.PREFERRED_HEIGHT * 3, 30));
+			lblBlack.setOpaque(true);
+			lblBlack.setBackground(Color.black);
+			lblBlack.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+			pnlTokenColors.add(lblBlack);
 			pnlTokenColors.add(new JLabel(tokenLabel));
 		}
 
@@ -170,12 +169,12 @@ public class TokenColorToolBar extends JToolBar {
 
 	private void createAddBtn() {
 		try {
-			addButton = new JButton(IconFactory.getIcon("maximize"));
-			addButton.addMouseListener(new MouseAdapter() {
+			btnAdd = new JButton(IconFactory.getIcon("maximize"));
+			btnAdd.addMouseListener(new MouseAdapter() {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if(addButton.isEnabled()){
+					if(btnAdd.isEnabled()){
 					super.mouseClicked(e);
 					try {
 						CirclePanel circle = new CirclePanel(Color.BLACK);
@@ -189,7 +188,7 @@ public class TokenColorToolBar extends JToolBar {
 							addBtnAddNewRow(circle, newColorField, newName);
 
 							// allowing only one unedited color name field
-							addButton.setEnabled(false);
+							btnAdd.setEnabled(false);
 						}
 					} catch (Exception e1) {
 
@@ -197,7 +196,7 @@ public class TokenColorToolBar extends JToolBar {
 					}
 				}
 			});
-			pnlTokenColors.add(addButton);
+			pnlTokenColors.add(btnAdd);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -238,8 +237,8 @@ public class TokenColorToolBar extends JToolBar {
 			final Component box2) {
 
 		try {
-			final JButton remove = new JButton(IconFactory.getIcon("minimize"));
-			remove.addActionListener(new ActionListener() {
+			final JButton btnRemove = new JButton(IconFactory.getIcon("minimize"));
+			btnRemove.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
@@ -278,12 +277,12 @@ public class TokenColorToolBar extends JToolBar {
 						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).endUpdate();
 					} else {
 						if(newName.getText().contains(InitialPlaceHolderTokenColorName))
-							addButton.setEnabled(true);
+							btnAdd.setEnabled(true);
 
 						pnlTokenColors.remove(circle);
 						pnlTokenColors.remove(newField);
 						pnlTokenColors.remove(newName);
-						pnlTokenColors.remove(remove);
+						pnlTokenColors.remove(btnRemove);
 						pnlTokenColors.remove(box1);
 						pnlTokenColors.remove(box2);
 						makeCompactGrid();
@@ -298,7 +297,7 @@ public class TokenColorToolBar extends JToolBar {
 				}
 
 			});
-			return remove;
+			return btnRemove;
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -353,7 +352,7 @@ public class TokenColorToolBar extends JToolBar {
 					if (oldValue.equals(InitialPlaceHolderTokenColorName) && !newValue.equals(InitialPlaceHolderTokenColorName) && !colorsMap.keySet().contains(newValue)) {
 						((mxGraphModel) editor.getGraphComponent().getGraph().getModel()).execute(new TokenColorChange(editor, newValue, colorField.getChosenColor()));
 						// allowing only one unedited color name field: allow new color when edited
-						addButton.setEnabled(true);
+						btnAdd.setEnabled(true);
 					} else if (!oldValue.equals(newTokenName) && !colorsMap.keySet().contains(newValue)) {// Rename
 																											// Case
 						model.beginUpdate();
@@ -432,9 +431,9 @@ public class TokenColorToolBar extends JToolBar {
 
 	public static void main(String[] args) {
 
-		JPanel panel = new JPanel();
-		panel.add(new TokenColorToolBar(new CPNEditorComponent(), JToolBar.HORIZONTAL));
-		new DisplayFrame(panel, true);
+		JPanel pnl = new JPanel();
+		pnl.add(new TokenColorToolBar(new CPNEditorComponent(), JToolBar.HORIZONTAL));
+		new DisplayFrame(pnl, true);
 	}
 
 	public void setPopUpToolBarAction(PopUpToolBarAction tokenAction) {

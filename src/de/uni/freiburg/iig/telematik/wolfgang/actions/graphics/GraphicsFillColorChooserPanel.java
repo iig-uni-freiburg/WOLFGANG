@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -44,6 +43,10 @@ public class GraphicsFillColorChooserPanel extends JPanel {
 	public GraphicsFillColorChooserPanel(ColorMode colorMode, Color initialColor) {
 		super(new BorderLayout());
 		Validate.notNull(colorMode);
+		setUpGUI(colorMode, initialColor);
+	}
+
+	private void setUpGUI(ColorMode colorMode, Color initialColor) {
 		lblClear = new JLabel("X", JLabel.CENTER);
 		lblClear.setPreferredSize(new Dimension(PREFERRED_HEIGHT, PREFERRED_HEIGHT));
 		lblClear.addMouseListener(new MouseAdapter() {
@@ -62,7 +65,7 @@ public class GraphicsFillColorChooserPanel extends JPanel {
 		lblColor = new GraphicsColorChooserLabel(colorMode, initialColor);
 		lblColor.setPreferredSize(new Dimension(PREFERRED_HEIGHT * 4, PREFERRED_HEIGHT));
 		add(lblColor, BorderLayout.CENTER);
-		setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		setBorder(BorderFactory.createLineBorder(Color.black, 1));		
 	}
 
 	class GraphicsColorChooserLabel extends JLabel {

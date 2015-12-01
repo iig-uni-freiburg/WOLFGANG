@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -25,6 +24,8 @@ public class LoadAction extends AbstractWolfgangAction {
 
 	protected boolean success = false;
 	protected String errorMessage = null;
+	
+	private JFileChooser fch = null;
 
 	@SuppressWarnings("rawtypes")
 	public LoadAction(AbstractWolfgang wolfgang) throws PropertyException, IOException {
@@ -36,28 +37,12 @@ public class LoadAction extends AbstractWolfgangAction {
 		if (wolfgang.getEditorComponent() == null)
 			return;
 		success = true;
-		JFileChooser fc;
+		setUpGui();
 
-		fc = new JFileChooser(System.getProperty("user.home"));
-		fc.removeChoosableFileFilter(fc.getFileFilter());
-		fc.addChoosableFileFilter(new FileFilter() {
-			public String getDescription() {
-				return "PNML Documents (*.pnml)";
-			}
-
-			public boolean accept(File f) {
-				if (f.isDirectory()) {
-					return true;
-				} else {
-					return f.getName().toLowerCase().endsWith(".pnml");
-				}
-			}
-		});
-		fc.setDialogTitle("Load PNML");
-		int returnVal = fc.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "load PNML");
+		int returnVal = fch.showDialog(wolfgang.getEditorComponent().getGraphComponent(), "load PNML");
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fc.getSelectedFile().getAbsolutePath();
+			String filename = fch.getSelectedFile().getAbsolutePath();
 
 			if (filename.toLowerCase().endsWith(".pnml")) {
 				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());
@@ -76,5 +61,25 @@ public class LoadAction extends AbstractWolfgangAction {
 				throw new Exception("File is not in .pnml format");
 		}
 
+	}
+
+	private void setUpGui() {
+		fch = new JFileChooser(System.getProperty("user.home"));
+		fch.removeChoosableFileFilter(fch.getFileFilter());
+		fch.addChoosableFileFilter(new FileFilter() {
+			public String getDescription() {
+				return "PNML Documents (*.pnml)";
+			}
+
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				} else {
+					return f.getName().toLowerCase().endsWith(".pnml");
+				}
+			}
+		});
+		fch.setDialogTitle("Load PNML");
+		
 	}
 }

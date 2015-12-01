@@ -31,6 +31,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ExportPNGAction extends AbstractPNEditorAction {
 
+	private JFileChooser fch = null;
+	
 	private static final long serialVersionUID = -7363037525687308541L;
 
 	public ExportPNGAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
@@ -39,13 +41,8 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		JFileChooser fc = null;
-		if(editor.getWolfgang() != null){
-			fc = new JFileChooser(editor.getWolfgang().getFileReference());
-		} else {
-			fc = new JFileChooser(System.getProperty("user.home"));
-		}
-		fc.addChoosableFileFilter(new FileFilter() {
+		setUpGui();
+		fch.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "Portable Network Graphics (*.png)";
 			}
@@ -57,11 +54,11 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 				}
 			}
 		});
-		fc.setDialogTitle("Save PNG");
-		int returnVal = fc.showDialog(getEditor().getGraphComponent(), "save PNG");
+		fch.setDialogTitle("Save PNG");
+		int returnVal = fch.showDialog(getEditor().getGraphComponent(), "save PNG");
 		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fc.getSelectedFile().getAbsolutePath();
+			String filename = fch.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".png"))
 				filename += ".png";
 
@@ -69,7 +66,7 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 			PNGraph pnGraph = editor.getGraphComponent().getGraph();
 
 			
-				JFrame f = new JFrame();
+				JFrame frm = new JFrame();
 				PNGraphComponent forPrint = new PNGraphComponent(pnGraph) {
 				};
 				mxRectangle size = forPrint.getGraph().getGraphBounds();
@@ -107,14 +104,22 @@ public class ExportPNGAction extends AbstractPNEditorAction {
 				
 				
 				
-				f.getContentPane().add(forPrint);
-				f.pack();
+				frm.getContentPane().add(forPrint);
+				frm.pack();
 				forPrint.paint(g2);
 				ImageIO.write(b,"png",new File(filename));
 				g2.dispose();
 				document.close();
 
 		}		
+	}
+
+	private void setUpGui() {
+		if(editor.getWolfgang() != null){
+			fch = new JFileChooser(editor.getWolfgang().getFileReference());
+		} else {
+			fch = new JFileChooser(System.getProperty("user.home"));
+		}	
 	}
 
 }

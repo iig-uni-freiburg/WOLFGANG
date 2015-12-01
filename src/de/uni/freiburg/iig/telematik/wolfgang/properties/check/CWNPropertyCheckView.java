@@ -7,10 +7,7 @@ import de.invation.code.toval.graphic.component.DisplayFrame;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
-import java.awt.BorderLayout;
-import javax.swing.Box;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 
 public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNProperties> {
 
@@ -32,33 +29,33 @@ public class CWNPropertyCheckView extends AbstractPropertyCheckView<CWNPropertie
     }
 
     @Override
-    protected void addSpecificFields(JPanel panel) {
+    protected void addSpecificFields(JPanel pnl) {
         lblStructure = new PropertyCheckResultLabel("\u2022 CWN Structure", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblStructure);
+        pnl.add(lblStructure);
         
-        JPanel structureSubPanel = new JPanel(new SpringLayout());
-        panel.add(structureSubPanel);
+        JPanel pnlStructureSub = new JPanel(new SpringLayout());
+        pnl.add(pnlStructureSub);
         lblInOutPlaces = new PropertyCheckResultLabel("\u2022 Valid InOut Places", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblInOutPlaces);  
+        pnlStructureSub.add(lblInOutPlaces);  
         lblConnectedness = new PropertyCheckResultLabel("\u2022 Strong Connectedness", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblConnectedness);
+        pnlStructureSub.add(lblConnectedness);
         lblValidMarking = new PropertyCheckResultLabel("\u2022 Valid Initial Marking", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblValidMarking);
+        pnlStructureSub.add(lblValidMarking);
         lblCFDependency = new PropertyCheckResultLabel("\u2022 Control Flow Dependency", PropertyCheckingResult.UNKNOWN);
-        structureSubPanel.add(lblCFDependency);
-        SpringUtilities.makeCompactGrid(structureSubPanel, structureSubPanel.getComponentCount(), 1, 15, 0, 0, 0);
-        panel.add(new JPopupMenu.Separator());
+        pnlStructureSub.add(lblCFDependency);
+        SpringUtilities.makeCompactGrid(pnlStructureSub, pnlStructureSub.getComponentCount(), 1, 15, 0, 0, 0);
+        pnl.add(new JPopupMenu.Separator());
         lblBounded = new PropertyCheckResultLabel("\u2022 Is Bounded", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblBounded);
-        panel.add(new JPopupMenu.Separator());
+        pnl.add(lblBounded);
+        pnl.add(new JPopupMenu.Separator());
         lblOptionComplete = new PropertyCheckResultLabel("\u2022 Option To Complete", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblOptionComplete);
-        panel.add(new JPopupMenu.Separator());
+        pnl.add(lblOptionComplete);
+        pnl.add(new JPopupMenu.Separator());
         lblCompletion = new PropertyCheckResultLabel("\u2022 Proper Completion", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblCompletion);
-        panel.add(new JPopupMenu.Separator());
+        pnl.add(lblCompletion);
+        pnl.add(new JPopupMenu.Separator());
         lblNoDeadTransitions = new PropertyCheckResultLabel("\u2022 No Dead Transitions", PropertyCheckingResult.UNKNOWN);
-        panel.add(lblNoDeadTransitions);
+        pnl.add(lblNoDeadTransitions);
     }
 
     @Override

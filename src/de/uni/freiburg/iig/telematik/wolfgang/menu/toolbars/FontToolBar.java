@@ -75,17 +75,17 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private FontAlignRightAction alignRightAction;
 
     // Buttons
-    private JButton showHideTokensOnArcsButton;
-    private JButton showHideLabelsButton;
-    private JButton textRotationButton;
-    private JToggleButton boldFontButton = null;
-    private JToggleButton alignCenterButton = null;
-    private JToggleButton alignRightButton = null;
-    private JToggleButton italicFontButton = null;
-    private JToggleButton underlineFontButton = null;
-    private JToggleButton alignLeftButton = null;
-    private JComboBox fontBox = null;
-    private JComboBox fontSizeBox = null;
+    private JButton btnShowHideTokensOnArcs;
+    private JButton btnShowHideLabels;
+    private JButton btnTextRotation;
+    private JToggleButton tglBoldFont = null;
+    private JToggleButton tglAlignCenter = null;
+    private JToggleButton tglAlignRight = null;
+    private JToggleButton tglItalicFont = null;
+    private JToggleButton tglUnderlineFont = null;
+    private JToggleButton tglAlignLeft = null;
+    private JComboBox cmbFont = null;
+    private JComboBox cmbFontSize = null;
 
     // Tooltips
     private String showHideTokensOnArcsTooltip = "show/ hide constraints as tokens on arcs";
@@ -105,9 +105,9 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private PNEditorComponent pnEditor = null;
     private PNGraphCell selectedCell = null;
 
-    private String fontLabelText = "Font:";
+    private String lblFontText = "Font:";
 
-    private JLabel fontLabel;
+    private JLabel lblFont;
 
     public FontToolBar(final PNEditorComponent pnEditor, int orientation) throws ParameterException, PropertyException, IOException {
         super(orientation);
@@ -117,44 +117,42 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         setFloatable(false);
 
         createFontActions(pnEditor);
+        setUpGui();
+    }
 
-        addFontButtons();
+    private void setUpGui() {
+    	btnShowHideTokensOnArcs = (JButton) add(showHideTokensOnArcsAction, false);
+        setButtonSettings(btnShowHideTokensOnArcs);
+        btnShowHideLabels = (JButton) add(showHideLabelsAction, false);
+        setButtonSettings(btnShowHideLabels);
+        lblFont = new JLabel(lblFontText);
+        add(lblFont);
+        add(getcmbFont());
 
+        add(getcmbFontSize());
+
+        addSeparator();
+        tglBoldFont = (JToggleButton) add(boldFontAction, true);
+        tglItalicFont = (JToggleButton) add(italicFontAction, true);
+
+        tglUnderlineFont = (JToggleButton) add(underlineFontAction, true);
+
+        addSeparator();
+
+        tglAlignLeft = (JToggleButton) add(alignLeftAction, true);
+
+        tglAlignCenter = (JToggleButton) add(alignCenterAction, true);
+
+        tglAlignRight = (JToggleButton) add(alignRightAction, true);
+
+        addSeparator();
+
+        btnTextRotation = add(textRotationAction);
+
+        addSeparator();
         setTooltips();
-
-    }
-
-    private void addFontButtons() {
-        showHideTokensOnArcsButton = (JButton) add(showHideTokensOnArcsAction, false);
-        setButtonSettings(showHideTokensOnArcsButton);
-        showHideLabelsButton = (JButton) add(showHideLabelsAction, false);
-        setButtonSettings(showHideLabelsButton);
-        fontLabel = new JLabel(fontLabelText);
-        add(fontLabel);
-        add(getFontBox());
-
-        add(getFontSizeBox());
-
-        addSeparator();
-        boldFontButton = (JToggleButton) add(boldFontAction, true);
-        italicFontButton = (JToggleButton) add(italicFontAction, true);
-
-        underlineFontButton = (JToggleButton) add(underlineFontAction, true);
-
-        addSeparator();
-
-        alignLeftButton = (JToggleButton) add(alignLeftAction, true);
-
-        alignCenterButton = (JToggleButton) add(alignCenterAction, true);
-
-        alignRightButton = (JToggleButton) add(alignRightAction, true);
-
-        addSeparator();
-
-        textRotationButton = add(textRotationAction);
-
-        addSeparator();
-    }
+		
+	}
 
     private void createFontActions(final PNEditorComponent pnEditor1) throws IOException, PropertyException {
         showHideTokensOnArcsAction = new ShowHideTokensOnArcsAction(pnEditor1);
@@ -172,44 +170,44 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     }
 
     private void setTooltips() {
-        showHideLabelsButton.setToolTipText(showHideLabelsTooltip);
-        fontBox.setToolTipText(fontTooltip);
-        fontSizeBox.setToolTipText(fontSizeTooltip);
-        boldFontButton.setToolTipText(boldFontTooltip);
-        italicFontButton.setToolTipText(italicFontTooltip);
-        underlineFontButton.setToolTipText(underlineFontTooltip);
-        alignLeftButton.setToolTipText(alignLeftTooltip);
-        alignCenterButton.setToolTipText(alingCenterTooltip);
-        alignRightButton.setToolTipText(alignRightTooltip);
-        textRotationButton.setToolTipText(textRotationTooltip);
+        btnShowHideLabels.setToolTipText(showHideLabelsTooltip);
+        cmbFont.setToolTipText(fontTooltip);
+        cmbFontSize.setToolTipText(fontSizeTooltip);
+        tglBoldFont.setToolTipText(boldFontTooltip);
+        tglItalicFont.setToolTipText(italicFontTooltip);
+        tglUnderlineFont.setToolTipText(underlineFontTooltip);
+        tglAlignLeft.setToolTipText(alignLeftTooltip);
+        tglAlignCenter.setToolTipText(alingCenterTooltip);
+        tglAlignRight.setToolTipText(alignRightTooltip);
+        btnTextRotation.setToolTipText(textRotationTooltip);
     }
 
-    private void setButtonSelected(JToggleButton button) {
-        button.setOpaque(true);
-        button.setBackground(Color.LIGHT_GRAY);
-        button.setBorder(BorderFactory.createLineBorder(bgcolor));
-        button.setBorderPainted(true);
+    private void setButtonSelected(JToggleButton tgl) {
+    	tgl.setOpaque(true);
+    	tgl.setBackground(Color.LIGHT_GRAY);
+    	tgl.setBorder(BorderFactory.createLineBorder(bgcolor));
+    	tgl.setBorderPainted(true);
     }
 
-    private void setButtonUnselected(JToggleButton button) {
-        button.setOpaque(true);
-        button.setBackground(bgcolor);
-        button.setBorder(BorderFactory.createLineBorder(bgcolor));
-        button.setBorderPainted(true);
+    private void setButtonUnselected(JToggleButton tgl) {
+    	tgl.setOpaque(true);
+    	tgl.setBackground(bgcolor);
+    	tgl.setBorder(BorderFactory.createLineBorder(bgcolor));
+    	tgl.setBorderPainted(true);
     }
 
     private JComponent add(Action action, boolean asToggleButton) {
         if (!asToggleButton) {
             return super.add(action);
         }
-        JToggleButton b = createToggleActionComponent(action);
-        b.setAction(action);
-        add(b);
-        return b;
+        JToggleButton tgl = createToggleActionComponent(action);
+        tgl.setAction(action);
+        add(tgl);
+        return tgl;
     }
 
     protected JToggleButton createToggleActionComponent(Action a) {
-        JToggleButton b = new JToggleButton() {
+        JToggleButton tgl = new JToggleButton() {
             private static final long serialVersionUID = -3143341784881719155L;
 
             protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
@@ -217,16 +215,16 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
             }
         };
         if (a != null && (a.getValue(Action.SMALL_ICON) != null || a.getValue(Action.LARGE_ICON_KEY) != null)) {
-            b.setHideActionText(true);
+        	tgl.setHideActionText(true);
         }
-        b.setHorizontalTextPosition(JButton.CENTER);
-        b.setVerticalTextPosition(JButton.BOTTOM);
-        b.setBorderPainted(false);
-        return b;
+        tgl.setHorizontalTextPosition(JButton.CENTER);
+        tgl.setVerticalTextPosition(JButton.BOTTOM);
+        tgl.setBorderPainted(false);
+        return tgl;
     }
 
-    private JComboBox getFontBox() {
-        if (fontBox == null) {
+    private JComboBox getcmbFont() {
+        if (cmbFont == null) {
             // Gets the list of available fonts from the local graphics
             // environment
             // and adds some frequently used fonts at the beginning of the list
@@ -234,16 +232,16 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
             List<String> fonts = new ArrayList<String>();
             fonts.addAll(Arrays.asList(new String[]{"Helvetica", "Verdana", "Times New Roman", "Garamond", "Courier New", "-"}));
             fonts.addAll(Arrays.asList(env.getAvailableFontFamilyNames()));
-            fontBox = new JComboBox(fonts.toArray());
-            fontBox.setMinimumSize(new Dimension(200, 24));
-            fontBox.setPreferredSize(new Dimension(200, 24));
-            fontBox.setMaximumSize(new Dimension(200, 24));
+            cmbFont = new JComboBox(fonts.toArray());
+            cmbFont.setMinimumSize(new Dimension(200, 24));
+            cmbFont.setPreferredSize(new Dimension(200, 24));
+            cmbFont.setMaximumSize(new Dimension(200, 24));
 
-            fontBox.addActionListener(new ActionListener() {
+            cmbFont.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
 //                    if (selectedCell != null) {
-                    String font = fontBox.getSelectedItem().toString();
+                    String font = cmbFont.getSelectedItem().toString();
                     PNGraph graph = FontToolBar.this.pnEditor.getGraphComponent().getGraph();
                     try {
                         graph.setFontOfSelectedCellLabel(font);
@@ -254,20 +252,20 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
                 }
             });
         }
-        return fontBox;
+        return cmbFont;
     }
 
-    private JComboBox getFontSizeBox() {
-        if (fontSizeBox == null) {
-            fontSizeBox = new JComboBox(new Object[]{"-", "6pt", "8pt", "9pt", "10pt", "11pt", "12pt", "14pt", "18pt", "24pt", "30pt", "36pt", "48pt", "60pt"});
-            fontSizeBox.setMinimumSize(new Dimension(100, 24));
-            fontSizeBox.setPreferredSize(new Dimension(100, 24));
-            fontSizeBox.setMaximumSize(new Dimension(100, 24));
+    private JComboBox getcmbFontSize() {
+        if (cmbFontSize == null) {
+            cmbFontSize = new JComboBox(new Object[]{"-", "6pt", "8pt", "9pt", "10pt", "11pt", "12pt", "14pt", "18pt", "24pt", "30pt", "36pt", "48pt", "60pt"});
+            cmbFontSize.setMinimumSize(new Dimension(100, 24));
+            cmbFontSize.setPreferredSize(new Dimension(100, 24));
+            cmbFontSize.setMaximumSize(new Dimension(100, 24));
 
-            fontSizeBox.addActionListener(new ActionListener() {
+            cmbFontSize.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 //                    if (selectedCell != null) {
-                    String fontSize = fontSizeBox.getSelectedItem().toString().replace("pt", "");
+                    String fontSize = cmbFontSize.getSelectedItem().toString().replace("pt", "");
                     PNGraph graph = FontToolBar.this.pnEditor.getGraphComponent().getGraph();
                     try {
                         graph.setFontSizeOfSelectedCellLabel(fontSize);
@@ -278,14 +276,14 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
                 }
             });
         }
-        return fontSizeBox;
+        return cmbFontSize;
     }
 
     public void setFontEnabled(boolean b) {
 
-        fontLabel.setEnabled(b);
-        getFontBox().setEnabled(b);
-        getFontSizeBox().setEnabled(b);
+        lblFont.setEnabled(b);
+        getcmbFont().setEnabled(b);
+        getcmbFontSize().setEnabled(b);
         boldFontAction.setEnabled(b);
         italicFontAction.setEnabled(b);
         underlineFontAction.setEnabled(b);
@@ -302,19 +300,19 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         }
     }
 
-    private void setButtonSettings(final JButton button) {
-        button.setBorderPainted(false);
-        button.addMouseListener(new MouseAdapter() {
+    private void setButtonSettings(final JButton btnButton) {
+    	btnButton.setBorderPainted(false);
+    	btnButton.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                button.setBorderPainted(false);
+            	btnButton.setBorderPainted(false);
                 super.mouseReleased(e);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                button.setBorderPainted(true);
+            	btnButton.setBorderPainted(true);
                 super.mousePressed(e);
             }
 
@@ -496,45 +494,45 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
                 {
                     setFontEnabled(false);
                     showHideLabelsAction.setHideIconImage();
-                    showHideLabelsButton.repaint();
+                    btnShowHideLabels.repaint();
 
                 } else {
                     setFontEnabled(true);
                     showHideLabelsAction.setShowIconImage();
-                    showHideLabelsButton.repaint();
+                    btnShowHideLabels.repaint();
 
                     if (selectedComponents.size() == isSameFontCounter) //componentSize must be >0
                     {
-                        getFontBox().setSelectedItem(initialFontFamily);
+                        getcmbFont().setSelectedItem(initialFontFamily);
                     } else {
-                        getFontBox().setSelectedItem("-");
+                        getcmbFont().setSelectedItem("-");
                     }
 
                     if (selectedComponents.size() == isSameFontSizeCounter) //componentSize must be >0
                     {
-                        getFontSizeBox().setSelectedItem(initialFontSize + "pt");
+                        getcmbFontSize().setSelectedItem(initialFontSize + "pt");
                     } else {
-                        getFontSizeBox().setSelectedItem("-");
+                        getcmbFontSize().setSelectedItem("-");
                     }
 
-                    setFontButtonSelection(selectedComponents, isBoldCounter, boldFontButton, boldFontAction);
-                    setFontButtonSelection(selectedComponents, isItalicCounter, italicFontButton, italicFontAction);
-                    setFontButtonSelection(selectedComponents, isUnderlinedCounter, underlineFontButton, underlineFontAction);
+                    setFontButtonSelection(selectedComponents, isBoldCounter, tglBoldFont, boldFontAction);
+                    setFontButtonSelection(selectedComponents, isItalicCounter, tglItalicFont, italicFontAction);
+                    setFontButtonSelection(selectedComponents, isUnderlinedCounter, tglUnderlineFont, underlineFontAction);
 
                     setAlignButtonSelection(selectedComponents, initialAlignCounter, initialAlign);
                     if (selectedComponents.size() == initialRotationCounter && initialRotation > 0.0) //componentSize must be >0
                     {
-                        textRotationButton.setOpaque(true);
-                        textRotationButton.setBackground(Color.LIGHT_GRAY);
-                        textRotationButton.setBorder(BorderFactory.createLineBorder(bgcolor));
-                        textRotationButton.setBorderPainted(true);
+                        btnTextRotation.setOpaque(true);
+                        btnTextRotation.setBackground(Color.LIGHT_GRAY);
+                        btnTextRotation.setBorder(BorderFactory.createLineBorder(bgcolor));
+                        btnTextRotation.setBorderPainted(true);
                         textRotationAction.setSelectionState(true);
                         textRotationAction.setDegree(initialRotation);
                     } else {
-                        textRotationButton.setOpaque(true);
-                        textRotationButton.setBackground(bgcolor);
-                        textRotationButton.setBorder(BorderFactory.createLineBorder(bgcolor));
-                        textRotationButton.setBorderPainted(true);
+                        btnTextRotation.setOpaque(true);
+                        btnTextRotation.setBackground(bgcolor);
+                        btnTextRotation.setBorder(BorderFactory.createLineBorder(bgcolor));
+                        btnTextRotation.setBorderPainted(true);
                         textRotationAction.setSelectionState(false);
                         textRotationAction.setDegree(0.0);
 
@@ -563,49 +561,49 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         {
             switch (initialAlign) {
                 case LEFT:
-                    setButtonSelected(alignLeftButton);
+                    setButtonSelected(tglAlignLeft);
                     alignLeftAction.setSelectionState(true);
-                    setButtonUnselected(alignCenterButton);
+                    setButtonUnselected(tglAlignCenter);
                     alignCenterAction.setSelectionState(false);
-                    setButtonUnselected(alignRightButton);
+                    setButtonUnselected(tglAlignRight);
                     alignRightAction.setSelectionState(false);
                     break;
                 case CENTER:
-                    setButtonUnselected(alignLeftButton);
+                    setButtonUnselected(tglAlignLeft);
                     alignLeftAction.setSelectionState(false);
-                    setButtonSelected(alignCenterButton);
+                    setButtonSelected(tglAlignCenter);
                     alignCenterAction.setSelectionState(true);
-                    setButtonUnselected(alignRightButton);
+                    setButtonUnselected(tglAlignRight);
                     alignRightAction.setSelectionState(false);
                     break;
                 case RIGHT:
-                    setButtonUnselected(alignLeftButton);
+                    setButtonUnselected(tglAlignLeft);
                     alignLeftAction.setSelectionState(false);
-                    setButtonUnselected(alignCenterButton);
+                    setButtonUnselected(tglAlignCenter);
                     alignCenterAction.setSelectionState(false);
-                    setButtonSelected(alignRightButton);
+                    setButtonSelected(tglAlignRight);
                     alignRightAction.setSelectionState(true);
                     break;
                 default:
                     break;
             }
         } else {
-            setButtonUnselected(alignLeftButton);
+            setButtonUnselected(tglAlignLeft);
             alignLeftAction.setSelectionState(false);
-            setButtonUnselected(alignCenterButton);
+            setButtonUnselected(tglAlignCenter);
             alignCenterAction.setSelectionState(false);
-            setButtonUnselected(alignRightButton);
+            setButtonUnselected(tglAlignRight);
             alignRightAction.setSelectionState(false);
         }
     }
 
-    private void setFontButtonSelection(Set<PNGraphCell> selectedComponents, int counter, JToggleButton button, AbstractPNEditorAction action) {
+    private void setFontButtonSelection(Set<PNGraphCell> selectedComponents, int counter, JToggleButton tgl, AbstractPNEditorAction action) {
         if (selectedComponents.size() == counter) //componentSize must be >0
         {
-            setButtonSelected(button);
+            setButtonSelected(tgl);
             action.setSelectionState(true);
         } else {
-            setButtonUnselected(button);
+            setButtonUnselected(tgl);
             action.setSelectionState(false);
         }
     }

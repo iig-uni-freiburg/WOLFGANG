@@ -9,24 +9,28 @@ import javax.swing.table.TableCellRenderer;
 
 public class JTableRenderer implements TableCellRenderer {
 
-	JScrollPane scrollPane;
-	JTextField textField;
+	JScrollPane scp;
+	JTextField txt;
 
 	public JTableRenderer() {
-		textField = new JTextField();
-		scrollPane = new JScrollPane(textField);
+		setUpGui();
+	}
+
+	private void setUpGui() {
+		txt = new JTextField();
+		scp = new JScrollPane(txt);	
 	}
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
 		if (value instanceof JTextField){
-			textField = (JTextField) value;
+			txt = (JTextField) value;
 			}
 		else{
-			textField.setText((String) value);}
+			txt.setText((String) value);}
 		
-		return textField;
+		return txt;
 	}
 
 }

@@ -44,7 +44,7 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 	 * importmxGraphTransferable if possible.
 	 */
 	@Override
-	public boolean importData(JComponent c, Transferable t) {
+	public boolean importData(JComponent cmp, Transferable t) {
 		boolean result = false;
 
 		if (isLocalDrag()) {
@@ -54,8 +54,8 @@ public class GraphTransferHandler extends mxGraphTransferHandler {
 
 			updateImportCount(t);
 
-			if (c instanceof PNGraphComponent) {
-				PNGraphComponent graphComponent = (PNGraphComponent) c;
+			if (cmp instanceof PNGraphComponent) {
+				PNGraphComponent graphComponent = (PNGraphComponent) cmp;
 
 				if (graphComponent.isEnabled() && t.isDataFlavorSupported(mxGraphTransferable.dataFlavor)) {
 					mxGraphTransferable gt;

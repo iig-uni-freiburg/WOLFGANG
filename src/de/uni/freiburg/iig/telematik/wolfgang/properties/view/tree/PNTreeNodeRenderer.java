@@ -28,6 +28,10 @@ public class PNTreeNodeRenderer extends DefaultTreeCellRenderer {
 
 	public PNTreeNodeRenderer() throws PropertyException, IOException {
 		super();
+		setUpGui();
+	}
+
+	private void setUpGui() throws PropertyException, IOException {
 		this.placeImage = createNodeImage(PNComponent.PLACE);
 		this.transitionImage = createNodeImage(PNComponent.TRANSITION);
 		this.arcIcon = createNodeImage(PNComponent.ARC);
@@ -139,11 +143,11 @@ public class PNTreeNodeRenderer extends DefaultTreeCellRenderer {
 			setIcon(new ImageIcon(arcIcon.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
 			break;
 		case LEAF:
-			JPanel tablePanel = new JPanel();
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.add(node.getTable(), BorderLayout.NORTH);
-			tablePanel.add(new JPopupMenu.Separator(), BorderLayout.SOUTH);
-			result = tablePanel;
+			JPanel pnlTable = new JPanel();
+			pnlTable.setLayout(new BorderLayout());
+			pnlTable.add(node.getTable(), BorderLayout.NORTH);
+			pnlTable.add(new JPopupMenu.Separator(), BorderLayout.SOUTH);
+			result = pnlTable;
 			break;
 
 		}

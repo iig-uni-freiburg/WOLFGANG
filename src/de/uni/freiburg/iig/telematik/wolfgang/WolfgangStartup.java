@@ -64,10 +64,10 @@ public class WolfgangStartup extends AbstractStartup {
 	private void tryToOpenNet() throws Exception {
 		if (filePaths == null) {
 			setLookAndFeel();
-			JFileChooser fc;
-			fc = new JFileChooser(OSUtils.getUserHomeDirectory());
-			fc.removeChoosableFileFilter(fc.getFileFilter());
-			fc.addChoosableFileFilter(new FileFilter() {
+			JFileChooser fch;
+			fch = new JFileChooser(OSUtils.getUserHomeDirectory());
+			fch.removeChoosableFileFilter(fch.getFileFilter());
+			fch.addChoosableFileFilter(new FileFilter() {
 				@Override
 				public String getDescription() {
 					return "PNML Documents (*.pnml)";
@@ -82,10 +82,10 @@ public class WolfgangStartup extends AbstractStartup {
 					}
 				}
 			});
-			fc.setDialogTitle("Load PNML");
-			int returnVal = fc.showDialog(null, "load PNML");
+			fch.setDialogTitle("Load PNML");
+			int returnVal = fch.showDialog(null, "load PNML");
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				String filename = fc.getSelectedFile().getAbsolutePath();
+				String filename = fch.getSelectedFile().getAbsolutePath();
 				openPNMLFile(filename);
 			} else {
 				startApplication();
@@ -101,7 +101,7 @@ public class WolfgangStartup extends AbstractStartup {
 	private void openPNMLFile(String filename) throws Exception {
 		if (!filename.toLowerCase().endsWith(".pnml")) {
 			if(!filename.startsWith("-psn_"))//Catching OS X specific argument on the very first startup
-			JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "File \""+filename+"\" is not in .pnml format", "Open Error", JOptionPane.ERROR_MESSAGE);
 			filePaths = null;
 			startApplication();
 		} else {

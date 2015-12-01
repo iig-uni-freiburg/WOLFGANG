@@ -13,21 +13,26 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent
 public class NodeToolBar extends JToolBar {
 
 	private static final long serialVersionUID = -6491749112943066366L;
-	protected NodePalettePanel palettePanel = null;
+	protected NodePalettePanel pnlPalette = null;
 
 	public NodeToolBar(final PNEditorComponent pnEditor, int orientation) throws PropertyException, IOException {
 		super(orientation);
 		Validate.notNull(pnEditor);
-		setFloatable(false);
-		add(getPalettePanel());
+		setUpGui();	
 		
 	}
 	
-	private JPanel getPalettePanel() throws ParameterException, PropertyException, IOException {
-		if (palettePanel == null) {
-			palettePanel = new NodePalettePanel();
+	private void setUpGui() throws ParameterException, PropertyException, IOException {
+		setFloatable(false);
+		add(getpnlPalette());
+		
+	}
+
+	private JPanel getpnlPalette() throws ParameterException, PropertyException, IOException {
+		if (pnlPalette == null) {
+			pnlPalette = new NodePalettePanel();
 		}
-		return palettePanel;
+		return pnlPalette;
 	}
 
 }

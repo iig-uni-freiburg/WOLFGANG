@@ -31,14 +31,14 @@ public class LinePanel extends JToolBar {
 	 */
 	private static final long serialVersionUID = -9066508120886312900L;
 	private GraphicsFillColorChooserPanel lineColor;
-	private ButtonGroup btnShapeGroup;
+	private ButtonGroup btngrpShape;
 	private JButton btnLine;
 	private JButton btnRound;
 	private JButton btnLineSolid;
 	private JButton btnLineDash;
 	private JButton btnLineDot;
 	private ButtonGroup btnStyleGroup;
-	private JComboBox strokeWeightBox;
+	private JComboBox cmbStrokeWeight;
 	private Set<LineListener> listeners = new HashSet<>();
 
 	public boolean addLinePanelListener(LineListener listener) {
@@ -71,7 +71,7 @@ public class LinePanel extends JToolBar {
 	
 		add(new JLabel("Line: "));
 		add(lineColor);
-		add(getStrokeWeightBox());
+		add(getcmbStrokeWeight());
 		add(getLineModesPanel());
 	}
 
@@ -140,9 +140,9 @@ public class LinePanel extends JToolBar {
 			btnLineDash.setFocusable(false);	
 			btnLineDot.setFocusable(false);
 
-			btnShapeGroup = new ButtonGroup();
-			btnShapeGroup.add(btnLine);
-			btnShapeGroup.add(btnRound);
+			btngrpShape = new ButtonGroup();
+			btngrpShape.add(btnLine);
+			btngrpShape.add(btnRound);
 			
 			btnStyleGroup = new ButtonGroup();
 			btnStyleGroup.add(btnLineSolid);
@@ -160,19 +160,19 @@ public class LinePanel extends JToolBar {
 		return pnlChooseColorMode;
 	}
 
-	private JComboBox getStrokeWeightBox() {
-		if (strokeWeightBox == null) {
-			strokeWeightBox = new JComboBox(new Object[] { "-", "0px", "1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px", "9px", "10px", "11px", "12px" });
-			strokeWeightBox.setSelectedIndex(1);
+	private JComboBox getcmbStrokeWeight() {
+		if (cmbStrokeWeight == null) {
+			cmbStrokeWeight = new JComboBox(new Object[] { "-", "0px", "1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px", "9px", "10px", "11px", "12px" });
+			cmbStrokeWeight.setSelectedIndex(1);
 
-			strokeWeightBox.addActionListener(new ActionListener() {
+			cmbStrokeWeight.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getSource() instanceof JComboBox) {
 						String strokeWeight;
-						if (strokeWeightBox.getSelectedItem().toString().contains("px")) {
-							strokeWeight = strokeWeightBox.getSelectedItem().toString().replace("px", "");
+						if (cmbStrokeWeight.getSelectedItem().toString().contains("px")) {
+							strokeWeight = cmbStrokeWeight.getSelectedItem().toString().replace("px", "");
 						} else {
-							strokeWeightBox.setSelectedIndex(1);
+							cmbStrokeWeight.setSelectedIndex(1);
 							strokeWeight = 0 + "";
 						}
 						for (LineListener listener : listeners) {
@@ -183,8 +183,8 @@ public class LinePanel extends JToolBar {
 				}
 			});
 		}
-		strokeWeightBox.setFocusable(false);
-		return strokeWeightBox;
+		cmbStrokeWeight.setFocusable(false);
+		return cmbStrokeWeight;
 	}
 
 	public void updatePanel(Color color, boolean differentLineColor, Shape line, Style style, int weight) {
@@ -199,22 +199,22 @@ public class LinePanel extends JToolBar {
 
 	private void updateLineStroke(int weight) {
 		if (weight >= 0) {
-			getStrokeWeightBox().setSelectedItem(weight + "px");
+			getcmbStrokeWeight().setSelectedItem(weight + "px");
 		} else {
-			getStrokeWeightBox().setSelectedItem("-");
+			getcmbStrokeWeight().setSelectedItem("-");
 
 		}
 	}
 
 	private void updateLineShape(Shape line) {
-		btnShapeGroup.clearSelection();
+		btngrpShape.clearSelection();
 		if (line != null)
 			switch (line) {
 			case CURVE:
-				btnShapeGroup.setSelected(btnRound.getModel(), true);
+				btngrpShape.setSelected(btnRound.getModel(), true);
 				break;
 			case LINE:
-				btnShapeGroup.setSelected(btnLine.getModel(), true);
+				btngrpShape.setSelected(btnLine.getModel(), true);
 				break;
 			default:
 				break;
@@ -245,9 +245,9 @@ public class LinePanel extends JToolBar {
 	public static void main(String[] args) {
 		LinePanel fp = new LinePanel();
 		fp.updatePanel(Color.BLACK,false, Line.Shape.LINE, Line.Style.SOLID, 5);
-		JPanel panel = new JPanel();
-		panel.add(fp);
-		new DisplayFrame(panel, true);
+		JPanel pnl = new JPanel();
+		pnl.add(fp);
+		new DisplayFrame(pnl, true);
 
 	}
 

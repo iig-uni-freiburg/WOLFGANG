@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,18 +28,14 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-import org.w3c.dom.Document;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
-import com.mxgraph.io.mxCodec;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.mxGraphOutline;
 import com.mxgraph.swing.handler.mxCellHandler;
 import com.mxgraph.swing.handler.mxCellMarker;
 import com.mxgraph.swing.util.mxCellOverlay;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxEvent;
-import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxEdgeStyle;
@@ -95,13 +90,13 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private EditorPopupMenu popupMenu = null;
 
-	private JPopupMenu transitionPopupMenu;
+	private JPopupMenu pmnTransition;
 
 	private Map<String, mxCellMarker> markerReference = new HashMap<String, mxCellMarker>();
 
 	public PNGraphComponent(PNGraph graph) {
 		super(graph);
-		initialize();
+		setUpGui();
 		getCanvas().putShape(mxConstants.SHAPE_RECTANGLE, new RectangleShape());
 		getCanvas().putShape(mxConstants.SHAPE_ELLIPSE, new EllipseShape());
 		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_DEFAULT, new DefaultTextShape());
@@ -291,7 +286,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		return new GraphTransferHandler();
 	}
 
-	private void initialize() {
+	private void setUpGui() {
 		getViewport().setOpaque(true);
 		setGridStyle(mxGraphComponent.GRID_STYLE_LINE);
 		setBackgroundColor();
@@ -407,12 +402,12 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 		return popupMenu;
 	}
 
-	public void setTransitionPopupMenu(JPopupMenu jPopupMenu) {
-		this.transitionPopupMenu = jPopupMenu;
+	public void setTransitionPopupMenu(JPopupMenu pmn) {
+		this.pmnTransition = pmn;
 	}
 
 	public JPopupMenu getTransitionPopupMenu() {
-		return transitionPopupMenu;
+		return pmnTransition;
 	}
 
 	// ------- MouseListener support

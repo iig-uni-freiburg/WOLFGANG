@@ -23,6 +23,10 @@ public abstract class AbstractWFCheckToolbar<P> extends AbstractPNPropertyCheckT
 	
 	@Override
 	protected void addNetSpecificCheckLabels(PNEditorComponent pnEditor) {
+		setUpGui();	
+	}
+	
+	protected void setUpGui() {
 		structureCheckLabel = createStructureCheckLabel();
 		add(structureCheckLabel);
 		structureCheckLabel.setEnabled(false);

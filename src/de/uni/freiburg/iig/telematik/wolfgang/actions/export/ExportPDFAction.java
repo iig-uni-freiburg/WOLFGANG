@@ -32,6 +32,8 @@ import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 
 public class ExportPDFAction extends AbstractPNEditorAction {
 
+	private JFileChooser fch = null;
+	
 	private static final long serialVersionUID = 3610566131463622898L;
 
 	public ExportPDFAction(PNEditorComponent editor) throws ParameterException, PropertyException, IOException {
@@ -40,14 +42,9 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 
 	@Override
 	protected void doFancyStuff(ActionEvent e) throws Exception {
-		JFileChooser fc = null;
-		if(editor.getWolfgang() != null){
-			fc = new JFileChooser(editor.getWolfgang().getFileReference());
-		} else {
-			fc = new JFileChooser(System.getProperty("user.home"));
-		}
+		setUpGui();
 		
-		fc.addChoosableFileFilter(new FileFilter() {
+		fch.addChoosableFileFilter(new FileFilter() {
 			public String getDescription() {
 				return "PDF Documents (*.pdf)";
 			}
@@ -59,11 +56,11 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 				}
 			}
 		});
-		fc.setDialogTitle("Save PDF");
-		int returnVal = fc.showDialog(getEditor().getGraphComponent(), "save PDF");
+		fch.setDialogTitle("Save PDF");
+		int returnVal = fch.showDialog(getEditor().getGraphComponent(), "save PDF");
 		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			String filename = fc.getSelectedFile().getAbsolutePath();
+			String filename = fch.getSelectedFile().getAbsolutePath();
 			if (!filename.toLowerCase().endsWith(".pdf"))
 				filename += ".pdf";
 			
@@ -79,11 +76,19 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 		}
 	}
 
+	private void setUpGui() {
+		if(editor.getWolfgang() != null){
+			fch = new JFileChooser(editor.getWolfgang().getFileReference());
+		} else {
+			fch = new JFileChooser(System.getProperty("user.home"));
+		}		
+	}
+
 	private void createPDFFile(String filename) throws FileNotFoundException, DocumentException {
 		PNEditorComponent editor = getEditor();
     	PNGraph pnGraph = editor.getGraphComponent().getGraph();
 
-    	JFrame f = new JFrame();
+    	JFrame frm = new JFrame();
     	PNGraphComponent forPrint = new PNGraphComponent(pnGraph) {
     	};
     	mxRectangle size = forPrint.getGraph().getGraphBounds();
@@ -115,8 +120,8 @@ public class ExportPDFAction extends AbstractPNEditorAction {
 
     	PdfGraphics2D g2 = new PdfGraphics2D(canvas, x, y);
 
-    	f.getContentPane().add(forPrint);
-    	f.pack();
+    	frm.getContentPane().add(forPrint);
+    	frm.pack();
     	forPrint.paint(g2);
     	g2.dispose();
 

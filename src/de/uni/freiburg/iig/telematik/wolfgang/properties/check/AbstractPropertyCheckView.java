@@ -24,8 +24,8 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 
 	private JButton btnErrorDetails;
 	private PropertyCheckHeadlineLabel lblHeadline;
-	private JPanel propertyPanel;
-	private JPanel specificFieldPanel;
+	private JPanel pnlProperty;
+	private JPanel pnlSpecificField;
 	
 	private int lineHeight = 16;
 	
@@ -45,33 +45,33 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 	
 	protected abstract String getHeadline();
 	
-	protected abstract void addSpecificFields(JPanel panel);
+	protected abstract void addSpecificFields(JPanel pnl);
 	
 	public void setUpGui() {
-		propertyPanel = new JPanel(new SpringLayout());
-		propertyPanel.add(getLabelHeadline());
+		pnlProperty = new JPanel(new SpringLayout());
+		pnlProperty.add(getLabelHeadline());
 
-		propertyPanel.add(new JPopupMenu.Separator());
-		propertyPanel.add(getButtonErrorDetails());
-		propertyPanel.add(new JPopupMenu.Separator());
+		pnlProperty.add(new JPopupMenu.Separator());
+		pnlProperty.add(getButtonErrorDetails());
+		pnlProperty.add(new JPopupMenu.Separator());
 		
-		propertyPanel.add(getPanelSpecificFields());
+		pnlProperty.add(getPanelSpecificFields());
 		SpringUtilities.makeCompactGrid(getPanelSpecificFields(), getPanelSpecificFields().getComponentCount(), 1, 0, 0, 0, 0);
 		
-		propertyPanel.add(new JPopupMenu.Separator());
+		pnlProperty.add(new JPopupMenu.Separator());
 
-		int componentCount = propertyPanel.getComponentCount();
-		SpringUtilities.makeCompactGrid(propertyPanel, componentCount, 1, 0, 0, 0, 0);
-		add(propertyPanel, BorderLayout.PAGE_START);
-		setMinimumSize(new Dimension((int) propertyPanel.getSize().getWidth(), (int) (lineHeight*componentCount)));
+		int componentCount = pnlProperty.getComponentCount();
+		SpringUtilities.makeCompactGrid(pnlProperty, componentCount, 1, 0, 0, 0, 0);
+		add(pnlProperty, BorderLayout.PAGE_START);
+		setMinimumSize(new Dimension((int) pnlProperty.getSize().getWidth(), (int) (lineHeight*componentCount)));
 	}
 	
 	private JPanel getPanelSpecificFields(){
-		if(specificFieldPanel == null){
-			specificFieldPanel = new JPanel(new SpringLayout());
-			addSpecificFields(specificFieldPanel);
+		if(pnlSpecificField == null){
+			pnlSpecificField = new JPanel(new SpringLayout());
+			addSpecificFields(pnlSpecificField);
 		}
-		return specificFieldPanel;
+		return pnlSpecificField;
 	}
 	
 	private JButton getButtonErrorDetails(){
@@ -105,11 +105,11 @@ public abstract class AbstractPropertyCheckView<O> extends JPanel {
 	}
 	
 	protected void updatePanelView(boolean isExpanded){
-		int c = !isExpanded ? propertyPanel.getComponentCount() : 1;
-		SpringUtilities.makeCompactGrid(propertyPanel, c, 1, 0, 0, 0, 0);
+		int c = !isExpanded ? pnlProperty.getComponentCount() : 1;
+		SpringUtilities.makeCompactGrid(pnlProperty, c, 1, 0, 0, 0, 0);
 		getPanelSpecificFields().setVisible(!isExpanded);
 		getLabelHeadline().setExpanded(!isExpanded);
-		setMinimumSize(new Dimension((int) propertyPanel.getSize().getWidth(), (int) (lineHeight*c)));
+		setMinimumSize(new Dimension((int) pnlProperty.getSize().getWidth(), (int) (lineHeight*c)));
 	}
 
 }

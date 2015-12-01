@@ -33,7 +33,6 @@ import com.mxgraph.model.mxIGraphModel.mxAtomicGraphModelChange;
 import de.invation.code.toval.graphic.component.RestrictedTextField;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
 import de.invation.code.toval.graphic.dialog.AbstractDialog;
-import de.invation.code.toval.graphic.dialog.AbstractDialog.ButtonPanelLayout;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
@@ -49,7 +48,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected static final int MAX_CAPACITY = 99;
 	private static final int SPINNER_DEFAULT_WIDTH = 63;
 
-	private JButton addButton;
+	private JButton btnAdd;
 
 	protected PNGraph graph;
 	protected Map<String, Color> colors;
@@ -58,6 +57,11 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 	public AbstractTokenConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name);
+		setUpGui(name, cpnGraph);
+
+	}
+
+	private void setUpGui(String name, PNGraph cpnGraph) {
 		mainPanel().setLayout(new SpringLayout());
 		setIncludeCancelButton(false);
 		setOKButtonText("Finished");
@@ -66,7 +70,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		setButtonPanelLayout(ButtonPanelLayout.CENTERED);
 		setMaximumSize(getPreferredSize());
 		setResizable(false);
-
+		
 	}
 
 	public void updateTokenConfigurerView() {
@@ -133,10 +137,10 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 	private void createAddBtn() {
 		try {
-			addButton = new JButton(IconFactory.getIcon("maximize"));
-			addButton.setFocusable(false);
+			btnAdd = new JButton(IconFactory.getIcon("maximize"));
+			btnAdd.setFocusable(false);
 			creaeAddBtnListener();
-			mainPanel().add(addButton);
+			mainPanel().add(btnAdd);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Buttons could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
@@ -149,30 +153,30 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 	protected abstract String getCellSpecific2ndHeadline();
 
 	private void creaeAddBtnListener() {
-		addButton.addMouseListener(new MouseAdapter() {
+		btnAdd.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				JPopupMenu popup = new JPopupMenu();
-				addColorItem(popup, "black");
+				JPopupMenu pmn = new JPopupMenu();
+				addColorItem(pmn, "black");
 				TreeMap<String, Color> sortedColors = new TreeMap<String, Color>(colors);
 				for (Entry<String, Color> c : sortedColors.entrySet()) {
 					final String color = c.getKey();
 					if (!color.equals("black"))
-						addColorItem(popup, color);
+						addColorItem(pmn, color);
 				}
 
-				popup.show(addButton, addButton.getWidth() * 4 / 5, addButton.getHeight() * 4 / 5);
+				pmn.show(btnAdd, btnAdd.getWidth() * 4 / 5, btnAdd.getHeight() * 4 / 5);
 
 			}
 
-			private void addColorItem(JPopupMenu popup, final String color) {
+			private void addColorItem(JPopupMenu pmn, final String color) {
 				if (!getMultiSet().contains(color)) {
-					JMenuItem item = new JMenuItem(color);
-					item.setName(color);
+					JMenuItem mniItem = new JMenuItem(color);
+					mniItem.setName(color);
 
-					item.addActionListener(new ActionListener() {
+					mniItem.addActionListener(new ActionListener() {
 
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
@@ -181,8 +185,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 							((mxGraphModel) graph.getModel()).endUpdate();
 
 							if (getMultiSet().contains(colors.keySet())) {
-								if (addButton != null)
-									addButton.setEnabled(false);
+								if (btnAdd != null)
+									btnAdd.setEnabled(false);
 							}
 
 							updateTokenConfigurerView();
@@ -190,7 +194,7 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 						}
 
 					});
-					popup.add(item);
+					pmn.add(mniItem);
 				}
 			}
 		});
@@ -198,97 +202,97 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 
 	protected abstract void createCellSpecificAddBtnAction(final String color);
 
-	protected void addRow(String tokenLabel) {
+	protected void addRow(String lblToken) {
 
-		mainPanel().add(getTokenCircle(tokenLabel));
-		mainPanel().add(getTokenSpinner(tokenLabel));
-		mainPanel().add(new JLabel(tokenLabel));
+		mainPanel().add(getTokenCircle(lblToken));
+		mainPanel().add(getTokenSpinner(lblToken));
+		mainPanel().add(new JLabel(lblToken));
 
 		mainPanel().add(Box.createGlue());
 
-		if (get2ndSpinner(tokenLabel) != null) {
-			mainPanel().add(get2ndSpinner(tokenLabel));
+		if (get2ndSpinner(lblToken) != null) {
+			mainPanel().add(get2ndSpinner(lblToken));
 		} else {
 			mainPanel().add(Box.createGlue());
 		}
 
-		JButton rmv = getRemoveButton(tokenLabel);
-		mainPanel().add(rmv);
-		rmv.setEnabled(isRemoveBtnEnabled());
+		JButton btnRmv = getRemoveButton(lblToken);
+		mainPanel().add(btnRmv);
+		btnRmv.setEnabled(isRemoveBtnEnabled());
 	}
 
 	protected abstract boolean isRemoveBtnEnabled();
 
-	protected abstract JSpinner get2ndSpinner(final String tokenLabel);
+	protected abstract JSpinner get2ndSpinner(final String lblToken);
 
-	private TokenSpinner getTokenSpinner(final String tokenLabel) {
-		int size = getMultiSet().multiplicity(tokenLabel);
-		int cap = getSpinnerCapacity(tokenLabel);
+	private TokenSpinner getTokenSpinner(final String lblToken) {
+		int size = getMultiSet().multiplicity(lblToken);
+		int cap = getSpinnerCapacity(lblToken);
 		int min = getMinimumCapacity();
 		int step = 1;
-		SpinnerModel model = new SpinnerNumberModel(size, min, cap, step);
-		TokenSpinner spinner = new TokenSpinner(model, tokenLabel, cap);
-		int w = spinner.getWidth();
-		int h = spinner.getHeight();
+		SpinnerModel spnm = new SpinnerNumberModel(size, min, cap, step);
+		TokenSpinner spn = new TokenSpinner(spnm, lblToken, cap);
+		int w = spn.getWidth();
+		int h = spn.getHeight();
 		Dimension d = new Dimension(SPINNER_DEFAULT_WIDTH, h);
-		spinner.setPreferredSize(d);
-		spinner.setMinimumSize(d);
+		spn.setPreferredSize(d);
+		spn.setMinimumSize(d);
 
-		spinner.addChangeListener(new ChangeListener() {
+		spn.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				JSpinner spinner = (TokenSpinner) e.getSource();
-				Integer currentValue = (Integer) spinner.getValue();
+				JSpinner spn = (TokenSpinner) e.getSource();
+				Integer currentValue = (Integer) spn.getValue();
 				if (currentValue > MAX_CAPACITY)
-					spinner.setValue(MAX_CAPACITY);
+					spn.setValue(MAX_CAPACITY);
 
 				Multiset<String> newMarking = getMultiSet();
 				if (newMarking == null)
 					newMarking = new Multiset<String>();
-				newMarking.setMultiplicity(tokenLabel, currentValue);
+				newMarking.setMultiplicity(lblToken, currentValue);
 
 				((mxGraphModel) graph.getModel()).execute(createCellSpecificChange((PNGraph) graph, cellName, newMarking));
 			}
 
 		});
-		return spinner;
+		return spn;
 	}
 
 	protected abstract int getMinimumCapacity();
 
 	protected abstract mxAtomicGraphModelChange createCellSpecificChange(PNGraph graph, String paName, Multiset<String> newMarking);
 
-	protected abstract int getSpinnerCapacity(String tokenLabel);
+	protected abstract int getSpinnerCapacity(String lblToken);
 
 	private JButton getRemoveButton(final String tokenName) {
-		JButton remove = null;
+		JButton btnRemove = null;
 		try {
-			remove = new JButton(IconFactory.getIcon("minimize"));
+			btnRemove = new JButton(IconFactory.getIcon("minimize"));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Minimize-Button could not be added. \nReason: " + e.getMessage(), "" + e.getClass(), JOptionPane.ERROR);
 		}
-		remove.addActionListener(new ActionListener() {
+		btnRemove.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				((mxGraphModel) graph.getModel()).beginUpdate();
 				createCellSpecificRemoveBtnAction(tokenName);
 				((mxGraphModel) graph.getModel()).endUpdate();
-				if (addButton != null)
-					addButton.setEnabled(true);
+				if (btnAdd != null)
+					btnAdd.setEnabled(true);
 				pack();
 				updateTokenConfigurerView();
 			}
 
 		});
-		return remove;
+		return btnRemove;
 	}
 
 	protected abstract void createCellSpecificRemoveBtnAction(String tokenName);
 
-	private CirclePanel getTokenCircle(String tokenLabel) {
-		Color tokenColor = colors.get(tokenLabel);
+	private CirclePanel getTokenCircle(String lblToken) {
+		Color tokenColor = colors.get(lblToken);
 		CirclePanel circle = null;
 		try {
 			circle = new CirclePanel(tokenColor);
@@ -328,8 +332,8 @@ public abstract class AbstractTokenConfigurerDialog extends AbstractDialog {
 		private String tokenName;
 		private int capacity;
 
-		public TokenSpinner(SpinnerModel model, String tokenName, int cap) {
-			super(model);
+		public TokenSpinner(SpinnerModel spnm, String tokenName, int cap) {
+			super(spnm);
 			this.tokenName = tokenName;
 			this.capacity = cap;
 		}

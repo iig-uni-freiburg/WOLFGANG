@@ -29,17 +29,21 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 	private static final long serialVersionUID = -381740152242776391L;
 	private static String nodeColor = "#333333";
 
-	public NodeToolBarAction(PNEditorComponent editor, String name, JToolBar toolbar) throws ParameterException, PropertyException, IOException {
-		super(editor, name, IconFactory.getIcon("plus"), toolbar);
+	public NodeToolBarAction(PNEditorComponent editor, String name, JToolBar tlb) throws ParameterException, PropertyException, IOException {
+		super(editor, name, IconFactory.getIcon("plus"), tlb);
 		getIcon().setImage(createIconImage());
 	}
 
 	public static Image createIconImage() throws PropertyException, IOException {
+		return setUpGui();
+	}
+
+	private static Image setUpGui() throws PropertyException, IOException {
 		Color defaultFillColor = Utils.parseColor(nodeColor);
 		IconSize iconsize = null;
 		iconsize = EditorProperties.getInstance().getIconSize();
 		int size = iconsize.getSize();
-
+		
 		Image image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB_PRE);
 		Graphics g = image.getGraphics();
 		Graphics2D g2 = (Graphics2D) g;
@@ -71,7 +75,7 @@ public class NodeToolBarAction extends PopUpToolBarAction {
 
 		g2.dispose();
 		return image;
-
+		
 	}
 
 }
