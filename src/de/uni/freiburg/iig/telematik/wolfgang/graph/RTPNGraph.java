@@ -59,12 +59,12 @@ public class RTPNGraph extends PNGraph {
 	}
 	
 	@Override
-	public
 	/**
 	 * @param cell
 	 * @param circularPointGroup
 	 * @return
-	 */ Multiset<String> getPlaceStateForCell(String name, CircularPointGroup circularPointGroup) {
+	 */ 
+	public Multiset<String> getPlaceStateForCell(String name, CircularPointGroup circularPointGroup) {
 		TimedNetPlace place = (TimedNetPlace) getNetContainer().getPetriNet().getPlace(name);
 		if(place!= null){
 			if(circularPointGroup != null)
