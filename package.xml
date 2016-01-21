@@ -127,9 +127,7 @@
 			<fileset dir="${TOVAL.location}/src">
 				<include name="**/*.java" />
 			</fileset>
-			<fileset dir="${TOVAL.location}/res">
-				<include name="**/*.java" />
-			</fileset>
+			<fileset dir="${TOVAL.location}/res" />
 			<fileset dir="${JAGAL.location}/src">
 				<include name="**/*.java" />
 			</fileset>
@@ -139,7 +137,13 @@
 			<fileset dir="${SEWOL.location}/ext">
 				<include name="**/*.java" />
 			</fileset>
+			<fileset dir="${SEWOL.location}/res">
+				<include name="**/*.java" />
+			</fileset>
 			<fileset dir="${SEPIA.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEPIA.location}/res">
 				<include name="**/*.java" />
 			</fileset>
 		</javadoc>
@@ -166,6 +170,9 @@
 				<include name="**/*.java" />
 			</fileset>
 			<fileset dir="${SEPIA.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEPIA.location}/res">
 				<include name="**/*.java" />
 			</fileset>
 		</javadoc>
