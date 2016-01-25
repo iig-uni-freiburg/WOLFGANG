@@ -9,6 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TimedNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.wolfgang.exception.EditorToolbarException;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.AbstractToolBar;
+import de.uni.freiburg.iig.telematik.wolfgang.menu.PTNetToolBar;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.RTPNToolbar;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.AbstractPropertyCheckView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.check.WFNetPropertyCheckView;
@@ -43,7 +44,8 @@ public abstract class AbstractRTPNEditorComponent extends PNEditorComponent{
 	
 	@Override
 	protected AbstractToolBar createNetSpecificToolbar() throws EditorToolbarException {
-		return new RTPNToolbar(this, JToolBar.HORIZONTAL);
+		//return new RTPNToolbar(this, JToolBar.HORIZONTAL);
+		return new PTNetToolBar(this, JToolBar.HORIZONTAL);
 	}
 
 	@Override
