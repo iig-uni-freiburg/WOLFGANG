@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, IIG Telematics, Uni Freiburg
+ * Copyright (c) 2016, IIG Telematics, Uni Freiburg
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ public class AboutAction extends AbstractWolfgangAction {
 	private static final long serialVersionUID = -4904945549599021867L;
 	private static final String copyright = "WOLFGANG - Petri Net Editor\n"
 			+ "Version: " + WolfgangStartup.VERSION_NUMBER
-			+ "\nCopyright (c) 2015, IIG Telematics, Uni Freiburg\n"
+			+ "\nCopyright (c) 2016, IIG Telematics, Uni Freiburg\n"
             + "All rights reserved (see detailed licence header below).\n\n"			
 			+ "WOLFGANG is licensed under the BSD 3-Clause license.\n"
             + "\n"
@@ -77,7 +77,7 @@ public class AboutAction extends AbstractWolfgangAction {
             + "\n"
             + "License header:\n"
             + "\n"
-            + "Copyright (c) 2015, IIG Telematics, Uni Freiburg\n"
+            + "Copyright (c) 2016, IIG Telematics, Uni Freiburg\n"
             + "All rights reserved.\n"
             + "\n"
             + "Redistribution and use in source and binary forms, with or without\n"

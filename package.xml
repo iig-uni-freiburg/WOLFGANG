@@ -5,10 +5,10 @@
 	Apache Ant build file for the WOLFGANG project
 	
 	This build file generates three JAR-files from the project:
-	- wolfgang-1.0.2.jar
-	- wolfgang-1.0.2-sources.jar
-	- wolfgang-1.0.2-javadoc.jar
-	- wolfgang-1.0.2-runnable.jar
+	- wolfgang-1.0.3.jar
+	- wolfgang-1.0.3-sources.jar
+	- wolfgang-1.0.3-javadoc.jar
+	- wolfgang-1.0.3-runnable.jar
 	
 	The building process starts with cleaning all target files including compiles
 	java classes, compiled tests, and test reports (see #clean). Afterwards a
@@ -25,7 +25,7 @@
 	<!-- Project details -->
 	<property name="project.description" value="Wolfgang is a lightweight tool that allows users to easily create and edit Petri nets and check them against general and workflow specific net properties. Specifically, Wolfgang supports full PNML conform editing functionality of Place-Transition Nets (P/T-Nets) and Colored Petri Nets (CPN) as they are defined in the SEPIA package. Its simple and easy to use interface allows to quickly create Petri nets from scratch, edit them graphically in many ways, store and even export them as PDFs. Use Wolfgang to smoothly create the Petri net you want!" />
 	<property name="artifact.name" value="wolfgang" />
-	<property name="version.name" value="1.0.2" />
+	<property name="version.name" value="1.0.3" />
 	<property name="main-class" value="de.uni.freiburg.iig.telematik.wolfgang.WolfgangStartup" />
 	<property name="main-class-uri" value="de/uni/freiburg/iig/telematik/wolfgang/WolfgangStartup" />
 

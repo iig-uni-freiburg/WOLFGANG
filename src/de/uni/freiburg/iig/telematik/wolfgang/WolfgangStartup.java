@@ -23,7 +23,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.editor.properties.EditorProperties
 
 public class WolfgangStartup extends AbstractStartup {
 
-        public final static String VERSION_NUMBER = "1.0.2";
+        public final static String VERSION_NUMBER = "1.0.3";
         public final static String VERSION_NAME = "v" + VERSION_NUMBER;
 	public final static String TOOL_NAME = "Wolfgang";
 
