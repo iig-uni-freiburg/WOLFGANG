@@ -49,6 +49,9 @@ public class WGPropertySettingPanel extends JPanel {
 	private JCheckBox chkUpdateNotification;
 	private JCheckBox chkFileExtAssociation;
 
+	private JCheckBox chkRequireNetType;
+	private JCheckBox chkPNValidation;
+
 	private EnumComboBox<GradientRotation> comboGradientRotation;
 	private FontComboBox comboFontFamily;
 	private RestrictedTextField txtDefFontSize;
@@ -119,10 +122,15 @@ public class WGPropertySettingPanel extends JPanel {
 		add(chkUpdateNotification);
 		add(new JLabel("Ask for file extension association:", JLabel.RIGHT));
 		add(chkFileExtAssociation);
+
+		add(new JLabel("Require net type:", JLabel.RIGHT));
+		add(chkRequireNetType);
+		add(new JLabel("Petri net validation:", JLabel.RIGHT));
+		add(chkPNValidation);
 	}
 	
 	protected void generateGrid(){
-		SpringUtilities.makeCompactGrid(this, 24, 2, 5, 5, 5, 5);
+		SpringUtilities.makeCompactGrid(this, 26, 2, 5, 5, 5, 5);
 	}
 	
 	protected void initialize() throws PropertyException, IOException {
@@ -163,6 +171,11 @@ public class WGPropertySettingPanel extends JPanel {
                 chkUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
                 chkFileExtAssociation = new JCheckBox();
                 chkFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
+
+                chkRequireNetType = new JCheckBox();
+                chkRequireNetType.setSelected(EditorProperties.getInstance().getRequireNetType());
+                chkPNValidation = new JCheckBox();
+                chkPNValidation.setSelected(EditorProperties.getInstance().getPNValidation());
 	}
 	
 	public IconSize getIconSize(){
@@ -263,5 +276,13 @@ public class WGPropertySettingPanel extends JPanel {
 	
 	public boolean getShowFileExtensionAssociation(){
 		return chkFileExtAssociation.isSelected();
+	}
+	
+	public boolean getRequireNetType(){
+		return chkRequireNetType.isSelected();
+	}
+	
+	public boolean getPNValidation(){
+		return chkPNValidation.isSelected();
 	}
 }

@@ -106,7 +106,7 @@ public class WolfgangStartup extends AbstractStartup {
 			startApplication();
 		} else {
 			@SuppressWarnings("rawtypes")
-			AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());
+			AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequireNetType(), EditorProperties.getInstance().getPNValidation());
 			switch (net.getPetriNet().getNetType()) {
 			case CPN:
 				new WolfgangCPN((GraphicalCPN) net).setUpGUI();

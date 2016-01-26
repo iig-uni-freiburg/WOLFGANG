@@ -33,5 +33,8 @@ public enum WolfgangProperty {
 	SNAP_TO_GRID,
         
         SHOW_UPDATE_NOTIFICATION,
-        SHOW_FILE_EXTENSION_ASSOCIATION;
+        SHOW_FILE_EXTENSION_ASSOCIATION,
+        
+        REQUIRE_NET_TYPE,
+        PN_VALIDATION;
 }

@@ -48,6 +48,9 @@ public class EditorProperties extends AbstractProperties{
 	public static final boolean DEFAULT_SHOW_UPDATE_NOTIFICATION = true;
 	public static final boolean DEFAULT_SHOW_FILE_EXTENSION_ASSOCIATION = true;
 
+	public static final boolean DEFAULT_REQUIRE_NET_TYPE = true;
+	public static final boolean DEFAULT_PN_VALIDATION = true;
+
 	protected static final String propertyFileName = ".editorProperties";
 	
 	private static EditorProperties instance = null;
@@ -750,7 +753,7 @@ public class EditorProperties extends AbstractProperties{
 		if(showUpdateNotification != getShowUpdateNotification()){
 			setProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION, showUpdateNotification);
 			for(WolfgangPropertyListener listener: listeners){
-				listener.snapToGridChanged(showUpdateNotification);
+				listener.showUpdateNotificationChanged(showUpdateNotification);
 			}
 		}
 	}
@@ -773,17 +776,6 @@ public class EditorProperties extends AbstractProperties{
 	
 	// ------- Ask for file extension association -----------------------------------------------------------------
 
-	public void setShowFileExtensionAssociation(Boolean showFileExtensionAssociation) throws PropertyException {
-		Validate.notNull(showFileExtensionAssociation);
-                
-		if(showFileExtensionAssociation != getShowFileExtensionAssociation()){
-			setProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, showFileExtensionAssociation);
-			for(WolfgangPropertyListener listener: listeners){
-				listener.snapToGridChanged(showFileExtensionAssociation);
-			}
-		}
-	}
-
 	public boolean getShowFileExtensionAssociation() throws PropertyException{
 		String propertyValue = getProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION);
 		if(propertyValue == null) {
@@ -799,6 +791,75 @@ public class EditorProperties extends AbstractProperties{
 		}
 		return showFileExtensionAssociation;
 	}
+
+	public void setShowFileExtensionAssociation(Boolean showFileExtensionAssociation) throws PropertyException {
+		Validate.notNull(showFileExtensionAssociation);
+                
+		if(showFileExtensionAssociation != getShowFileExtensionAssociation()){
+			setProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION, showFileExtensionAssociation);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.showFileExtensionAssociationChanged(showFileExtensionAssociation);
+			}
+		}
+	}
+	
+	// ------- Require Valid Petri Net Type -----------------------------------------------------------------
+
+        public boolean getRequireNetType() throws PropertyException {
+                String propertyValue = getProperty(WolfgangProperty.REQUIRE_NET_TYPE);
+                if (propertyValue == null) {
+                        propertyValue = String.valueOf(DEFAULT_REQUIRE_NET_TYPE);
+                        //throw new PropertyException(WolfgangProperty.REQUIRE_NET_TYPE, propertyValue, "Invalid property value");
+                }
+
+                boolean requireNetType = DEFAULT_REQUIRE_NET_TYPE;
+                try {
+                        requireNetType = Boolean.parseBoolean(propertyValue);
+                } catch (Exception e) {
+                        throw new PropertyException(WolfgangProperty.REQUIRE_NET_TYPE, propertyValue, "Cannot read boolean object from property value \"" + propertyValue + "\".");
+                }
+                return requireNetType;
+        }
+
+	public void setRequireNetType(Boolean requireNetType) throws PropertyException {
+		Validate.notNull(requireNetType);
+                
+		if(requireNetType != getRequireNetType()){
+			setProperty(WolfgangProperty.REQUIRE_NET_TYPE, requireNetType);
+			for(WolfgangPropertyListener listener: listeners){
+				listener.requireNetTypeChanged(requireNetType);
+			}
+		}
+	}
+	
+	// ------- Petri Net Validation -----------------------------------------------------------------
+
+        public boolean getPNValidation() throws PropertyException {
+                String propertyValue = getProperty(WolfgangProperty.PN_VALIDATION);
+                if (propertyValue == null) {
+                        propertyValue = String.valueOf(DEFAULT_PN_VALIDATION);
+                        //throw new PropertyException(WolfgangProperty.PN_VALIDATION, propertyValue, "Invalid property value");
+                }
+
+                boolean pnValidation = DEFAULT_PN_VALIDATION;
+                try {
+                        pnValidation = Boolean.parseBoolean(propertyValue);
+                } catch (Exception e) {
+                        throw new PropertyException(WolfgangProperty.PN_VALIDATION, propertyValue, "Cannot read boolean object from property value \"" + propertyValue + "\".");
+                }
+                return pnValidation;
+        }
+
+        public void setPNValidation(Boolean pnValidation) throws PropertyException {
+                Validate.notNull(pnValidation);
+
+                if (pnValidation != getPNValidation()) {
+                        setProperty(WolfgangProperty.PN_VALIDATION, pnValidation);
+                        for (WolfgangPropertyListener listener : listeners) {
+                                listener.pnValidationChanged(pnValidation);
+                        }
+                }
+        }
 
 	// ------- Default Properties -----------------------------------------------------------
 	
@@ -835,6 +896,9 @@ public class EditorProperties extends AbstractProperties{
                 
 		defaultProperties.setProperty(WolfgangProperty.SHOW_UPDATE_NOTIFICATION.toString(), String.valueOf(DEFAULT_SHOW_UPDATE_NOTIFICATION));
 		defaultProperties.setProperty(WolfgangProperty.SHOW_FILE_EXTENSION_ASSOCIATION.toString(), String.valueOf(DEFAULT_SHOW_FILE_EXTENSION_ASSOCIATION));
+                
+		defaultProperties.setProperty(WolfgangProperty.REQUIRE_NET_TYPE.toString(), String.valueOf(DEFAULT_REQUIRE_NET_TYPE));
+		defaultProperties.setProperty(WolfgangProperty.PN_VALIDATION.toString(), String.valueOf(DEFAULT_PN_VALIDATION));
 		
 		return defaultProperties;
 	}
@@ -847,16 +911,6 @@ public class EditorProperties extends AbstractProperties{
 		} catch (IOException e) {
 			throw new IOException("Cannot create/store wolfgang properties file on disk.", e);
 		}
-	}
-
-	public boolean getRequestNetType() throws PropertyException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean getPNValidation() throws PropertyException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 }

@@ -45,7 +45,7 @@ public class LoadAction extends AbstractWolfgangAction {
 			String filename = fch.getSelectedFile().getAbsolutePath();
 
 			if (filename.toLowerCase().endsWith(".pnml")) {
-				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequestNetType(), EditorProperties.getInstance().getPNValidation());
+				AbstractGraphicalPN net = new PNMLParser().parse(filename, EditorProperties.getInstance().getRequireNetType(), EditorProperties.getInstance().getPNValidation());
 				switch (net.getPetriNet().getNetType()) {
 				case CPN:
 					wolfgang = new WolfgangCPN((GraphicalCPN) net);
@@ -67,10 +67,12 @@ public class LoadAction extends AbstractWolfgangAction {
 		fch = new JFileChooser(System.getProperty("user.home"));
 		fch.removeChoosableFileFilter(fch.getFileFilter());
 		fch.addChoosableFileFilter(new FileFilter() {
+                        @Override
 			public String getDescription() {
 				return "PNML Documents (*.pnml)";
 			}
 
+                        @Override
 			public boolean accept(File f) {
 				if (f.isDirectory()) {
 					return true;

@@ -81,6 +81,8 @@ public class WGPropertySettingDialog extends AbstractDialog {
 		EditorProperties.getInstance().setSnapToGrid(pnlSetting.getSnapToGrid());
 		EditorProperties.getInstance().setShowUpdateNotification(pnlSetting.getShowUpdateNotification());
 		EditorProperties.getInstance().setShowFileExtensionAssociation(pnlSetting.getShowFileExtensionAssociation());
+		EditorProperties.getInstance().setRequireNetType(pnlSetting.getRequireNetType());
+		EditorProperties.getInstance().setPNValidation(pnlSetting.getPNValidation());
 		EditorProperties.getInstance().store();
 	}
 

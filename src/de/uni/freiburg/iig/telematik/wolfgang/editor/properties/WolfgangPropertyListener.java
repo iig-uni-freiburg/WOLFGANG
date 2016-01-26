@@ -53,8 +53,12 @@ public interface WolfgangPropertyListener {
 	
 	public void snapToGridChanged(boolean snapToGrid);
 	
-	public void showUpdateNotification(boolean showUpdateNotification);
+	public void showUpdateNotificationChanged(boolean showUpdateNotification);
 	
-	public void showFileExtensionAssociation(boolean showFileExtensionAssociation);
+	public void showFileExtensionAssociationChanged(boolean showFileExtensionAssociation);
+	
+	public void requireNetTypeChanged(boolean requireNetType);
+	
+	public void pnValidationChanged(boolean pnValidation);
 	
 }
