@@ -49,7 +49,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNCom
 
 public class IFNetGraph extends PNGraph {
 
-	private HashMap<String, TokenConfigurerDialog> tokenConfigurerWindows = new HashMap<String, TokenConfigurerDialog>();
+	private final HashMap<String, TokenConfigurerDialog> tokenConfigurerWindows = new HashMap<>();
 	private TokenConfigurerDialog lastTokenConfigurer;
 
 
@@ -151,7 +151,7 @@ public class IFNetGraph extends PNGraph {
 		if (value != null)
 			flowrelation.setConstraint(value);
 		else {
-			flowrelation.setConstraint(new Multiset<String>());
+			flowrelation.setConstraint(new Multiset<>());
 		}
 		PNGraphCell cell = getNodeCell(name);
 		cell.setValue(getArcConstraint(flowrelation));
@@ -191,9 +191,6 @@ public class IFNetGraph extends PNGraph {
 			IFNetFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cell.getId());
 			tc = new TokenConfigurerDialog(window, flowRelation, this);
 			break;
-		default:
-			break;
-
 		}
 
 		spacing = (int) (window.getBounds().getY() + 120);
@@ -203,6 +200,10 @@ public class IFNetGraph extends PNGraph {
 			spacing = (int) (height + deltaY);
 		}
 
+                if (tc == null) {
+                        return;
+                }
+                
 		x = window.getBounds().getX();
 		y = spacing;
 		tc.setLocation((int) x, (int) y);
@@ -242,7 +243,7 @@ public class IFNetGraph extends PNGraph {
 		if (transition instanceof AbstractRegularIFNetTransition)
 			return (Set) ((AbstractRegularIFNetTransition) transition).getAccessModes().get(color);
 		else
-			return new HashSet<AccessMode>();
+			return new HashSet<>();
 	}
 
 	public void updateAccessModeTransition(String name, String color, Set newAM) {
@@ -362,7 +363,6 @@ public class IFNetGraph extends PNGraph {
 		String cellId = cell.getId();
 		String hexColor = (String) state.getStyle().get(mxConstants.STYLE_STROKECOLOR);
 		Color lineColor = Color.BLACK;
-		;
 		if (hexColor != null)
 			lineColor = Utils.parseColor(hexColor);
 		AbstractCPNFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cellId);
@@ -370,7 +370,7 @@ public class IFNetGraph extends PNGraph {
 
 		try {
 			pointDiameter = (int) (EditorProperties.getInstance().getDefaultTokenSize() * getView().getScale());
-		} catch (Exception e) {
+		} catch (IOException | PropertyException e) {
 			System.out.println("Token size could not be read" + e.getMessage());
 		}
 

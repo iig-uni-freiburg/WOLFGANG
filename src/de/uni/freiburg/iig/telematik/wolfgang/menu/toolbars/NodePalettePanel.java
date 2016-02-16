@@ -36,8 +36,9 @@ public class NodePalettePanel extends JPanel {
 	private final int PREFERRED_ICON_SIZE = 30;
 	private final Dimension PREFERRED_PALETTE_COMPONENT_SIZE = new Dimension(70, 60);
 
-	private JPanel pnlTransition = new JPanel() {
+	private final JPanel pnlTransition = new JPanel() {
 
+                @Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
@@ -46,12 +47,8 @@ public class NodePalettePanel extends JPanel {
 			try {
 				defaultColor = EditorProperties.getInstance().getDefaultTransitionColor();
 				g2.setColor(defaultColor);
-			} catch (PropertyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (PropertyException | IOException e) {
+				throw new RuntimeException(e);
 			}
 
 			double w = PREFERRED_PALETTE_COMPONENT_SIZE.getWidth();
@@ -62,7 +59,8 @@ public class NodePalettePanel extends JPanel {
 		}
 	};
 
-	private JPanel pnlPlace = new JPanel() {
+	private final JPanel pnlPlace = new JPanel() {
+                @Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
@@ -71,10 +69,8 @@ public class NodePalettePanel extends JPanel {
 			try {
 				defaultColor = EditorProperties.getInstance().getDefaultPlaceColor();
 				g2.setColor(defaultColor);
-			} catch (PropertyException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (PropertyException | IOException e) {
+				throw new RuntimeException(e);
 			}
 
 			double w = PREFERRED_PALETTE_COMPONENT_SIZE.getWidth();
@@ -166,6 +162,7 @@ public class NodePalettePanel extends JPanel {
 		pnlPaletteComponent.add(pnlNode, BorderLayout.CENTER);
 
 		DragGestureListener dragGestureListener = new DragGestureListener() {
+                        @Override
 			public void dragGestureRecognized(DragGestureEvent e) {
 				if (!pnlIcon.isEnabled()) {
 					return;

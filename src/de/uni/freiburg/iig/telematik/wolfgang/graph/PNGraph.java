@@ -58,7 +58,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphi
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
@@ -97,12 +96,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 		try {
 			setGridSize(EditorProperties.getInstance().getGridSize());
-		} catch (PropertyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
 
 		Validate.notNull(netContainer);
@@ -145,12 +140,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 				public void gridSizeChanged(int gridSize) {
 					try {
 						setGridSize(EditorProperties.getInstance().getGridSize());
-					} catch (PropertyException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (PropertyException | IOException e) {
+						throw new RuntimeException(e);
 					}
 					refresh();
 				}
@@ -167,8 +158,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 			});
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			throw new RuntimeException(e2);
 		}
 	}
 
@@ -256,7 +246,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	private Set<PNGraphCell> getSelectedGraphCells() {
-		Set<PNGraphCell> selectedCells = new HashSet<PNGraphCell>();
+		Set<PNGraphCell> selectedCells = new HashSet<>();
 		for (Object selectedObject : getSelectionCells()) {
 			if (selectedObject instanceof PNGraphCell) {
 				selectedCells.add((PNGraphCell) selectedObject);
@@ -277,6 +267,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Adds anew place with default style.
 	 * 
 	 * @param point
+         * @return 
 	 * @throws IOException
 	 * @throws PropertyException
 	 */
@@ -291,6 +282,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * 
 	 * @param point
 	 * @param style
+         * @param offset
+         * @param dimension
+         * @return 
 	 */
 	public PNGraphCell addNewPlace(mxPoint point, String style, Offset offset, Dimension dimension) {
 		String nodeName = getNewPlaceName();
@@ -322,6 +316,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * 
 	 * @param nodeName
 	 * @param style
+         * @return 
 	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell addPlaceCell(String nodeName, String style) {
@@ -369,7 +364,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			PNGraphCell newRelationCell = getNodeCell(relation.getName());
 			ArcGraphics arcGraphics = Utils.createArcGraphicsFromStyle(style);
 			if (points != null && !points.isEmpty() && referencePoint != null) {
-				Vector<Position> vector = new Vector<Position>();
+				Vector<Position> vector = new Vector<>();
 				for (mxPoint p : points) {
 					vector.add(new Position(p.getX() + referencePoint.getX(), p.getY() + referencePoint.getY()));
 				}
@@ -403,7 +398,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		newCell.getGeometry().setOffset(offset);
 
 		Vector<Position> positions = arcGraphics.getPositions();
-		List<mxPoint> points = new ArrayList<mxPoint>();
+		List<mxPoint> points = new ArrayList<>();
 		for (Position position : positions) {
 			points.add(new mxPoint(position.getX(), position.getY()));
 		}
@@ -414,6 +409,10 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	/**
 	 * Adds anew transition with default style.
+         * @param point
+         * @return 
+         * @throws de.invation.code.toval.properties.PropertyException 
+         * @throws java.io.IOException 
 	 */
 	public PNGraphCell addNewTransition(mxPoint point) throws PropertyException, IOException {
 		Offset offset = new Offset(EditorProperties.getInstance().getDefaultHorizontalLabelOffset(), EditorProperties.getInstance().getDefaultVerticalLabelOffset());
@@ -423,6 +422,11 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 	/**
 	 * Adds a new transition with existing style.
+         * @param point
+         * @param style
+         * @param offset
+         * @param dimension
+         * @return 
 	 */
 	public PNGraphCell addNewTransition(mxPoint point, String style, Offset offset, Dimension dimension) {
 		String nodeName = getNewTransitionName();
@@ -455,6 +459,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * 
 	 * @param nodeName
 	 * @param style
+         * @return 
 	 */
 	@SuppressWarnings("rawtypes")
 	public PNGraphCell addTransitionCell(String nodeName, String style) {
@@ -576,6 +581,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	/**
 	 * @param id
 	 * @param circularPointGroup
+         * @return 
 	 */
 	public abstract Multiset<String> getPlaceStateForCell(String id, CircularPointGroup circularPointGroup);
 
@@ -595,10 +601,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * arguments recursively, starting at the given parent or the default parent
 	 * if no parent is specified. Use <code>selectAll</code> to select all
 	 * cells.
+         * @param type
 	 */
 	public void selectPNGraphCells(final PNComponent type) {
 
 		Collection<Object> cells = mxGraphModel.filterDescendants(getModel(), new mxGraphModel.Filter() {
+                        @Override
 			public boolean filter(Object cell) {
 				return view.getState(cell) != null && model.getChildCount(cell) == 0 && ((PNGraphCell) cell).getType() == type;
 			}
@@ -831,7 +839,6 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		Graphics g = canvas.getGraphics();
 		Iterator<PColor> iter = circularPointGroup.getColors().iterator();
 		PColor actColor;
-		Set<TokenGraphics> tgSet = new HashSet<TokenGraphics>();
 
 		while (iter.hasNext()) {
 			actColor = iter.next();
@@ -922,17 +929,17 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			return true;
 		case PLACE_SIZE:
 			bounds = getView().getState(placeCell).getBoundingBox();
-			bounds.setWidth(new Integer((Integer) newValue).doubleValue());
-			bounds.setHeight(new Integer((Integer) newValue).doubleValue());
+			bounds.setWidth(Math.floor(((Integer) newValue).doubleValue()));
+			bounds.setHeight(Math.floor(((Integer) newValue).doubleValue()));
 			resizeCell(placeCell, bounds);
 			setSelectionCell(placeCell);
 			return true;
 		case PLACE_POSITION_X:
-			moveCells(new Object[] { placeCell }, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue(), 0);
+			moveCells(new Object[] { placeCell }, Math.floor(((Integer) newValue).doubleValue()) - Math.floor(((Integer) oldValue).doubleValue()), 0);
 			setSelectionCell(placeCell);
 			return true;
 		case PLACE_POSITION_Y:
-			moveCells(new Object[] { placeCell }, 0, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue());
+			moveCells(new Object[] { placeCell }, 0, Math.floor(((Integer) newValue).doubleValue()) - Math.floor(((Integer) oldValue).doubleValue()));
 			setSelectionCell(placeCell);
 			return true;
 		}
@@ -947,16 +954,16 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			getModel().setValue(transitionCell, newValue);
 			return true;
 		case TRANSITION_POSITION_X:
-			moveCells(new Object[] { transitionCell }, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue(), 0);
+			moveCells(new Object[] { transitionCell }, Math.floor(((Integer) newValue).doubleValue()) - Math.floor(((Integer) oldValue).doubleValue()), 0);
 			setSelectionCell(transitionCell);
 			return true;
 		case TRANSITION_POSITION_Y:
-			moveCells(new Object[] { transitionCell }, 0, new Integer((Integer) newValue).doubleValue() - new Integer((Integer) oldValue).doubleValue());
+			moveCells(new Object[] { transitionCell }, 0, Math.floor(((Integer) newValue).doubleValue()) - Math.floor(((Integer) oldValue).doubleValue()));
 			setSelectionCell(transitionCell);
 			return true;
 		case TRANSITION_SIZE_X:
 			bounds = getView().getState(transitionCell).getBoundingBox();
-			bounds.setWidth(new Integer((Integer) newValue).doubleValue());
+			bounds.setWidth(Math.floor(((Integer) newValue).doubleValue()));
 			bounds.setHeight(transitionCell.getGeometry().getHeight());
 			resizeCell(transitionCell, bounds);
 			setSelectionCell(transitionCell);
@@ -964,7 +971,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		case TRANSITION_SIZE_Y:
 			bounds = getView().getState(transitionCell).getBoundingBox();
 			bounds.setWidth(transitionCell.getGeometry().getWidth());
-			bounds.setHeight(new Integer((Integer) newValue).doubleValue());
+			bounds.setHeight(Math.floor(((Integer) newValue).doubleValue()));
 			resizeCell(transitionCell, bounds);
 			setSelectionCell(transitionCell);
 			return true;
@@ -1011,7 +1018,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			currentSelectionCell = (PNGraphCell) getSelectionCell();
 		}
 		if (currentSelectionCell != null) {
-			if (currentSelectionCell.getId() == id) {
+			if (currentSelectionCell.getId().equals(id)) {
 				return true;
 			}
 		}
@@ -1035,11 +1042,12 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * Note: Only by copy/pase actions on graph canvas!<br>
 	 * In case these cells stand for new places or transitions, they have to be
 	 * added to the Petri net.
+         * @param cells
+         * @param bounds
 	 */
 
 	@Override
 	public void cellsResized(Object[] cells, mxRectangle[] bounds) {
-		// TODO Auto-generated method stub
 		super.cellsResized(cells, bounds);
 		for (Object object : cells) {
 			if (object instanceof PNGraphCell) {
@@ -1283,9 +1291,9 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 		if (cells != null) {
 			model.beginUpdate();
 			try {
-				for (int i = 0; i < cells.length; i++) {
-					setStyle(cells[i], style, null, this);
-				}
+                                for (Object cell : cells) {
+                                        setStyle(cell, style, null, this);
+                                }
 			} finally {
 				model.endUpdate();
 			}
@@ -1341,7 +1349,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 				// This code enables adding waypoints in between two existing
 				// waypoints, and not just adding it at the end of the given
 				// line
-				if (points.size() == 0) {
+				if (points.isEmpty()) {
 					points.add(new mxPoint(pt.getX(), pt.getY()));
 				} else {
 					double sourceX = cell.getSource().getGeometry().getCenterX();
@@ -1373,7 +1381,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 
 				}
 			} else {
-				points = new ArrayList<mxPoint>();
+				points = new ArrayList<>();
 				points.add(new mxPoint(pt.getX(), pt.getY()));
 
 			}
@@ -1396,7 +1404,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	protected void updatePointsInArcGraphics(PNGraphCell cell, List<mxPoint> points) {
 		ArcGraphics arcGraphics = getNetContainer().getPetriNetGraphics().getArcGraphics().get(cell.getId());
 		if (arcGraphics != null) {
-			Vector<Position> vector = new Vector<Position>();
+			Vector<Position> vector = new Vector<>();
 			if (points != null) {
 				if (points.size() >= 0) {
 					for (mxPoint p : points) {
@@ -1434,10 +1442,10 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	public void removeAllArcPoints() {
 		for (AbstractFlowRelation fr : getNetContainer().getPetriNet().getFlowRelations()) {
 			PNGraphCell arcCell = getNodeCell(fr.getName());
-			arcCell.getGeometry().setPoints(new ArrayList<mxPoint>());
+			arcCell.getGeometry().setPoints(new ArrayList<>());
 			mxPoint point = getView().getState(arcCell).getAbsolutePoint(0);
 			ArcGraphics arcGraphics = getNetContainer().getPetriNetGraphics().getArcGraphics().get(arcCell.getId());
-			arcGraphics.setPositions(new Vector<Position>());
+			arcGraphics.setPositions(new Vector<>());
 		}
 
 	}
@@ -1453,17 +1461,11 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	}
 
 	protected double getDefaultTokenSize() {
-		// TODO Auto-generated method stub
 		try {
 			return EditorProperties.getInstance().getDefaultTokenSize();
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
-		return (Double) null;
 	}
 
 	@Override
@@ -1472,8 +1474,8 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 			if (EditorProperties.getInstance().getSnapToGrid()) {
 				return super.snap(value);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException | PropertyException e) {
+			throw new RuntimeException(e);
 		}
 		return value;
 	}
@@ -1486,6 +1488,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans
 	 * {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}
 	 * .
+         * @param event
 	 */
 	@Override
 	public void placeAdded(PlaceChangeEvent event) {
@@ -1504,6 +1507,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans
 	 * {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}
 	 * .
+         * @param event
 	 */
 	@Override
 	public void transitionAdded(TransitionChangeEvent event) {
@@ -1522,6 +1526,7 @@ public abstract class PNGraph extends mxGraph implements PNPropertiesListener, m
 	 * {@link #addNewTransition(mxPoint, String, Offset, Dimension)} ans
 	 * {@link #addNewFlowRelation(PNGraphCell, PNGraphCell, Offset, List, mxPoint, String)}
 	 * .
+         * @param event
 	 */
 	@Override
 	public void relationAdded(RelationChangeEvent event) {

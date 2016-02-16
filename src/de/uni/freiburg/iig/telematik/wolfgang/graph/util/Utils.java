@@ -46,10 +46,15 @@ public class Utils extends mxUtils {
 	/**
 	 * Returns the paint bounds for the given label.
 	 * 
+         * @param label
+         * @param style
+         * @param isHtml
+         * @param offset
 	 * @param centery
 	 * @param centerx
-	 * @param centery
-	 * @param centerx
+         * @param vertexBounds
+         * @param scale
+         * @return 
 	 */
 	public static mxRectangle getLabelPaintBounds(String label, Map<String, Object> style, boolean isHtml, mxPoint offset, double centerx, double centery, mxRectangle vertexBounds, double scale) {
 		double wrapWidth = 0;
@@ -96,6 +101,14 @@ public class Utils extends mxUtils {
 
 	/**
 	 * Returns the bounds for a label for the given location and size, taking into account the alignment and spacing in the specified style, as well as the width and height of the rectangle that contains the label. (For edge labels this width and height is 0.) The scale is used to scale the given size and the spacings in the specified style.
+         * @param x
+         * @param y
+         * @param size
+         * @param outerWidth
+         * @param scale
+         * @param outerHeight
+         * @param style
+         * @return 
 	 */
 	public static mxRectangle getScaledLabelBounds(double x, double y, mxRectangle size, double outerWidth, double outerHeight, Map<String, Object> style, double scale) {
 		double inset = mxConstants.LABEL_INSET * scale;
@@ -551,8 +564,11 @@ public class Utils extends mxUtils {
 	}
 
 	/**
- * 
- */
+         * 
+         * @param style
+         * @param scale
+         * @return 
+         */
 	public static java.awt.Font getFont(Map<String, Object> style, double scale) {
 		String fontFamily = getString(style, mxConstants.STYLE_FONTFAMILY, mxConstants.DEFAULT_FONTFAMILY);
 		int fontSize = getInt(style, mxConstants.STYLE_FONTSIZE, mxConstants.DEFAULT_FONTSIZE);
@@ -774,7 +790,7 @@ public class Utils extends mxUtils {
 		try {
 			graphics.setFill(new Fill("#000000", null, null, null));
 			graphics.setLine(new Line("#000000", Line.Shape.LINE, Line.Style.SOLID, 1.0));
-			graphics.setFont(new Font(Font.Align.CENTER, null, EditorProperties.getInstance().getDefaultFontFamily().toString(), 0.0, EditorProperties.getInstance().getDefaultFontSize().toString(), "normal", "normal"));
+			graphics.setFont(new Font(Font.Align.CENTER, null, EditorProperties.getInstance().getDefaultFontFamily(), 0.0, EditorProperties.getInstance().getDefaultFontSize().toString(), "normal", "normal"));
 
 			HashMap<String, Object> styleMap = mxGraphMlUtils.getStyleMap(style, "=");
 			for (Entry<String, Object> s : styleMap.entrySet()) {

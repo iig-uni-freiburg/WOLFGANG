@@ -50,7 +50,6 @@ public class GraphHandler extends mxGraphHandler {
 
 	@Override
 	public void dragEnter(DropTargetDragEvent e) {
-		// TODO Auto-generated method stub
 		super.dragEnter(e);
 	}
 
@@ -126,7 +125,6 @@ public class GraphHandler extends mxGraphHandler {
 
 	public GraphHandler(mxGraphComponent graphComponent) {
 		super(graphComponent);
-		// TODO Auto-generated constructor stub
 	}
 
 	// Constructors and other variables and methods deleted for clarity

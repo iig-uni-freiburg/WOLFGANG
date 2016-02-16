@@ -248,15 +248,8 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
         try {
             add(gettlbPropertyCheck());
-        } catch (ParameterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (PropertyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (ParameterException | PropertyException | IOException e) {
+            throw new RuntimeException(e);
         }
 
         doLayout();
@@ -336,8 +329,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 					try {
 						StringDialog.showDialog(SwingUtilities.getWindowAncestor(AbstractToolBar.this), "Execution Trace", executionTrace);
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						throw new RuntimeException(e1);
 					}
 				}
 			});
@@ -355,6 +347,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
         // Sets the zoom in the zoom combo the current value
         mxIEventListener scaleTracker = new mxIEventListener() {
+            @Override
             public void invoke(Object sender, mxEventObject evt) {
                 ignoreZoomChange = true;
 
@@ -413,6 +406,7 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
         JToggleButton tgl = new JToggleButton() {
             private static final long serialVersionUID = -3143341784881719155L;
 
+            @Override
             protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
                 return super.createActionPropertyChangeListener(a);
             }
@@ -490,7 +484,6 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
     //
     // }
     public GraphicsToolBar getGraphicsToolbar() {
-        // TODO Auto-generated method stub
         return graphicsToolbar;
     }
 
@@ -512,56 +505,38 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
 
     @Override
     public void placeAdded(AbstractPlace place) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void transitionAdded(AbstractTransition transition) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void relationAdded(AbstractFlowRelation relation) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void placeRemoved(AbstractPlace place) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void transitionRemoved(AbstractTransition transition) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void relationRemoved(AbstractFlowRelation relation) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void placeCapacityChanged(String placeName, String color, int newCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void constraintChanged(String flowRelation, Multiset constraint) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -575,5 +550,4 @@ public abstract class AbstractToolBar extends JToolBar implements PNGraphListene
             graphicsAction.setEnabled(true);
         }
     }
-
 }

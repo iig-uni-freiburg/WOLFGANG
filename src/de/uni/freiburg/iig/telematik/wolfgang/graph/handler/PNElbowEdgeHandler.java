@@ -13,11 +13,9 @@ public class PNElbowEdgeHandler extends mxElbowEdgeHandler {
 
 	public PNElbowEdgeHandler(mxGraphComponent graphComponent, mxCellState state) {
 		super(graphComponent, state);
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	protected boolean isHandleVisible(int index) {
-		// TODO Auto-generated method stub
 		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
 	}
 	@Override

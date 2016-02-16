@@ -82,7 +82,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	@Override
 	protected GraphHandler createGraphHandler() {
-		// TODO Auto-generated method stub
 		return new GraphHandler(this);
 	}
 
@@ -92,16 +91,16 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 	private JPopupMenu pmnTransition;
 
-	private Map<String, mxCellMarker> markerReference = new HashMap<String, mxCellMarker>();
+	private final Map<String, mxCellMarker> markerReference = new HashMap<>();
 
 	public PNGraphComponent(PNGraph graph) {
 		super(graph);
 		setUpGui();
-		getCanvas().putShape(mxConstants.SHAPE_RECTANGLE, new RectangleShape());
-		getCanvas().putShape(mxConstants.SHAPE_ELLIPSE, new EllipseShape());
-		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_DEFAULT, new DefaultTextShape());
-		getCanvas().putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_HTML, new HtmlTextShape());
-		getCanvas().putShape(mxConstants.SHAPE_CONNECTOR, new ConnectorShape());
+		mxGraphics2DCanvas.putShape(mxConstants.SHAPE_RECTANGLE, new RectangleShape());
+		mxGraphics2DCanvas.putShape(mxConstants.SHAPE_ELLIPSE, new EllipseShape());
+		mxGraphics2DCanvas.putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_DEFAULT, new DefaultTextShape());
+		mxGraphics2DCanvas.putTextShape(mxGraphics2DCanvas.TEXT_SHAPE_HTML, new HtmlTextShape());
+		mxGraphics2DCanvas.putShape(mxConstants.SHAPE_CONNECTOR, new ConnectorShape());
 	}
 
 	public void highlightEnabledTransitions() {
@@ -126,7 +125,7 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 				Graphics blankGraphics = blankImage.getGraphics();
 				blankGraphics.drawImage(img, (int)cell.getGeometry().getWidth()/2-img.getWidth()/2, (int)cell.getGeometry().getHeight()/2-img.getHeight()/2, null);
 				overlay = new mxCellOverlay(new ImageIcon(blankImage), null);
-			} catch (Exception e1) {
+			} catch (PropertyException | IOException e1) {
 				JOptionPane.showMessageDialog(this, "playred-Icon could not be assinged as cell-overlay. \nReason: " + e1.getMessage(), "" + e1.getClass(), JOptionPane.ERROR);
 			}
 			overlay.setAlign(mxConstants.ALIGN_CENTER);
@@ -269,7 +268,6 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 	}
 
 	protected mxGraphComponent getGraphComponent() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
@@ -325,44 +323,31 @@ public abstract class PNGraphComponent extends mxGraphComponent {
 
 			});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
 	private void setBackgroundColor() {
 		try {
 			getViewport().setBackground(EditorProperties.getInstance().getBackgroundColor());
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	private void setGridColor() {
 		try {
 			setGridColor(EditorProperties.getInstance().getGridColor());
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	private void setGridVisibility() {
 		try {
 			setGridVisible(EditorProperties.getInstance().getGridVisibility());
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

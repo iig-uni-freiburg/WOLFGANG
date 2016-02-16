@@ -81,35 +81,18 @@ public class CPNEditorComponent extends AbstractCPNEditorComponent {
 	public EditorPopupMenu getPopupMenu() {
 		try {
 			return new EditorPopupMenu(this);
-		} catch (ParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ParameterException | PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	@Override
 	public JPopupMenu getTransitionPopupMenu() {
 		try {
 			return new TransitionPopupMenu(this);
-		} catch (ParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PropertyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ParameterException | PropertyException | IOException e) {
+			throw new RuntimeException(e);
 		}
-		return null;
-
 	}
 
 	@Override

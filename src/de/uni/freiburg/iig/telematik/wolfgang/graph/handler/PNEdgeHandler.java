@@ -16,13 +16,11 @@ public class PNEdgeHandler extends mxEdgeHandler {
 
 	@Override
 	public String getToolTipText(MouseEvent e) {
-		// TODO Auto-generated method stub
 		return "<html>double-click to add waypoint <br>right-click on waypoint delete it</html>";
 	}
 
 	public PNEdgeHandler(mxGraphComponent graphComponent, mxCellState state) {
 		super(graphComponent, state);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -36,7 +34,6 @@ public class PNEdgeHandler extends mxEdgeHandler {
 	
 	@Override
 	protected boolean isHandleVisible(int index) {
-		// TODO Auto-generated method stub
 		 return !isLabel(index) || (isLabelMovable()&& ((PNGraph) getGraphComponent().getGraph()).isLabelSelected());
 	}
 	@Override

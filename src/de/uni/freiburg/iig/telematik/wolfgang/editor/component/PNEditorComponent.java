@@ -35,6 +35,7 @@ import com.mxgraph.util.mxUndoManager;
 import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
+import de.invation.code.toval.properties.PropertyException;
 
 import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
@@ -61,6 +62,7 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
+import java.io.IOException;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
 
@@ -84,11 +86,13 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	
 
 	protected mxIEventListener undoHandler = new mxIEventListener() {
+                @Override
 		public void invoke(Object source, mxEventObject evt) {
 			undoManager.undoableEditHappened((mxUndoableEdit) evt.getProperty("edit"));
 		}
 	};
 	protected mxIEventListener changeTracker = new mxIEventListener() {
+                @Override
 		public void invoke(Object source, mxEventObject evt) {
 			setModified(true);
 		}
@@ -116,7 +120,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		setUpGUI();
 		try {
 			propertiesView.setUpGUI();
-		} catch (Exception e) {
+		} catch (PropertyException | IOException e) {
 			ExceptionDialog.showException(SwingUtilities.getWindowAncestor(getParent()), "Property Exception. ", e);
 		}
 
@@ -166,6 +170,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 			morph.addListener(mxEvent.DONE, new mxIEventListener() {
 
+                                @Override
 				public void invoke(Object sender, mxEventObject evt) {
 					getGraph().getModel().endUpdate();
 					// getGraph().updatePositionPropertiesFromCells();
@@ -192,8 +197,6 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 //			
 //			@Override
 //			public void modificationStateChanged(boolean modified) {
-//				// TODO Auto-generated method stub
-//				
 //			}
 //		});
 		properties.addPNPropertiesListener(propertiesView);
@@ -257,9 +260,11 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 	private void addGraphComponentListeners() {
 
 		graphComponent.getGraphControl().addMouseMotionListener(new MouseMotionListener() {
+                        @Override
 			public void mouseDragged(MouseEvent e) {
 			}
 
+                        @Override
 			public void mouseMoved(MouseEvent e) {
 				displayStatusMessage(e.getX() + ", " + e.getY());
 			}
@@ -285,6 +290,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	}
 
+        @Override
 	public JComponent getMainComponent() {
 		return this;
 	}
@@ -296,6 +302,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		return netContainer;
 	}
 
+        @Override
 	public PropertiesView getPropertiesView() {
 		return propertiesView;
 	}
@@ -353,6 +360,9 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 
 	/**
 	 * Creates a layout instance for the given identifier.
+         * @param ident
+         * @param animate
+         * @return 
 	 */
 	protected mxIGraphLayout createLayout(String ident, boolean animate) {
 		mxIGraphLayout layout = null;
@@ -360,64 +370,76 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		if (ident != null) {
 			mxGraph graph = graphComponent.getGraph();
 
-			if (ident.equals("verticalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph);
-			} else if (ident.equals("horizontalHierarchical")) {
-				layout = new mxHierarchicalLayout(graph, JLabel.WEST);
-			} else if (ident.equals("verticalTree")) {
-				layout = new mxCompactTreeLayout(graph, false);
-			} else if (ident.equals("horizontalTree")) {
-				layout = new mxCompactTreeLayout(graph, true);
-			} else if (ident.equals("parallelEdges")) {
-				layout = new mxParallelEdgeLayout(graph);
-			} else if (ident.equals("placeEdgeLabels")) {
-				layout = new mxEdgeLabelLayout(graph);
-			} else if (ident.equals("organicLayout")) {
-				layout = new mxOrganicLayout(graph);
-			}
-			if (ident.equals("verticalPartition")) {
-				layout = new mxPartitionLayout(graph, false) {
+                        switch (ident) {
+                                case "verticalHierarchical":
+                                        layout = new mxHierarchicalLayout(graph);
+                                        break;
+                                case "horizontalHierarchical":
+                                        layout = new mxHierarchicalLayout(graph, JLabel.WEST);
+                                        break;
+                                case "verticalTree":
+                                        layout = new mxCompactTreeLayout(graph, false);
+                                        break;
+                                case "horizontalTree":
+                                        layout = new mxCompactTreeLayout(graph, true);
+                                        break;
+                                case "parallelEdges":
+                                        layout = new mxParallelEdgeLayout(graph);
+                                        break;
+                                case "placeEdgeLabels":
+                                        layout = new mxEdgeLabelLayout(graph);
+                                        break;
+                                case "organicLayout":
+                                        layout = new mxOrganicLayout(graph);
+                                        break;
+                                case "verticalPartition":
+                                        layout = new mxPartitionLayout(graph, false) {
+                                                /**
+                                                 * Overrides the empty implementation to return the size of
+                                                 * the graph control.
+                                                 */
+                                                @Override
+                                                public mxRectangle getContainerSize() {
+                                                        return graphComponent.getLayoutAreaSize();
+                                                }
+                                        };      break;
+                                case "horizontalPartition":
+                                        layout = new mxPartitionLayout(graph, true) {
+                                                /**
+                                                 * Overrides the empty implementation to return the size of
+                                                 * the graph control.
+                                                 */
+                                                @Override
+                                                public mxRectangle getContainerSize() {
+                                                        return graphComponent.getLayoutAreaSize();
+                                                }
+                                        };      break;
+                                case "verticalStack":
+                                        layout = new mxStackLayout(graph, false) {
+                                                /**
+                                                 * Overrides the empty implementation to return the size of
+					 * the graph control.
+					 */
+                                        @Override
+					public mxRectangle getContainerSize() {
+						return graphComponent.getLayoutAreaSize();
+					}
+				};      break;
+                                case "horizontalStack":
+                                        layout = new mxStackLayout(graph, true) {
 					/**
 					 * Overrides the empty implementation to return the size of
 					 * the graph control.
 					 */
+                                        @Override
 					public mxRectangle getContainerSize() {
 						return graphComponent.getLayoutAreaSize();
 					}
-				};
-			} else if (ident.equals("horizontalPartition")) {
-				layout = new mxPartitionLayout(graph, true) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return graphComponent.getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("verticalStack")) {
-				layout = new mxStackLayout(graph, false) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return graphComponent.getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("horizontalStack")) {
-				layout = new mxStackLayout(graph, true) {
-					/**
-					 * Overrides the empty implementation to return the size of
-					 * the graph control.
-					 */
-					public mxRectangle getContainerSize() {
-						return graphComponent.getLayoutAreaSize();
-					}
-				};
-			} else if (ident.equals("circleLayout")) {
-				layout = new mxCircleLayout(graph);
-			}
+				};      break;
+                                case "circleLayout":
+                                        layout = new mxCircleLayout(graph);
+                                        break;
+                        }
 		}
 
 		return layout;
@@ -428,7 +450,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 		Object treeSelection = e.getPath().getLastPathComponent();
 		if (treeSelection instanceof PNTreeNode) {
 			String treeSelectionName = ((PNTreeNode) treeSelection).toString();
-			ArrayList<PNGraphCell> selectedCells = new ArrayList<PNGraphCell>();
+			ArrayList<PNGraphCell> selectedCells = new ArrayList<>();
 
 			switch (((PNTreeNode) treeSelection).getFieldType()) {
 			case ARC:
@@ -517,7 +539,7 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			} else {
 				PNGraphCell selectedCell = selectedComponents.iterator().next();
 				if(!getNetContainer().getPetriNet().getFlowRelations().isEmpty()) // Fixing wrong display of arc count >9 of (...) in PropertiesView
-				propertiesView.selectNode(getNetContainer().getPetriNet().getFlowRelations().iterator().next().getName());
+                                        propertiesView.selectNode(getNetContainer().getPetriNet().getFlowRelations().iterator().next().getName());
 				
 				propertiesView.selectNode(selectedCell.getId());
 			}

@@ -55,7 +55,6 @@ public class PNCellEditor extends DefaultCellEditor {
 
 	public PNCellEditor(JTextField txtName) {
 		super(txtName);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

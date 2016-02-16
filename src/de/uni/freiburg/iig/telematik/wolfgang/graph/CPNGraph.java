@@ -133,7 +133,6 @@ public class CPNGraph extends PNGraph {
 
 	@Override
 	public void updateTokenColor(String name, Color value) {
-		CPN cpn = getNetContainer().getPetriNet();
 		Map<String, Color> colors = getNetContainer().getPetriNetGraphics().getColors();
 		if (value != null)
 			colors.put(name, value);
@@ -141,7 +140,6 @@ public class CPNGraph extends PNGraph {
 			colors.remove(name);
 		}
 		getNetContainer().getPetriNetGraphics().setColors(colors);
-
 	}
 
 	@Override
@@ -150,7 +148,7 @@ public class CPNGraph extends PNGraph {
 		if (constraint != null)
 			flowrelation.setConstraint(constraint);
 		else {
-			flowrelation.setConstraint(new Multiset<String>());
+			flowrelation.setConstraint(new Multiset<>());
 		}
 		// flowrelation.setConstraint(value);
 		PNGraphCell cell = getNodeCell(flowRelation);

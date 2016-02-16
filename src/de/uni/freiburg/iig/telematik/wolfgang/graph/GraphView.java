@@ -13,7 +13,6 @@ public class GraphView extends mxGraphView {
 
 	public GraphView(mxGraph graph) {
 		super(graph);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

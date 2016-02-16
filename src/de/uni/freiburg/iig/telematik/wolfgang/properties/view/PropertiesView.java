@@ -76,7 +76,7 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 	private static final long serialVersionUID = -23504178961013201L;
 
 	protected PNProperties properties = null;
-	private Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
+	private final Image propertiesImage = IconFactory.getIconImageFixSize("edit_properties");
 	Color bgcolor = UIManager.getColor("Panel.background");
 
 	// The Three basic ParentNodes of the tree
@@ -434,7 +434,6 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 		@Override
 		public void paint(Graphics g) {
-			// TODO Auto-generated method stub
 			super.paint(g);
 		}
 
@@ -468,34 +467,22 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		case PLACE:
 			try {
 				insertPlaceNode(name);
-			} catch (PropertyException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (PropertyException | IOException e1) {
+				throw new RuntimeException(e1);
 			}
 			break;
 		case TRANSITION:
 			try {
 				insertTransitionNode(name);
-			} catch (PropertyException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (PropertyException | IOException e1) {
+				throw new RuntimeException(e1);
 			}
 			break;
 		case ARC:
 			try {
 				insertArcNode(name);
-			} catch (PropertyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (PropertyException | IOException e) {
+				throw new RuntimeException(e);
 			}
 			break;
 		}
@@ -593,14 +580,14 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 		PTNet ptnet = null;
 
 		// Create places
-		Set<String> places = new HashSet<String>();
+		Set<String> places = new HashSet<>();
 		places.add("p0");
 		places.add("p1");
 		places.add("p2");
 		places.add("p3");
 
 		// create transitions
-		Set<String> transitions = new HashSet<String>();
+		Set<String> transitions = new HashSet<>();
 		transitions.add("t0");
 		transitions.add("t1");
 
@@ -623,8 +610,8 @@ public class PropertiesView extends JTree implements PNPropertiesListener {
 
 	private static PTGraphics createPTNetGraphics(PTNet ptnet) throws ParameterException {
 		PTGraphics ptnetGraphics = new PTGraphics();
-		Map<String, NodeGraphics> placeGraphics = new HashMap<String, NodeGraphics>();
-		Map<String, NodeGraphics> transistionGraphics = new HashMap<String, NodeGraphics>();
+		Map<String, NodeGraphics> placeGraphics = new HashMap<>();
+		Map<String, NodeGraphics> transistionGraphics = new HashMap<>();
 		for (AbstractPNNode p : ptnet.getPlaces()) {
 			NodeGraphics nodeGraphics = new NodeGraphics(new Position(10, 10), new Dimension(20, 20), new Fill(), new Line());
 			placeGraphics.put(p.getName(), nodeGraphics);

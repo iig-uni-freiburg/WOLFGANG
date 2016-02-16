@@ -88,24 +88,24 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
     private JComboBox cmbFontSize = null;
 
     // Tooltips
-    private String showHideTokensOnArcsTooltip = "show/ hide constraints as tokens on arcs";
-    private String showHideLabelsTooltip = "show/ hide labels";
-    private String boldFontTooltip = "bold";
-    private String italicFontTooltip = "italic";
-    private String underlineFontTooltip = "underline";
-    private String alignRightTooltip = "right";
-    private String alingCenterTooltip = "center";
-    private String alignLeftTooltip = "left";
-    private String textRotationTooltip = "rotate text 90-Degrees";
+    private final String showHideTokensOnArcsTooltip = "show/ hide constraints as tokens on arcs";
+    private final String showHideLabelsTooltip = "show/ hide labels";
+    private final String boldFontTooltip = "bold";
+    private final String italicFontTooltip = "italic";
+    private final String underlineFontTooltip = "underline";
+    private final String alignRightTooltip = "right";
+    private final String alingCenterTooltip = "center";
+    private final String alignLeftTooltip = "left";
+    private final String textRotationTooltip = "rotate text 90-Degrees";
 
-    private String fontTooltip = "choose fontfamily";
-    private String fontSizeTooltip = "fontsize";
+    private final String fontTooltip = "choose fontfamily";
+    private final String fontSizeTooltip = "fontsize";
 
     // further variables
     private PNEditorComponent pnEditor = null;
     private PNGraphCell selectedCell = null;
 
-    private String lblFontText = "Font:";
+    private final String lblFontText = "Font:";
 
     private JLabel lblFont;
 
@@ -210,6 +210,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
         JToggleButton tgl = new JToggleButton() {
             private static final long serialVersionUID = -3143341784881719155L;
 
+            @Override
             protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
                 return super.createActionPropertyChangeListener(a);
             }
@@ -229,7 +230,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
             // environment
             // and adds some frequently used fonts at the beginning of the list
             GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            List<String> fonts = new ArrayList<String>();
+            List<String> fonts = new ArrayList<>();
             fonts.addAll(Arrays.asList(new String[]{"Helvetica", "Verdana", "Times New Roman", "Garamond", "Courier New", "-"}));
             fonts.addAll(Arrays.asList(env.getAvailableFontFamilyNames()));
             cmbFont = new JComboBox(fonts.toArray());
@@ -239,6 +240,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 
             cmbFont.addActionListener(new ActionListener() {
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
 //                    if (selectedCell != null) {
                     String font = cmbFont.getSelectedItem().toString();
@@ -263,6 +265,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
             cmbFontSize.setMaximumSize(new Dimension(100, 24));
 
             cmbFontSize.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
 //                    if (selectedCell != null) {
                     String fontSize = cmbFontSize.getSelectedItem().toString().replace("pt", "");
@@ -331,56 +334,38 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 
     @Override
     public void placeAdded(AbstractPlace place) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void transitionAdded(AbstractTransition transition) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void relationAdded(AbstractFlowRelation relation) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void placeRemoved(AbstractPlace place) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void transitionRemoved(AbstractTransition transition) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void relationRemoved(AbstractFlowRelation relation) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void markingForPlaceChanged(String placeName, Multiset placeMarking) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void placeCapacityChanged(String placeName, String color, int newCapacity) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void constraintChanged(String flowRelation, Multiset constraint) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -614,8 +599,7 @@ public class FontToolBar extends JToolBar implements PNGraphListener {
 			pnl.add(new FontToolBar(new PTNetEditorComponent(), JToolBar.HORIZONTAL));
 			new DisplayFrame(pnl, true);
 		} catch (ParameterException | PropertyException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 

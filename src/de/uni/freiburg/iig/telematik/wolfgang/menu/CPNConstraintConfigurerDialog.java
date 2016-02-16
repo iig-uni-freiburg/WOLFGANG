@@ -17,7 +17,6 @@ public class CPNConstraintConfigurerDialog extends AbstractTokenConfigurerDialog
 
 	public CPNConstraintConfigurerDialog(Window window, String name, PNGraph cpnGraph) {
 		super(window, name, cpnGraph);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -93,7 +92,6 @@ public class CPNConstraintConfigurerDialog extends AbstractTokenConfigurerDialog
 			dialog = new CPNConstraintConfigurerDialog(window, string, cpnGraph);
 			dialog.setUpGUI();
 		} catch (Exception e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(window, "Cannot launch ExceptionDialog.\nReason: " + e.getMessage(), "Internal Exception", JOptionPane.ERROR_MESSAGE);
 		}
 		return dialog;
@@ -102,7 +100,6 @@ public class CPNConstraintConfigurerDialog extends AbstractTokenConfigurerDialog
 
 	@Override
 	protected int getMinimumCapacity() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 

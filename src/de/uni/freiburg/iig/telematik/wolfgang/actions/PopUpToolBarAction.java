@@ -60,7 +60,6 @@ public class PopUpToolBarAction extends AbstractPNEditorAction {
 	}
 
 	protected JToggleButton getButton() {
-		// TODO Auto-generated method stub
 		return tglButton;
 	}
 

@@ -53,9 +53,9 @@ public class PTGraph extends PNGraph {
 
 	@Override
 	public void updatePlaceState(String name, Multiset<String> state) throws ParameterException {
-		Integer tokens =  state.multiplicity("black");
+		int tokens =  state.multiplicity("black");
 		PTMarking initialMarking = getNetContainer().getPetriNet().getInitialMarking();
-		initialMarking.set(name, new Integer(tokens));
+		initialMarking.set(name, tokens);
 		getNetContainer().getPetriNet().setInitialMarking(initialMarking);	
 		graphListenerSupport.notifyMarkingForPlaceChanged(name, state);
 	}
@@ -70,10 +70,11 @@ public class PTGraph extends PNGraph {
 		PTPlace place = (PTPlace) getNetContainer().getPetriNet().getPlace(name);
 		if(place!= null){
 			if(circularPointGroup != null)
-		circularPointGroup.addPoints(PColor.black, place.getState());
-		Multiset<String> multiSet = new Multiset<String>();
-		multiSet.setMultiplicity("black", place.getState());
-		return multiSet;}
+                                circularPointGroup.addPoints(PColor.black, place.getState());
+                        Multiset<String> multiSet = new Multiset<>();
+                        multiSet.setMultiplicity("black", place.getState());
+                        return multiSet;
+                }
 		return null;
 	}
 	

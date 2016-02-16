@@ -51,9 +51,9 @@ public class RTPNGraph extends PNGraph {
 
 	@Override
 	public void updatePlaceState(String name, Multiset<String> state) throws ParameterException {
-		Integer tokens =  state.multiplicity("black");
+		int tokens =  state.multiplicity("black");
 		TimedMarking initialMarking = getNetContainer().getPetriNet().getInitialMarking();
-		initialMarking.set(name, new Integer(tokens));
+		initialMarking.set(name, tokens);
 		getNetContainer().getPetriNet().setInitialMarking(initialMarking);	
 		graphListenerSupport.notifyMarkingForPlaceChanged(name, state);
 	}
@@ -68,10 +68,11 @@ public class RTPNGraph extends PNGraph {
 		TimedNetPlace place = (TimedNetPlace) getNetContainer().getPetriNet().getPlace(name);
 		if(place!= null){
 			if(circularPointGroup != null)
-		circularPointGroup.addPoints(PColor.black, place.getState());
-		Multiset<String> multiSet = new Multiset<String>();
-		multiSet.setMultiplicity("black", place.getState());
-		return multiSet;}
+                                circularPointGroup.addPoints(PColor.black, place.getState());
+                        Multiset<String> multiSet = new Multiset<>();
+                        multiSet.setMultiplicity("black", place.getState());
+                        return multiSet;
+                }
 		return null;
 	}
 	
@@ -181,9 +182,9 @@ public class RTPNGraph extends PNGraph {
 		PNGraphCell cell = (PNGraphCell) state.getCell();
 		String cellId = cell.getId();
 		String hexColor = (String) state.getStyle().get(mxConstants.STYLE_STROKECOLOR);
-		Color lineColor = Color.BLACK;;
+		Color lineColor = Color.BLACK;
 		if(hexColor != null)
-		lineColor  = Utils.parseColor(hexColor);
+                        lineColor  = Utils.parseColor(hexColor);
 		TimedFlowRelation flowRelation = getNetContainer().getPetriNet().getFlowRelation(cellId);
 		
 		int pointDiameter = (int) (getDefaultTokenSize() * getView().getScale());
