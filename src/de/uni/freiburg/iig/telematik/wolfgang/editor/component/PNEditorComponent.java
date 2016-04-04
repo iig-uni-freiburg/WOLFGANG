@@ -243,7 +243,9 @@ public abstract class PNEditorComponent extends JPanel implements TreeSelectionL
 			graphComponent = createGraphComponent();
 			graphComponent.setPopupMenu(getPopupMenu());
 			graphComponent.setTransitionPopupMenu(getTransitionPopupMenu());
-
+			graphComponent.getHorizontalScrollBar().setUnitIncrement(16);
+			graphComponent.getVerticalScrollBar().setUnitIncrement(16);
+			
 			Map<String, Object> style = getGraph().getStylesheet().getDefaultEdgeStyle();
 			style.put("strokeWidth", 2.0);
 			style.put("strokeColor", mxUtils.hexString(MXConstants.bluelow));
