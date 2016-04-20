@@ -167,15 +167,15 @@ public class WGPropertySettingPanel extends JPanel {
 		chkSnapToGrid = new JCheckBox();
 		chkSnapToGrid.setSelected(EditorProperties.getInstance().getSnapToGrid());
 
-                chkUpdateNotification = new JCheckBox();
-                chkUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
-                chkFileExtAssociation = new JCheckBox();
-                chkFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
+        chkUpdateNotification = new JCheckBox();
+        chkUpdateNotification.setSelected(EditorProperties.getInstance().getShowUpdateNotification());
+        chkFileExtAssociation = new JCheckBox();
+        chkFileExtAssociation.setSelected(EditorProperties.getInstance().getShowFileExtensionAssociation());
 
-                chkRequireNetType = new JCheckBox();
-                chkRequireNetType.setSelected(EditorProperties.getInstance().getRequireNetType());
-                chkPNValidation = new JCheckBox();
-                chkPNValidation.setSelected(EditorProperties.getInstance().getPNValidation());
+        chkRequireNetType = new JCheckBox();
+        chkRequireNetType.setSelected(EditorProperties.getInstance().getRequireNetType());
+        chkPNValidation = new JCheckBox();
+        chkPNValidation.setSelected(EditorProperties.getInstance().getPNValidation());
 	}
 	
 	public IconSize getIconSize(){
