@@ -162,7 +162,7 @@ public class LinePanel extends JToolBar {
 
 	private JComboBox getcmbStrokeWeight() {
 		if (cmbStrokeWeight == null) {
-			cmbStrokeWeight = new JComboBox(new Object[] { "-", "0px", "1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px", "9px", "10px", "11px", "12px" });
+			cmbStrokeWeight = new JComboBox(new Object[] {"1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px", "9px", "10px", "11px", "12px" });
 			cmbStrokeWeight.setSelectedIndex(1);
 
 			cmbStrokeWeight.addActionListener(new ActionListener() {
@@ -173,7 +173,7 @@ public class LinePanel extends JToolBar {
 							strokeWeight = cmbStrokeWeight.getSelectedItem().toString().replace("px", "");
 						} else {
 							cmbStrokeWeight.setSelectedIndex(1);
-							strokeWeight = 0 + "";
+							strokeWeight = 1 + "";
 						}
 						for (LineListener listener : listeners) {
 							listener.lineWeightChanged(strokeWeight);
@@ -201,8 +201,7 @@ public class LinePanel extends JToolBar {
 		if (weight >= 0) {
 			getcmbStrokeWeight().setSelectedItem(weight + "px");
 		} else {
-			getcmbStrokeWeight().setSelectedItem("-");
-
+	//		getcmbStrokeWeight().setSelectedItem("-");
 		}
 	}
 
