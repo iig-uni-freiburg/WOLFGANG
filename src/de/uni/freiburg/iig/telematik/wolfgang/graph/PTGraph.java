@@ -48,6 +48,8 @@ public class PTGraph extends PNGraph {
 	@SuppressWarnings("rawtypes") 
 	@Override
 	protected String getArcConstraint(AbstractFlowRelation relation) {
+		if (((PTFlowRelation) relation).getWeight() == 1) 
+			return "";
 		return String.valueOf(((PTFlowRelation) relation).getWeight());
 	}
 
