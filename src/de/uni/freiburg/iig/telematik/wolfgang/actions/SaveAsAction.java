@@ -50,6 +50,8 @@ public class SaveAsAction extends AbstractWolfgangAction {
 			if (netName != null)
 				wolfgang.getEditorComponent().getNetContainer().getPetriNet().setName(netName);
 			PNSerialization.serialize(wolfgang.getEditorComponent().getNetContainer(), PNSerializationFormat.PNML, filename);
+			wolfgang.setFileReference(fch.getSelectedFile());
+			wolfgang.setTitle(wolfgang.getTitle());
 			wolfgang.getEditorComponent().setModified(false);
 		}
 	}
