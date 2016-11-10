@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.property.pt;
 
 import javax.swing.SwingUtilities;
 
-import de.invation.code.toval.validate.ExceptionDialog;
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;

@@ -13,8 +13,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.graphic.util.SpringUtilities;
-import de.invation.code.toval.validate.ExceptionDialog;
 
 public abstract class AbstractPropertyCheckView<O> extends JPanel {
 
