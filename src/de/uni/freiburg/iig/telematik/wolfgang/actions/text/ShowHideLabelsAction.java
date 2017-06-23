@@ -3,15 +3,17 @@ package de.uni.freiburg.iig.telematik.wolfgang.actions.text;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import de.invation.code.toval.properties.PropertyException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.wolfgang.actions.AbstractPNEditorAction;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.PNGraphCell;
 import de.uni.freiburg.iig.telematik.wolfgang.icons.IconFactory;
 import de.uni.freiburg.iig.telematik.wolfgang.menu.toolbars.FontToolBar;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @SuppressWarnings("serial")
 public class ShowHideLabelsAction extends AbstractPNEditorAction {
@@ -60,6 +62,17 @@ public class ShowHideLabelsAction extends AbstractPNEditorAction {
                                 return;
                         }
                         break;
+				case ARC:
+                	AbstractFlowRelation arc = getEditor().getNetContainer().getPetriNet().getFlowRelation(pnCell.getId());
+                	if (arc instanceof PTFlowRelation){
+                		if (((PTFlowRelation)arc).getWeight() == 1){
+                         list.remove(pnCell);
+                         if(list.isEmpty())
+                             return;
+                		}
+                     }
+					break;
+				case PLACE:
                     default:
                         break;
                 }

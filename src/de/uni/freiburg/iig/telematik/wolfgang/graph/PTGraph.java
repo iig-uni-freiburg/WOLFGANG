@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.util.mxConstants;
@@ -23,6 +24,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.wolfgang.graph.util.Utils;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
+import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperty;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PTProperties;
 
 /**
@@ -30,6 +33,55 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PTProperties;
  *
  */
 public class PTGraph extends PNGraph {
+
+	@Override
+	protected boolean handleArcPropertyChange(String name, PNProperty property, Object oldValue, Object newValue) {
+		boolean result = super.handleArcPropertyChange(name, property, oldValue, newValue);
+		PNGraphCell arcCell = getNodeCell(name);;
+		switch (property) {
+		case ARC_WEIGHT:
+			getModel().setValue(arcCell, newValue);
+			displayArcValue(arcCell);
+			break;
+
+		}
+		return result;
+
+		
+	}
+	
+
+	@Override
+	public PNGraphCell addArcCell(String arcID, String style) {
+		// TODO Auto-generated method stub
+		PNGraphCell result = super.addArcCell(arcID, style);
+		displayArcValue(result);
+		return result;
+	}
+
+	@Override
+	public void setTokenOnArcVisibility(boolean b) {
+		super.setTokenOnArcVisibility(b);
+		for(Object cell:getSelectionCells()){
+			if(cell instanceof PNGraphCell){
+				if(((PNGraphCell) cell).getType().equals(PNComponent.ARC))
+				displayArcValue((PNGraphCell) cell);
+			}
+		};
+		
+	}
+
+
+	private void displayArcValue(PNGraphCell arcCell) {
+		ArrayList<PNGraphCell> list = new ArrayList<PNGraphCell>();
+		list.add(arcCell);
+	
+		if (((PTFlowRelation) getNetContainer().getPetriNet().getFlowRelation(arcCell.getId())).getWeight() == 1)
+			setCellStyles("noLabel", "1", list.toArray());
+		else
+			setCellStyles("noLabel", "0", list.toArray());
+		
+	}
 
 	public PTGraph(GraphicalPTNet netContainer, PTProperties properties) throws ParameterException {
 		super(netContainer, properties);
@@ -48,8 +100,6 @@ public class PTGraph extends PNGraph {
 	@SuppressWarnings("rawtypes") 
 	@Override
 	protected String getArcConstraint(AbstractFlowRelation relation) {
-		if (((PTFlowRelation) relation).getWeight() == 1) 
-			return "";
 		return String.valueOf(((PTFlowRelation) relation).getWeight());
 	}
 
