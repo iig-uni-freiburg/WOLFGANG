@@ -118,6 +118,7 @@
 
 		<echo>Generating javadoc files...</echo>
 		<javadoc sourcepath="${src.dir}" destdir="${docs.temp.dir}">
+                        <arg value="-Xdoclint:none" />
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
 			</fileset>
@@ -148,6 +149,7 @@
 			</fileset>
 		</javadoc>
 		<javadoc sourcepath="${res.dir}" destdir="${docs.temp.dir}">
+                        <arg value="-Xdoclint:none" />
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
 			</fileset>
