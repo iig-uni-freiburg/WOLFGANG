@@ -7,8 +7,8 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.MarkingChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.PNMarkingListener;

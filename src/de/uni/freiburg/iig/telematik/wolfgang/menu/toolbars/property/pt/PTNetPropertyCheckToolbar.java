@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
-import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.properties.PropertyException;
+import de.invation.code.toval.validate.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetException;
