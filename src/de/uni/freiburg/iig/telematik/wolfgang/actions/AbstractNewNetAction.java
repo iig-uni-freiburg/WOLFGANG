@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.graphic.dialog.FileNameDialog;
-import de.invation.code.toval.validate.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.AbstractWolfgang;
 

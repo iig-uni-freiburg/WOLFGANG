@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.wolfgang.actions;
 
-import de.invation.code.toval.validate.ExceptionDialog;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -8,6 +7,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.wolfgang.editor.component.PNEditorComponent;

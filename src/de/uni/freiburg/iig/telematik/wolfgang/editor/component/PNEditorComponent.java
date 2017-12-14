@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.wolfgang.editor.component;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -36,8 +37,8 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
 
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.properties.PropertyException;
-import de.invation.code.toval.validate.ExceptionDialog;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -62,7 +63,6 @@ import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PNProperties.PNComponent;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.PropertiesView;
 import de.uni.freiburg.iig.telematik.wolfgang.properties.view.tree.PNTreeNode;
-import java.io.IOException;
 
 public abstract class PNEditorComponent extends JPanel implements TreeSelectionListener, PNGraphListener, ViewComponent {
 

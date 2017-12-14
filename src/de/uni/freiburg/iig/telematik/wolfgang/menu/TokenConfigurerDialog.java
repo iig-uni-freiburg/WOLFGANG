@@ -37,9 +37,9 @@ import com.mxgraph.model.mxGraphModel;
 
 import de.invation.code.toval.graphic.component.RestrictedTextField;
 import de.invation.code.toval.graphic.component.event.RestrictedTextFieldListener;
+import de.invation.code.toval.graphic.dialog.ExceptionDialog;
 import de.invation.code.toval.graphic.util.SpringUtilities;
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ExceptionDialog;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
